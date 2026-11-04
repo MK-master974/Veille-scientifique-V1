@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2025//EN" "https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_250101.dtd">
+<PubmedArticleSet>
+<PubmedArticle>
+  <MedlineCitation Status="PubMed-not-MEDLINE" Owner="NLM">
+    <PMID Version="1">99000001</PMID>
+    <Article PubModel="Print-Electronic">
+      <Journal>
+        <JournalIssue CitedMedium="Internet">
+          <Volume>12</Volume>
+          <Issue>4</Issue>
+          <PubDate><Year>2026</Year><Month>Oct</Month></PubDate>
+        </JournalIssue>
+        <Title>Journal of Test Physiotherapy</Title>
+        <ISOAbbreviation>J Test Physiother</ISOAbbreviation>
+      </Journal>
+      <ArticleTitle>Exercise therapy for <i>chronic</i> low back pain: a systematic review.</ArticleTitle>
+      <Pagination><MedlinePgn>101-110</MedlinePgn></Pagination>
+      <ELocationID EIdType="doi" ValidYN="Y">10.9999/jtp.2026.001</ELocationID>
+      <Abstract>
+        <AbstractText Label="BACKGROUND">Chronic low back pain is common.</AbstractText>
+        <AbstractText Label="RESULTS">Twelve trials (n = 1,234) were included. Pain decreased by 1.5 points (95% CI 0.8 to 2.2).</AbstractText>
+      </Abstract>
+      <AuthorList CompleteYN="Y">
+        <Author ValidYN="Y"><LastName>Martin</LastName><ForeName>Anne</ForeName><Initials>A</Initials></Author>
+        <Author ValidYN="Y"><CollectiveName>Test Collaboration</CollectiveName></Author>
+      </AuthorList>
+      <Language>eng</Language>
+      <PublicationTypeList>
+        <PublicationType UI="D016428">Journal Article</PublicationType>
+        <PublicationType UI="D000078182">Systematic Review</PublicationType>
+      </PublicationTypeList>
+    </Article>
+    <MeshHeadingList>
+      <MeshHeading><DescriptorName UI="D017116" MajorTopicYN="Y">Low Back Pain</DescriptorName></MeshHeading>
+    </MeshHeadingList>
+  </MedlineCitation>
+  <PubmedData>
+    <ArticleIdList>
+      <ArticleId IdType="pubmed">99000001</ArticleId>
+      <ArticleId IdType="doi">10.9999/jtp.2026.001</ArticleId>
+    </ArticleIdList>
+  </PubmedData>
+</PubmedArticle>
+<PubmedArticle>
+  <MedlineCitation Status="MEDLINE" Owner="NLM">
+    <PMID Version="1">99000002</PMID>
+    <Article PubModel="Print">
+      <Journal>
+        <JournalIssue CitedMedium="Print"><PubDate><Year>2026</Year></PubDate></JournalIssue>
+        <Title>Retracted Journal</Title>
+      </Journal>
+      <ArticleTitle>A retracted trial.</ArticleTitle>
+      <Abstract><AbstractText>Some text.</AbstractText></Abstract>
+      <Language>eng</Language>
+      <PublicationTypeList><PublicationType>Randomized Controlled Trial</PublicationType></PublicationTypeList>
+    </Article>
+    <CommentsCorrectionsList>
+      <CommentsCorrections RefType="RetractionIn"><RefSource>Retracted J. 2026</RefSource></CommentsCorrections>
+    </CommentsCorrectionsList>
+  </MedlineCitation>
+  <PubmedData><ArticleIdList><ArticleId IdType="pubmed">99000002</ArticleId></ArticleIdList></PubmedData>
+</PubmedArticle>
+<PubmedArticle>
+  <MedlineCitation Status="MEDLINE" Owner="NLM">
+    <PMID Version="1">99000003</PMID>
+    <Article PubModel="Print">
+      <Journal>
+        <JournalIssue CitedMedium="Print"><PubDate><Year>2026</Year></PubDate></JournalIssue>
+        <Title>No Abstract Journal</Title>
+      </Journal>
+      <ArticleTitle>No abstract here.</ArticleTitle>
+      <Language>eng</Language>
+      <PublicationTypeList><PublicationType>Randomized Controlled Trial</PublicationType></PublicationTypeList>
+    </Article>
+  </MedlineCitation>
+  <PubmedData><ArticleIdList><ArticleId IdType="pubmed">99000003</ArticleId></ArticleIdList></PubmedData>
+</PubmedArticle>
+</PubmedArticleSet>
