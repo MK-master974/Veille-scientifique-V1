@@ -1,0 +1,122 @@
+[
+ {
+  "id": "has8ff2e4eb7c",
+  "source": "has",
+  "pmid": "",
+  "doi": "",
+  "url": "https://www.has-sante.fr/upload/docs/application/pdf/2026-07/dir3/prise_en_charge_des_tendinopathies_rompues_de_la_coiffe_des_rotateurs_-_place_de_la_chirurgie_-_recommandations.pdf",
+  "titre": "Prise en charge des tendinopathies rompues de la coiffe des rotateurs : place de la chirurgie",
+  "resume": "Notes factuelles (démonstration, pas le texte original). Recommandation HAS adoptée par le Collège le 2 juillet 2026, publiée en juillet 2026. Population : adultes avec rupture de la coiffe des rotateurs, traumatique ou dégénérative. Gradation : grades B, C et accord d'experts (AE). Rupture dégénérative : traitement médico-fonctionnel au minimum 6 mois avant de discuter une indication chirurgicale si gêne ou douleur persistent (AE). Une à deux infiltrations cortisonées espacées d'au minimum 3 semaines (grade B). Au moins 1 mois entre la dernière infiltration et la chirurgie (grade C). Rupture traumatique sur tendon sain : avis chirurgical sans délai (grade C). Âge non exclusif : patient actif de plus de 75 ans peut bénéficier de la chirurgie, risque de rupture itérative plus élevé (grade C). Rupture partielle à considérer si plus de 50 % de l'épaisseur. Réparation anatomique de référence, le plus souvent arthroscopique (AE) ; double rang recommandé à long terme, gain préservé à 10 ans (grade C) ; simple rang pour lésions de moins de 3 cm (AE). Acromioplastie non systématique (grade B). Kinésithérapie préopératoire conseillée (AE). Attelle postopératoire 4 à 6 semaines sans immobilisation stricte (grade C). Auto-rééducation prépondérante jusqu'au 3e mois (AE). Reprise des activités quotidiennes à partir du 3e mois, reprise professionnelle, sportive ou de loisirs entre 3 et 6 mois, réathlétisation à partir de 6 mois, récupération habituelle à un an (AE). Ondes de choc contre-indiquées en postopératoire (AE). Pas d'imagerie postopératoire systématique avant 3 mois ; IRM non utile avant 6 mois (AE).",
+  "revue": "Haute Autorité de santé",
+  "revue_abrege": "HAS",
+  "annee": "2026",
+  "mois": "7",
+  "volume": "",
+  "numero": "",
+  "pages": "",
+  "auteurs": [
+   "Haute Autorité de santé"
+  ],
+  "types_publication": [
+   "Recommandation HAS"
+  ],
+  "langue": "fre",
+  "mesh": [],
+  "date_mise_en_ligne": "2026-07-02"
+ },
+ {
+  "id": "pm42951276",
+  "source": "pubmed",
+  "pmid": "42951276",
+  "doi": "10.1136/bmj-2026-100807",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/42951276/",
+  "titre": "Efficacy and cost effectiveness of high volume injections with and without corticosteroid compared with sham for midportion Achilles tendinopathy (Inject trial): randomised controlled trial",
+  "resume": "Factual notes (demonstration, not the original abstract). Single-centre, three-arm randomised controlled trial, participants and assessors masked, community setting. 192 adults aged 18 or older with midportion Achilles tendinopathy, randomised 1:1:1 to sham (n=64), high volume injection without corticosteroid (n=63) or with corticosteroid (n=65); enrolment December 2019 to July 2022. Sham: small volume of local anaesthetic. Active arms: large volume saline and bupivacaine, with or without hydrocortisone. All participants received the same exercise programme, education and activity advice. Primary outcome: pain and disability (VISA-A) at 52 weeks. Economic outcome: cost per QALY, societal perspective. Follow-up 6, 26 and 52 weeks. VISA-A available for 94% of participants at 12 months. No clear differences between sham and either injection, or between injections, at 12 months. Corticosteroid injection better than sham at 6 weeks but worse than injection without corticosteroid at 26 weeks. Corticosteroid arm estimated less costly than sham with similar effectiveness. No serious trial related adverse events. Authors: data do not support routine use of high volume corticosteroid injection. Registration ACTRN12619001455156.",
+  "revue": "BMJ",
+  "revue_abrege": "BMJ",
+  "annee": "2026",
+  "mois": "10",
+  "volume": "395",
+  "numero": "",
+  "pages": "e100807",
+  "auteurs": [
+   "Malliaras P",
+   "Connell D",
+   "Boesen AP",
+   "Kearney RS",
+   "Menz HB",
+   "Morrissey D",
+   "Munteanu SE",
+   "Silbernagel KG",
+   "Underwood M",
+   "Forbes A",
+   "Haines TP"
+  ],
+  "types_publication": [
+   "Randomized Controlled Trial"
+  ],
+  "langue": "eng",
+  "mesh": []
+ },
+ {
+  "id": "pm42029397",
+  "source": "pubmed",
+  "pmid": "42029397",
+  "doi": "10.1177/02692155261441558",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/42029397/",
+  "titre": "Exercise to reduce falls in Community-Dwelling people after stroke: A systematic review with meta-analysis",
+  "resume": "Factual notes (demonstration, not the original abstract). Systematic review with meta-analysis of randomised trials, published online 24 April 2026. Three randomised trials, 677 participants, community-dwelling people after stroke. Falls prevention exercise versus no or sham intervention. Rate of falls: IRR 0.84 (95% CI 0.62 to 1.15), not statistically significant. Proportion of fallers: RR 0.98 (95% CI 0.81 to 1.18). Balance: non significant trend toward improvement. Preferred walking speed: small significant improvement, 0.04 m/s (95% CI 0.01 to 0.07).",
+  "revue": "Clinical Rehabilitation",
+  "revue_abrege": "Clin Rehabil",
+  "annee": "2026",
+  "mois": "4",
+  "volume": "",
+  "numero": "",
+  "pages": "",
+  "auteurs": [
+   "Scrivener K",
+   "Lin I",
+   "Ada L",
+   "Lannin NA",
+   "Graham PL",
+   "Preston E",
+   "Haines A",
+   "Day S",
+   "Clemson L",
+   "Dean CM"
+  ],
+  "types_publication": [
+   "Systematic Review",
+   "Meta-Analysis"
+  ],
+  "langue": "eng",
+  "mesh": []
+ },
+ {
+  "id": "pm42272562",
+  "source": "pubmed",
+  "pmid": "42272562",
+  "doi": "10.2147/TCRM.S597978",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/42272562/",
+  "titre": "Transcranial Magnetic Stimulation Combined with Speech-Language Therapy for Post-Stroke Aphasia Recovery: A Systematic Review and Network Meta-Analysis",
+  "resume": "Factual notes (demonstration, not the original abstract). Systematic review and Bayesian network meta-analysis of RCTs (PRISMA-NMA, PROSPERO CRD42024602404), searches to 24 January 2026. 26 RCTs, 1,136 patients, sample sizes 28 to 96. Interventions: LF-rTMS, LF-rTMS+SLT, LF-rTMS+music+SLT, dual-hemisphere rTMS+SLT, iTBS+SLT, cTBS+SLT; comparators SLT alone or sham TMS+SLT. Seven immediate and four long-term language domains; SMD with 95% credible intervals. Immediate: aphasia severity, LF-rTMS+music+SLT vs SLT SMD 2.05 (0.84 to 3.29); naming SMD 1.96 (1.15 to 2.76); comprehension, dual-rTMS+SLT SMD 1.18 (0.77 to 1.57); functional communication, dual-rTMS+SLT SMD 0.62 (0.06 to 1.17); writing, LF-rTMS+SLT SMD 0.34 (0.10 to 0.58). Long-term: aphasia severity, dual-rTMS+SLT vs SLT SMD 1.23 (0.10 to 2.36), low certainty. RoB 2.0: 18 studies low risk, 5 some concerns, 3 high risk. GRADE: moderate to high certainty for standard comparisons such as LF-rTMS+SLT vs SLT; low to very low for novel combinations. Adverse events mostly headache, dizziness; seizure in two participants in one trial; no serious adverse events. Possible publication bias. Authors: best protocol depends on domain and time point; findings uncertain; head-to-head trials needed.",
+  "revue": "Therapeutics and Clinical Risk Management",
+  "revue_abrege": "Ther Clin Risk Manag",
+  "annee": "2026",
+  "mois": "6",
+  "volume": "22",
+  "numero": "",
+  "pages": "1-26",
+  "auteurs": [
+   "Lin J",
+   "Bao Y",
+   "Fang M"
+  ],
+  "types_publication": [
+   "Systematic Review",
+   "Network Meta-Analysis"
+  ],
+  "langue": "eng",
+  "mesh": []
+ }
+]

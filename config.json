@@ -1,0 +1,50 @@
+{
+  "nom_app": "Veille Santé",
+  "url_site": "",
+  "email_contact": "",
+  "ia": {
+    "fournisseur": "openai",
+    "mode": "lot",
+    "modele_tri": "gpt-6-luna",
+    "modele_redaction": "gpt-6.1-terra",
+    "modele_synthese": "gpt-6.1-terra",
+    "effort_raisonnement": "low",
+    "budget_max_usd_semaine": 8,
+    "prix_usd_par_million": {
+      "gpt-6-luna": [0.10, 0.50],
+      "gpt-6.1-terra": [1.00, 5.00],
+      "gpt-6.1-sol": [2.00, 10.00],
+      "mistral-small-latest": [0.15, 0.60],
+      "mistral-large-latest": [0.50, 1.50]
+    },
+    "requetes_simultanees": 8
+  },
+  "collecte": {
+    "pubmed": true,
+    "has": true,
+    "langues": ["eng", "fre"],
+    "max_references": 6000
+  },
+  "preuve": {
+    "effectif_minimum": 30,
+    "effectif_modere": 100
+  },
+  "selection": {
+    "max_fiches": 1200
+  },
+  "publication": {
+    "fuseau": "Europe/Paris",
+    "notifier_a_partir_de": "07:30"
+  },
+  "notifications": {
+    "onesignal_app_id": ""
+  },
+  "mentions": {
+    "editeur": "",
+    "hebergeur": "GitHub Pages, GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis"
+  },
+  "fiches_retirees": [],
+  "controle": {
+    "crossref": true
+  }
+}

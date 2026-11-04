@@ -1,0 +1,233 @@
+{
+  "_note": "Réponses de démonstration rédigées à la main à partir de publications réelles de 2026. Elles remplacent l'IA pour tester la chaîne et montrer le format.",
+  "tri": {
+    "has8ff2e4eb7c": {
+      "inclure": true,
+      "motif_exclusion": null,
+      "type_etude": "recommandation",
+      "pertinence": 3,
+      "domaines": [
+        "kine/msk-membre-sup",
+        "medecine/ortho-trauma",
+        "medecine/mpr"
+      ],
+      "effectif": null,
+      "grade": null,
+      "majorite_essais_randomises": null,
+      "accord_experts": true,
+      "design_diagnostique": null,
+      "incertitude": null
+    },
+    "pm42951276": {
+      "inclure": true,
+      "motif_exclusion": null,
+      "type_etude": "essai_randomise",
+      "pertinence": 2,
+      "domaines": [
+        "kine/msk-membre-inf",
+        "kine/sport",
+        "medecine/sport",
+        "podologie/sport"
+      ],
+      "effectif": 192,
+      "grade": null,
+      "majorite_essais_randomises": null,
+      "accord_experts": null,
+      "design_diagnostique": null,
+      "incertitude": null
+    },
+    "pm42029397": {
+      "inclure": true,
+      "motif_exclusion": null,
+      "type_etude": "meta_analyse",
+      "pertinence": 2,
+      "domaines": [
+        "kine/neuro",
+        "kine/geriatrie",
+        "ergotherapie/neuro",
+        "medecine/mpr"
+      ],
+      "effectif": 677,
+      "grade": null,
+      "majorite_essais_randomises": true,
+      "accord_experts": null,
+      "design_diagnostique": null,
+      "incertitude": "Seulement trois essais inclus."
+    },
+    "pm42272562": {
+      "inclure": true,
+      "motif_exclusion": null,
+      "type_etude": "meta_analyse",
+      "pertinence": 2,
+      "domaines": [
+        "orthophonie/aphasie-neuro",
+        "medecine/neurologie",
+        "medecine/mpr"
+      ],
+      "effectif": 1136,
+      "grade": "modere",
+      "majorite_essais_randomises": true,
+      "accord_experts": null,
+      "design_diagnostique": null,
+      "incertitude": "Certitude faible pour les associations les mieux classées."
+    }
+  },
+  "redaction": {
+    "has8ff2e4eb7c": {
+      "titre_fr": "Rupture de la coiffe des rotateurs : la HAS précise la place de la chirurgie et de la rééducation",
+      "etiquette": "modere",
+      "justification_etiquette": "Recommandation nationale reposant sur des grades B et C et, pour une grande partie, sur un accord d'experts.",
+      "verdict": "change_la_pratique",
+      "flash": "Pour une rupture dégénérative de la coiffe, la HAS demande au moins 6 mois de traitement médico-fonctionnel avant de discuter la chirurgie, et détaille la rééducation postopératoire.",
+      "standard": {
+        "resultats": "Rupture dégénérative : traitement médico-fonctionnel d'au moins 6 mois avant toute indication chirurgicale (AE) ; une à deux infiltrations cortisonées espacées d'au moins 3 semaines (grade B), la dernière au moins 1 mois avant la chirurgie (grade C). Rupture traumatique sur tendon sain : avis chirurgical sans délai (grade C). Après réparation : attelle 4 à 6 semaines sans immobilisation stricte (grade C), auto-rééducation prépondérante jusqu'au 3e mois, reprise des activités professionnelles, sportives ou de loisirs entre 3 et 6 mois, réathlétisation à partir de 6 mois (AE).",
+        "impact_clinique": "En kinésithérapie : mener au moins 6 mois de prise en charge conservatrice avant d'orienter vers le chirurgien pour une rupture dégénérative, proposer une kinésithérapie préopératoire, et ne pas utiliser les ondes de choc après la réparation.",
+        "limites": [
+          "Une grande partie des recommandations repose sur un accord d'experts.",
+          "Aucune recommandation de grade A."
+        ]
+      },
+      "complet": {
+        "type": "Recommandation de bonne pratique de la HAS, adoptée le 2 juillet 2026",
+        "population": "Adultes présentant une rupture de la coiffe des rotateurs, traumatique ou dégénérative",
+        "intervention_comparateur": "Place de la chirurgie, du traitement médico-fonctionnel, des infiltrations, de l'imagerie et de la rééducation",
+        "criteres_jugement": "Sans objet pour une recommandation",
+        "methode": "Recommandations gradées B et C, et accords d'experts (AE). L'âge n'est pas un critère d'exclusion : un patient actif de plus de 75 ans peut bénéficier de la chirurgie, avec un risque de rupture itérative plus élevé (grade C). Réparation anatomique de référence, double rang recommandé à long terme (grade C).",
+        "grade": "Non applicable (gradation HAS : B, C, AE)",
+        "limites": [
+          "Grande part d'accords d'experts.",
+          "Aucune recommandation de grade A.",
+          "Pas d'imagerie postopératoire systématique avant 3 mois, sauf indication particulière."
+        ]
+      },
+      "vulgarise": {
+        "flash": "Quand un tendon de l'épaule s'use et se rompt avec l'âge, la HAS recommande d'essayer au moins 6 mois de soins sans chirurgie (rééducation, éventuellement infiltrations) avant d'envisager une opération.",
+        "standard": "Si la rupture vient d'un accident sur un tendon sain, il faut voir un chirurgien rapidement. Après une opération, le bras est soutenu par une attelle pendant 4 à 6 semaines, les exercices faits par le patient lui-même sont essentiels jusqu'au 3e mois, et le sport intensif reprend à partir de 6 mois."
+      },
+      "chiffres_cites": [
+        "6",
+        "3",
+        "1",
+        "4",
+        "2026"
+      ],
+      "incertitudes": "La méthode d'élaboration n'est pas détaillée dans les notes utilisées pour cette fiche."
+    },
+    "pm42951276": {
+      "titre_fr": "Tendinopathie d'Achille : les injections à haut volume ne font pas mieux qu'une injection simulée à 12 mois",
+      "etiquette": "modere",
+      "justification_etiquette": "Essai randomisé de 192 participants, participants et évaluateurs en insu, suivi de 94 % à 12 mois ; un essai isolé ne peut pas être classé solide.",
+      "verdict": "remet_en_question",
+      "flash": "Chez 192 adultes atteints de tendinopathie corporéale d'Achille, les injections à haut volume, avec ou sans corticoïde, n'améliorent pas plus la douleur et la fonction qu'une injection simulée à 12 mois.",
+      "standard": {
+        "resultats": "Score VISA-A disponible pour 94 % des participants à 12 mois. Aucune différence nette avec l'injection simulée, ni entre les deux injections, à 12 mois. Avec corticoïde : mieux que l'injection simulée à 6 semaines, mais moins bien que l'injection sans corticoïde à 26 semaines. Le bras avec corticoïde serait moins coûteux que l'injection simulée pour une efficacité comparable. Aucun événement indésirable grave lié à l'essai.",
+        "impact_clinique": "Ne pas proposer d'injection à haut volume en routine dans la tendinopathie d'Achille : l'injection avec corticoïde n'apporte qu'un bénéfice de court terme, puis des résultats moins bons à 26 semaines.",
+        "limites": [
+          "Essai monocentrique.",
+          "Tous les groupes recevaient le même programme d'exercices et d'éducation : l'essai ne compare pas l'exercice seul."
+        ]
+      },
+      "complet": {
+        "type": "Essai randomisé à trois bras, monocentrique, participants et évaluateurs en insu",
+        "population": "192 adultes de 18 ans ou plus, tendinopathie corporéale d'Achille, recrutés de décembre 2019 à juillet 2022 ; répartition 1:1:1 (injection simulée n=64, haut volume sans corticoïde n=63, avec corticoïde n=65)",
+        "intervention_comparateur": "Injection à haut volume de sérum physiologique et de bupivacaïne, avec ou sans hydrocortisone, contre injection simulée de faible volume d'anesthésique local ; tous les groupes recevaient le même programme d'exercices, d'éducation et de conseils d'activité",
+        "criteres_jugement": "Principal : douleur et incapacité (score VISA-A) à 52 semaines. Économique : coût par année de vie ajustée sur la qualité, perspective sociétale",
+        "methode": "Suivi à 6, 26 et 52 semaines, analyse coût-efficacité. Enregistrement ACTRN12619001455156",
+        "grade": "Non applicable (essai isolé)",
+        "limites": [
+          "Essai monocentrique.",
+          "L'effet propre du programme d'exercices commun n'est pas évalué.",
+          "Différences chiffrées du score VISA-A non reprises ici : se reporter à l'article."
+        ]
+      },
+      "vulgarise": null,
+      "chiffres_cites": [
+        "192",
+        "94",
+        "12",
+        "6",
+        "26"
+      ],
+      "incertitudes": "Les écarts chiffrés du score VISA-A entre groupes ne figurent pas dans les données utilisées pour cette fiche."
+    },
+    "pm42029397": {
+      "titre_fr": "Après un AVC, l'exercice ne réduit pas significativement les chutes à domicile",
+      "etiquette": "preliminaire",
+      "justification_etiquette": "Méta-analyse d'essais randomisés, mais seulement 3 essais et des intervalles de confiance larges : abaissée à préliminaire.",
+      "verdict": "a_surveiller",
+      "flash": "Chez 677 personnes vivant à domicile après un AVC, les exercices de prévention des chutes ne réduisent pas significativement les chutes ; seule la vitesse de marche progresse légèrement.",
+      "standard": {
+        "resultats": "3 essais randomisés, 677 participants. Nombre de chutes : rapport des taux d'incidence 0,84 (IC 95 % 0,62 à 1,15), non significatif. Proportion de chuteurs : RR 0,98 (IC 95 % 0,81 à 1,18). Équilibre : tendance non significative. Vitesse de marche préférée : +0,04 m/s (IC 95 % 0,01 à 0,07).",
+        "impact_clinique": "Le bénéfice démontré se limite à un faible gain de vitesse de marche. L'effet de l'exercice sur les chutes après un AVC reste à établir : ne pas le présenter seul comme une prévention efficace des chutes à domicile.",
+        "limites": [
+          "Seulement 3 essais inclus.",
+          "Intervalles de confiance larges sur le nombre de chutes."
+        ]
+      },
+      "complet": {
+        "type": "Revue systématique avec méta-analyse d'essais randomisés",
+        "population": "Personnes vivant à domicile après un AVC ; 3 essais, 677 participants",
+        "intervention_comparateur": "Exercices de prévention des chutes contre absence d'intervention ou intervention simulée",
+        "criteres_jugement": "Nombre de chutes, proportion de chuteurs, équilibre, vitesse de marche préférée",
+        "methode": "Méta-analyse de 3 essais randomisés, publiée en ligne le 24 avril 2026",
+        "grade": "Non rapporté dans les données utilisées",
+        "limites": [
+          "Seulement 3 essais.",
+          "Intervalles de confiance larges.",
+          "Gain de vitesse de 0,04 m/s, de pertinence clinique incertaine."
+        ]
+      },
+      "vulgarise": null,
+      "chiffres_cites": [
+        "677",
+        "3",
+        "0,84",
+        "0,98",
+        "0,04"
+      ],
+      "incertitudes": null
+    },
+    "pm42272562": {
+      "titre_fr": "Aphasie après AVC : la stimulation magnétique transcrânienne associée à l'orthophonie améliore plusieurs domaines du langage",
+      "etiquette": "modere",
+      "justification_etiquette": "Méta-analyse en réseau de 26 essais ; certitude modérée à élevée pour les comparaisons classiques, mais faible pour les associations les mieux classées : abaissée à modéré.",
+      "verdict": "a_surveiller",
+      "flash": "Associer la stimulation magnétique transcrânienne à l'orthophonie améliore plusieurs domaines du langage après un AVC, mais les associations les mieux classées reposent sur des preuves de faible certitude.",
+      "standard": {
+        "resultats": "26 essais randomisés, 1 136 patients. Juste après le traitement, contre l'orthophonie seule : rTMS basse fréquence + musique + orthophonie en tête pour la sévérité de l'aphasie (DMS 2,05 ; intervalle de crédibilité 95 % 0,84 à 3,29) et la dénomination (DMS 1,96 ; 1,15 à 2,76) ; rTMS bihémisphérique + orthophonie en tête pour la compréhension (DMS 1,18 ; 0,77 à 1,57) et la communication fonctionnelle (DMS 0,62 ; 0,06 à 1,17). Au suivi : rTMS bihémisphérique + orthophonie en tête pour la sévérité (DMS 1,23 ; 0,10 à 2,36), certitude faible.",
+        "impact_clinique": "Pour l'orthophoniste et le neurologue : la rTMS associée à la rééducation du langage est une piste prometteuse, pas encore une recommandation. Aucun protocole ne peut être privilégié faute d'essais comparatifs directs.",
+        "limites": [
+          "Certitude faible à très faible pour les associations les mieux classées.",
+          "Peu d'essais, parfois un seul, pour plusieurs comparaisons.",
+          "Hétérogénéité des patients, des cibles et de l'intensité de stimulation."
+        ]
+      },
+      "complet": {
+        "type": "Revue systématique et méta-analyse en réseau bayésienne d'essais randomisés (PRISMA-NMA, PROSPERO CRD42024602404)",
+        "population": "26 essais, 1 136 patients aphasiques après un AVC ; de 28 à 96 participants par essai",
+        "intervention_comparateur": "rTMS basse fréquence, bihémisphérique, iTBS ou cTBS, associées ou non à l'orthophonie et à la musique, contre orthophonie seule ou stimulation simulée et orthophonie",
+        "criteres_jugement": "7 domaines du langage juste après le traitement et 4 au suivi : sévérité de l'aphasie, répétition, dénomination, compréhension, discours spontané, écriture, communication fonctionnelle",
+        "methode": "Recherche jusqu'au 24 janvier 2026. Risque de biais (RoB 2) : 18 essais à faible risque, 5 avec réserves, 3 à risque élevé. Effets indésirables surtout bénins (céphalées, vertiges), crise convulsive chez 2 participants d'un essai, aucun événement grave",
+        "grade": "Modéré à élevé pour les comparaisons classiques (rTMS basse fréquence + orthophonie contre orthophonie seule) ; faible à très faible pour les associations nouvelles",
+        "limites": [
+          "Certitude faible pour les associations les mieux classées.",
+          "Peu d'essais pour le suivi à long terme.",
+          "Biais de publication possible.",
+          "Déclaration des effets indésirables hétérogène."
+        ]
+      },
+      "vulgarise": null,
+      "chiffres_cites": [
+        "26",
+        "1 136",
+        "2,05",
+        "1,96",
+        "1,18",
+        "0,62",
+        "1,23"
+      ],
+      "incertitudes": "Le classement de rTMS bihémisphérique pour la compréhension au suivi n'est pas confirmé statistiquement."
+    }
+  },
+  "synthese": {}
+}
