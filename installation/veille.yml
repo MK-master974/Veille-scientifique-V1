@@ -85,6 +85,28 @@ jobs:
           git pull --rebase --autostash
           git push
 
+      # Mémoire de la semaine : le cache d'Actions disparaît après 7 jours sans usage. Une fois la
+      # veille publiée, un résumé chiffré est écrit dans le journal et les données de travail sont
+      # gardées 90 jours en artefact. Le fichier des références, qui contient les résumés des
+      # articles, n'est pas copié. Ces deux étapes ne peuvent pas faire échouer la veille.
+      - name: Résumé chiffré de la semaine
+        if: steps.avancer.outputs.publie == 'true'
+        continue-on-error: true
+        env:
+          SEMAINE: ${{ steps.semaine.outputs.semaine }}
+        run: python scripts/resume_travail.py "travail/$SEMAINE"
+
+      - name: Garder les données de travail pendant 90 jours
+        if: steps.avancer.outputs.publie == 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: travail-${{ steps.semaine.outputs.semaine }}
+          path: |
+            travail/${{ steps.semaine.outputs.semaine }}
+            !travail/${{ steps.semaine.outputs.semaine }}/references.json
+          retention-days: 90
+
   deployer:
     needs: veille
     if: needs.veille.outputs.publie == 'true'
