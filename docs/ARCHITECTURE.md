@@ -59,7 +59,10 @@ pas du nombre de lecteurs.
 | `scripts/demo.py` | Site de démonstration : vrai moteur, IA simulée |
 | `scripts/resume_travail.py` | Résumé chiffré d'un dossier de travail |
 | `demo/` | Quatre publications réelles et les réponses d'IA simulées |
-| `tests/` | Tests du moteur et de la chaîne complète, sans réseau |
+| `tests/` | Tests du moteur, de la chaîne complète et de l'assemblage du corpus, sans réseau |
+| `banc/` | Corpus de référence et banc d'essai de la chaîne d'analyse (en construction) |
+| `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
+| `CLAUDE.md` | Consignes de travail pour les sessions de développement |
 
 ## Le moteur (`pipeline/`)
 
@@ -254,6 +257,9 @@ c'est pourquoi `veille.yml` déploie lui-même.
 **`tests.yml`** : à chaque modification, sur toutes les branches. Tests du moteur, démonstration
 complète avec IA simulée, et vérification que `installation/` est identique aux workflows.
 
+**`corpus.yml`** : à la demande. Assemble les cas du corpus de référence à partir d'un jeu de
+données public, sans IA ni clé. Le résultat est écrit dans le journal et gardé en artefact.
+
 ## Configuration
 
 | Où | Quoi |
@@ -276,7 +282,7 @@ santé ».
 
 ```bash
 pip install -r requirements.txt pytest
-python -m pytest tests                 # 37 cas, sans réseau ni clé
+python -m pytest tests                 # sans réseau ni clé
 python scripts/demo.py apercu          # site de démonstration dans apercu/
 python -m http.server -d apercu 8000   # à ouvrir sur http://localhost:8000
 ```
