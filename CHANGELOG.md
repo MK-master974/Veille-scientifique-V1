@@ -3,7 +3,16 @@
 Évolutions notables de Veille Santé, de la plus récente à la plus ancienne.
 Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 
-## 1.1.1 — en préparation
+## Non publié
+
+### Ajouté
+- `CLAUDE.md` : consignes de travail pour les sessions de développement (règles impératives,
+  circuit d'une modification, communication, coordination avec les autres applications).
+- `banc/assembler_essais.py` et le workflow « Corpus de référence » : assemblage des premiers cas
+  du corpus de référence à partir du jeu de données public Evidence Inference (licence MIT).
+  Aucune IA n'est appelée.
+
+## 1.1.1 — 11 novembre 2026
 
 ### Ajouté
 - Documentation technique dans le dépôt : `docs/ARCHITECTURE.md` (comment l'ensemble est

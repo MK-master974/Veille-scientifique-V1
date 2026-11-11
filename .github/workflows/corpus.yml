@@ -1,0 +1,39 @@
+name: Corpus de référence
+
+# Assemble les cas « sens de l'effet » du corpus de référence à partir d'un jeu de données public.
+# Aucune IA n'est appelée, aucune clé n'est utilisée, aucun coût. Le résultat est écrit dans le
+# journal et gardé 30 jours en artefact ; il n'est ni publié ni ajouté au dépôt par ce workflow.
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "banc/assembler_essais.py"
+
+permissions:
+  contents: read
+
+jobs:
+  assembler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Assembler les cas à partir du jeu Evidence Inference
+        run: python banc/assembler_essais.py --nombre 8 --sortie corpus-essais.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: corpus-essais
+          path: corpus-essais.json
+          retention-days: 30
+          if-no-files-found: warn
