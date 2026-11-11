@@ -1,0 +1,35 @@
+name: Lecture d'un résultat du banc
+
+# Affiche dans le journal le détail d'un résultat du banc d'essai déjà produit (pièges, réponses
+# non conformes), à partir de son artefact. Aucune IA n'est appelée : aucun coût.
+on:
+  workflow_dispatch:
+    inputs:
+      lancement:
+        description: "Numéro du lancement « Banc d'essai » à lire"
+        required: true
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "banc/lire_resultats.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  lire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultats-banc
+          path: resultats-banc
+          run-id: ${{ inputs.lancement || '43086839781' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Afficher le détail
+        run: python banc/lire_resultats.py resultats-banc/resultats.json
