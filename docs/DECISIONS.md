@@ -126,12 +126,17 @@ Les données de travail ont montré trois causes, sur les 806 études retenues a
 | Phase 1 | Fiabilisation scientifique en dix séances, chacune terminée par un point d'arrêt. Démarre après la phase 0, sur accord explicite | Validée |
 | Mise en ligne | Toute modification passe par la branche de travail, les tests automatiques, puis une demande de fusion validée par le porteur du projet | Pratique en vigueur |
 
+| VS-D8 | Corriger le contrôle des chiffres avant la veille du 16 novembre : lire les nombres en toutes lettres au-delà de dix et les décimales sans zéro initial, sans accepter de nombre absent de la source. Constat du banc d'essai : 8 fiches sur 16 écartées à tort | Validée le 11 novembre 2026 (questionnaire), réalisée |
+| VS-D9 | Relancer le banc d'essai après la correction pour mesurer le gain (environ 0,12 $) | Validée le 11 novembre 2026 (questionnaire) |
+
 Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 
 | Référence | Décision |
 | --- | --- |
 | POR-D17 | Un préfixe par projet pour les décisions : `VS-` pour Veille Santé |
 | POR-D18 | Dix codes communs pour le circuit des connaissances vers Évalys : `NON_SELECTIONNEE`, `A_EXAMINER`, `EN_EVALUATION`, `VALIDEE_TRANSMISSION`, `TRANSMISE`, `RECUE`, `INTEGREE`, `REFUSEE`, `DIFFEREE`, `A_ACTUALISER` |
+| POR-D9 | Pilote du circuit vers Évalys sur le genou, cinq propositions au plus, sans modification clinique. Attend la fiche v2 de Veille Santé |
+| POR-D12 | Veille Santé garde sa propre interface de gestion ; le portail n'en affiche qu'une synthèse. Interface reportée à la phase 4 |
 | POR-D19 | Essai de format du circuit vers Évalys : seul du contenu déjà public dans ce dépôt, avec la mention « résumé uniquement, non destinée à l'intégration clinique ». Pas avant la fin de la phase 0 |
 | POR-D21 | Un avis réglementaire commun aux applications, demandé après la bascule de la fiabilisation |
 

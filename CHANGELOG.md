@@ -5,6 +5,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 
 ## Non publié
 
+### Corrigé
+- Contrôle des chiffres de la veille : il lit désormais les nombres écrits en toutes lettres
+  au-delà de dix (« Seventy-four », « trente-deux ») et les décimales sans zéro initial
+  (« P < .05 »). Ces formes faisaient écarter à tort des fiches justes : 8 sur 16 au banc d'essai
+  du 11 novembre 2026. Un nombre absent de la source reste refusé.
+
 ### Ajouté
 - Corpus de référence, suite : cas « qualité méthodologique » (`banc/corpus/qualite.json` : RoB 2,
   QUADAS-2, AMSTAR 2, AGREE II, tirés de revues sous licence CC BY) et trois pièges
