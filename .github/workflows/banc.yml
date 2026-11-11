@@ -1,0 +1,48 @@
+name: Banc d'essai
+
+# Rejoue la chaîne d'analyse actuelle (mêmes consignes, mêmes modèles, mêmes contrôles) sur le
+# corpus de référence et mesure ses écarts avec les corrigés. Rien n'est publié.
+# CE WORKFLOW APPELLE L'IA ET A UN COÛT : il ne se lance que sur demande explicite, en modifiant
+# banc/lancement.json sur une branche de travail, ou par le bouton « Run workflow ». Le budget
+# est vérifié avant tout appel.
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "banc/lancement.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: banc
+  cancel-in-progress: false
+
+jobs:
+  banc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Rejouer la chaîne sur le corpus de référence
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
+        run: python banc/banc.py --sortie resultats-banc --budget 1.0
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resultats-banc
+          path: resultats-banc
+          retention-days: 90
+          if-no-files-found: warn
