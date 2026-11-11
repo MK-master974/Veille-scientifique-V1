@@ -1,6 +1,6 @@
 {
   "nom_app": "Veille Santé",
-  "url_site": "",
+  "url_site": "https://mk-master974.github.io/Veille-scientifique-V1/",
   "email_contact": "",
   "ia": {
     "fournisseur": "openai",
