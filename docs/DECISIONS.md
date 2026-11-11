@@ -135,6 +135,8 @@ Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 | --- | --- |
 | POR-D17 | Un préfixe par projet pour les décisions : `VS-` pour Veille Santé |
 | POR-D18 | Dix codes communs pour le circuit des connaissances vers Évalys : `NON_SELECTIONNEE`, `A_EXAMINER`, `EN_EVALUATION`, `VALIDEE_TRANSMISSION`, `TRANSMISE`, `RECUE`, `INTEGREE`, `REFUSEE`, `DIFFEREE`, `A_ACTUALISER` |
+| POR-D9 | Pilote du circuit vers Évalys sur le genou, cinq propositions au plus, sans modification clinique. Attend la fiche v2 de Veille Santé |
+| POR-D12 | Veille Santé garde sa propre interface de gestion ; le portail n'en affiche qu'une synthèse. Interface reportée à la phase 4 |
 | POR-D19 | Essai de format du circuit vers Évalys : seul du contenu déjà public dans ce dépôt, avec la mention « résumé uniquement, non destinée à l'intégration clinique ». Pas avant la fin de la phase 0 |
 | POR-D21 | Un avis réglementaire commun aux applications, demandé après la bascule de la fiabilisation |
 
