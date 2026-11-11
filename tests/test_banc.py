@@ -93,3 +93,45 @@ def test_licences_normalisees():
     assert tab.normaliser_licence("cc0") == "CC0"
     assert tab.normaliser_licence("cc by-nc") == "CC BY NC"
     assert tab.normaliser_licence(None) == "inconnue"
+
+
+# --- Cohérence des fichiers du corpus -----------------------------------------------------------
+
+import json
+import re
+
+CORPUS = RACINE / "banc" / "corpus"
+
+
+def test_corpus_qualite_bien_forme():
+    c = json.loads((CORPUS / "qualite.json").read_text(encoding="utf-8"))
+    permis = {v for valeurs in c["valeurs"].values() for v in valeurs} | {"incertain"}
+    for groupe in c["groupes"]:
+        assert groupe["source"]["licence"] in ("CC BY", "CC0")
+        assert re.fullmatch(r"\d+", groupe["source"]["pmid"])
+        for cas in groupe["cas"]:
+            if cas.get("statut") == "identifiant à résoudre":
+                continue
+            assert re.fullmatch(r"\d+", cas["pmid"])
+            jugements = []
+            for v in cas["corrige"].values():
+                jugements += list(v.values()) if isinstance(v, dict) else [v]
+            assert all(j in permis for j in jugements), cas["reference"]
+
+
+def test_pieges_bien_formes():
+    p = json.loads((CORPUS / "pieges.json").read_text(encoding="utf-8"))
+    assert {c["id"] for c in p["cas"]} == {"piege-retractation", "piege-resume-seul", "piege-instruction-cachee"}
+    fictif = next(c for c in p["cas"] if c["id"] == "piege-instruction-cachee")
+    assert fictif["fictif"] is True and "pmid" not in fictif
+    assert all(c["attendu"] for c in p["cas"])
+
+
+def test_essais_effet_sans_texte_d_article():
+    e = json.loads((CORPUS / "essais_effet.json").read_text(encoding="utf-8"))
+    assert len(e["cas"]) == 8
+    for cas in e["cas"]:
+        assert cas["licence"] in ("CC BY", "CC0")
+        assert set(cas) <= {"pmcid", "licence", "reference", "retracte", "pmid", "questions"}
+        for q in cas["questions"]:
+            assert all(len(p) <= banc.PASSAGE_MAX for p in q["passages"])
