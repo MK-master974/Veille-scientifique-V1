@@ -184,8 +184,9 @@ le dossier est aussi gardé 90 jours en artefact (voir « Workflows »).
 - **Contrôle de chaque fiche** :
   - structure : champs obligatoires, valeurs valides, résumé flash de 60 mots au plus ;
   - chiffres : tout nombre des champs rédigés doit figurer dans la source (titre, résumé, revue,
-    mots-clés, année, PMID). La virgule décimale et les séparateurs de milliers sont tolérés,
-    ainsi que les entiers de 0 à 10 écrits en toutes lettres ;
+    mots-clés, année, PMID). La virgule décimale, les séparateurs de milliers et les décimales
+    sans zéro initial (« .05 ») sont tolérés, ainsi que les nombres écrits en toutes lettres dans
+    la source, en anglais ou en français, et les ordinaux anglais (« first ») ;
   - grande nouveauté : le domaine transversal est ajouté si la pertinence vaut 3 et que le verdict
     est « change la pratique » ou « remet en question ».
 - **Crossref** : le DOI est retiré si le titre déclaré diffère trop (similarité inférieure à 0,6)

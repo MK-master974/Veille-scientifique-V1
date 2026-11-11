@@ -10,7 +10,7 @@ from difflib import SequenceMatcher
 from . import regles
 from .reseau import requete
 
-# Nombres écrits en toutes lettres acceptés pour les petits entiers (0 à 10).
+# Petits entiers (0 à 10) reconnus dans la source sous des formes variées (« both », « single »…).
 _MOTS_NOMBRES = {
     0: ("zero", "zéro", "no", "none", "aucun"),
     1: ("one", "single", "un", "une", "seul", "seule"),
@@ -25,7 +25,23 @@ _MOTS_NOMBRES = {
     10: ("ten", "dix"),
 }
 
-_NOMBRE = re.compile(r"(?<![\w.])[-−–]?\d+(?:[   ]\d{3})*(?:[.,]\d+)?")
+# Un nombre écrit en chiffres. La seconde forme lit les décimales sans zéro initial, fréquentes dans
+# les résumés anglais (« P < .05 », « P=.003 ») et parfois reprises dans les fiches (« p < ,05 »).
+_NOMBRE = re.compile(r"(?<![\w.,])(?:[-−–]?\d+(?:[   ]\d{3})*(?:[.,]\d+)?|[.,]\d+)")
+
+# Nombres écrits en toutes lettres au-delà de dix, dans la source (« Seventy-four subjects »,
+# « one hundred and twenty », « trente-deux patients »), et ordinaux anglais (« first week »).
+_UNITES = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9,
+           "un": 1, "une": 1, "deux": 2, "trois": 3, "quatre": 4, "cinq": 5, "sept": 7, "huit": 8, "neuf": 9}
+_DIZAINES_SIMPLES = {"ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+                     "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
+                     "dix": 10, "onze": 11, "douze": 12, "treize": 13, "quatorze": 14, "quinze": 15, "seize": 16}
+_DIZAINES = {"twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70, "eighty": 80,
+             "ninety": 90, "vingt": 20, "trente": 30, "quarante": 40, "cinquante": 50, "soixante": 60}
+_ORDINAUX = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth": 6, "seventh": 7,
+             "eighth": 8, "ninth": 9, "tenth": 10, "eleventh": 11, "twelfth": 12, "thirteenth": 13,
+             "fourteenth": 14, "fifteenth": 15, "sixteenth": 16, "seventeenth": 17, "eighteenth": 18,
+             "nineteenth": 19, "twentieth": 20}
 
 CHAMPS_VERIFIES = (
     ("titre_fr",),
@@ -84,6 +100,60 @@ def _petits_entiers_en_lettres(texte):
             if any(_sans_accents(v) in mots for v in variantes)}
 
 
+def _nombres_en_lettres(texte):
+    """Valeurs des nombres écrits en toutes lettres dans un texte anglais ou français.
+
+    Ne lit que des suites de mots formant un nombre bien construit : « ten twelve-week » donne 10
+    et 12, jamais 22.
+    """
+    mots = re.findall(r"[a-z]+", _sans_accents((texte or "").lower()))
+    valeurs = set()
+    etat = {"total": 0, "courant": 0, "dernier": None}   # « dernier » : nature du dernier mot lu
+
+    def clore():
+        if etat["dernier"] is not None:
+            valeurs.add(etat["total"] + etat["courant"])
+        etat.update(total=0, courant=0, dernier=None)
+
+    for i, mot in enumerate(mots):
+        suivant = mots[i + 1] if i + 1 < len(mots) else ""
+        dernier = etat["dernier"]
+        if mot in _ORDINAUX:
+            clore()
+            valeurs.add(_ORDINAUX[mot])
+        elif mot in _UNITES:
+            dix_sept = dernier == "simple" and mots[i - 1] == "dix" and _UNITES[mot] >= 7   # dix-sept à dix-neuf
+            if dernier not in (None, "dizaine", "centaine", "et") and not dix_sept:
+                clore()
+            etat["courant"] += _UNITES[mot]
+            etat["dernier"] = "unite"
+        elif mot in _DIZAINES_SIMPLES:
+            soixante_dix = dernier == "dizaine" and mot == "dix" and mots[i - 1] == "soixante"
+            if dernier not in (None, "centaine", "et") and not soixante_dix:
+                clore()
+            etat["courant"] += _DIZAINES_SIMPLES[mot]
+            etat["dernier"] = "simple"
+        elif mot in _DIZAINES:
+            if dernier not in (None, "centaine", "et"):
+                clore()
+            etat["courant"] += _DIZAINES[mot]
+            etat["dernier"] = "dizaine"
+        elif mot == "hundred" and dernier in ("unite", "simple"):
+            etat["courant"] *= 100
+            etat["dernier"] = "centaine"
+        elif mot == "thousand" and dernier in ("unite", "simple", "dizaine", "centaine"):
+            etat["total"] += etat["courant"] * 1000
+            etat["courant"] = 0
+            etat["dernier"] = "centaine"
+        elif mot in ("and", "et") and dernier in ("centaine", "dizaine") and (
+                suivant in _UNITES or suivant in _DIZAINES_SIMPLES or suivant in _DIZAINES):
+            etat["dernier"] = "et"
+        else:
+            clore()
+    clore()
+    return {repr(float(v)) for v in valeurs if v > 0}
+
+
 def nombres_autorises(ref):
     morceaux = [ref.get("titre", ""), ref.get("resume", ""), ref.get("revue", ""),
                 " ".join(ref.get("mesh", []))]
@@ -91,6 +161,7 @@ def nombres_autorises(ref):
     autorises = nombres_du_texte(source, source_anglaise=True)
     autorises |= nombres_du_texte(source, source_anglaise=False)
     autorises |= _petits_entiers_en_lettres(source)
+    autorises |= _nombres_en_lettres(source)
     for meta in (ref.get("annee"), ref.get("pmid")):
         if meta:
             autorises |= nombres_du_texte(str(meta))
