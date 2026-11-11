@@ -1,0 +1,6 @@
+# Fichiers produits en local par le moteur, les tests et la démonstration : jamais dans le dépôt.
+travail/
+apercu/
+__pycache__/
+*.pyc
+.pytest_cache/
