@@ -26,7 +26,16 @@
   const ORDRE_VERDICTS = ['change_la_pratique', 'remet_en_question', 'confirme', 'a_surveiller'];
   const RANG_INTERET = { culture: 0, praticien: 1, expert: 2 };
   const RANG_DETAIL = { flash: 0, standard: 1, complet: 2 };
-  const MENTION = 'Synthèse générée automatiquement par IA à partir du résumé. Se référer à l’article avant toute décision clinique.';
+  // Avertissement court, affiché sous chaque fiche, et texte complet (page À propos, fiche seule).
+  const MENTION = 'Fiche produite et contrôlée par IA, sans relecture humaine avant publication. Consultez la publication originale avant toute décision clinique.';
+  const MENTION_COMPLETE = 'Cette fiche a été produite et analysée par intelligence artificielle. Elle ne fait pas l’objet d’une validation humaine individuelle avant publication. Malgré plusieurs contrôles automatisés, des erreurs d’extraction, d’interprétation ou de synthèse peuvent subsister. Le niveau d’analyse dépend notamment de l’accessibilité du texte intégral. Consultez systématiquement la publication originale avant d’utiliser ces informations dans une décision clinique.';
+  // Niveau d'accès documentaire. Tant que le moteur ne lit que le titre et le résumé, toutes les
+  // fiches sont au niveau « résumé » ; le champ `acces` d'une fiche prendra le relais ensuite.
+  const ACCES = {
+    integral: 'Analyse du texte intégral',
+    partiel: 'Analyse d’un texte partiel',
+    resume: 'Analyse à partir du résumé uniquement',
+  };
 
   // --- état ---------------------------------------------------------------------------------------
   const E = {
@@ -198,7 +207,7 @@
       ${lienSignal}
     </span>
   </div>
-  <p class="mention">${MENTION}</p>
+  <p class="mention"><b class="acces">${esc(ACCES[f.acces] || ACCES.resume)}.</b> ${opts.autonome ? MENTION_COMPLETE : MENTION} <a href="#apropos">Limites de l’analyse</a></p>
 </article>`;
   }
 
@@ -600,6 +609,14 @@ ${liste.length ? `<div class="rangee"><button class="bouton" data-action="zotero
     rendre(`<div class="entete"><p class="surtitre">À propos</p><h1>Comment la veille est produite</h1></div>
 <div class="texte">
   <p>Chaque lundi, un programme automatique rassemble les publications de la semaine précédente, les fait trier et résumer par une intelligence artificielle, contrôle les résultats, puis publie les fiches. Aucune relecture humaine n’a lieu avant publication.</p>
+  <h2>Ce que vous devez savoir sur l’IA</h2>
+  <p>${MENTION_COMPLETE}</p>
+  <ul>
+    <li>L’analyse est entièrement automatisée : aucune fiche n’est relue par un humain avant sa publication.</li>
+    <li>Aujourd’hui, toutes les fiches reposent sur le titre et le résumé de l’article. Le texte intégral n’est pas lu, et chaque fiche l’indique.</li>
+    <li>Une donnée peut être mal extraite ou mal interprétée. Les contrôles automatiques réduisent ce risque sans le supprimer.</li>
+    <li>Une fiche ne remplace pas la lecture de la publication originale et ne constitue pas, à elle seule, une recommandation clinique.</li>
+  </ul>
   <h2>Sources</h2>
   <ul>
     <li>PubMed : recommandations, revues systématiques, méta-analyses, essais randomisés et études diagnostiques avec résumé, en anglais ou en français, entrés dans PubMed du lundi au dimanche.</li>
@@ -611,7 +628,7 @@ ${liste.length ? `<div class="rangee"><button class="bouton" data-action="zotero
     <li>Elle ne cherche aucune source elle-même : elle ne lit que les références récupérées.</li>
     <li>Elle travaille à partir du titre et du résumé, jamais du texte intégral.</li>
     <li>Chaque chiffre d’une fiche doit figurer dans le résumé source, sinon la fiche est écartée.</li>
-    <li>Elle peut abaisser le niveau de preuve fixé par les règles ci-dessous, jamais le remonter.</li>
+    <li>Elle peut abaisser le niveau de preuve fixé par les règles ci-dessous si le résumé montre un défaut, jamais le remonter. Une information absente du résumé ne suffit pas à l’abaisser.</li>
   </ul>
 </div>
 <div class="section"><h2>Niveau de preuve de départ</h2>
@@ -628,9 +645,9 @@ ${liste.length ? `<div class="rangee"><button class="bouton" data-action="zotero
   <h2>Verdicts</h2>
   <ul>
     <li><b>Change la pratique</b> : réservé aux recommandations et aux revues ou méta-analyses de niveau solide.</li>
-    <li><b>Remet en question</b> : contredit une pratique courante.</li>
-    <li><b>Confirme</b> : conforte une pratique existante.</li>
-    <li><b>À surveiller</b> : signal prometteur, preuve encore insuffisante.</li>
+    <li><b>Remet en question</b> : contredit une pratique courante, ou ne retrouve pas le bénéfice attendu d’une intervention couramment utilisée.</li>
+    <li><b>Confirme</b> : va dans le sens d’une pratique déjà courante ou déjà recommandée.</li>
+    <li><b>À surveiller</b> : pratique pas encore courante, ou résultat trop incertain pour conforter ou contredire une pratique.</li>
   </ul>
   <h2>Limites</h2>
   <ul>

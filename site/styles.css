@@ -247,6 +247,8 @@ p { margin: 0; }
 .action[aria-pressed="true"] { color: var(--accent); }
 .action[aria-pressed="true"] svg { fill: currentColor; }
 .mention { font-size: 0.6875rem; color: var(--doux); line-height: 1.4; }
+.mention .acces { color: var(--encre); font-weight: 600; }
+.mention a { color: inherit; white-space: nowrap; }
 
 /* --- archive --------------------------------------------------------------------------------- */
 .recherche { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; padding: 1rem; border: 1px solid var(--trait); border-radius: var(--r); background: var(--surface); }
