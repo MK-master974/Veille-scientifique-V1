@@ -1,0 +1,6 @@
+{
+ "objet": "Demande de lancement du banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût.",
+ "lancements": [
+  {"date": "2026-11-11", "raison": "Séance 2 de la phase 1 : mesure de la chaîne actuelle sur le corpus de référence.", "accord": "Marvin, « Go séance 2 », 11/11/2026", "budget_usd": 1.0}
+ ]
+}
