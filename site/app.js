@@ -26,6 +26,8 @@
   const ORDRE_VERDICTS = ['change_la_pratique', 'remet_en_question', 'confirme', 'a_surveiller'];
   const RANG_INTERET = { culture: 0, praticien: 1, expert: 2 };
   const RANG_DETAIL = { flash: 0, standard: 1, complet: 2 };
+  // Version de l'app, affichée en bas de chaque page : à faire suivre à chaque mise en ligne (CHANGELOG.md).
+  const VERSION_APP = '1.1.0';
   // Avertissement court, affiché sous chaque fiche, et texte complet (page À propos, fiche seule).
   const MENTION = 'Fiche produite et contrôlée par IA, sans relecture humaine avant publication. Consultez la publication originale avant toute décision clinique.';
   const MENTION_COMPLETE = 'Cette fiche a été produite et analysée par intelligence artificielle. Elle ne fait pas l’objet d’une validation humaine individuelle avant publication. Malgré plusieurs contrôles automatisés, des erreurs d’extraction, d’interprétation ou de synthèse peuvent subsister. Le niveau d’analyse dépend notamment de l’accessibilité du texte intégral. Consultez systématiquement la publication originale avant d’utiliser ces informations dans une décision clinique.';
@@ -907,7 +909,7 @@ ${liste.length ? `<div class="rangee"><button class="bouton" data-action="zotero
     const pied = document.createElement('p');
     pied.className = 'mention';
     pied.style.cssText = 'max-width:calc(var(--largeur) + 2rem);margin:0 auto 1.5rem;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))';
-    pied.innerHTML = '<a href="#apropos">À propos, sources et limites</a>';
+    pied.innerHTML = `<a href="#apropos">À propos, sources et limites</a> · Version ${VERSION_APP}`;
     vue.after(pied);
     await route();
     if ('serviceWorker' in navigator && location.protocol === 'https:') {

@@ -17,6 +17,7 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 - Niveau d'accès documentaire affiché sous chaque fiche : « Analyse à partir du résumé
   uniquement » tant que le moteur ne lit pas le texte intégral.
 - `.gitignore` et ce journal des changements.
+- Numéro de version affiché en bas de chaque page de l'app.
 
 ### Modifié
 - Avertissement sur l'IA : texte court sous chaque fiche, texte complet sur la fiche seule et
@@ -25,6 +26,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   une information absente du résumé ; les verdicts « confirme » et « remet en question » sont
   mieux définis. Ce correctif sera remplacé par la refonte du niveau de preuve.
 - `config.json` : adresse du site renseignée.
+- Mise à jour de l'app : en ligne, la dernière version est chargée dès l'ouverture, et la copie
+  gardée sur l'appareil ne sert plus que sans connexion. Auparavant, une mise à jour pouvait ne
+  jamais arriver sur un téléphone. Quand une nouvelle version s'installe, l'app se recharge seule.
 
 ### Supprimé
 - `.github/worklows/site.yml` : doublon mal orthographié de `.github/workflows/site.yml`,
