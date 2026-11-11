@@ -27,7 +27,7 @@
   const RANG_INTERET = { culture: 0, praticien: 1, expert: 2 };
   const RANG_DETAIL = { flash: 0, standard: 1, complet: 2 };
   // Version de l'app, affichée en bas de chaque page : à faire suivre à chaque mise en ligne (CHANGELOG.md).
-  const VERSION_APP = '1.1.0';
+  const VERSION_APP = '1.1.1';
   // Avertissement court, affiché sous chaque fiche, et texte complet (page À propos, fiche seule).
   const MENTION = 'Fiche produite et contrôlée par IA, sans relecture humaine avant publication. Consultez la publication originale avant toute décision clinique.';
   const MENTION_COMPLETE = 'Cette fiche a été produite et analysée par intelligence artificielle. Elle ne fait pas l’objet d’une validation humaine individuelle avant publication. Malgré plusieurs contrôles automatisés, des erreurs d’extraction, d’interprétation ou de synthèse peuvent subsister. Le niveau d’analyse dépend notamment de l’accessibilité du texte intégral. Consultez systématiquement la publication originale avant d’utiliser ces informations dans une décision clinique.';
@@ -217,8 +217,12 @@
     const auteurs = f.auteurs || [];
     const a = auteurs.length > 3 ? `${auteurs.slice(0, 3).join(', ')} et al.` : auteurs.join(', ');
     const vol = [f.volume && `${f.volume}`, f.numero && `(${f.numero})`].filter(Boolean).join('');
+    // Chaque élément est séparé par un point, sans le doubler quand l'élément en porte déjà un
+    // (titre terminé par un point, « et al. ») ni l'ajouter après un point d'interrogation.
     return [a, f.titre, [f.revue, f.annee].filter(Boolean).join(', '), vol && `${vol}${f.pages ? `:${f.pages}` : ''}`,
-      f.doi && `doi:${f.doi}`].filter(Boolean).join('. ');
+      f.doi && `doi:${f.doi}`].filter(Boolean)
+      .map((m) => String(m).trim().replace(/\.+$/, ''))
+      .reduce((texte, m) => (texte ? `${texte}${/[?!]$/.test(texte) ? '' : '.'} ${m}` : m), '');
   }
 
   // --- export RIS (Zotero, Mendeley, EndNote) -----------------------------------------------------
@@ -608,7 +612,7 @@ ${liste.length ? `<div class="rangee"><button class="bouton" data-action="zotero
   function vueAPropos() {
     marquerOnglet('');
     const c = E.config;
-    rendre(`<div class="entete"><p class="surtitre">À propos</p><h1>Comment la veille est produite</h1></div>
+    rendre(`<div class="entete"><p class="surtitre">À propos · version ${VERSION_APP}</p><h1>Comment la veille est produite</h1></div>
 <div class="texte">
   <p>Chaque lundi, un programme automatique rassemble les publications de la semaine précédente, les fait trier et résumer par une intelligence artificielle, contrôle les résultats, puis publie les fiches. Aucune relecture humaine n’a lieu avant publication.</p>
   <h2>Ce que vous devez savoir sur l’IA</h2>
