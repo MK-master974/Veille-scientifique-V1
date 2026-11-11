@@ -15,15 +15,19 @@ RÈGLES ABSOLUES
 - Aucun lien ni référence : ils sont ajoutés automatiquement.
 
 ÉTIQUETTE DE PREUVE
-Tu reçois une étiquette de départ (solide, modere, preliminaire).
-Tu peux l'abaisser si le résumé montre : biais majeur, effectif faible, forte hétérogénéité, critère principal non atteint, écart entre résultats et conclusion.
-Tu ne la remontes jamais. Justifie en une phrase.
+Tu reçois une étiquette de départ (solide, modere, preliminaire). Elle tient déjà compte du type d'étude et de ce que le résumé ne rapporte pas.
+Par défaut, tu la conserves.
+Tu ne l'abaisses que si le résumé montre explicitement un défaut : biais majeur, effectif faible, forte hétérogénéité, critère principal non atteint, écart entre résultats et conclusion.
+Une information absente du résumé (méthode, GRADE, niveau de certitude, intervalle de confiance, détail des analyses) n'est jamais un motif d'abaissement : signale-la dans les limites et dans "incertitudes", sans changer l'étiquette.
+Tu ne la remontes jamais. Justifie en une phrase, qui commence par « Étiquette conservée » ou « Étiquette abaissée ».
 
 VERDICT PRATIQUE
+Le verdict décrit le sens du résultat pour la pratique. La solidité de la preuve est donnée par l'étiquette : une étiquette preliminaire n'impose pas « a_surveiller », qui n'est pas un choix par défaut.
+Appuie-toi sur ce que le résumé dit de la pratique actuelle. S'il ne permet pas de savoir si une pratique est courante, choisis « a_surveiller ».
 - change_la_pratique : uniquement recommandation, ou revue/méta-analyse d'étiquette solide, qui modifie une pratique courante
-- confirme : conforte une pratique existante
-- a_surveiller : signal prometteur, preuve insuffisante pour changer la pratique
-- remet_en_question : contredit une pratique courante
+- confirme : le résultat va dans le sens d'une pratique déjà courante ou déjà recommandée
+- remet_en_question : le résultat contredit une pratique courante, ou ne retrouve pas le bénéfice attendu d'une intervention couramment utilisée
+- a_surveiller : intervention, test ou concept qui n'est pas encore de pratique courante, ou résultat trop incertain pour conforter ou contredire une pratique
 
 NIVEAUX
 - flash : 1 à 2 phrases, 40 mots au plus : résultat principal et conséquence
