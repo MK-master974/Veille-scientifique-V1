@@ -139,11 +139,11 @@ def choisir(par_article, nombre, licence_de):
 
 # --- Réseau -----------------------------------------------------------------------------------
 
-def telecharger(url):
+def telecharger(url, essais=3, delai=60):
     import requests
-    for essai in range(4):
+    for essai in range(essais):
         try:
-            rep = requests.get(url, timeout=120, headers={"User-Agent": "veille-sante-banc/1.0"})
+            rep = requests.get(url, timeout=delai, headers={"User-Agent": "veille-sante-banc/1.0"})
             if rep.status_code == 200:
                 return rep.text
         except requests.RequestException:
@@ -152,26 +152,35 @@ def telecharger(url):
     raise RuntimeError(f"Téléchargement impossible : {url}")
 
 
-def licence_pmc(pmcid):
-    """Licence, référence et PMID d'un article de PubMed Central (service « OA » du NCBI)."""
-    numero = re.sub(r"[^0-9]", "", pmcid)
-    try:
-        xml = telecharger(f"https://www.ncbi.nlm.nih.gov/pmc/utils/oa/oa.fcgi?id=PMC{numero}")
-    except RuntimeError:
-        return None
-    m = re.search(r"<record\b([^>]*)>", xml)
-    if not m:
-        return None
-    attributs = dict(re.findall(r'(\w+)="([^"]*)"', m.group(1)))
-    infos = {"licence": attributs.get("license", ""), "reference": attributs.get("citation", ""),
-             "retracte": attributs.get("retracted", "no") == "yes", "pmid": ""}
-    try:
-        conv = json.loads(telecharger(
-            f"https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?ids=PMC{numero}&format=json&tool=veille-sante"))
-        infos["pmid"] = str((conv.get("records") or [{}])[0].get("pmid", ""))
-    except (RuntimeError, ValueError):
-        pass
-    time.sleep(0.4)
+def licences_europe_pmc(pmcids, paquet=20):
+    """Licence, PMID et référence des articles, lus par paquets dans Europe PMC."""
+    from urllib.parse import quote
+    infos = {}
+    numeros = [re.sub(r"[^0-9]", "", x) for x in pmcids]
+    for i in range(0, len(numeros), paquet):
+        lot = numeros[i:i + paquet]
+        requete = " OR ".join(f"PMCID:PMC{n}" for n in lot)
+        url = ("https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=json&resultType=core"
+               f"&pageSize=100&query={quote(requete)}")
+        try:
+            resultats = json.loads(telecharger(url)).get("resultList", {}).get("result", [])
+        except (RuntimeError, ValueError) as e:
+            print(f"  paquet {i // paquet + 1} : échec ({e})", flush=True)
+            continue
+        for r in resultats:
+            numero = re.sub(r"[^0-9]", "", r.get("pmcid", ""))
+            types = [x.lower() for x in (r.get("pubTypeList") or {}).get("pubType", [])]
+            revue = ((r.get("journalInfo") or {}).get("journal") or {}).get("title", "")
+            infos[numero] = {
+                "licence": (r.get("license") or "").upper().replace("-", " ").replace("CC BY NC", "CC BY-NC")
+                           .replace("CC BY-NC ND", "CC BY-NC-ND").replace("CC BY-NC SA", "CC BY-NC-SA")
+                           .replace("CC BY ND", "CC BY-ND").replace("CC BY SA", "CC BY-SA"),
+                "reference": f"{r.get('authorString', '')[:80]} {r.get('title', '')} {revue}, {r.get('pubYear', '')}".strip(),
+                "retracte": any("retract" in x for x in types),
+                "pmid": str(r.get("pmid", "")),
+            }
+        print(f"  paquet {i // paquet + 1} : {len(resultats)} articles décrits", flush=True)
+        time.sleep(0.3)
     return infos
 
 
@@ -205,13 +214,20 @@ def main(argv=None):
         lire = lambda nom: (Path(args.dossier) / nom).read_text(encoding="utf-8")
     else:
         lire = lambda nom: telecharger(SOURCE + nom)
-    corpus, par_article = assembler(lire(FICHIER_QUESTIONS), lire(FICHIER_CORRIGES), args.nombre, licence_pmc)
-
-    print("Comptes :", json.dumps(corpus["comptes"], ensure_ascii=False))
-    print("Articles candidats les plus riches :")
-    for pmcid, qs in sorted(par_article.items(), key=lambda kv: -len(kv[1]))[:25]:
+    questions_csv, corriges_csv = lire(FICHIER_QUESTIONS), lire(FICHIER_CORRIGES)
+    print("Fichiers lus.", flush=True)
+    par_article = candidats(lire_csv(questions_csv), lire_csv(corriges_csv))
+    riches = sorted(par_article.items(), key=lambda kv: (-len(kv[1]), int(re.sub(r"\D", "", kv[0]) or 0)))
+    print(f"Articles candidats : {len(par_article)}. Les plus riches :", flush=True)
+    for pmcid, qs in riches[:25]:
         sens = collections.Counter(q["corrige"]["libelle"] for q in qs)
-        print(f"  PMC{pmcid} | {len(qs)} questions | {dict(sens)} | {qs[0]['intervention'][:70]}")
+        print(f"  PMC{pmcid} | {len(qs)} questions | {dict(sens)} | {qs[0]['intervention'][:70]}", flush=True)
+    print("Lecture des licences des 80 premiers candidats :", flush=True)
+    licences = licences_europe_pmc([pmcid for pmcid, _ in riches[:80]])
+    print("Licences rencontrées :", dict(collections.Counter(x["licence"] or "inconnue" for x in licences.values())), flush=True)
+    corpus, _ = assembler(questions_csv, corriges_csv, args.nombre,
+                          lambda pmcid: licences.get(re.sub(r"[^0-9]", "", pmcid)))
+    print("Comptes :", json.dumps(corpus["comptes"], ensure_ascii=False))
     print("Articles retenus :")
     for c in corpus["cas"]:
         print(f"  {c['pmcid']} | PMID {c['pmid']} | {c['licence']} | {len(c['questions'])} questions | {c['reference'][:80]}")
