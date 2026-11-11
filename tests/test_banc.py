@@ -135,3 +135,46 @@ def test_essais_effet_sans_texte_d_article():
         assert set(cas) <= {"pmcid", "licence", "reference", "retracte", "pmid", "questions"}
         for q in cas["questions"]:
             assert all(len(p) <= banc.PASSAGE_MAX for p in q["passages"])
+
+
+# --- Banc d'essai : comparaisons ----------------------------------------------------------------
+
+_spec3 = importlib.util.spec_from_file_location("banc_essai", RACINE / "banc" / "banc.py")
+essai = importlib.util.module_from_spec(_spec3)
+_spec3.loader.exec_module(essai)
+
+
+def test_comparaison_du_sens_de_l_effet():
+    assert essai.evaluer_effet("augmentation", 1) == "correct"
+    assert essai.evaluer_effet("aucune", 0) == "correct"
+    assert essai.evaluer_effet("diminution", 1) == "sens_inverse"
+    assert essai.evaluer_effet("aucune", -1) == "incorrect"
+    assert essai.evaluer_effet("non_indique", 1) == "non_indique"
+    assert essai.evaluer_effet("peut-être", 1) == "illisible"
+
+
+def test_etiquette_maximale_selon_la_revue():
+    assert essai.etiquette_maximale("RoB 2", {"global": "élevé"}) == "preliminaire"
+    assert essai.etiquette_maximale("RoB 2", {"global": "faible"}) == "modere"
+    tous_faibles = {"biais": {"a": "faible", "b": "faible"}}
+    assert essai.etiquette_maximale("QUADAS-2", tous_faibles) == "modere"
+    assert essai.etiquette_maximale("QUADAS-2", {"biais": {"a": "faible", "b": "incertain"}}) == "preliminaire"
+    assert essai.etiquette_maximale("AMSTAR 2", {"confiance_globale": "élevée"}) == "solide"
+    assert essai.etiquette_maximale("AMSTAR 2", {"confiance_globale": "très faible"}) == "preliminaire"
+
+
+def test_classement_de_l_etiquette():
+    eleve = {"global": "élevé"}
+    assert essai.evaluer_qualite("RoB 2", eleve, "modere") == "trop_favorable"
+    assert essai.evaluer_qualite("RoB 2", eleve, "preliminaire") == "conforme"
+    assert essai.evaluer_qualite("RoB 2", {"global": "faible"}, "preliminaire") == "plus_prudent"
+    assert essai.evaluer_qualite("RoB 2", eleve, None) == "sans_fiche"
+
+
+def test_tous_les_cas_du_corpus_sont_demandes():
+    e, q, p = essai.charger_corpus()
+    pmids = essai.pmids_du_corpus(e, q, p)
+    assert len(pmids) == len(set(pmids)) and all(x.isdigit() for x in pmids)
+    assert "40704879" in pmids and "17442840" in pmids
+    fictif = essai.reference_fictive(next(c for c in p["cas"] if c.get("fictif")))
+    assert fictif["id"] == "fictif-instruction" and fictif["resume"]

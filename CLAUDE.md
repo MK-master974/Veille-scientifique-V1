@@ -60,6 +60,22 @@ Lis d'abord [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (comment c'est construi
 - Vient ensuite **« CE QUI A CHANGÉ »** : les évolutions importantes seulement, cinq points au
   plus. Le détail ne vient qu'après, et seulement s'il est utile.
 - Regroupe les demandes, et rappelle au même endroit celles qui restent en attente.
+- **Décisions : un questionnaire à cliquer.** Chaque fois qu'une décision ou une validation du
+  porteur du projet est nécessaire, pose-la avec l'outil de questions (`AskUserQuestion`), pas en
+  texte libre. Règle commune aux applications de l'écosystème (consigne CONS-2026-11-11-15,
+  demandée par le porteur du projet) :
+  - chaque question se suffit à elle-même : de quoi il s'agit, ce qui a été constaté, ce que le
+    choix change ;
+  - 2 à 4 options, chacune avec une ligne sur ce qui se passe si on la choisit ; l'option
+    recommandée en premier, marquée « (Recommandé) » ;
+  - une décision par question, 4 questions au plus ; les décisions en attente sont regroupées ;
+  - après la réponse : rappeler le choix en une ligne, l'inscrire dans `docs/DECISIONS.md`
+    (préfixe VS-), puis agir ;
+  - pas de questionnaire pour une action que le porteur du projet fait lui-même (une fusion reste
+    dans « À FAIRE »), pour un choix que tu peux faire seul, ni pour une tâche programmée avant sa
+    date ;
+  - si l'outil n'est pas disponible : questions numérotées, options lettrées, recommandation en
+    premier.
 - Distingue ce qui est vérifié, ce qui est une hypothèse, ce qui est une recommandation et ce
   qui reste à arbitrer.
 
