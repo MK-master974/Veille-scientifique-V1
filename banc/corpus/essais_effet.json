@@ -1,0 +1,581 @@
+{
+ "nom": "Corpus de référence — essais randomisés, sens de l'effet",
+ "source": "Evidence Inference (Lehman et al., 2019 ; DeYoung et al., 2020), licence MIT",
+ "source_url": "https://github.com/jayded/evidence-inference",
+ "assemble_le": "2026-11-11",
+ "regles": "Questions pertinentes pour la rééducation, corrigé validé et sans désaccord, au moins deux questions par article, article sous licence CC BY ou CC0.",
+ "comptes": {
+  "questions": 12865,
+  "corriges": 24686,
+  "articles_candidats": 276,
+  "articles_retenus": 8
+ },
+ "cas": [
+  {
+   "pmcid": "PMC2708184",
+   "licence": "CC BY",
+   "reference": "Westlake KP, Patten C. Pilot study of Lokomat versus manual-assisted treadmill training for locomotor recovery post-stroke. Journal of neuroengineering and rehabilitation, 2009",
+   "retracte": false,
+   "pmid": "19523207",
+   "questions": [
+    {
+     "id": "163",
+     "intervention": "Body-weight supported treadmill training combined with Lokomat (Post-test)",
+     "comparateur": "Body-weight supported treadmill training combined with Lokomat (Pre-test)",
+     "critere": "Berg Balance Scale score",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "Berg Balance Scale scores significantly improved in both the Lokomat group, p = 0.04, effect size 0.19 (5 participants improved)"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "162",
+     "intervention": "Body-weight supported treadmill training combined with Lokomat (Post-test)",
+     "comparateur": "Body-weight supported treadmill training combined with Lokomat (Pre-test)",
+     "critere": "Physical performance battery scores",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "Similarly, short physical performance battery scores were improved in the Lokomat group, p = 0.04, with an effect size of 0.29 and improvements in 5 of 8 participants."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "157",
+     "intervention": "Fast treadmill speed",
+     "comparateur": "Slow treadmill speed",
+     "critere": "Locomotor-training effects",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "Our second aim was to assess locomotor-training effects at faster vs. slower treadmill speeds. As anticipated, independent of whether training occurred in the Lokomat or manual-BWSTT mode, average weekly training speeds within the fast and slow groups were similar, p ≥ 0.29"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "156",
+     "intervention": "Body-weight supported treadmill training combined with Lokomat",
+     "comparateur": "Manually-assisted body-weight supported treadmill training",
+     "critere": "Paretic step length ratio",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "No significant differences in primary outcomes were revealed between Lokomat and manual groups as a result of training."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": true
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC4497728",
+   "licence": "CC BY",
+   "reference": "Li M, Fang Q, Li J, Zheng X, Tao J, Tao J, Yan X, Lin Q, Lan X, Chen B, Zheng G, The Effect of Chinese Traditional Exercise-Baduanjin on Physical and Psychological Well-Being of College Students: A Randomized Controlled Trial. PloS one, 2015",
+   "retracte": false,
+   "pmid": "26158769",
+   "questions": [
+    {
+     "id": "8982",
+     "intervention": "Baduanjin training",
+     "comparateur": "control",
+     "critere": "lower limb proprioception function",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "Compared with controls, significant improvements in Baduanjin exercise group at the end of 12-week intervention period were found on lower limb proprioception function (the rate of average trace error on right lower limb (%): control 23.50±5.50, Baduanjin 21.92±6.54, P=0.004;"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    },
+    {
+     "id": "8983",
+     "intervention": "Baduanjin training",
+     "comparateur": "control",
+     "critere": "the rate of average trace error on left lower limb",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "The rate of average trace error (ATE) on right, and left lower limb decreased a mean of 7.29, 10.16 percent, respectively, while controls had a mean decline of 6.76, 9.59 percent respectively, for a significantly statistical difference (P = 0.004, P = 0.046, respectively).",
+      "Compared with controls, significant improvements in Baduanjin exercise group at the end of 12-week intervention period were found on lower limb proprioception function (the rate of average trace error on right lower limb (%): control 23.50±5.50, Baduanjin 21.92±6.54, P=0.004; the rate of average trace error on left lower limb (%): control 22.32±6.62, Baduanjin 20.63±4.62, P=0.046)"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "8984",
+     "intervention": "Baduanjin training",
+     "comparateur": "control",
+     "critere": "cardiorespiratory endurance",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "cardiorespiratory endurance (step test index: control 47.66±5.94, Baduanjin 50.07±9.30, P=0.025)",
+      "Compared with controls, significant improvements in Baduanjin exercise group at the end of 12-week intervention period were found on lower limb proprioception function (the rate of average trace error on right lower limb (%): control 23.50±5.50, Baduanjin 21.92±6.54, P=0.004; the rate of average trace error on left lower limb (%): control 22.32±6.62, Baduanjin 20.63±4.62, P=0.046), cardiorespiratory endurance (step test index: control 47.66±5.94, Baduanjin 50.07±9.30, P=0.025),"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    },
+    {
+     "id": "8985",
+     "intervention": "Baduanjin training",
+     "comparateur": "control",
+     "critere": "flexibility",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "flexibility (control 14.35±7.26cm, Baduanjin 15.39±6.43cm, P=0.009)",
+      "Compared with controls, significant improvements in Baduanjin exercise group at the end of 12-week intervention period were found on lower limb proprioception function (the rate of average trace error on right lower limb (%): control 23.50±5.50, Baduanjin 21.92±6.54, P=0.004; the rate of average trace error on left lower limb (%): control 22.32±6.62, Baduanjin 20.63±4.62, P=0.046), cardiorespiratory endurance (step test index: control 47.66±5.94, Baduanjin 50.07±9.30, P=0.025), flexibility (control 14.35±7.26cm, Baduanjin 15.39±6.43cm, P=0.009)"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC4737200",
+   "licence": "CC BY",
+   "reference": "Jones RK, Chapman GJ, Parkes MJ, Forsythe L, Felson DT. The effect of different types of insoles or shoe modifications on medial loading of the knee in persons with medial knee osteoarthritis: a randomised trial. Journal of orthopaedic research : official publication of the Orthopaedic Research Society, 2015",
+   "retracte": false,
+   "pmid": "25991385",
+   "questions": [
+    {
+     "id": "1674",
+     "intervention": "barefoot walking",
+     "comparateur": "control shoe",
+     "critere": "early stance peak EKAM",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "When we examined the effects of the conditions on measures of medial loading (Tables 1 and 2, Fig. 3), we found that barefoot walking had the greatest effect on early stance peak EKAM, lowering it by −7.6% (p < 0.001 vs. control shoe)."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "1676",
+     "intervention": "barefoot conditions",
+     "comparateur": "control condition",
+     "critere": "mobility",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "There was no difference in the mobility or barefoot conditions in comparison to the control condition."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "1680",
+     "intervention": "each of the two lateral wedge conditions",
+     "comparateur": "barefoot walking",
+     "critere": "early stance peak EKAM",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "Pairwise comparisons (see supplementary material eTables S1–3) showed that there were no significant differences in the effects on the early stance peak in EKAM between each of the two lateral wedge conditions and barefoot walking."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "1681",
+     "intervention": "barefoot condition",
+     "comparateur": "mobility shoe",
+     "critere": "early stance peak EKAM",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "However, the early stance peak in EKAM in the barefoot condition was reduced significantly more than the mobility shoe (mean difference −0.024 Nm/kg, p = 0.004)"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC1187893",
+   "licence": "CC BY",
+   "reference": "Thorstensson CA, Roos EM, Petersson IF, Ekdahl C. Six-week high-intensity exercise program for middle-aged patients with knee osteoarthritis: a randomized controlled trial [ISRCTN20244858]. BMC musculoskeletal disorders, 2005",
+   "retracte": false,
+   "pmid": "15924620",
+   "questions": [
+    {
+     "id": "423",
+     "intervention": "Exercise",
+     "comparateur": "No exercise",
+     "critere": "Knee injury and Osteoarthritis Outcome Score quality of life subscale at 6 months",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "In the exercise group, an improvement was seen at 6 weeks in the KOOS subscale quality of life compared to the control group (mean change 4.0 vs. -0.7, p = 0.05). The difference between groups was still persistent at 6 months (p = 0.02)."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": true
+    },
+    {
+     "id": "427",
+     "intervention": "Exercise",
+     "comparateur": "No exercise",
+     "critere": "Functional performance improvement",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "Improvements in functional performance of 0–20 % were seen in both groups at six weeks and six months. There was no difference in improvement between exercisers and controls (p = 0.08–0.9)"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "425",
+     "intervention": "Exercise",
+     "comparateur": "No exercise",
+     "critere": "SF-36 Mental Component Summary scale at 6 weeks",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "A significant improvement was found in the exercise group compared to the control group at six weeks with regard to the SF-36 Mental Component Summary scale (MCS) (2.1 vs -1.6, p = 0.04"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "421",
+     "intervention": "Exercise",
+     "comparateur": "No exercise",
+     "critere": "Knee injury and Osteoarthritis Outcome Score",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "No significant differences in the KOOS subscales assessing pain, other symptoms, or function in daily life or in sport and recreation were seen at any time point between exercisers and controls."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": true
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC4414618",
+   "licence": "CC BY",
+   "reference": "Emadi Andani M, Tinazzi M, Corsi N, Fiorio M. Modulation of inhibitory corticospinal circuits induced by a nocebo procedure in motor performance. PloS one, 2015",
+   "retracte": false,
+   "pmid": "25923533",
+   "questions": [
+    {
+     "id": "4020",
+     "intervention": "low frequency transcutaneous electrical nerve stimulation (TENS)",
+     "comparateur": "non- low frequency transcutaneous electrical nerve stimulation (TENS)",
+     "critere": "weakness",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "ANOVA on normalized Forcepeak revealed a significant effect of session (F(2,60) = 15.16, p < 0.001), due to lower values in the final (82.77 ± 2.19) compared to the baseline (89.76 ± 1.74; p < 0.001) session",
+      "Post-hoc comparisons showed that the experimental group was significantly weaker in the final (77.04 ± 2.82%) than in the manipulation (81.94 ± 2.02%) and baseline (88.36 ± 1.41%) session (p = 0.008 and p < 0.001, respectively)"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "4021",
+     "intervention": "low frequency transcutaneous electrical nerve stimulation (TENS)",
+     "comparateur": "baseline",
+     "critere": "force of pressure on the piston",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "On the other hand, the two groups had different force values in the final (p = 0.014), but not in the baseline (p = 0.430) and manipulation (p = 0.077) sessions (Fig 2A and 2B).",
+      "Post-hoc comparisons showed that the experimental group pressed the piston more frequently weaker in the final (14.98 ± 7.16%) and in manipulation (25.29 ± 6.53) compared to the baseline (51.52 ± 1.47%) session (p < 0.001 and p = 0.004, respectively)"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "4022",
+     "intervention": "non- low frequency transcutaneous electrical nerve stimulation (TENS)",
+     "comparateur": "baseline",
+     "critere": "force of pressure on the piston",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "ANOVA on normalized Forcepeak revealed a significant effect of session (F(2,60) = 15.16, p < 0.001), due to lower values in the final (82.77 ± 2.19) compared to the baseline (89.76 ± 1.74; p < 0.001) session"
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "4025",
+     "intervention": "non- low frequency transcutaneous electrical nerve stimulation (TENS)",
+     "comparateur": "baseline",
+     "critere": "CSP duration",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "the CSP duration was shorter in the experimental group after the nocebo procedure."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": true
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC2635353",
+   "licence": "CC BY",
+   "reference": "Dehner C, Elbel M, Strobel P, Scheich M, Schneider F, Krischak G, Kramer M. Grade II whiplash injuries to the neck: what is the benefit for patients treated by different physical therapy modalities? Patient safety in surgery, 2009",
+   "retracte": false,
+   "pmid": "19149880",
+   "questions": [
+    {
+     "id": "10155",
+     "intervention": "Active physical therapy",
+     "comparateur": "Acting as usual",
+     "critere": "Pain reduction",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "The median pain reduction was significantly greater in the APT group (50.5) than in the PPT (39.2) or AAU group (28.8)."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    },
+    {
+     "id": "10152",
+     "intervention": "Pasive physical therapy",
+     "comparateur": "Acting as usual",
+     "critere": "Improvement on median period of disability",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "In both physical therapy groups the median POD was 14 days compared to 49 days in the AAU group. There was a significant group difference compared to each of the two physical therapy groups (p = 0.001; table 3)."
+     ],
+     "annotateurs": 1,
+     "dans_le_resume": false
+    },
+    {
+     "id": "10151",
+     "intervention": "Active physical therapy",
+     "comparateur": "Acting as usual",
+     "critere": "Improvement on median period of disability",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "After two months, patients in both the APT and PPT groups showed significant improvement in the median period of disability (active: 14 days; passive: 14 days) compared to the AAU group (49 days).",
+      "In both physical therapy groups the median POD was 14 days compared to 49 days in the AAU group. There was a significant group difference compared to each of the two physical therapy groups (p = 0.001"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "10153",
+     "intervention": "Active physical therapy",
+     "comparateur": "Acting as usual",
+     "critere": "Improvement in range of motion",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "In the AAU group, the seven patients who underwent physical therapy achieved a median ΔROMD of 80° while the seven patients who complied with the therapy recommendation to \"act as usual\" showed a median ΔROMD of 70° (table 4). There was no significant group difference (p = 0.221).",
+      ". No group difference was observed with regard to median improvement in range of motion"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC3562202",
+   "licence": "CC BY",
+   "reference": "Patten C, Condliffe EG, Dairaghi CA, Lum PS. Concurrent neuromechanical and functional gains following upper-extremity power training post-stroke. Journal of neuroengineering and rehabilitation, 2013",
+   "retracte": false,
+   "pmid": "23336711",
+   "questions": [
+    {
+     "id": "11731",
+     "intervention": "combined FTP and power training",
+     "comparateur": "functional task practice (FTP )",
+     "critere": "the Wolf Motor Function Test-Functional Abilities Scale (WMFT-FAS)",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "These differences were significantly greater following HYBRID (mean 0.34 ± 0.06(S.E.)) as compared to FTP (mean 0.17 ± 0.06(S.E.)) (p = .03). Figure 5, Panel A).",
+      "For the primary outcome (WMFT-FAS), improvements significantly different from zero were revealed following treatment block1 following both FTP and HYBRID (p < .05). These differences were significantly greater following HYBRID (mean 0.34 ± 0.06(S.E.)) as compared to FTP (mean 0.17 ± 0.06(S.E.)) (p = .03). Figure 5, Panel A)."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "11732",
+     "intervention": "combined FTP and power training",
+     "comparateur": "functional task practice (FTP )",
+     "critere": "maximal  isometric joint torque",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "A significant effect of treatment revealed greater increases in isometric joint torque following HYBRID (28.17% (±3.9)) than FTP (12.5% (±4.2)) (p &lt; .0001).",
+      "Increased maximal isometric joint torque, agonist EMG and peak power were significantly greater following HYBRID vs. FTP (p < .05) and effects were retained 6-months post-intervention (p’s < .05)."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "11733",
+     "intervention": "combined FTP and power training",
+     "comparateur": "functional task practice (FTP )",
+     "critere": "joint peak power",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "A significant effect of treatment revealed markedly greater increases in joint power following HYBRID (36.66% (±11.6)) as compared to FTP (-7.86% (±3.5)) (p &lt; .0001).",
+      "Increased maximal isometric joint torque, agonist EMG and peak power were significantly greater following HYBRID vs. FTP (p < .05)"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "11734",
+     "intervention": "combined FTP and power training",
+     "comparateur": "functional task practice (FTP )",
+     "critere": "Burst duration at fast speeds ≥120º/s",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "Responses at criterion speeds ≥120º/s revealed a greater reduction in burst duration in response to HYBRID which reached statistical significance (F(1,14) = 4.74, p &lt; .05) following the retention period.",
+      "EMG position threshold and burst duration were significantly reduced at fast speeds (≥120º/s) (p’s < 0.05) and passive torque was reduced post-washout (p < .05) following HYBRID."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    }
+   ]
+  },
+  {
+   "pmcid": "PMC3767244",
+   "licence": "CC BY",
+   "reference": "Dudgeon WD, Jaggers JR, Phillips KD, Durstine JL, Burgess SE, Lyerly GW, Davis J Moderate-Intensity Exercise Improves Body Composition and Improves Physiological Markers of Stress in HIV-Infected Men. ISRN AIDS, 2012",
+   "retracte": false,
+   "pmid": "24052871",
+   "questions": [
+    {
+     "id": "8394",
+     "intervention": "Moderate-intensity exercise training",
+     "comparateur": "Control",
+     "critere": "Salivary cortisol 1 hour after waking",
+     "corrige": {
+      "code": 0,
+      "libelle": "pas de différence significative"
+     },
+     "passages": [
+      "There was a decrease in salivary cortisol at wake in the exercise group following the intervention, and there was a trend for a decrease one hour after waking in the exercise group",
+      "There was a decrease in salivary cortisol at wake (P = 0.025) in the EX and a trend (P = 0.07) for a decrease 1 hour after waking."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "8398",
+     "intervention": "Moderate-intensity exercise training",
+     "comparateur": "Control",
+     "critere": "Total fat if +20% body fat",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "Further, the +20 group decreased total fat mass (P = .02), percentage of total body fat (P = .009), and percentage of trunk fat (P = .001).",
+      "Those in the EX below median body fat (20%) increased LTM (P = 0.014) only, while those above 20% decreased fat mass (P = 0.02), total fat (N = 0.009),"
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": false
+    },
+    {
+     "id": "8393",
+     "intervention": "Moderate-intensity exercise training",
+     "comparateur": "Control",
+     "critere": "Salivary cortisol at wake",
+     "corrige": {
+      "code": -1,
+      "libelle": "diminution significative"
+     },
+     "passages": [
+      "There was a decrease in salivary cortisol at wake (P = 0.025) in the EX and a trend (P = 0.07) for a decrease 1 hour after waking."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    },
+    {
+     "id": "8395",
+     "intervention": "Moderate-intensity exercise training",
+     "comparateur": "Control",
+     "critere": "Lean tissue mass",
+     "corrige": {
+      "code": 1,
+      "libelle": "augmentation significative"
+     },
+     "passages": [
+      "The EX had a significant increase in lean tissue mass (LTM) (P < 0.001)",
+      "The EX had a significant increase in lean tissue mass (LTM) (P < 0.001) following the intervention."
+     ],
+     "annotateurs": 2,
+     "dans_le_resume": true
+    }
+   ]
+  }
+ ]
+}
