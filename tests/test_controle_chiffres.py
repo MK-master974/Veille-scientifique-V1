@@ -39,3 +39,25 @@ def test_chiffre_invente_toujours_refuse():
     assert _absents("Ten twelve-week sessions.", "22 séances.") == ["flash : 22"]
     # « .05 » ne vaut pas 5
     assert _absents("Balance improved (P < .05).", "5 séances.") == ["flash : 5"]
+
+
+def test_nombres_separes_par_une_virgule_sans_espace():
+    # Relecture du portail, 11/11/2026 : la borne haute d'un intervalle ne doit pas être perdue.
+    lus = lambda s: [m.group(0) for m in controle._NOMBRE.finditer(s)]
+    assert lus("95% CI 1.2,3.4") == ["95", "1.2", "3.4"]
+    assert lus("(2.1,4.6)") == ["2.1", "4.6"]
+    assert lus("10,20,30 mg") == ["10,20", "30"]
+    assert lus("1,537,739 personnes") == ["1,537", "739"]
+    assert lus("P < .05 et p < ,05") == [".05", ",05"]
+    assert _absents("Risk ratio 0.8 (95% CI 0.6,0.9).", "IC 95 % 0,6 à 0,9.") == []
+    assert _absents("Risk ratio 0.8 (95% CI 0.6,0.9).", "IC 95 % 0,6 à 0,95.") == ["flash : 0,95"]
+
+
+def test_and_et_ne_fusionnent_pas_deux_nombres():
+    valeurs = lambda s: sorted(float(x) for x in controle._nombres_en_lettres(s))
+    assert valeurs("aged between twenty and thirty") == [20.0, 30.0]
+    assert valeurs("sixty and five") == [5.0, 60.0]
+    assert valeurs("one hundred and twenty") == [120.0]
+    assert valeurs("vingt et un") == [21.0]
+    assert valeurs("soixante et onze") == [71.0]
+    assert _absents("Participants aged between twenty and thirty.", "Âge de 50 ans.") == ["flash : 50"]
