@@ -27,7 +27,7 @@ _MOTS_NOMBRES = {
 
 # Un nombre écrit en chiffres. La seconde forme lit les décimales sans zéro initial, fréquentes dans
 # les résumés anglais (« P < .05 », « P=.003 ») et parfois reprises dans les fiches (« p < ,05 »).
-_NOMBRE = re.compile(r"(?<![\w.,])(?:[-−–]?\d+(?:[   ]\d{3})*(?:[.,]\d+)?|[.,]\d+)")
+_NOMBRE = re.compile(r"(?<![\w.])[-−–]?\d+(?:[   ]\d{3})*(?:[.,]\d+)?|(?<![\w.,])[.,]\d+")
 
 # Nombres écrits en toutes lettres au-delà de dix, dans la source (« Seventy-four subjects »,
 # « one hundred and twenty », « trente-deux patients »), et ordinaux anglais (« first week »).
@@ -145,8 +145,11 @@ def _nombres_en_lettres(texte):
             etat["total"] += etat["courant"] * 1000
             etat["courant"] = 0
             etat["dernier"] = "centaine"
-        elif mot in ("and", "et") and dernier in ("centaine", "dizaine") and (
-                suivant in _UNITES or suivant in _DIZAINES_SIMPLES or suivant in _DIZAINES):
+        elif (mot == "and" and dernier == "centaine"
+              and (suivant in _UNITES or suivant in _DIZAINES_SIMPLES or suivant in _DIZAINES)) or (
+                mot == "et" and dernier == "dizaine" and suivant in ("un", "une", "onze")):
+            # « one hundred and twenty », « vingt et un », « soixante et onze » ; mais « between
+            # twenty and thirty » reste deux nombres distincts.
             etat["dernier"] = "et"
         else:
             clore()
