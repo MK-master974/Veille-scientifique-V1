@@ -6,6 +6,10 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Ajouté
+- Corpus de référence, suite : cas « qualité méthodologique » (`banc/corpus/qualite.json` : RoB 2,
+  QUADAS-2, AMSTAR 2, AGREE II, tirés de revues sous licence CC BY) et trois pièges
+  (`banc/corpus/pieges.json`). `banc/extraire_tableaux.py` repère les tableaux d'évaluation dans
+  ces revues. Aucune IA n'est appelée.
 - `CLAUDE.md` : consignes de travail pour les sessions de développement (règles impératives,
   circuit d'une modification, communication, coordination avec les autres applications).
 - `banc/assembler_essais.py` et le workflow « Corpus de référence » : assemblage des premiers cas

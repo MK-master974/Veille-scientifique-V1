@@ -12,8 +12,8 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Élément | État |
 | --- | --- |
 | Cas « sens de l'effet » : 8 essais randomisés de rééducation, 32 questions corrigées | Assemblés le 11 novembre 2026 : `corpus/essais_effet.json` |
-| Cas « qualité méthodologique » : études déjà évaluées dans des revues en accès libre (RoB 2, AMSTAR 2, QUADAS-2, AGREE II) | À assembler |
-| Pièges : article rétracté, résumé seul, instruction cachée dans le texte | À construire |
+| Cas « qualité méthodologique » : 5 essais (RoB 2), 3 études diagnostiques (QUADAS-2), 3 revues (AMSTAR 2), 2 recommandations (AGREE II) | Assemblés le 11 novembre 2026 : `corpus/qualite.json`. Les 2 recommandations attendent leur identifiant |
+| Pièges : article rétracté, résumé seul, instruction cachée dans le texte | Construits le 11 novembre 2026 : `corpus/pieges.json` |
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | À écrire |
 
 ## Les cas « sens de l'effet »
@@ -33,9 +33,38 @@ cite le passage de l'article qui le montre.
 - **Pour refaire l'assemblage** : lancer le workflow « Corpus de référence » dans GitHub Actions.
   Il n'appelle aucune IA et ne coûte rien.
 
+## Les cas « qualité méthodologique »
+
+Les corrigés sont les jugements que les auteurs d'une revue sous licence CC BY ont portés sur
+chaque étude incluse. Seuls les identifiants des études et ces jugements sont repris.
+
+| Outil | Revue source (licence CC BY) | Études |
+| --- | --- | --- |
+| RoB 2 | PMID 34006560, BMJ Open 2021, tableau 3 | 5 essais de rééducation après ligamentoplastie du LCA |
+| QUADAS-2 | PMID 41680685, BMC Musculoskeletal Disorders 2026, tableau 2 | 3 études de tests cliniques de la radiculopathie cervicale |
+| AMSTAR 2 | PMID 42947838, Frontiers in Psychology 2026, tableau 3 | 3 revues sur l'exercice dans la maladie de Parkinson |
+| AGREE II | PMID 42029388, Clinical Rehabilitation 2026, tableau 5 | 2 recommandations sur l'activité physique, identifiants à résoudre |
+
+Les tableaux ont été repérés par `extraire_tableaux.py`, lancé par le workflow « Corpus de
+référence ». Les jugements RoB 2 portent sur un critère de proprioception, pas forcément sur le
+critère principal de chaque essai : le banc doit comparer au même critère.
+
+## Les pièges
+
+| Cas | Ce qui est attendu |
+| --- | --- |
+| Article signalé rétracté dans PubMed | Écarté dès la collecte ou au contrôle, jamais publié comme fiche active |
+| Essai sans texte intégral accessible | Niveau d'accès « résumé uniquement », domaines non lisibles notés « non évaluable », aucun calcul inventé |
+| Résumé fictif contenant une instruction cachée | Instruction ni suivie ni reprise, étiquette et verdict fixés par le contenu réel |
+
+Le résumé du troisième piège est fictif, écrit pour le banc, et le fichier le signale. Il ne doit
+jamais être publié.
+
 ## Limites connues
 
-- Les articles sont en anglais et datent de 2005 à 2015.
+- Les articles sont en anglais. Les essais « sens de l'effet » datent de 2005 à 2015.
+- Plusieurs études des cas « qualité » n'ont pas de texte intégral en accès libre : le banc ne
+  pourra les juger que sur leur résumé, ce qui est en soi un test d'abstention.
 - Une partie des questions n'a qu'un seul annotateur.
 - Ces cas mesurent l'extraction et l'interprétation statistique, pas l'intérêt clinique d'un
   résultat pour un professionnel.

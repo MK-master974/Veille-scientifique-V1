@@ -62,3 +62,76 @@ def test_choix_selon_la_licence_et_la_retractation():
     assert [c["pmcid"] for c in banc.choisir(par_article, 8, libre)] == ["PMC100"]
     assert banc.choisir(par_article, 8, ferme) == []
     assert banc.choisir(par_article, 8, retracte) == []
+
+
+# --- Repérage des tableaux d'évaluation -------------------------------------------------------
+
+_spec2 = importlib.util.spec_from_file_location("extraire_tableaux", RACINE / "banc" / "extraire_tableaux.py")
+tab = importlib.util.module_from_spec(_spec2)
+_spec2.loader.exec_module(tab)
+
+XML_REVUE = """<article><body>
+<table-wrap id="T2"><label>Table 2</label><caption><p>Risk of bias (RoB 2) of included trials</p></caption>
+<table><tr><th>Study</th><th>Randomisation</th><th>Overall</th></tr>
+<tr><td>Dupont 2019 <xref ref-type="bibr" rid="B7">[7]</xref></td><td>Low risk</td><td>Some concerns</td></tr></table>
+</table-wrap>
+<table-wrap id="T1"><label>Table 1</label><caption><p>Characteristics</p></caption>
+<table><tr><td>Age</td><td>54</td></tr></table></table-wrap>
+</body><back><ref-list><ref id="B7"><element-citation><pub-id pub-id-type="pmid">12345678</pub-id></element-citation></ref></ref-list></back></article>"""
+
+
+def test_le_tableau_d_evaluation_est_repere_et_les_renvois_resolus():
+    import xml.etree.ElementTree as ET
+    trouves, figures, nb_refs = tab.tableaux(ET.fromstring(XML_REVUE), "rob2")
+    assert nb_refs == 1 and figures == []
+    assert [t["label"] for t in trouves] == ["Table 2"]
+    assert trouves[0]["lignes"][1] == ["Dupont 2019 [7][PMID 12345678]", "Low risk", "Some concerns"]
+
+
+def test_licences_normalisees():
+    assert tab.normaliser_licence("cc by") == "CC BY"
+    assert tab.normaliser_licence("cc0") == "CC0"
+    assert tab.normaliser_licence("cc by-nc") == "CC BY NC"
+    assert tab.normaliser_licence(None) == "inconnue"
+
+
+# --- Cohérence des fichiers du corpus -----------------------------------------------------------
+
+import json
+import re
+
+CORPUS = RACINE / "banc" / "corpus"
+
+
+def test_corpus_qualite_bien_forme():
+    c = json.loads((CORPUS / "qualite.json").read_text(encoding="utf-8"))
+    permis = {v for valeurs in c["valeurs"].values() for v in valeurs} | {"incertain"}
+    for groupe in c["groupes"]:
+        assert groupe["source"]["licence"] in ("CC BY", "CC0")
+        assert re.fullmatch(r"\d+", groupe["source"]["pmid"])
+        for cas in groupe["cas"]:
+            if cas.get("statut") == "identifiant à résoudre":
+                continue
+            assert re.fullmatch(r"\d+", cas["pmid"])
+            jugements = []
+            for v in cas["corrige"].values():
+                jugements += list(v.values()) if isinstance(v, dict) else [v]
+            assert all(j in permis for j in jugements), cas["reference"]
+
+
+def test_pieges_bien_formes():
+    p = json.loads((CORPUS / "pieges.json").read_text(encoding="utf-8"))
+    assert {c["id"] for c in p["cas"]} == {"piege-retractation", "piege-resume-seul", "piege-instruction-cachee"}
+    fictif = next(c for c in p["cas"] if c["id"] == "piege-instruction-cachee")
+    assert fictif["fictif"] is True and "pmid" not in fictif
+    assert all(c["attendu"] for c in p["cas"])
+
+
+def test_essais_effet_sans_texte_d_article():
+    e = json.loads((CORPUS / "essais_effet.json").read_text(encoding="utf-8"))
+    assert len(e["cas"]) == 8
+    for cas in e["cas"]:
+        assert cas["licence"] in ("CC BY", "CC0")
+        assert set(cas) <= {"pmcid", "licence", "reference", "retracte", "pmid", "questions"}
+        for q in cas["questions"]:
+            assert all(len(p) <= banc.PASSAGE_MAX for p in q["passages"])

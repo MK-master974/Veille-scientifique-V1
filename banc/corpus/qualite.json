@@ -1,0 +1,273 @@
+{
+ "nom": "Corpus de référence — qualité méthodologique",
+ "assemble_le": "2026-11-11",
+ "principe": "Jugements déjà portés par les auteurs d'une revue sous licence CC BY sur chaque étude incluse. Seuls les identifiants des études et les jugements sont repris : aucun texte d'article.",
+ "valeurs": {
+  "rob2": [
+   "faible",
+   "quelques réserves",
+   "élevé"
+  ],
+  "quadas2": [
+   "faible",
+   "incertain",
+   "élevé"
+  ],
+  "amstar2": [
+   "élevée",
+   "modérée",
+   "faible",
+   "très faible"
+  ]
+ },
+ "groupes": [
+  {
+   "outil": "RoB 2",
+   "type_etude": "essai_randomise",
+   "source": {
+    "pmid": "34006560",
+    "pmcid": "PMC8130739",
+    "revue": "BMJ Open",
+    "annee": "2021",
+    "doi": "10.1136/bmjopen-2021-049226",
+    "licence": "CC BY",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/34006560/"
+   },
+   "source_tableau": "Table 3",
+   "note": "Jugements portés pour un critère de proprioception, pas forcément le critère principal de l'essai.",
+   "cas": [
+    {
+     "pmid": "22543515",
+     "pmcid": "",
+     "reference": "Baltaci et al. 2013, Knee Surg Sports Traumatol Arthrosc",
+     "critere_evalue": "sens de la position du genou",
+     "corrige": {
+      "randomisation": "élevé",
+      "ecarts_aux_interventions": "quelques réserves",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "élevé",
+      "selection_du_resultat": "élevé",
+      "global": "élevé"
+     }
+    },
+    {
+     "pmid": "21952714",
+     "pmcid": "",
+     "reference": "Beynnon et al. 2011, Am J Sports Med",
+     "critere_evalue": "seuil de détection du mouvement passif",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "quelques réserves",
+      "global": "quelques réserves"
+     }
+    },
+    {
+     "pmid": "23460328",
+     "pmcid": "",
+     "reference": "Fu et al. 2013, Am J Sports Med",
+     "critere_evalue": "sens de la position du genou",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "quelques réserves",
+      "global": "quelques réserves"
+     }
+    },
+    {
+     "pmid": "31828089",
+     "pmcid": "PMC6881759",
+     "reference": "Kaya et al. 2019, Biomed Res Int",
+     "critere_evalue": "sens de la position du genou",
+     "corrige": {
+      "randomisation": "quelques réserves",
+      "ecarts_aux_interventions": "élevé",
+      "donnees_manquantes": "élevé",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "quelques réserves",
+      "global": "élevé"
+     }
+    },
+    {
+     "pmid": "17442840",
+     "pmcid": "",
+     "reference": "Risberg et al. 2007, Phys Ther",
+     "critere_evalue": "seuil de détection du mouvement passif",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "quelques réserves",
+      "global": "quelques réserves"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "QUADAS-2",
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "41680685",
+    "pmcid": "PMC13088722",
+    "revue": "BMC Musculoskeletal Disorders",
+    "annee": "2026",
+    "doi": "",
+    "licence": "CC BY",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/41680685/"
+   },
+   "source_tableau": "Table 2",
+   "note": "Tests cliniques de la radiculopathie cervicale.",
+   "cas": [
+    {
+     "pmid": "34298491",
+     "pmcid": "",
+     "reference": "Grondin et al. 2021, Musculoskelet Sci Pract",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "2711240",
+     "pmcid": "",
+     "reference": "Viikari-Juntura et al. 1989, Spine",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "élevé",
+       "test_evalue": "faible",
+       "reference": "incertain",
+       "flux_et_delais": "élevé"
+      },
+      "applicabilite": {
+       "selection_des_patients": "élevé",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "23604976",
+     "pmcid": "PMC3698345",
+     "reference": "Gumina et al. 2013, Eur Spine J",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "élevé",
+       "test_evalue": "faible",
+       "reference": "incertain",
+       "flux_et_delais": "incertain"
+      },
+      "applicabilite": {
+       "selection_des_patients": "incertain",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "revue",
+   "source": {
+    "pmid": "42947838",
+    "pmcid": "PMC13710104",
+    "revue": "Frontiers in Psychology",
+    "annee": "2026",
+    "doi": "",
+    "licence": "CC BY",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42947838/"
+   },
+   "source_tableau": "Table 3",
+   "note": "Exercice et équilibre dans la maladie de Parkinson. Seul le niveau de confiance global est repris.",
+   "cas": [
+    {
+     "pmid": "26493731",
+     "pmcid": "",
+     "reference": "Shen et al. 2016, Neurorehabil Neural Repair",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "21674624",
+     "pmcid": "",
+     "reference": "Allen et al. 2011, Mov Disord",
+     "corrige": {
+      "confiance_globale": "faible"
+     }
+    },
+    {
+     "pmid": "25268548",
+     "pmcid": "",
+     "reference": "Sharp et Hewitt 2014, Neurosci Biobehav Rev",
+     "corrige": {
+      "confiance_globale": "très faible"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AGREE II",
+   "type_etude": "recommandation",
+   "source": {
+    "pmid": "42029388",
+    "pmcid": "PMC13525178",
+    "revue": "Clinical Rehabilitation",
+    "annee": "2026",
+    "doi": "",
+    "licence": "CC BY",
+    "lien": "https://pubmed.ncbi.nlm.nih.gov/42029388/"
+   },
+   "source_tableau": "Table 5",
+   "note": "Recommandations d'activité physique dans les maladies cardio-respiratoires. Scores de domaine en %. Identifiants des recommandations à résoudre : ces deux cas ne sont pas encore utilisables par le banc.",
+   "cas": [
+    {
+     "statut": "identifiant à résoudre",
+     "reference": "SIGN, recommandation sur l'asthme (organisme cité dans la revue)",
+     "corrige": {
+      "domaines": {
+       "D1": 100,
+       "D2": 100,
+       "D3": 100,
+       "D4": 100,
+       "D5": 100,
+       "D6": 100
+      },
+      "moyenne": 100,
+      "qualite": "élevée"
+     }
+    },
+    {
+     "statut": "identifiant à résoudre",
+     "reference": "Recommandation italienne sur la BPCO (organisme cité dans la revue)",
+     "corrige": {
+      "domaines": {
+       "D1": 67,
+       "D2": 33,
+       "D3": 29,
+       "D4": 17,
+       "D5": 28,
+       "D6": 75
+      },
+      "moyenne": 41,
+      "qualite": "faible"
+     }
+    }
+   ]
+  }
+ ]
+}
