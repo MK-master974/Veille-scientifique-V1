@@ -62,3 +62,34 @@ def test_choix_selon_la_licence_et_la_retractation():
     assert [c["pmcid"] for c in banc.choisir(par_article, 8, libre)] == ["PMC100"]
     assert banc.choisir(par_article, 8, ferme) == []
     assert banc.choisir(par_article, 8, retracte) == []
+
+
+# --- Repérage des tableaux d'évaluation -------------------------------------------------------
+
+_spec2 = importlib.util.spec_from_file_location("extraire_tableaux", RACINE / "banc" / "extraire_tableaux.py")
+tab = importlib.util.module_from_spec(_spec2)
+_spec2.loader.exec_module(tab)
+
+XML_REVUE = """<article><body>
+<table-wrap id="T2"><label>Table 2</label><caption><p>Risk of bias (RoB 2) of included trials</p></caption>
+<table><tr><th>Study</th><th>Randomisation</th><th>Overall</th></tr>
+<tr><td>Dupont 2019 <xref ref-type="bibr" rid="B7">[7]</xref></td><td>Low risk</td><td>Some concerns</td></tr></table>
+</table-wrap>
+<table-wrap id="T1"><label>Table 1</label><caption><p>Characteristics</p></caption>
+<table><tr><td>Age</td><td>54</td></tr></table></table-wrap>
+</body><back><ref-list><ref id="B7"><element-citation><pub-id pub-id-type="pmid">12345678</pub-id></element-citation></ref></ref-list></back></article>"""
+
+
+def test_le_tableau_d_evaluation_est_repere_et_les_renvois_resolus():
+    import xml.etree.ElementTree as ET
+    trouves, figures, nb_refs = tab.tableaux(ET.fromstring(XML_REVUE), "rob2")
+    assert nb_refs == 1 and figures == []
+    assert [t["label"] for t in trouves] == ["Table 2"]
+    assert trouves[0]["lignes"][1] == ["Dupont 2019 [7][PMID 12345678]", "Low risk", "Some concerns"]
+
+
+def test_licences_normalisees():
+    assert tab.normaliser_licence("cc by") == "CC BY"
+    assert tab.normaliser_licence("cc0") == "CC0"
+    assert tab.normaliser_licence("cc by-nc") == "CC BY NC"
+    assert tab.normaliser_licence(None) == "inconnue"

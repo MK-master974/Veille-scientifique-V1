@@ -9,6 +9,8 @@ on:
     branches: ["claude/**"]
     paths:
       - "banc/assembler_essais.py"
+      - "banc/extraire_tableaux.py"
+      - "banc/candidats_qualite.json"
 
 permissions:
   contents: read
@@ -37,3 +39,21 @@ jobs:
           path: corpus-essais.json
           retention-days: 30
           if-no-files-found: warn
+
+  # Repère les tableaux d'évaluation de la qualité (RoB 2, AMSTAR 2, QUADAS-2, AGREE II) dans des
+  # revues en accès libre. L'extrait est écrit dans le journal, pour choisir les corrigés à la main.
+  qualite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Repérer les tableaux d'évaluation dans les revues candidates
+        run: python banc/extraire_tableaux.py banc/candidats_qualite.json
