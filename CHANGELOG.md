@@ -3,7 +3,21 @@
 Évolutions notables de Veille Santé, de la plus récente à la plus ancienne.
 Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 
-## Non publié — version 1.1 en préparation (socle et transparence)
+## 1.1.1 — en préparation
+
+### Ajouté
+- Documentation technique dans le dépôt : `docs/ARCHITECTURE.md` (comment l'ensemble est
+  construit) et `docs/DECISIONS.md` (registre des décisions et de leurs raisons).
+
+### Modifié
+- Le numéro de version est aussi affiché en tête de la page « À propos » : en bas de la page
+  « Semaine », il fallait faire défiler toutes les fiches pour l'atteindre.
+
+### Corrigé
+- Référence d'une fiche : plus de double point après un titre terminé par un point, ni de point
+  après un titre terminé par un point d'interrogation.
+
+## 1.1.0 — 11 novembre 2026 (socle et transparence)
 
 ### Ajouté
 - Tests automatiques à chaque modification (`.github/workflows/tests.yml`) : tests du moteur,
