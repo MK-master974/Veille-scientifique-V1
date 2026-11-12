@@ -172,6 +172,15 @@ publiée avant la bascule, dernière séance de la phase 1.
 | VS-D22 | Mesurer les niveaux d'accès de S46 le jour de sa publication, lundi 16 novembre 2026, par un rappel programmé dans la conversation de développement | Validée le 12 novembre 2026 (questionnaire) |
 | VS-D23 | Séance 5 de la phase 1 (extraction des données) : accord donné, dans une conversation neuve | Validée le 12 novembre 2026 (questionnaire) |
 
+Décisions de la séance 5 de la phase 1 (extraction des données), prises par questionnaire :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D24 | Plan de la séance 5 : lecture du texte intégral en blocs repérés, consigne d'extraction, contrôles par le code et banc d'essai « extraction ». Chaque essai du corpus sous licence CC BY est extrait deux fois, sur le résumé seul puis sur le texte intégral, pour mesurer ce que le texte intégral apporte. La veille hebdomadaire et l'application ne sont pas touchées | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D25 | Seuils de réussite de l'extraction au banc d'essai, sur le texte intégral : au moins 26 réponses justes sur 32, aucune erreur de sens, aucun passage ni chiffre gardé qui ne soit pas dans l'article, 3 pièges sur 3. Si un seuil n'est pas atteint, les écarts sont présentés avant d'aller plus loin. Le plan prévoyait de fixer des seuils en séance 2 ; aucun ne l'avait été. La session proposait 22 sur 32 ; le porteur du projet a retenu 26 | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D26 | La relecture de dix extractions par le porteur du projet, prévue au plan (section 18), n'a pas lieu en séance 5 : la session de développement la fait elle-même et en rend compte. Conséquence : aucun humain ne relit les extractions à cette séance | Validée le 12 novembre 2026 (questionnaire : « fait sans moi ») |
+| VS-D27 | Budget d'IA de la séance 5 : enveloppe de 5 $. Le coût estimé est annoncé avant chaque lancement du banc, le coût réel après ; la session s'arrête et redemande si l'enveloppe ne suffit pas | Validée le 12 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.

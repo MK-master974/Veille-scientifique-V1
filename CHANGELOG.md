@@ -6,6 +6,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- Workflow « Banc d'essai » : il lance le banc demandé par la dernière ligne de
+  `banc/lancement.json` (chaîne actuelle ou extraction), avec un plafond de coût fixe pour chaque
+  banc. Une demande « sans IA » lit les textes et estime le coût sans rien dépenser.
 - `CLAUDE.md`, règle 7 : un court passage exact d'un article sous licence CC BY ou CC0 peut être
   cité avec sa source (VS-D15). Tout autre texte d'article reste interdit dans le dépôt et les
   données publiques.
@@ -22,6 +25,14 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Phase 1, séance 5 : extraction des données d'une publication, chaque donnée avec son
+  emplacement (bloc « extraction » de la fiche v2). `pipeline/texte.py` lit un résumé ou un texte
+  intégral en blocs repérés ; `pipeline/extraction.py` et la consigne `extraction.txt` extraient
+  les données, et le code contrôle chaque passage mot pour mot et chaque nombre. Une donnée non
+  vérifiée est refusée et comptée. La veille hebdomadaire n'utilise pas encore ces modules.
+- Banc d'essai de l'extraction (`banc/banc_extraction.py`) : contrôles du code, sens de l'effet
+  sur 32 questions corrigées, recoupement avec les passages des annotateurs, pièges, coût réel par
+  article. Seuils de réussite fixés (VS-D25).
 - Phase 1, séance 4 : `pipeline/acces.py` cherche le texte intégral légal d'une publication, lit
   sa licence et attribue un niveau d'accès ; `banc/mesure_acces.py` et le workflow « Niveaux
   d'accès » mesurent ces niveaux sur une semaine déjà publiée. Aucune IA n'est appelée, aucun
