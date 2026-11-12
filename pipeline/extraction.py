@@ -8,7 +8,8 @@ L'IA propose des données, chacune avec le repère d'un bloc et un passage. Le c
   il se trouve réellement, et l'extrait publié est recopié du texte lu, pas de la proposition ;
 - les nombres d'une donnée doivent figurer dans son passage, ou au moins dans le bloc cité ;
 - les valeurs fermées (rang, sens de la mesure, en faveur de) sont ramenées à la valeur la plus
-  prudente quand elles sont invalides ou incohérentes entre elles.
+  prudente quand elles sont invalides ou incohérentes entre elles ; une évolution avant-après
+  dans un seul groupe n'est jamais notée « en faveur de » l'intervention.
 Une donnée qui ne passe pas ces contrôles est refusée et comptée : elle n'est ni corrigée ni
 publiée. Le passage n'est publié que si la licence du texte lu le permet (VS-D15).
 """
@@ -102,6 +103,9 @@ def _localiser(brut, doc, chiffres, autorises_doc, publier_passages):
 
 
 # --- Cohérence d'un résultat ------------------------------------------------------------------
+
+# La consigne demande d'écrire « (groupe A, après contre avant) » pour une évolution dans un seul groupe.
+_AVANT_APRES = re.compile(r"apr[eè]s contre avant|avant[- ]apr[eè]s|post contre pr[eé]", re.I)
 
 # Un signe « moins » s'écrit de plusieurs façons dans les articles : tiret, signe moins, trait d'union
 # typographique (« ‐0.011 »).
@@ -218,6 +222,9 @@ def lire_extraction(reponse, doc, publier_passages=False):
             if resultat[cle] not in permis:
                 ecarts.append(f"{cle} invalide, ramené à « {prudent} »")
                 resultat[cle] = prudent
+        if _AVANT_APRES.search(resultat["critere"]) and resultat["en_faveur_de"] in ("intervention", "comparateur"):
+            ecarts.append("évolution avant-après : « en faveur de » ramené à « indetermine »")
+            resultat["en_faveur_de"] = "indetermine"
         if resultat["sens_mesure"] == "pas_de_difference" and resultat["en_faveur_de"] != "aucun":
             ecarts.append("pas de différence : « en faveur de » ramené à « aucun »")
             resultat["en_faveur_de"] = "aucun"

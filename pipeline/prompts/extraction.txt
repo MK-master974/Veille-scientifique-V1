@@ -16,10 +16,11 @@ RÈGLES ABSOLUES
 - Aucun arrondi.
 - Un résultat non significatif n'est jamais présenté comme un effet.
 - Tu écris les valeurs en français. Les noms d'échelles, de tests et de scores gardent leur nom d'origine.
+- Tu ne développes pas une abréviation que le texte fourni ne développe pas : tu la gardes telle quelle.
 
 LE PASSAGE
 - "passage" est la copie exacte, caractère pour caractère, d'un extrait continu du bloc cité, dans la langue du texte.
-- Une à deux phrases, 300 caractères au plus.
+- Une à deux phrases, 300 caractères au plus. Un passage plus long fait refuser la donnée : pour une intervention ou une population décrite longuement, cite seulement la phrase qui la nomme.
 - Pas de coupe, pas de points de suspension, pas de traduction, pas de correction, pas de reformulation.
 - Pour un tableau, recopie la ligne du tableau telle qu'elle est fournie, avec ses séparateurs.
 - Tous les nombres de "valeur", "intervalle" et "p" figurent dans le passage cité. Si un seul passage ne suffit pas, choisis celui qui porte le résultat.
@@ -29,7 +30,7 @@ LE PASSAGE
 DONNÉES À EXTRAIRE
 - question : la question étudiée, en une phrase.
 - population : qui a été étudié (âge, pathologie, contexte de soins), tel que rapporté.
-- effectif : nombre de participants (inclus, analysés, par groupe), avec les nombres tels que le passage cité les donne. Ne fais pas la somme des groupes : si le passage donne 9 et 10 participants par groupe, écris « 9 et 10 participants », pas 19. Pour une revue : nombre d'études et de participants.
+- effectif : nombre de participants (inclus, analysés, par groupe), avec les nombres tels que le passage cité les donne. Ne fais pas la somme des groupes : si le passage donne 9 et 10 participants par groupe, écris « 9 et 10 participants », pas 19. Pour une revue : nombre d'études et de participants, seulement tels qu'ils sont écrits ; ne calcule pas de total.
 - intervention : l'intervention évaluée. Pour une étude diagnostique : le test évalué.
 - comparateur : ce à quoi l'intervention est comparée. Pour une étude diagnostique : le test de référence. null s'il n'y en a pas.
 - resultats : un élément par critère de jugement et par comparaison rapportés dans le texte fourni.
@@ -38,18 +39,22 @@ DONNÉES À EXTRAIRE
 LES RÉSULTATS
 - Relève tous les résultats rapportés : critères principaux, critères secondaires, comparaisons entre groupes, évolutions avant-après quand elles sont testées, analyses en sous-groupes. 40 éléments au plus : les critères principaux d'abord, puis les secondaires, puis les sous-groupes.
 - Les caractéristiques de départ des participants ne sont pas des résultats.
+- N'oublie pas le résultat que les auteurs présentent comme leur conclusion principale, dans le résumé ou au début de la discussion.
 - critere : nom du critère, avec le moment de la mesure s'il est précisé. Si l'étude compare plus de deux groupes, ou s'il s'agit d'une évolution dans un même groupe, précise la comparaison entre parenthèses : « (groupe A contre groupe C) », « (groupe A, après contre avant) ».
-- rang : "principal" si le texte le désigne comme critère principal, "secondaire" s'il le désigne comme secondaire, sinon "non_precise". Ne devine pas.
+- rang : "principal" seulement si le texte désigne ce critère comme critère de jugement principal de l'étude ; "secondaire" s'il le désigne comme secondaire ; sinon "non_precise". Une analyse de sensibilité, une analyse en sous-groupes ou une analyse que les auteurs disent exploratoire n'est jamais "principal". Ne devine pas.
 - sens_mesure : ce que fait la mesure avec l'intervention par rapport au comparateur, ou après par rapport à avant.
     "augmente" : la mesure est plus élevée, et la différence est statistiquement significative d'après le texte
     "diminue" : la mesure est plus basse, et la différence est statistiquement significative d'après le texte
     "pas_de_difference" : la différence n'est pas statistiquement significative
     "non_rapporte" : le texte ne permet pas de le dire, ou le résultat est seulement descriptif (sensibilité, spécificité, prévalence, recommandation)
-- en_faveur_de : "intervention", "comparateur", "aucun" (pas de différence significative) ou "indetermine". Ce champ est indépendant de sens_mesure : une douleur qui diminue est en faveur de l'intervention.
-- valeur : la valeur rapportée (valeur par groupe, différence, rapport, sensibilité…), telle qu'écrite ; null si absente.
+  Le sens se lit dans le passage cité. Si le passage dit seulement qu'une différence est significative, sans dire dans quel sens, écris "non_rapporte" : ne déduis pas le sens d'un autre endroit du texte, ni de ce qui paraît logique.
+  Pour une revue sans méta-analyse, un décompte d'études (« cinq études sur huit rapportent… ») vaut "non_rapporte".
+- en_faveur_de : "intervention", "comparateur", "aucun" (pas de différence significative) ou "indetermine". Ce champ est indépendant de sens_mesure : une douleur qui diminue est en faveur de l'intervention. Pour une évolution dans un seul groupe (après contre avant), écris "indetermine" : sans comparaison avec un autre groupe, rien ne dit que l'évolution vient de l'intervention.
+- valeur : la valeur rapportée (valeur par groupe, différence, rapport, taille d'effet, sensibilité…), telle qu'écrite ; null si absente. Quand le passage donne la valeur de chaque groupe, donne-les toutes, avec le nom du groupe. Si le passage dit dans quel sens se lit l'échelle (un score plus bas est meilleur), dis-le.
 - intervalle : l'intervalle de confiance tel qu'écrit, sinon null.
 - p : la valeur de p telle qu'écrite, sinon null.
 - Pour une recommandation : chaque recommandation principale est un résultat, "valeur" en donne le contenu et sa force si elle est indiquée.
+- Pour une revue : quand un chiffre vient d'une seule des études incluses, dis-le dans le critère, avec sa taille si elle est écrite (« d'après une étude de 95 patients »).
 
 SORTIE : un objet JSON strict, sans aucun texte autour
 {

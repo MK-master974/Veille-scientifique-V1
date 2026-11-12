@@ -130,7 +130,8 @@ def categorie_refus(motif):
 
 def categorie_ecart(nature):
     for cle, nom in (("hors du passage", "chiffre hors du passage, présent dans le bloc"),
-                     ("emplacement corrigé", "emplacement corrigé"), ("ramené", "valeur fermée corrigée"),
+                     ("emplacement corrigé", "emplacement corrigé"),
+                     ("avant-après", "évolution avant-après : « en faveur de » corrigé"), ("ramené", "valeur fermée corrigée"),
                      ("au-delà du maximum", "résultats au-delà du maximum")):
         if cle in nature:
             return nom

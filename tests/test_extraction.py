@@ -229,6 +229,18 @@ def test_valeurs_fermees_ramenees_a_la_plus_prudente():
     assert len(bilan["ecarts"]) == 4
 
 
+def test_evolution_avant_apres_jamais_en_faveur_de_l_intervention():
+    # Relecture du 12/11/2026 : des évolutions dans un seul groupe étaient notées « en faveur de l'intervention ».
+    r = json.loads(reponse())
+    r["resultats"][0].update(critere="Douleur (groupe exercice, après contre avant)")
+    e, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
+    assert e["resultats"][0]["en_faveur_de"] == "indetermine" and e["resultats"][0]["sens_mesure"] == "diminue"
+    assert [x["nature"] for x in bilan["ecarts"]] == ["évolution avant-après : « en faveur de » ramené à « indetermine »"]
+    # Une comparaison entre groupes garde sa valeur.
+    e, _ = extraction.lire_extraction(reponse(), doc(), True)
+    assert e["resultats"][0]["en_faveur_de"] == "intervention"
+
+
 def test_alertes_de_coherence():
     alertes = extraction.alertes_coherence
     assert alertes({"valeur": "4,44", "intervalle": "IC à 95 % : 1,62 à 7,26", "p": None, "sens_mesure": "augmente"}) == []
