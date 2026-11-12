@@ -31,6 +31,15 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
+  diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
+  déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la
+  main. `banc/chiffres.py` fixe les règles de comparaison avant toute mesure ;
+  `banc/assembler_chiffres.py` et le workflow « Corpus, chiffres relevés » lisent les tableaux
+  des revues et vérifient chaque chiffre, sans IA.
+- Banc d'essai de l'extraction : mesure des chiffres relevés, faite par le code et sans IA
+  lectrice. Seuil fixé avant la mesure : 80 % des chiffres retrouvés à partir du texte intégral
+  (VS-D34).
 - `.claude/skills/` : les sept fiches de méthode communes aux applications de l'écosystème,
   copiées du dépôt de coordination (consigne CONS-2026-11-12-01, VS-D35). Seule leur partie
   « Dans ce projet » est propre à Veille Santé.

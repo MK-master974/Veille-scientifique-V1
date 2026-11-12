@@ -16,6 +16,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Pièges : article rétracté, résumé seul, instruction cachée dans le texte | Construits le 11 novembre 2026 : `corpus/pieges.json` |
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | Écrit le 11 novembre 2026 : `banc.py`, lancé par le workflow « Banc d'essai ». Deux passages faits : voir `resultats/` |
 | Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Quatre mesures faites : `resultats/2026-11-12-extraction.md` |
+| Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -83,6 +84,35 @@ son intervalle de confiance pour une méta-analyse. Personne ne remplit de corri
   extraites (le champ « effectif », ou les résultats). Aucune IA lectrice : le score ne varie pas
   d'un lancement à l'autre. Seuil : 80 % des chiffres retrouvés à partir du texte intégral.
 
+**Revues sources** (toutes sous licence CC BY), et articles retenus :
+
+| Revue source | Tableaux | Articles du corpus |
+| --- | --- | --- |
+| PMID 37444127, Int J Environ Res Public Health 2023 : dépistage de la fragilité aux urgences | 3 et 4 | 2 études diagnostiques |
+| PMID 35150292, Knee Surg Sports Traumatol Arthrosc 2022 : tests cliniques du ligament croisé antérieur | 2 | 2 études diagnostiques |
+| PMID 39014328, BMC Geriatr 2024 : test d'Ishii pour la sarcopénie | 1 et 2 | 3 études diagnostiques |
+| PMID 36151550, BMC Musculoskelet Disord 2022 : règle d'Ottawa pour la cheville | 1 et 2 | 2 études diagnostiques |
+| PMID 39026375, Syst Rev 2024 : exercices traditionnels chinois et arthrose du genou | 1 et 7 | 4 méta-analyses |
+| PMID 42643227, Front Nutr 2026 : glucosamine et arthrose du genou | 1, 4 et 5 | 2 méta-analyses |
+| PMID 42947838, Front Psychol 2026 : exercice et équilibre dans la maladie de Parkinson | 2 | 2 méta-analyses |
+| PMID 40943700, J Clin Med 2025 : exercice et lombalgie | 1 | 2 méta-analyses |
+| PMID 38786366, Healthcare 2024 : exercice et interleukine 6 | 3 | 1 revue systématique sans méta-analyse |
+
+**Choix des articles.** 82 revues candidates ont été trouvées dans PubMed, puis lues sans IA : 62
+sont sous licence CC BY avec un texte lisible, et 13 ont un tableau de chiffres qui cite des études
+elles-mêmes sous licence CC BY. Neuf ont été gardées : celles dont le tableau donne des chiffres
+par étude (et non seulement un décompte), en variant les sujets. Ce choix est fait par la session
+de développement, avant toute mesure ; il n'est pas tiré au sort.
+
+**Vérification avant la mesure** (lancement 43280778551, sans IA) : licences conformes pour les 20
+articles et les 9 revues ; 161 chiffres sur 161 bien recopiés ; 161 sur 161 confirmés dans leur
+article. Aucun chiffre n'a donc été écarté du score.
+
+**Deux pièges du travail sur des tableaux**, que le code traite : dans une revue source, les
+renvois numérotés du tableau ne désignaient pas les études nommées sur la ligne (le nom et l'année
+écrits l'emportent ; une ligne dont rien ne concorde est écartée) ; dans une autre, chaque étude
+occupait un bloc de lignes.
+
 ## Les pièges
 
 | Cas | Ce qui est attendu |
@@ -146,8 +176,15 @@ pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmè
   (8983), un critère qui est en fait une chaussure (1676). Le banc de l'extraction du 12 novembre
   2026 les a relevés. Ils restent dans le corpus : `corpus/corriges_contestes.json` en liste dix,
   avec leur preuve, et le banc donne un second score sur les 22 autres (VS-D29).
-- Le corpus ne contient que des essais randomisés pour le « sens de l'effet » : il ne mesure pas
-  l'extraction sur une revue ou une étude diagnostique.
+- Le corpus ne contient que des essais randomisés pour le « sens de l'effet ». Depuis le
+  12 novembre 2026, l'extraction est aussi mesurée sur des études diagnostiques et des
+  méta-analyses, par les cas « chiffres relevés ».
+- Les cas « chiffres relevés » mesurent si un chiffre est extrait, pas s'il est bien étiqueté : une
+  sensibilité attribuée au mauvais test, ou à la mauvaise version d'un questionnaire, compte comme
+  retrouvée. Ils ne mesurent ni le sens d'un effet ni le rang d'un critère.
+- Un seul cas de revue systématique sans méta-analyse : leurs corrigés sont le plus souvent des
+  phrases, pas des chiffres.
+- Les recommandations n'ont toujours aucun corrigé pour l'extraction.
 - Ces cas mesurent l'extraction et l'interprétation statistique, pas l'intérêt clinique d'un
   résultat pour un professionnel.
 - Un corrigé peut lui-même contenir une erreur : un écart est un signal à examiner, pas une
