@@ -6,7 +6,8 @@
  "ecriture": "Un chiffre s'écrit sans signe ni séparateur de milliers, avec un point décimal. Le signe n'est pas recopié : les règles de comparaison l'ignorent (banc/chiffres.py).",
  "groupe": "Les chiffres qui vont ensemble portent le même « groupe » : un effet et les deux bornes de son intervalle ; la sensibilité, la spécificité et l'aire sous la courbe d'un même test. Un chiffre d'un groupe n'est confirmé dans l'article que s'il s'y trouve à côté d'un autre chiffre de son groupe (règle de voisinage de banc/chiffres.py).",
  "dans_l_article": "true : le code retrouve le chiffre dans le texte intégral de l'article, à côté des chiffres de son groupe s'il en a un. false : il ne l'y retrouve pas ; le chiffre est écarté du score et compté à part (VS-D34). null : pas encore vérifié. Valeurs fixées par le workflow « Corpus, chiffres relevés », avant toute mesure.",
- "etabli_par": "Session de développement du 12/11/2026, à partir des lignes de tableaux lues sur GitHub Actions. Recopie contrôlée par le code ; non relue par un humain.",
+ "etabli_par": "Session de développement du 12/11/2026, à partir des lignes de tableaux lues sur GitHub Actions (lancements 43278548445 et 43279523961). Non relu par un humain.",
+ "verification": "Lancement 43280778551 du workflow « Corpus, chiffres relevés », sans IA, avant toute mesure : licences conformes pour les 20 articles et les 9 revues sources ; recopie conforme pour 161 chiffres sur 161 ; 161 chiffres sur 161 confirmés dans leur article.",
  "groupes": [
   {
    "type_etude": "etude_diagnostique",
@@ -31,14 +32,14 @@
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "265",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "cfs-se",
        "nature": "sensibilite",
        "libelle": "Clinical Frailty Scale, seuil 5",
        "valeur": "0.51",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "cfs"
       },
       {
@@ -46,7 +47,7 @@
        "nature": "specificite",
        "libelle": "Clinical Frailty Scale, seuil 5",
        "valeur": "0.94",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "cfs"
       },
       {
@@ -54,7 +55,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "Clinical Frailty Scale, seuil 5",
        "valeur": "0.83",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "cfs"
       },
       {
@@ -62,7 +63,7 @@
        "nature": "sensibilite",
        "libelle": "ISAR, seuil 2",
        "valeur": "0.95",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "isar"
       },
       {
@@ -70,7 +71,7 @@
        "nature": "specificite",
        "libelle": "ISAR, seuil 2",
        "valeur": "0.35",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "isar"
       },
       {
@@ -78,7 +79,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "ISAR, seuil 2",
        "valeur": "0.78",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "isar"
       },
       {
@@ -86,7 +87,7 @@
        "nature": "sensibilite",
        "libelle": "PRISMA-7, seuil 3",
        "valeur": "0.84",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "prisma7"
       },
       {
@@ -94,7 +95,7 @@
        "nature": "specificite",
        "libelle": "PRISMA-7, seuil 3",
        "valeur": "0.78",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "prisma7"
       },
       {
@@ -102,7 +103,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "PRISMA-7, seuil 3",
        "valeur": "0.88",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "prisma7"
       }
      ]
@@ -118,14 +119,14 @@
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "161",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "fresh4-se",
        "nature": "sensibilite",
        "libelle": "FRESH, version à 4 questions",
        "valeur": "0.84",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fresh4"
       },
       {
@@ -133,7 +134,7 @@
        "nature": "specificite",
        "libelle": "FRESH, version à 4 questions",
        "valeur": "0.75",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fresh4"
       },
       {
@@ -141,7 +142,7 @@
        "nature": "sensibilite",
        "libelle": "FRESH, version à 5 questions",
        "valeur": "0.81",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fresh5"
       },
       {
@@ -149,7 +150,7 @@
        "nature": "specificite",
        "libelle": "FRESH, version à 5 questions",
        "valeur": "0.80",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fresh5"
       },
       {
@@ -157,7 +158,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "FRESH",
        "valeur": "0.86",
-       "dans_l_article": null
+       "dans_l_article": true
       }
      ]
     }
@@ -186,35 +187,35 @@
        "nature": "effectif",
        "libelle": "patients",
        "valeur": "117",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "tiroir-se",
        "nature": "sensibilite",
        "libelle": "test du tiroir antérieur",
        "valeur": "0.60",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "lachman-se",
        "nature": "sensibilite",
        "libelle": "test de Lachman",
        "valeur": "0.80",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "levier-se",
        "nature": "sensibilite",
        "libelle": "test du levier",
        "valeur": "0.94",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "pivot-se",
        "nature": "sensibilite",
        "libelle": "test du ressaut (pivot shift)",
        "valeur": "0.62",
-       "dans_l_article": null
+       "dans_l_article": true
       }
      ]
     },
@@ -229,14 +230,14 @@
        "nature": "effectif",
        "libelle": "patients",
        "valeur": "78",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "tiroir-se",
        "nature": "sensibilite",
        "libelle": "test du tiroir antérieur",
        "valeur": "0.77",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tiroir"
       },
       {
@@ -244,7 +245,7 @@
        "nature": "specificite",
        "libelle": "test du tiroir antérieur",
        "valeur": "0.69",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tiroir"
       },
       {
@@ -252,7 +253,7 @@
        "nature": "sensibilite",
        "libelle": "test de Lachman",
        "valeur": "0.81",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "lachman"
       },
       {
@@ -260,7 +261,7 @@
        "nature": "specificite",
        "libelle": "test de Lachman",
        "valeur": "0.63",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "lachman"
       },
       {
@@ -268,7 +269,7 @@
        "nature": "sensibilite",
        "libelle": "test du levier",
        "valeur": "0.92",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "levier"
       },
       {
@@ -276,7 +277,7 @@
        "nature": "specificite",
        "libelle": "test du levier",
        "valeur": "0.94",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "levier"
       },
       {
@@ -284,7 +285,7 @@
        "nature": "sensibilite",
        "libelle": "test du ressaut (pivot shift)",
        "valeur": "0.52",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "pivot"
       },
       {
@@ -292,7 +293,7 @@
        "nature": "specificite",
        "libelle": "test du ressaut (pivot shift)",
        "valeur": "0.94",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "pivot"
       }
      ]
@@ -323,14 +324,14 @@
        "nature": "effectif",
        "libelle": "personnes âgées",
        "valeur": "941",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "hommes-seuil-origine-se",
        "nature": "sensibilite",
        "libelle": "test d'Ishii, hommes, seuil d'origine, en %",
        "valeur": "64.94",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes-seuil-origine"
       },
       {
@@ -338,7 +339,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, hommes, seuil d'origine, en %",
        "valeur": "85.46",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes-seuil-origine"
       },
       {
@@ -346,7 +347,7 @@
        "nature": "sensibilite",
        "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
        "valeur": "70.65",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes-nouveau-seuil"
       },
       {
@@ -354,7 +355,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
        "valeur": "81.35",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes-nouveau-seuil"
       },
       {
@@ -362,7 +363,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
        "valeur": "0.81",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes-nouveau-seuil"
       },
       {
@@ -370,7 +371,7 @@
        "nature": "sensibilite",
        "libelle": "test d'Ishii, femmes, seuil d'origine, en %",
        "valeur": "46.91",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes-seuil-origine"
       },
       {
@@ -378,7 +379,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, femmes, seuil d'origine, en %",
        "valeur": "93.22",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes-seuil-origine"
       },
       {
@@ -386,7 +387,7 @@
        "nature": "sensibilite",
        "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
        "valeur": "75.31",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes-nouveau-seuil"
       },
       {
@@ -394,7 +395,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
        "valeur": "79.9",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes-nouveau-seuil"
       },
       {
@@ -402,7 +403,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
        "valeur": "0.84",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes-nouveau-seuil"
       }
      ]
@@ -418,14 +419,14 @@
        "nature": "effectif",
        "libelle": "personnes âgées",
        "valeur": "215",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "hommes-se",
        "nature": "sensibilite",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "93.2",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -433,7 +434,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "59.1",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -441,7 +442,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "0.83",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -449,7 +450,7 @@
        "nature": "sensibilite",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "93.3",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       },
       {
@@ -457,7 +458,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "64.7",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       },
       {
@@ -465,7 +466,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "0.84",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       }
      ]
@@ -481,14 +482,14 @@
        "nature": "effectif",
        "libelle": "personnes âgées",
        "valeur": "138",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "hommes-se",
        "nature": "sensibilite",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "88.9",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -496,7 +497,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "70.6",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -504,7 +505,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, hommes, en %",
        "valeur": "0.87",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "hommes"
       },
       {
@@ -512,7 +513,7 @@
        "nature": "sensibilite",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "77.8",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       },
       {
@@ -520,7 +521,7 @@
        "nature": "specificite",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "68.6",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       },
       {
@@ -528,7 +529,7 @@
        "nature": "aire_sous_la_courbe",
        "libelle": "test d'Ishii, femmes, en %",
        "valeur": "0.78",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "femmes"
       }
      ]
@@ -558,14 +559,14 @@
        "nature": "effectif",
        "libelle": "taille de l'échantillon",
        "valeur": "262",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "ottawa-se",
        "nature": "sensibilite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.95",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "ottawa"
       },
       {
@@ -573,7 +574,7 @@
        "nature": "specificite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.16",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "ottawa"
       }
      ]
@@ -589,14 +590,14 @@
        "nature": "effectif",
        "libelle": "taille de l'échantillon",
        "valeur": "183",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "ottawa-se",
        "nature": "sensibilite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.97",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "ottawa"
       },
       {
@@ -604,7 +605,7 @@
        "nature": "specificite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.46",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "ottawa"
       }
      ]
@@ -634,21 +635,21 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "7",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "n",
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "348",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "douleur",
        "nature": "effet",
        "libelle": "WOMAC douleur, SMD",
        "valeur": "0.45",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -656,7 +657,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC douleur, SMD, borne de l'intervalle",
        "valeur": "0.70",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -664,7 +665,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC douleur, SMD, autre borne de l'intervalle",
        "valeur": "0.20",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -672,7 +673,7 @@
        "nature": "effet",
        "libelle": "WOMAC raideur, SMD",
        "valeur": "0.31",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -680,7 +681,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC raideur, SMD, borne de l'intervalle",
        "valeur": "0.60",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -688,7 +689,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC raideur, SMD, autre borne de l'intervalle",
        "valeur": "0.02",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -696,7 +697,7 @@
        "nature": "effet",
        "libelle": "WOMAC fonction physique, SMD",
        "valeur": "0.61",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -704,7 +705,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC fonction physique, SMD, borne de l'intervalle",
        "valeur": "0.85",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -712,7 +713,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC fonction physique, SMD, autre borne de l'intervalle",
        "valeur": "0.37",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       }
      ]
@@ -728,21 +729,21 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "14",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "n",
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "815",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "douleur",
        "nature": "effet",
        "libelle": "WOMAC ou KOOS douleur, SMD",
        "valeur": "0.61",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -750,7 +751,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC ou KOOS douleur, SMD, borne de l'intervalle",
        "valeur": "0.86",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -758,7 +759,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC ou KOOS douleur, SMD, autre borne de l'intervalle",
        "valeur": "0.37",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -766,7 +767,7 @@
        "nature": "effet",
        "libelle": "WOMAC ou KOOS raideur, SMD",
        "valeur": "0.75",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -774,7 +775,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC ou KOOS raideur, SMD, borne de l'intervalle",
        "valeur": "1.09",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -782,7 +783,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC ou KOOS raideur, SMD, autre borne de l'intervalle",
        "valeur": "0.41",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -790,7 +791,7 @@
        "nature": "effet",
        "libelle": "WOMAC ou KOOS fonction physique, SMD",
        "valeur": "0.67",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -798,7 +799,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC ou KOOS fonction physique, SMD, borne de l'intervalle",
        "valeur": "0.82",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -806,7 +807,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC ou KOOS fonction physique, SMD, autre borne de l'intervalle",
        "valeur": "0.53",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       }
      ]
@@ -822,21 +823,21 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "11",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "n",
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "603",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "marche6",
        "nature": "effet",
        "libelle": "test de marche de 6 minutes, MD",
        "valeur": "46.67",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "marche6"
       },
       {
@@ -844,7 +845,7 @@
        "nature": "ic_bas",
        "libelle": "test de marche de 6 minutes, MD, borne de l'intervalle",
        "valeur": "36.91",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "marche6"
       },
       {
@@ -852,7 +853,7 @@
        "nature": "ic_haut",
        "libelle": "test de marche de 6 minutes, MD, autre borne de l'intervalle",
        "valeur": "56.43",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "marche6"
       },
       {
@@ -860,7 +861,7 @@
        "nature": "effet",
        "libelle": "Timed Up and Go, MD",
        "valeur": "0.89",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -868,7 +869,7 @@
        "nature": "ic_bas",
        "libelle": "Timed Up and Go, MD, borne de l'intervalle",
        "valeur": "1.16",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -876,7 +877,7 @@
        "nature": "ic_haut",
        "libelle": "Timed Up and Go, MD, autre borne de l'intervalle",
        "valeur": "0.61",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -884,7 +885,7 @@
        "nature": "effet",
        "libelle": "WOMAC fonction physique, MD",
        "valeur": "11.28",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -892,7 +893,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC fonction physique, MD, borne de l'intervalle",
        "valeur": "13.33",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -900,7 +901,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC fonction physique, MD, autre borne de l'intervalle",
        "valeur": "9.24",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       }
      ]
@@ -916,21 +917,21 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "8",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "n",
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "375",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "douleur",
        "nature": "effet",
        "libelle": "douleur, SMD",
        "valeur": "0.77",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -938,7 +939,7 @@
        "nature": "ic_bas",
        "libelle": "douleur, SMD, borne de l'intervalle",
        "valeur": "1.13",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -946,7 +947,7 @@
        "nature": "ic_haut",
        "libelle": "douleur, SMD, autre borne de l'intervalle",
        "valeur": "0.41",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "douleur"
       },
       {
@@ -954,7 +955,7 @@
        "nature": "effet",
        "libelle": "fonction physique, SMD",
        "valeur": "0.75",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -962,7 +963,7 @@
        "nature": "ic_bas",
        "libelle": "fonction physique, SMD, borne de l'intervalle",
        "valeur": "0.98",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -970,7 +971,7 @@
        "nature": "ic_haut",
        "libelle": "fonction physique, SMD, autre borne de l'intervalle",
        "valeur": "0.52",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "fonction"
       },
       {
@@ -978,7 +979,7 @@
        "nature": "effet",
        "libelle": "raideur, SMD",
        "valeur": "0.56",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -986,7 +987,7 @@
        "nature": "ic_bas",
        "libelle": "raideur, SMD, borne de l'intervalle",
        "valeur": "0.96",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -994,7 +995,7 @@
        "nature": "ic_haut",
        "libelle": "raideur, SMD, autre borne de l'intervalle",
        "valeur": "0.16",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "raideur"
       },
       {
@@ -1002,7 +1003,7 @@
        "nature": "effet",
        "libelle": "SF-36, score physique, SMD",
        "valeur": "0.57",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-physique"
       },
       {
@@ -1010,7 +1011,7 @@
        "nature": "ic_bas",
        "libelle": "SF-36, score physique, SMD, borne de l'intervalle",
        "valeur": "0.17",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-physique"
       },
       {
@@ -1018,7 +1019,7 @@
        "nature": "ic_haut",
        "libelle": "SF-36, score physique, SMD, autre borne de l'intervalle",
        "valeur": "0.97",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-physique"
       },
       {
@@ -1026,7 +1027,7 @@
        "nature": "effet",
        "libelle": "SF-36, score mental, SMD",
        "valeur": "4.12",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-mental"
       },
       {
@@ -1034,7 +1035,7 @@
        "nature": "ic_bas",
        "libelle": "SF-36, score mental, SMD, borne de l'intervalle",
        "valeur": "0.50",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-mental"
       },
       {
@@ -1042,7 +1043,7 @@
        "nature": "ic_haut",
        "libelle": "SF-36, score mental, SMD, autre borne de l'intervalle",
        "valeur": "8.73",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "sf36-mental"
       }
      ]
@@ -1072,14 +1073,14 @@
        "nature": "nombre_etudes",
        "libelle": "essais inclus sur la glucosamine",
        "valeur": "10",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "eva",
        "nature": "effet",
        "libelle": "douleur, échelle visuelle analogique",
        "valeur": "0.19",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1087,7 +1088,7 @@
        "nature": "ic_bas",
        "libelle": "douleur, échelle visuelle analogique, borne de l'intervalle",
        "valeur": "0.36",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1095,7 +1096,7 @@
        "nature": "ic_haut",
        "libelle": "douleur, échelle visuelle analogique, autre borne de l'intervalle",
        "valeur": "0.03",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1103,7 +1104,7 @@
        "nature": "effet",
        "libelle": "WOMAC total",
        "valeur": "0.06",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1111,7 +1112,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC total, borne de l'intervalle",
        "valeur": "0.17",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1119,7 +1120,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC total, autre borne de l'intervalle",
        "valeur": "0.05",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1127,7 +1128,7 @@
        "nature": "effet",
        "libelle": "WOMAC douleur",
        "valeur": "0.04",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1135,7 +1136,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC douleur, borne de l'intervalle",
        "valeur": "0.13",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1143,7 +1144,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC douleur, autre borne de l'intervalle",
        "valeur": "0.06",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1151,7 +1152,7 @@
        "nature": "effet",
        "libelle": "WOMAC fonction",
        "valeur": "0.07",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       },
       {
@@ -1159,7 +1160,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC fonction, borne de l'intervalle",
        "valeur": "0.17",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       },
       {
@@ -1167,7 +1168,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC fonction, autre borne de l'intervalle",
        "valeur": "0.03",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       }
      ]
@@ -1183,14 +1184,14 @@
        "nature": "nombre_etudes",
        "libelle": "essais inclus sur la glucosamine",
        "valeur": "8",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "eva",
        "nature": "effet",
        "libelle": "douleur, échelle visuelle analogique",
        "valeur": "7.41",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1198,7 +1199,7 @@
        "nature": "ic_bas",
        "libelle": "douleur, échelle visuelle analogique, borne de l'intervalle",
        "valeur": "14.3",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1206,7 +1207,7 @@
        "nature": "ic_haut",
        "libelle": "douleur, échelle visuelle analogique, autre borne de l'intervalle",
        "valeur": "0.51",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "eva"
       },
       {
@@ -1214,7 +1215,7 @@
        "nature": "effet",
        "libelle": "WOMAC total",
        "valeur": "2.27",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1222,7 +1223,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC total, borne de l'intervalle",
        "valeur": "5.21",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1230,7 +1231,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC total, autre borne de l'intervalle",
        "valeur": "0.66",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac"
       },
       {
@@ -1238,7 +1239,7 @@
        "nature": "effet",
        "libelle": "WOMAC douleur",
        "valeur": "0.04",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1246,7 +1247,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC douleur, borne de l'intervalle",
        "valeur": "0.13",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1254,7 +1255,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC douleur, autre borne de l'intervalle",
        "valeur": "0.06",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-douleur"
       },
       {
@@ -1262,7 +1263,7 @@
        "nature": "effet",
        "libelle": "WOMAC raideur",
        "valeur": "0.07",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-raideur"
       },
       {
@@ -1270,7 +1271,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC raideur, borne de l'intervalle",
        "valeur": "0.17",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-raideur"
       },
       {
@@ -1278,7 +1279,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC raideur, autre borne de l'intervalle",
        "valeur": "0.03",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-raideur"
       },
       {
@@ -1286,7 +1287,7 @@
        "nature": "effet",
        "libelle": "WOMAC fonction",
        "valeur": "0.30",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       },
       {
@@ -1294,7 +1295,7 @@
        "nature": "ic_bas",
        "libelle": "WOMAC fonction, borne de l'intervalle",
        "valeur": "0.82",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       },
       {
@@ -1302,7 +1303,7 @@
        "nature": "ic_haut",
        "libelle": "WOMAC fonction, autre borne de l'intervalle",
        "valeur": "0.21",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "womac-fonction"
       }
      ]
@@ -1332,21 +1333,21 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "62",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "n",
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "3274",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "equilibre",
        "nature": "effet",
        "libelle": "équilibre, SMD",
        "valeur": "0.53",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "equilibre"
       },
       {
@@ -1354,7 +1355,7 @@
        "nature": "ic_bas",
        "libelle": "équilibre, SMD, borne de l'intervalle",
        "valeur": "0.33",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "equilibre"
       },
       {
@@ -1362,7 +1363,7 @@
        "nature": "ic_haut",
        "libelle": "équilibre, SMD, autre borne de l'intervalle",
        "valeur": "0.74",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "equilibre"
       },
       {
@@ -1370,7 +1371,7 @@
        "nature": "effet",
        "libelle": "Timed Up and Go, SMD",
        "valeur": "0.44",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -1378,7 +1379,7 @@
        "nature": "ic_bas",
        "libelle": "Timed Up and Go, SMD, borne de l'intervalle",
        "valeur": "0.60",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -1386,7 +1387,7 @@
        "nature": "ic_haut",
        "libelle": "Timed Up and Go, SMD, autre borne de l'intervalle",
        "valeur": "0.28",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       }
      ]
@@ -1402,14 +1403,14 @@
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "20",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "berg",
        "nature": "effet",
        "libelle": "échelle d'équilibre de Berg, SMD",
        "valeur": "0.99",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "berg"
       },
       {
@@ -1417,7 +1418,7 @@
        "nature": "ic_bas",
        "libelle": "échelle d'équilibre de Berg, SMD, borne de l'intervalle",
        "valeur": "0.76",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "berg"
       },
       {
@@ -1425,7 +1426,7 @@
        "nature": "ic_haut",
        "libelle": "échelle d'équilibre de Berg, SMD, autre borne de l'intervalle",
        "valeur": "1.23",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "berg"
       },
       {
@@ -1433,7 +1434,7 @@
        "nature": "effet",
        "libelle": "Timed Up and Go, SMD",
        "valeur": "0.41",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -1441,7 +1442,7 @@
        "nature": "ic_bas",
        "libelle": "Timed Up and Go, SMD, borne de l'intervalle",
        "valeur": "0.61",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       },
       {
@@ -1449,7 +1450,7 @@
        "nature": "ic_haut",
        "libelle": "Timed Up and Go, SMD, autre borne de l'intervalle",
        "valeur": "0.22",
-       "dans_l_article": null,
+       "dans_l_article": true,
        "groupe": "tug"
       }
      ]
@@ -1479,14 +1480,14 @@
        "nature": "effectif",
        "libelle": "patients",
        "valeur": "1108",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "k",
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "19",
-       "dans_l_article": null
+       "dans_l_article": true
       }
      ]
     },
@@ -1501,14 +1502,14 @@
        "nature": "effectif",
        "libelle": "patients",
        "valeur": "989",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "k",
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "18",
-       "dans_l_article": null
+       "dans_l_article": true
       }
      ]
     }
@@ -1537,14 +1538,14 @@
        "nature": "effectif",
        "libelle": "participants",
        "valeur": "1421",
-       "dans_l_article": null
+       "dans_l_article": true
       },
       {
        "id": "k",
        "nature": "nombre_etudes",
        "libelle": "études incluses",
        "valeur": "51",
-       "dans_l_article": null
+       "dans_l_article": true
       }
      ]
     }
