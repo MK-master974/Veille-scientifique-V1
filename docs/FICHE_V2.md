@@ -1,7 +1,7 @@
 # Fiche v2 — format d'une fiche de veille
 
 Format cible d'une fiche, décidé par le porteur du projet le 12 novembre 2026 (décisions VS-D12 à
-VS-D15 de [DECISIONS.md](DECISIONS.md)).
+VS-D16 et VS-D19 de [DECISIONS.md](DECISIONS.md)).
 
 **Ce format n'est pas encore produit.** Le moteur et l'application publient des fiches au format
 actuel (« v1 », décrit dans [ARCHITECTURE.md](ARCHITECTURE.md)) jusqu'à la bascule, dernière
@@ -57,6 +57,10 @@ Source, PMID, DOI, lien, titre original, revue, année, volume, numéro, pages, 
 publication déclarés par PubMed, langue, et `signalement` (`null`, `correction`, `reserve` ou
 `retractation`). Aucun de ces champs n'est écrit par l'IA.
 
+`annee` et `mois` restent la date du numéro de la revue, comme aujourd'hui. `date_en_ligne`
+(VS-D19) porte la date de mise en ligne de l'article quand PubMed la donne, `null` sinon : les
+deux peuvent tomber sur des années différentes, ce qui fausse une citation.
+
 ### `acces` (code)
 
 | Champ | Contenu |
@@ -72,14 +76,28 @@ publication déclarés par PubMed, langue, et `signalement` (`null`, `correction
 
 | Champ | Contenu |
 | --- | --- |
-| `type` | Type d'étude, compatible avec celui déclaré par PubMed |
+| `type` | Type d'étude, compatible avec celui déclaré par PubMed. Valeurs : voir ci-dessous |
 | `domaines` | Sous-champs du catalogue |
-| `themes` | `pathologie`, `population`, `intervention`, `critere` : listes de termes, pour la recherche et la correspondance avec les autres applications |
+| `themes` | `pathologie`, `population`, `intervention`, `critere` : listes de termes libres, pour la recherche. `region` : liste de régions anatomiques, à vocabulaire fermé (VS-D16), voir ci-dessous |
 | `categorie` | Catégorie d'importance, de 1 à 4 (VS-D13) |
 | `justification_categorie` | Obligatoire. Pourquoi cette catégorie |
 | `mise_en_avant` | Obligatoire en catégorie 1 : ce que la publication apporte de nouveau, ce qu'elle remet en question, si elle peut modifier les pratiques, le degré de certitude de cette lecture, les confirmations nécessaires |
 | `sens_pratique` | `confirme`, `remet_en_question` ou `null` : précision gardée de l'ancien verdict |
 | `pertinence` | 1 à 3, gardée telle quelle jusqu'à la refonte de la page de veille : le profil du lecteur s'en sert |
+
+Types d'étude : `recommandation`, `revue_systematique`, `meta_analyse`, `essai_randomise`,
+`etude_diagnostique`. Ce sont les cinq valeurs du moteur actuel (`TYPES` dans `pipeline/regles.py`).
+La liste pourra s'élargir quand les règles d'inclusion seront revues ; ce n'est pas décidé.
+
+Régions : `themes.region` ne prend que des valeurs de la liste commune aux applications de
+l'écosystème, validée par le porteur du projet le 12 novembre 2026 (décision de coordination
+POR-D22) : `genou`, `rachis-lombaire`, `epaule`, `cheville-pied`, `rachis-cervical`, `hanche`,
+`rachis-thoracique`, `coude`, `poignet-main`, et `transversal` pour une publication qui concerne
+tout le corps. Une fiche peut porter plusieurs régions ; la liste reste vide quand la publication
+n'en concerne aucune. La liste est tenue dans le dépôt de coordination : une nouvelle région y
+passe par une demande de fusion. Le domaine `kine/msk-membre-inf` couvre la hanche, le genou et
+la cheville : il ne suffit pas à rapprocher une fiche d'une région d'Évalys. Le code `transversal`
+d'une région n'a pas de rapport avec le domaine `transversal/grandes-nouveautes`.
 
 Catégories : 1 « évolution potentielle des pratiques », 2 « apport scientifique important »,
 3 « actualisation des connaissances », 4 « veille complémentaire ». La catégorie est indépendante
@@ -202,7 +220,7 @@ supprimée ni réécrite.
 | Origine | `id` et `version` |
 | Impact clinique | `synthese.entete.impact_clinique` |
 | Contenu | `synthese`, `extraction`, `appreciation`, `dates.analyse` |
-| Cible dans Évalys, justification | Hors de la fiche |
+| Cible dans Évalys, justification | Hors de la fiche. `classement.themes.region` aide à trouver la région concernée |
 
 Aucune fiche ne part automatiquement vers une autre application. La publication hebdomadaire ne
 dépend d'aucune d'elles.
@@ -211,6 +229,8 @@ dépend d'aucune d'elles.
 
 | Sujet | Où il se règle |
 | --- | --- |
+| Second champ de thèmes proposé par Évalys (sécurité et tri, douleur, post-opératoire, questionnaire, médicament) | Après le pilote « genou » |
+| Liste des types d'étude au-delà des cinq actuels | Avec la révision des règles d'inclusion |
 | Recherche du texte intégral, lecture des licences | Séance 4 |
 | Règle de l'étiquette et de la catégorie, mesurée au banc d'essai | Séance 6 |
 | Longueur maximale des champs de l'en-tête | Séance 7, au banc d'essai |
@@ -237,6 +257,7 @@ sont montrés.
   "profondeur": "reperage",
   "classement": { "type": "meta_analyse",
                   "domaines": ["kine/msk-membre-inf", "medecine/rhumatologie", "medecine/mpr"],
+                  "themes": { "region": [] },
                   "categorie": null, "sens_pratique": null, "pertinence": 2 },
   "extraction": {
     "resultats": [

@@ -22,11 +22,19 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Phase 1, séance 4 : `pipeline/acces.py` cherche le texte intégral légal d'une publication, lit
+  sa licence et attribue un niveau d'accès ; `banc/mesure_acces.py` et le workflow « Niveaux
+  d'accès » mesurent ces niveaux sur une semaine déjà publiée. Aucune IA n'est appelée, aucun
+  texte d'article n'est gardé, et la veille hebdomadaire n'utilise pas encore ce module.
 - `docs/FICHE_V2.md` : format cible d'une fiche, la « fiche v2 », décidé le 12 novembre 2026
   (VS-D12 à VS-D15). Fiche unique progressive avec l'impact clinique dans l'en-tête, niveau
   d'accès et profondeur d'analyse, données extraites avec leur emplacement, catégorie d'importance
   à la place du verdict, étiquette à quatre valeurs, version et historique. Le moteur et
   l'application ne changent pas : la veille publie le format actuel jusqu'à la bascule.
+- `docs/FICHE_V2.md`, compléments demandés par le portail et par Évalys : région anatomique prise
+  dans une liste commune de dix régions (`classement.themes.region`, VS-D16, POR-D22), liste des
+  cinq types d'étude actuels, date de mise en ligne de l'article (`publication.date_en_ligne`,
+  VS-D19).
 - Corpus de référence, suite : cas « qualité méthodologique » (`banc/corpus/qualite.json` : RoB 2,
   QUADAS-2, AMSTAR 2, AGREE II, tirés de revues sous licence CC BY) et trois pièges
   (`banc/corpus/pieges.json`). `banc/extraire_tableaux.py` repère les tableaux d'évaluation dans

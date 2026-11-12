@@ -45,6 +45,7 @@ pas du nombre de lecteurs.
 | `pipeline/semaines.py` | Semaines ISO, du lundi au dimanche, heure de Paris |
 | `pipeline/reseau.py` | Requêtes HTTP avec nouvelles tentatives sur les erreurs passagères |
 | `pipeline/config.py` | Chargement de la configuration, du catalogue et des consignes |
+| `pipeline/acces.py` | Recherche du texte intégral légal, licence et niveau d'accès. Pas encore appelé par la veille |
 | `pipeline/catalogue.json` | Professions et sous-champs |
 | `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` |
 | `site/index.html`, `app.js`, `styles.css` | Application web, sans dépendance |
@@ -64,6 +65,7 @@ pas du nombre de lecteurs.
 | `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
 | `.github/workflows/banc.yml` | Banc d'essai : appelle l'IA, a un coût, ne se lance que sur demande |
 | `.github/workflows/banc-lecture.yml` | Lecture du détail d'un résultat du banc, sans IA |
+| `.github/workflows/acces.yml` | Mesure des niveaux d'accès sur une semaine publiée, sans IA |
 | `CLAUDE.md` | Consignes de travail pour les sessions de développement |
 
 ## Le moteur (`pipeline/`)
@@ -197,6 +199,19 @@ le dossier est aussi gardé 90 jours en artefact (voir « Workflows »).
 - **Synthèses** : chaque phrase est validée (fiche connue, verdict cohérent, 45 mots au plus,
   chiffres présents dans la fiche). Un bloc vide est complété sans IA.
 
+### Accès au texte intégral (`acces.py`)
+
+Module de la phase 1, séance 4. **La veille hebdomadaire ne l'appelle pas** : il sert à la mesure
+des niveaux d'accès et servira à la future chaîne d'analyse (bloc `acces` de la fiche v2).
+
+- **Sources** : Europe PMC pour l'identifiant PubMed Central, la licence déclarée et le texte
+  intégral en XML des articles en accès ouvert ; PubMed pour recouper l'identifiant.
+- **Licence** : ramenée à une classe fixe (CC0, CC BY, CC BY-NC…, « autre », « inconnue »). Une
+  licence inconnue ou propriétaire ne donne jamais mieux que « résumé uniquement ».
+- **Niveau d'accès** : 1 si le texte a un corps d'au moins 5 000 caractères et deux parties, 2 s'il
+  est partiel, 3 sinon. Le périmètre des licences admises reste à décider.
+- **Aucun texte d'article n'est gardé** : seules des mesures de sa structure le sont.
+
 ## Données publiées (`site/data/`)
 
 | Fichier | Contenu |
@@ -274,6 +289,12 @@ branche `claude/**`. Le budget est vérifié avant tout appel.
 
 **`banc-lecture.yml`** : affiche dans le journal le détail d'un résultat du banc déjà produit, à
 partir de son artefact. Aucune IA n'est appelée.
+
+**`acces.yml`** : mesure, pour une semaine déjà publiée, la part des fiches dont le texte intégral
+est accessible légalement, et sous quelle licence (`banc/mesure_acces.py`). Il lit les données
+publiées sur `main`, interroge Europe PMC et PubMed, et ne garde aucun texte d'article. Aucune IA
+n'est appelée. Il se lance à la demande, ou quand `banc/mesures_acces.json` est modifié sur une
+branche de travail.
 
 ## Configuration
 

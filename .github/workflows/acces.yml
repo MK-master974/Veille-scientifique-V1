@@ -1,0 +1,59 @@
+name: Niveaux d'accès
+
+# Mesure, pour une semaine déjà publiée, la part des publications dont le texte intégral est
+# accessible légalement, et sous quelle licence. Aucune IA n'est appelée, aucune clé d'IA n'est
+# utilisée : aucun coût. Rien n'est publié ni ajouté au dépôt par ce workflow, et le texte des
+# articles n'est pas gardé. Il ne touche pas à la veille hebdomadaire.
+# Il se lance par le bouton « Run workflow », ou quand banc/mesures_acces.json est modifié sur
+# une branche de travail.
+on:
+  workflow_dispatch:
+    inputs:
+      semaine:
+        description: "Semaine publiée à mesurer (AAAA-Sxx). Vide : la dernière demandée."
+        required: false
+        default: ""
+  push:
+    branches-ignore: ["main"]
+    paths:
+      - "banc/mesures_acces.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acces
+  cancel-in-progress: false
+
+jobs:
+  mesurer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Les données publiées sont lues sur main : une branche de travail peut être en retard.
+      - name: Récupérer les données publiées
+        run: git fetch --depth 1 origin main
+
+      - name: Mesurer les niveaux d'accès
+        env:
+          SEMAINE: ${{ inputs.semaine }}
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
+          EMAIL_CONTACT: ${{ vars.EMAIL_CONTACT }}
+        run: python banc/mesure_acces.py --semaine "$SEMAINE" --ref origin/main --sortie resultats-acces
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mesure-acces
+          path: resultats-acces/
+          retention-days: 30
+          if-no-files-found: warn

@@ -139,7 +139,7 @@ Décisions prises au fil des séances 2 et 3 de la phase 1 :
 | VS-D10 | Faire la séance 3 de la phase 1 dans une conversation neuve | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
 | VS-D11 | Modèle d'IA de la session de développement de la séance 3 : choisi par le porteur du projet. Son nom n'est pas inscrit dans le dépôt | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
 
-Décisions de coordination entre applications, relayées le 11 novembre 2026 :
+Décisions de coordination entre applications, relayées les 11 et 12 novembre 2026 :
 
 | Référence | Décision |
 | --- | --- |
@@ -149,11 +149,12 @@ Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 | POR-D12 | Veille Santé garde sa propre interface de gestion ; le portail n'en affiche qu'une synthèse. Interface reportée à la phase 4 |
 | POR-D19 | Essai de format du circuit vers Évalys : seul du contenu déjà public dans ce dépôt, avec la mention « résumé uniquement, non destinée à l'intégration clinique ». Pas avant la fin de la phase 0 |
 | POR-D21 | Un avis réglementaire commun aux applications, demandé après la bascule de la fiabilisation |
+| POR-D22 | Liste fermée de dix régions du corps, commune à Veille Santé et à Évalys. Régions validées par le porteur du projet le 12 novembre 2026 ; le second champ de cinq thèmes proposé par Évalys attend le pilote « genou » |
 
 ## 6. Décisions du 12 novembre 2026 : format « fiche v2 »
 
-Séance 3 de la phase 1. Les quatre décisions ont été prises par questionnaire, après relecture du
-brouillon. Le format est décrit dans [FICHE_V2.md](FICHE_V2.md). Rien ne change dans la veille
+Séance 3 de la phase 1. Les décisions VS-D12 à VS-D15 ont été prises par questionnaire, après
+relecture du brouillon ; le format a été figé le même jour par la fusion de la demande n° 8. Le format est décrit dans [FICHE_V2.md](FICHE_V2.md). Rien ne change dans la veille
 publiée avant la bascule, dernière séance de la phase 1.
 
 | Référence | Décision | Statut |
@@ -162,6 +163,11 @@ publiée avant la bascule, dernière séance de la phase 1.
 | VS-D13 | La catégorie d'importance, de 1 à 4 et justifiée, remplace le verdict. « Confirme » et « remet en question » restent comme précision ; « change la pratique » correspond à la catégorie 1 ; « à surveiller » disparaît. Remplace, à la bascule, le verdict à quatre niveaux du 1er novembre. Constat : 707 fiches sur 710 portaient « à surveiller » en S45 | Validée |
 | VS-D14 | L'étiquette de preuve prend quatre valeurs : solide, modéré, préliminaire, non évaluable. Remplace, à la bascule, l'étiquette à trois valeurs du 1er novembre. La règle d'attribution est réglée et mesurée au banc d'essai en séance 6 | Validée |
 | VS-D15 | Un court passage exact d'un article n'est publié que si l'article est sous licence CC BY ou CC0, avec sa source. Pour tous les autres, seul l'emplacement est publié. La règle « ni résumé ni texte d'article » est complétée dans ce sens | Validée |
+| VS-D16 | La fiche v2 porte une région anatomique, `classement.themes.region`, à vocabulaire fermé. La liste est commune aux applications de l'écosystème et tenue dans le dépôt de coordination : dix régions, validées le même jour (POR-D22). Complément au format, demandé par le portail dans son analyse de CHG-2026-0004 | Validée (questionnaire de fin de séance 3) |
+| VS-D17 | Proposer au contrat `vs-evalys-connaissance` la règle suivante, par une demande de fusion dans le dépôt de coordination : une fiche corrigée, suspendue ou retirée, ou une publication signalée, fait repasser la proposition liée à « à actualiser » | Validée (questionnaire de fin de séance 3) |
+| VS-D18 | Séance 4 de la phase 1 (texte intégral en accès ouvert, niveaux d'accès) : accord donné, dans la même conversation de développement | Validée (questionnaire de fin de séance 3) |
+| VS-D19 | La fiche v2 porte la date de mise en ligne de l'article (`publication.date_en_ligne`), en plus de la date du numéro de la revue. Remplie par le code à partir de PubMed. Demande d'Évalys, qui déclare des écarts de citation venus de cette confusion | Validée (questionnaire de fin de séance 3) |
+| VS-D20 | Plan de la séance 4 : un module qui cherche le texte intégral légal et sa licence, et une mesure à la demande des niveaux d'accès sur une semaine publiée, sans IA et hors de la veille hebdomadaire. Mesure sur S45, puis sur S46 le jour de sa publication. Le périmètre des licences admises sera décidé au point d'arrêt, avec les chiffres | Validée le 12 novembre 2026 (questionnaire) |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
@@ -173,7 +179,7 @@ attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.
 | D12 : anciens verdicts et quatre catégories | VS-D13 |
 | D13 : avis juridique sur les textes intégraux | VS-D15 pour les passages publiés ; l'avis reste à demander |
 | D14 : plateforme du service. Le plan l'appelle « VS-D14 » | Pas encore prise, pas encore numérotée ici |
-| D16 : forme de la fiche | VS-D12 |
+| D16 : forme de la fiche | VS-D12. Le VS-D16 de ce registre porte sur la région anatomique |
 
 ## 7. Règles permanentes
 

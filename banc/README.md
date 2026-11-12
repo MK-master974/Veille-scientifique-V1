@@ -60,6 +60,17 @@ critère principal de chaque essai : le banc doit comparer au même critère.
 Le résumé du troisième piège est fictif, écrit pour le banc, et le fichier le signale. Il ne doit
 jamais être publié.
 
+## Mesure des niveaux d'accès
+
+`mesure_acces.py` compte, pour une semaine déjà publiée, les fiches dont le texte intégral est
+accessible légalement dans PubMed Central, la licence de ce texte, et la part de fiches qui
+pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmètres de licences.
+
+- Aucune IA n'est appelée : aucun coût. Le texte des articles n'est pas gardé.
+- **Pour lancer une mesure** : workflow « Niveaux d'accès » dans GitHub Actions, ou une ligne
+  ajoutée à `mesures_acces.json` sur une branche de travail.
+- Les résultats sont rangés dans `resultats/`.
+
 ## Limites connues
 
 - Les articles sont en anglais. Les essais « sens de l'effet » datent de 2005 à 2015.
