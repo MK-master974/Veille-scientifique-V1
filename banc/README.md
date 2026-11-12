@@ -50,6 +50,33 @@ Les tableaux ont été repérés par `extraire_tableaux.py`, lancé par le workf
 référence ». Les jugements RoB 2 portent sur un critère de proprioception, pas forcément sur le
 critère principal de chaque essai : le banc doit comparer au même critère.
 
+## Les cas « chiffres relevés »
+
+Pour une étude diagnostique ou une méta-analyse, le corrigé est fait des **chiffres que les
+auteurs d'une revue en accès libre ont déjà relevés** dans un tableau (VS-D32) : effectif,
+sensibilité et spécificité pour une étude diagnostique ; nombre d'études, effet groupé et bornes de
+son intervalle de confiance pour une méta-analyse. Personne ne remplit de corrigé à la main.
+
+- **Sources** : une revue de précision diagnostique pour les études diagnostiques, une revue de
+  revues pour les méta-analyses. La revue source et l'article sont sous licence CC BY ou CC0.
+- **Assemblage** (`assembler_chiffres.py`, workflow « Corpus, chiffres relevés », sans IA) :
+  1. « repérer » : pour chaque revue candidate, ses tableaux, les études que chaque tableau cite
+     et la licence de ces études ;
+  2. « lire » : les lignes du tableau qui portent sur les études choisies ;
+  3. « vérifier » : pour chaque chiffre du corpus, les licences, la recopie (le chiffre est bien
+     dans la ligne du tableau source) et sa présence dans l'article lui-même.
+- **Ce qui est gardé** (`corpus/chiffres_releves.json`) : des identifiants, des licences et des
+  chiffres. Aucun texte d'article.
+- **Règles de comparaison**, fixées avant toute mesure (`chiffres.py`) : le signe est ignoré ;
+  l'arrondi est toléré (« 29,56 » correspond à « 29,6 ») ; pour une proportion, une fraction et un
+  pourcentage se valent (« 0,94 » et « 94 % »). Rien d'autre n'est toléré.
+- **Un chiffre absent de l'article est écarté du score avant la mesure**, et compté à part
+  (VS-D34) : une revue arrondit, recalcule ou se trompe parfois en recopiant. C'est le code qui le
+  constate, sur le texte de l'article, sans regarder ce que l'IA a extrait.
+- **Mesure** : le banc de l'extraction cherche chaque chiffre dans la zone attendue des données
+  extraites (le champ « effectif », ou les résultats). Aucune IA lectrice : le score ne varie pas
+  d'un lancement à l'autre. Seuil : 80 % des chiffres retrouvés à partir du texte intégral.
+
 ## Les pièges
 
 | Cas | Ce qui est attendu |

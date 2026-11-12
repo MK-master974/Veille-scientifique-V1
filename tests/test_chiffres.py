@@ -170,6 +170,7 @@ def test_les_lignes_d_un_tableau_sont_rattachees_a_l_etude_citee():
     assert chiffres.present(chiffre("sensibilite", "0.94"), texte)
     assert not chiffres.present(chiffre("sensibilite", "0.88"), texte)
     assert assembler.score_donnees(tabs[0], "diagnostic")[0] >= 3
+    assert assembler.meme_libelle("TABLE 2.", " table 2") and not assembler.meme_libelle("Table 2", "Table 12")
 
 
 def test_la_demande_du_depot_est_lisible():

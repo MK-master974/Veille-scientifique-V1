@@ -152,6 +152,12 @@ def score_donnees(tableau, genre):
     return sum(1 for m in MOTS[genre] if m in contenu), len(chiffres.nombres(contenu))
 
 
+def meme_libelle(a, b):
+    """« Table 2 », « TABLE 2. » et « table 2 » désignent le même tableau."""
+    forme = lambda x: re.sub(r"[\s.:]+", " ", (x or "").lower()).strip()   # noqa: E731
+    return forme(a) == forme(b)
+
+
 def lignes_d_une_etude(tableau, idents):
     """Lignes d'un tableau qui citent l'une des références « idents » (ou en héritent)."""
     return [l for l in tableau["lignes"] if set(l["cites"]) & set(idents)]
@@ -282,7 +288,7 @@ def lire(demande):
         idents = {i for i, r in refs.items() if r["pmid"] in voulus} if voulus else set(refs)
         journal(f"\n=== PMID {pmid} | {s['pmcid']} | {s['licence']} | {s['revue']} {s['annee']} | {s['doi']}")
         for t in tabs:
-            if d.get("tableaux") and t["label"] not in d["tableaux"]:
+            if d.get("tableaux") and not any(meme_libelle(t["label"], x) for x in d["tableaux"]):
                 continue
             lignes = lignes_d_une_etude(t, idents)
             if not lignes:
@@ -331,7 +337,7 @@ def verifier(_demande=None):
             sources[s["pmid"]] = tableaux(racine) if racine is not None else ([], {})
             time.sleep(0.3)
         tabs, refs = sources[s["pmid"]]
-        voulus = [t for t in tabs if t["label"] in [x.strip() for x in s["tableau"].split(",")]]
+        voulus = [t for t in tabs if any(meme_libelle(t["label"], x) for x in s["tableau"].split(","))]
         idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])}
         ligne_source = texte_des_lignes(voulus, idents)
         if not ligne_source:
