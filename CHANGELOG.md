@@ -6,6 +6,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- Banc d'essai de l'extraction : il peut ne mesurer qu'une partie du corpus (« parties » : tout,
+  cas mesurés depuis la séance 5, ou chiffres relevés). Son plafond fixe passe de 2 $ à 3 $ par
+  lancement, parce que le corpus grossit (VS-D33).
 - `CLAUDE.md` renvoie aux fiches de méthode de `.claude/skills/` (VS-D35). Les huit règles
   impératives et le format des messages n'y changent pas ; le détail du questionnaire de décision
   est désormais dans la fiche `questionnaire-decision`.

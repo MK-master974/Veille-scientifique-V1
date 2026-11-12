@@ -63,8 +63,9 @@ pas du nombre de lecteurs.
 | `scripts/resume_travail.py` | Résumé chiffré d'un dossier de travail |
 | `demo/` | Quatre publications réelles et les réponses d'IA simulées |
 | `tests/` | Tests du moteur, de la chaîne complète, de l'extraction, des bancs d'essai et de l'assemblage du corpus, sans réseau |
-| `banc/` | Corpus de référence et bancs d'essai : chaîne actuelle (`banc.py`), extraction (`banc_extraction.py`), lanceur (`lancer.py`) ; résultats dans `banc/resultats/` |
+| `banc/` | Corpus de référence et bancs d'essai : chaîne actuelle (`banc.py`), extraction (`banc_extraction.py`), lanceur (`lancer.py`), chiffres relevés (`chiffres.py`, `assembler_chiffres.py`) ; résultats dans `banc/resultats/` |
 | `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
+| `.github/workflows/corpus-chiffres.yml` | Assemblage et vérification des corrigés « chiffres relevés », demandés par `banc/candidats_chiffres.json`, sans IA |
 | `.github/workflows/banc.yml` | Banc d'essai demandé par `banc/lancement.json` : appelle l'IA, a un coût, ne se lance que sur demande |
 | `.github/workflows/banc-lecture.yml` | Lecture du détail d'un résultat du banc, sans IA |
 | `.github/workflows/acces.yml` | Mesure des niveaux d'accès sur une semaine publiée, sans IA |
@@ -325,12 +326,24 @@ complète avec IA simulée, et vérification que `installation/` est identique a
 **`corpus.yml`** : à la demande. Assemble les cas du corpus de référence à partir d'un jeu de
 données public, sans IA ni clé. Le résultat est écrit dans le journal et gardé en artefact.
 
+**`corpus-chiffres.yml`** : assemble et vérifie les corrigés « chiffres relevés » du corpus de
+référence (`banc/assembler_chiffres.py`). Pour une étude diagnostique ou une méta-analyse, le
+corrigé est fait des chiffres que les auteurs d'une revue en accès libre ont déjà relevés dans un
+tableau. Le workflow lit ces tableaux dans Europe PMC, la licence de la revue et celle des études
+citées, puis contrôle chaque chiffre du corpus : licences, recopie, présence dans l'article. Aucune
+IA n'est appelée, aucune clé n'est utilisée. Il se lance à la demande, ou quand
+`banc/candidats_chiffres.json` est modifié sur une branche `claude/**`. Son journal ne contient que
+des lignes de tableaux de revues sous licence CC BY ou CC0.
+
 **`banc.yml`** : lance le banc d'essai demandé par la dernière ligne de `banc/lancement.json`
 (`banc/lancer.py`) : la chaîne d'analyse actuelle (`banc/banc.py`) ou l'extraction des données
 (`banc/banc_extraction.py`). Rien n'est publié. Il appelle l'IA et a un coût : il ne se lance que
 sur demande, par le bouton de lancement manuel ou quand `banc/lancement.json` est modifié sur une
 branche `claude/**`. Le budget est vérifié avant tout appel, et borné par un plafond fixe pour
-chaque banc. Une demande « sans IA » lit les textes et estime le coût, sans aucun appel. Le
+chaque banc (1 $ pour la chaîne actuelle, 3 $ pour l'extraction). Une demande « sans IA » lit les
+textes et estime le coût, sans aucun appel. Le banc de l'extraction peut ne mesurer qu'une partie
+du corpus : les cas mesurés depuis la séance 5, ou les articles aux chiffres relevés. Pour ces
+derniers, la comparaison est faite par le code, sans IA lectrice. Le
 journal et les résultats sont publics : aucun texte d'article n'y figure, hors courts passages
 exacts d'articles sous licence CC BY ou CC0.
 
