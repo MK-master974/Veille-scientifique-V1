@@ -16,6 +16,10 @@ Mesures :
 3. Recoupement : un passage extrait recoupe-t-il le passage retenu par les annotateurs ?
 4. Pièges : article rétracté, résumé seul, instruction cachée.
 5. Coût réel par article, pour chaque niveau d'accès.
+6. Chiffres relevés (VS-D32) : pour les études diagnostiques et les méta-analyses du corpus, les
+   chiffres que les auteurs d'une revue ont déjà relevés se retrouvent-ils dans l'extraction ? La
+   comparaison est faite par le code (banc/chiffres.py), sans IA lectrice. Un chiffre absent de
+   l'article est écarté du score avant la mesure. Seuil : 80 % sur le texte intégral (VS-D34).
 
 Avec --s45 N, N publications réelles de la semaine 2026-S45 (kinésithérapie, licence ouverte, types
 d'étude variés) sont aussi extraites sur leur texte intégral, pour une relecture à la main.
@@ -24,6 +28,9 @@ Aucun texte d'article n'est écrit dans le journal ni dans les résultats, hors 
 exacts d'articles sous licence CC BY ou CC0, cités avec leur identifiant (VS-D15).
 
 Usage : python banc/banc_extraction.py --sortie resultats [--budget 2.0] [--s45 10] [--effort low]
+                                       [--parties tout|historique|chiffres]
+« historique » : les essais, les cas de qualité et les pièges, mesurés depuis la séance 5.
+« chiffres » : seulement les articles dont le corrigé est fait de chiffres relevés.
 Le lancement s'arrête avant tout appel à l'IA si le coût estimé dépasse le budget. Avec --sans-ia,
 il s'arrête après la lecture des textes et l'estimation du coût : aucun appel, aucun coût.
 """
@@ -49,6 +56,10 @@ from pipeline.reseau import requete  # noqa: E402
 _spec = importlib.util.spec_from_file_location("banc_chaine", RACINE / "banc" / "banc.py")
 chaine = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(chaine)
+
+_spec = importlib.util.spec_from_file_location("chiffres", RACINE / "banc" / "chiffres.py")
+chiffres = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(chiffres)
 
 # Seuils fixés par le porteur du projet le 12 novembre 2026 (VS-D25), sur le texte intégral.
 SEUIL_JUSTES = 26
@@ -235,6 +246,46 @@ def choisir_s45(fiches, licences, nombre):
     return ordre[:nombre * 2]
 
 
+def mesure_chiffres(cas_chiffres, extractions, documents):
+    """Compare chaque extraction aux chiffres de son corrigé, pour les deux niveaux d'accès.
+
+    « documents » donne le texte intégral lu par le banc : la présence de chaque chiffre dans
+    l'article y est recalculée, et tout écart avec ce que le corpus déclare est signalé.
+    """
+    detail, ecarts = [], []
+    for cas in cas_chiffres:
+        ident = f"pm{cas['pmid']}"
+        ligne = {"pmid": cas["pmid"], "type_etude": cas["type_etude"], "source": cas["source"]["pmid"]}
+        for niveau in NIVEAUX:
+            e = extractions.get((niveau, ident), (None, None))[0]
+            ligne[niveau] = chiffres.mesurer_cas(cas, e)
+        doc = documents.get(ident)
+        if doc is not None:
+            lu = texte.texte_lu(doc)
+            for x in cas["chiffres"]:
+                recalcule = chiffres.present(x, lu)
+                if recalcule != x.get("dans_l_article"):
+                    ecarts.append(f"{cas['pmid']}:{x['id']} — le corpus dit {x.get('dans_l_article')}, "
+                                  f"le texte lu par le banc dit {recalcule}")
+        detail.append(ligne)
+    resume = {niveau: chiffres.score([x for c in detail for x in c[niveau]]) for niveau in NIVEAUX}
+    resume["par_type"] = {
+        t: {niveau: chiffres.score([x for c in detail if c["type_etude"] == t for x in c[niveau]]) for niveau in NIVEAUX}
+        for t in sorted({c["type_etude"] for c in detail})}
+    resume["articles"] = len(detail)
+    resume["ecarts_avec_le_corpus"] = ecarts
+    return resume, detail
+
+
+def seuil_chiffres(resume_chiffres):
+    """Seuil fixé par le porteur du projet (VS-D34), sur le texte intégral."""
+    part = resume_chiffres["integral"]["part"]
+    return {f"au moins {int(chiffres.SEUIL_RETROUVES * 100)} % des chiffres du corrigé retrouvés, texte intégral": {
+        "atteint": part is not None and part >= chiffres.SEUIL_RETROUVES,
+        "mesure": f"{resume_chiffres['integral']['retrouves']} sur {resume_chiffres['integral']['confirmes_dans_l_article']}",
+        "part": part}}
+
+
 def seuils(effet_integral, pieges, bilans_gardes):
     """Compare le résultat aux seuils fixés par le porteur du projet (VS-D25)."""
     justes = effet_integral.get("correct", 0)
@@ -361,6 +412,8 @@ def main(argv=None):
     p.add_argument("--budget", type=float, default=2.0, help="plafond en dollars, vérifié avant tout appel")
     p.add_argument("--s45", type=int, default=0, help="nombre de publications réelles de 2026-S45 à extraire en plus")
     p.add_argument("--effort", default="", help="effort de raisonnement, à la place de celui de config.json")
+    p.add_argument("--parties", default="tout", choices=("tout", "historique", "chiffres"),
+                   help="parties du corpus à mesurer : tout, les cas mesurés depuis la séance 5, ou les chiffres relevés")
     p.add_argument("--sans-ia", action="store_true",
                    help="lit les textes, décrit leur structure et estime le coût, sans aucun appel à l'IA")
     args = p.parse_args(argv)
@@ -375,12 +428,20 @@ def main(argv=None):
     modele = cfg["ia"]["modele_redaction"]
     consigne = charger_consigne("extraction")
     essais, qualite, pieges = chaine.charger_corpus()
+    historique = args.parties in ("tout", "historique")
+    cas_chiffres = chiffres.cas_du_corpus(chiffres.charger()) if args.parties in ("tout", "chiffres") else []
+    if not historique:
+        essais, qualite, pieges = {"cas": []}, {"groupes": []}, {"cas": []}
+    if args.parties == "chiffres" and not cas_chiffres:
+        journal("ARRÊT : le corpus des chiffres relevés est vide.")
+        return 2
 
     # 1. Références du corpus, comme la collecte les voit
-    pmids = chaine.pmids_du_corpus(essais, qualite, pieges)
+    pmids = sorted(set(chaine.pmids_du_corpus(essais, qualite, pieges)) | {c["pmid"] for c in cas_chiffres})
     refs = chaine.recuperer_pubmed(pmids, cfg)
-    piege_fictif = next(c for c in pieges["cas"] if c.get("fictif"))
-    refs.append(chaine.reference_fictive(piege_fictif))
+    if historique:
+        piege_fictif = next(c for c in pieges["cas"] if c.get("fictif"))
+        refs.append(chaine.reference_fictive(piege_fictif))
     par_pmid = {r["pmid"]: r for r in refs if r.get("pmid")}
     absents = [x for x in pmids if x not in par_pmid]
     types = {f"pm{c['pmid']}": "essai_randomise" for c in essais["cas"]}
@@ -389,6 +450,8 @@ def main(argv=None):
         for c in g["cas"]:
             if c.get("pmid"):
                 types.setdefault(f"pm{c['pmid']}", g["type_etude"])
+    for c in cas_chiffres:
+        types[f"pm{c['pmid']}"] = c["type_etude"]
     journal(f"Références : {len(pmids)} demandées, {len(par_pmid)} lues dans PubMed, écartées : {absents}")
 
     # 2. Texte intégral des références sous licence ouverte
@@ -399,6 +462,16 @@ def main(argv=None):
             f"(paquets Europe PMC en échec : {echecs})")
     for r in refs:
         journal("  " + structure(r["id"], lus[r["id"]]))
+    documents = {r["id"]: lus[r["id"]]["doc"] for r in integral}
+    if cas_chiffres:
+        sans_texte = [c["pmid"] for c in cas_chiffres if f"pm{c['pmid']}" not in documents]
+        journal(f"Chiffres relevés : {len(cas_chiffres)} articles, {sum(len(c['chiffres']) for c in cas_chiffres)} chiffres ; "
+                f"texte intégral non lu pour : {sans_texte or 'aucun'}")
+        for c in cas_chiffres:
+            doc = documents.get(f"pm{c['pmid']}")
+            lu = texte.texte_lu(doc) if doc else ""
+            etats = [f"{x['id']}={'oui' if chiffres.present(x, lu) else 'NON'}" for x in c["chiffres"]] if doc else ["texte non lu"]
+            journal(f"  pm{c['pmid']} ({c['type_etude']}) — chiffres dans le texte lu : " + ", ".join(etats))
 
     # 3. Publications réelles de 2026-S45, si demandé
     s45 = []
@@ -524,6 +597,9 @@ def main(argv=None):
             ok, constat = piege_instruction(e, bilan or {})
             pieges_res.append({"id": cas["id"], "reussi": ok, "constat": constat})
 
+    # 7 bis. Chiffres relevés : comparaison par le code, sans IA
+    resume_chiffres, detail_chiffres = mesure_chiffres(cas_chiffres, extractions, documents) if cas_chiffres else (None, [])
+
     # 8. Coûts et résumé
     cout = {k: round(ia.cout_reel([u for u in us if u], modele, prix, "direct"), 4) for k, us in usages.items()}
     par_article = {k: round(cout[k] / len(us), 4) for k, us in usages.items() if us and k != "lecture"}
@@ -544,9 +620,13 @@ def main(argv=None):
         "sens_de_l_effet_hors_questions_contestees": score_hors_contestes(effet, contestes),
         "questions_dont_le_passage_du_corrige_est_recoupe": f"{sum(x['passage_recoupe'] for x in effet)} sur {len(effet)}",
         "pieges": {x["id"]: x["reussi"] for x in pieges_res},
-        "seuils": seuils(compte("integral"), pieges_res, bilans.get("integral", {}).get("gardees", 0)),
+        "seuils": seuils(compte("integral"), pieges_res, bilans.get("integral", {}).get("gardees", 0)) if historique else {},
     }
-    detail = {"resume": resume, "effet": effet, "pieges": pieges_res,
+    resume["parties"] = args.parties
+    if resume_chiffres:
+        resume["chiffres_releves"] = resume_chiffres
+        resume["seuils"].update(seuil_chiffres(resume_chiffres))
+    detail = {"resume": resume, "effet": effet, "pieges": pieges_res, "chiffres_releves": detail_chiffres,
               "acces": {i: {k: v for k, v in x.items() if k != "doc"} for i, x in lus.items()},
               "extractions": {f"{niveau}:{ident}": {"extraction": e, "bilan": b}
                               for (niveau, ident), (e, b) in extractions.items()},
@@ -570,6 +650,17 @@ def main(argv=None):
     print("\n===== PIÈGES =====")
     for x in pieges_res:
         print(f"  {x['id']} | réussi : {x['reussi']} | {x['constat']}")
+    if detail_chiffres:
+        print("\n===== CHIFFRES RELEVÉS (corrigé : tableau d'une revue en accès libre ; comparaison par le code) =====")
+        for c in detail_chiffres:
+            print(f"  PMID {c['pmid']} | {c['type_etude']} | corrigé : PMID {c['source']}")
+            for sur_resume, sur_integral in zip(c["resume"], c["integral"]):
+                dans = {True: "oui", False: "NON, écarté du score", None: "non vérifié"}[sur_integral["dans_l_article"]]
+                print(f"      {sur_integral['id']} | {sur_integral['nature']} | {sur_integral['libelle'][:70]} | "
+                      f"{sur_integral['valeur']} | résumé : {sur_resume['etat']} | intégral : {sur_integral['etat']} | "
+                      f"dans l'article : {dans}")
+        for x in resume_chiffres["ecarts_avec_le_corpus"]:
+            print(f"  ÉCART AVEC LE CORPUS : {x}")
     print("\n===== EXTRACTIONS SUR TEXTE INTÉGRAL (articles sous licence CC BY ou CC0, passages cités avec leur source) =====")
     for r in integral:
         e, b = extractions[("integral", r["id"])]
