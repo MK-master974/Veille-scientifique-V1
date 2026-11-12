@@ -5,7 +5,7 @@
    "date": "2026-11-12",
    "mode": "reperer",
    "raison": "Renforcement du corpus (VS-D32) : repérer, parmi les revues candidates trouvées dans PubMed, celles dont les tableaux portent des chiffres par étude et dont les études citées sont sous licence CC BY ou CC0.",
-   "minimum": 2,
+   "minimum": 3,
    "diagnostic": [
     "37444127",
     "39014328",
