@@ -241,6 +241,10 @@ bloc `extraction` de la fiche v2 ([FICHE_V2.md](FICHE_V2.md)) et sont mesurés p
     dans le bloc cité (écart noté). Un nombre absent du bloc ou du texte fait refuser la donnée ;
   - une valeur fermée invalide ou incohérente est ramenée à la plus prudente (`non_precise`,
     `non_rapporte`, `indetermine`) ;
+  - un sens (« augmente », « diminue ») que le passage cité ne permet pas de lire, faute de mot
+    de direction ou de nombres à comparer, est ramené à `non_rapporte` ;
+  - une évolution dans un seul groupe (après contre avant) n'est jamais notée « en faveur de »
+    l'intervention ou du comparateur ;
   - une estimation hors de son intervalle, ou un p qui contredit le sens annoncé, lève un signal
     sans refuser la donnée.
 - **Une donnée refusée n'est ni corrigée ni gardée** : elle est comptée, avec son motif.

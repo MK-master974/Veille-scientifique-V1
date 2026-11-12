@@ -241,6 +241,21 @@ def test_evolution_avant_apres_jamais_en_faveur_de_l_intervention():
     assert e["resultats"][0]["en_faveur_de"] == "intervention"
 
 
+def test_sens_annonce_sans_appui_dans_le_passage():
+    # Relecture du 12/11/2026 : « diminue » annoncé alors que le passage dit seulement qu'une différence existe.
+    assert not extraction.sens_etaye("There were statistically significant differences in the muscle thickness.")
+    assert not extraction.sens_etaye("The duration in the experimental group was different from the control group (p = 0.003).")
+    assert extraction.sens_etaye("The SWV was lower in the DMD group compared to the control group.")
+    assert extraction.sens_etaye("Pain | 6 w | 1.8 | -3.2 – 6.8 | -0.3 | -6.2 – 5.7 | 0.49")     # ligne de tableau
+    assert extraction.sens_etaye("La douleur est plus faible dans le groupe exercice.")
+    r = json.loads(reponse())
+    r["resultats"][1].update(sens_mesure="diminue", en_faveur_de="intervention")   # « Function did not differ… (p = 0.41) »
+    e, bilan = extraction.lire_extraction(json.dumps(r), doc(), False)
+    assert (e["resultats"][1]["sens_mesure"], e["resultats"][1]["en_faveur_de"]) == ("non_rapporte", "indetermine")
+    assert "sens non étayé par le passage cité : ramené à « non_rapporte »" in [x["nature"] for x in bilan["ecarts"]]
+    assert e["resultats"][0]["sens_mesure"] == "diminue"            # « Pain decreased more with exercise… » : étayé
+
+
 def test_alertes_de_coherence():
     alertes = extraction.alertes_coherence
     assert alertes({"valeur": "4,44", "intervalle": "IC à 95 % : 1,62 à 7,26", "p": None, "sens_mesure": "augmente"}) == []

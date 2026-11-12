@@ -33,6 +33,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 - Banc d'essai de l'extraction (`banc/banc_extraction.py`) : contrôles du code, sens de l'effet
   sur 32 questions corrigées, recoupement avec les passages des annotateurs, pièges, coût réel par
   article. Seuils de réussite fixés (VS-D25).
+- Première mesure de l'extraction, sur trois lancements : 24 réponses justes sur 32 à partir du
+  texte intégral, 14 à partir du résumé seul, contre 7 pour la chaîne actuelle ; 3 pièges sur 3 ;
+  334 données gardées sur 335. Le seuil de 26 n'est pas atteint. Relecture indépendante de dix
+  publications réelles de 2026-S45 : aucun chiffre contraire à son passage, 1 erreur grave de sens.
+  Résultats et limites dans `banc/resultats/2026-11-12-extraction.md`. Coût : 2,80 $.
 - Phase 1, séance 4 : `pipeline/acces.py` cherche le texte intégral légal d'une publication, lit
   sa licence et attribue un niveau d'accès ; `banc/mesure_acces.py` et le workflow « Niveaux
   d'accès » mesurent ces niveaux sur une semaine déjà publiée. Aucune IA n'est appelée, aucun

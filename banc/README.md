@@ -15,7 +15,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Cas « qualité méthodologique » : 5 essais (RoB 2), 3 études diagnostiques (QUADAS-2), 3 revues (AMSTAR 2), 2 recommandations (AGREE II) | Assemblés le 11 novembre 2026 : `corpus/qualite.json`. Les 2 recommandations attendent leur identifiant |
 | Pièges : article rétracté, résumé seul, instruction cachée dans le texte | Construits le 11 novembre 2026 : `corpus/pieges.json` |
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | Écrit le 11 novembre 2026 : `banc.py`, lancé par le workflow « Banc d'essai ». Deux passages faits : voir `resultats/` |
-| Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Voir « Le banc de l'extraction » ci-dessous |
+| Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Trois mesures faites : `resultats/2026-11-12-extraction.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -108,6 +108,12 @@ pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmè
 - Plusieurs études des cas « qualité » n'ont pas de texte intégral en accès libre : le banc ne
   pourra les juger que sur leur résumé, ce qui est en soi un test d'abstention.
 - Une partie des questions n'a qu'un seul annotateur.
+- Plusieurs corrigés « sens de l'effet » sont ambigus ou contredisent leur propre passage : deux
+  corrigés opposés pour un même critère (questions 10151 et 10152), un sens contraire au passage
+  (8983), un critère qui est en fait une chaussure (1676). Le banc de l'extraction du 12 novembre
+  2026 les a relevés ; ils ne sont pas corrigés dans le corpus.
+- Le corpus ne contient que des essais randomisés pour le « sens de l'effet » : il ne mesure pas
+  l'extraction sur une revue ou une étude diagnostique.
 - Ces cas mesurent l'extraction et l'interprétation statistique, pas l'intérêt clinique d'un
   résultat pour un professionnel.
 - Un corrigé peut lui-même contenir une erreur : un écart est un signal à examiner, pas une
