@@ -1,0 +1,40 @@
+name: Corpus, chiffres relevés
+
+# Assemble et vérifie les corrigés « chiffres relevés » du corpus de référence (VS-D32) : pour une
+# étude diagnostique ou une méta-analyse, les chiffres déjà relevés par les auteurs d'une revue en
+# accès libre. La dernière demande de banc/candidats_chiffres.json dit quoi faire : repérer les
+# revues sources, lire les lignes d'un tableau, ou vérifier le corpus.
+# Aucune IA n'est appelée, aucune clé n'est utilisée : aucun coût. Rien n'est publié ni ajouté au
+# dépôt par ce workflow. Le journal est public : il ne contient que des lignes de tableaux de
+# revues sous licence CC BY ou CC0, et aucun texte d'article. La veille hebdomadaire n'est pas
+# concernée.
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "banc/candidats_chiffres.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corpus-chiffres
+  cancel-in-progress: false
+
+jobs:
+  chiffres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Traiter la dernière demande de banc/candidats_chiffres.json
+        run: python banc/assembler_chiffres.py
