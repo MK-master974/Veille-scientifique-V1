@@ -5,6 +5,13 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 
 ## Non publié
 
+### Modifié
+- `CLAUDE.md`, règle 7 : un court passage exact d'un article sous licence CC BY ou CC0 peut être
+  cité avec sa source (VS-D15). Tout autre texte d'article reste interdit dans le dépôt et les
+  données publiques.
+- Documentation remise à jour : `banc/README.md` indique que le banc d'essai est écrit et a
+  tourné deux fois ; `docs/ARCHITECTURE.md` décrit ses deux workflows.
+
 ### Corrigé
 - Contrôle des chiffres de la veille : il lit désormais les nombres écrits en toutes lettres
   au-delà de dix (« Seventy-four », « trente-deux ») et les décimales sans zéro initial
@@ -15,6 +22,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- `docs/FICHE_V2.md` : format cible d'une fiche, la « fiche v2 », décidé le 12 novembre 2026
+  (VS-D12 à VS-D15). Fiche unique progressive avec l'impact clinique dans l'en-tête, niveau
+  d'accès et profondeur d'analyse, données extraites avec leur emplacement, catégorie d'importance
+  à la place du verdict, étiquette à quatre valeurs, version et historique. Le moteur et
+  l'application ne changent pas : la veille publie le format actuel jusqu'à la bascule.
 - Corpus de référence, suite : cas « qualité méthodologique » (`banc/corpus/qualite.json` : RoB 2,
   QUADAS-2, AMSTAR 2, AGREE II, tirés de revues sous licence CC BY) et trois pièges
   (`banc/corpus/pieges.json`). `banc/extraire_tableaux.py` repère les tableaux d'évaluation dans

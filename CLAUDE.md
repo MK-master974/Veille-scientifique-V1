@@ -23,7 +23,8 @@ Lis d'abord [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (comment c'est construi
 6. **Rien n'est effacé en silence.** Ne réécris jamais l'historique Git, ne supprime aucune semaine
    publiée de `site/data/`, ne modifie ni ne retire aucune fiche sans trace.
 7. **Ni résumé ni texte d'article** dans le dépôt ou les données publiques : seulement des
-   synthèses originales, des références et des liens.
+   synthèses originales, des références et des liens. Seule exception (VS-D15) : un court passage
+   exact d'un article sous licence CC BY ou CC0, cité avec sa source, pour justifier une donnée.
 8. **`installation/*.yml` reste identique à `.github/workflows/*.yml`** : les tests automatiques
    le vérifient.
 

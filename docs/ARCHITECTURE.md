@@ -60,8 +60,10 @@ pas du nombre de lecteurs.
 | `scripts/resume_travail.py` | Résumé chiffré d'un dossier de travail |
 | `demo/` | Quatre publications réelles et les réponses d'IA simulées |
 | `tests/` | Tests du moteur, de la chaîne complète et de l'assemblage du corpus, sans réseau |
-| `banc/` | Corpus de référence et banc d'essai de la chaîne d'analyse (en construction) |
+| `banc/` | Corpus de référence et banc d'essai de la chaîne d'analyse ; résultats dans `banc/resultats/` |
 | `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
+| `.github/workflows/banc.yml` | Banc d'essai : appelle l'IA, a un coût, ne se lance que sur demande |
+| `.github/workflows/banc-lecture.yml` | Lecture du détail d'un résultat du banc, sans IA |
 | `CLAUDE.md` | Consignes de travail pour les sessions de développement |
 
 ## Le moteur (`pipeline/`)
@@ -211,6 +213,10 @@ résultats et impact, méthode et limites, version vulgarisée, incertitudes).
 
 Une publication n'a qu'une fiche, même classée dans plusieurs domaines.
 
+**Format cible.** Ce qui précède décrit le format actuel d'une fiche. Le format qui le remplacera
+à la fin de la phase 1, la « fiche v2 », est décrit dans [FICHE_V2.md](FICHE_V2.md). Il n'est
+produit ni par le moteur ni par l'application pour l'instant.
+
 ## L'application web (`site/`)
 
 - **Un seul fichier JavaScript**, sans bibliothèque ni appel à un service tiers. OneSignal n'est
@@ -260,6 +266,14 @@ complète avec IA simulée, et vérification que `installation/` est identique a
 
 **`corpus.yml`** : à la demande. Assemble les cas du corpus de référence à partir d'un jeu de
 données public, sans IA ni clé. Le résultat est écrit dans le journal et gardé en artefact.
+
+**`banc.yml`** : rejoue la chaîne d'analyse actuelle sur le corpus de référence et mesure ses
+écarts avec les corrigés. Rien n'est publié. Il appelle l'IA et a un coût : il ne se lance que
+sur demande, par le bouton de lancement manuel ou quand `banc/lancement.json` est modifié sur une
+branche `claude/**`. Le budget est vérifié avant tout appel.
+
+**`banc-lecture.yml`** : affiche dans le journal le détail d'un résultat du banc déjà produit, à
+partir de son artefact. Aucune IA n'est appelée.
 
 ## Configuration
 
