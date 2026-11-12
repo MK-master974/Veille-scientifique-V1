@@ -1,7 +1,7 @@
 # Fiche v2 — format d'une fiche de veille
 
 Format cible d'une fiche, décidé par le porteur du projet le 12 novembre 2026 (décisions VS-D12 à
-VS-D16 de [DECISIONS.md](DECISIONS.md)).
+VS-D16 et VS-D19 de [DECISIONS.md](DECISIONS.md)).
 
 **Ce format n'est pas encore produit.** Le moteur et l'application publient des fiches au format
 actuel (« v1 », décrit dans [ARCHITECTURE.md](ARCHITECTURE.md)) jusqu'à la bascule, dernière
@@ -57,6 +57,10 @@ Source, PMID, DOI, lien, titre original, revue, année, volume, numéro, pages, 
 publication déclarés par PubMed, langue, et `signalement` (`null`, `correction`, `reserve` ou
 `retractation`). Aucun de ces champs n'est écrit par l'IA.
 
+`annee` et `mois` restent la date du numéro de la revue, comme aujourd'hui. `date_en_ligne`
+(VS-D19) porte la date de mise en ligne de l'article quand PubMed la donne, `null` sinon : les
+deux peuvent tomber sur des années différentes, ce qui fausse une citation.
+
 ### `acces` (code)
 
 | Champ | Contenu |
@@ -85,12 +89,15 @@ Types d'étude : `recommandation`, `revue_systematique`, `meta_analyse`, `essai_
 `etude_diagnostique`. Ce sont les cinq valeurs du moteur actuel (`TYPES` dans `pipeline/regles.py`).
 La liste pourra s'élargir quand les règles d'inclusion seront revues ; ce n'est pas décidé.
 
-Régions : `themes.region` ne prend que des valeurs d'une liste commune aux applications de
-l'écosystème, tenue dans le dépôt de coordination (`referentiels/domaines.md`). Cette liste
-n'existe pas encore : elle sera proposée avec Évalys et validée par le porteur du projet. Le champ
-reste vide quand la publication ne porte sur aucune région, ou tant que la liste n'est pas fixée.
-Le domaine `kine/msk-membre-inf` couvre la hanche, le genou et la cheville : il ne suffit pas à
-rapprocher une fiche d'une région d'Évalys.
+Régions : `themes.region` ne prend que des valeurs de la liste commune aux applications de
+l'écosystème, validée par le porteur du projet le 12 novembre 2026 (décision de coordination
+POR-D22) : `genou`, `rachis-lombaire`, `epaule`, `cheville-pied`, `rachis-cervical`, `hanche`,
+`rachis-thoracique`, `coude`, `poignet-main`, et `transversal` pour une publication qui concerne
+tout le corps. Une fiche peut porter plusieurs régions ; la liste reste vide quand la publication
+n'en concerne aucune. La liste est tenue dans le dépôt de coordination : une nouvelle région y
+passe par une demande de fusion. Le domaine `kine/msk-membre-inf` couvre la hanche, le genou et
+la cheville : il ne suffit pas à rapprocher une fiche d'une région d'Évalys. Le code `transversal`
+d'une région n'a pas de rapport avec le domaine `transversal/grandes-nouveautes`.
 
 Catégories : 1 « évolution potentielle des pratiques », 2 « apport scientifique important »,
 3 « actualisation des connaissances », 4 « veille complémentaire ». La catégorie est indépendante
@@ -222,7 +229,7 @@ dépend d'aucune d'elles.
 
 | Sujet | Où il se règle |
 | --- | --- |
-| Liste commune des régions anatomiques | Dépôt de coordination, avec Évalys, avant le pilote « genou » |
+| Second champ de thèmes proposé par Évalys (sécurité et tri, douleur, post-opératoire, questionnaire, médicament) | Après le pilote « genou » |
 | Liste des types d'étude au-delà des cinq actuels | Avec la révision des règles d'inclusion |
 | Recherche du texte intégral, lecture des licences | Séance 4 |
 | Règle de l'étiquette et de la catégorie, mesurée au banc d'essai | Séance 6 |

@@ -139,7 +139,7 @@ Décisions prises au fil des séances 2 et 3 de la phase 1 :
 | VS-D10 | Faire la séance 3 de la phase 1 dans une conversation neuve | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
 | VS-D11 | Modèle d'IA de la session de développement de la séance 3 : choisi par le porteur du projet. Son nom n'est pas inscrit dans le dépôt | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
 
-Décisions de coordination entre applications, relayées le 11 novembre 2026 :
+Décisions de coordination entre applications, relayées les 11 et 12 novembre 2026 :
 
 | Référence | Décision |
 | --- | --- |
@@ -149,6 +149,7 @@ Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 | POR-D12 | Veille Santé garde sa propre interface de gestion ; le portail n'en affiche qu'une synthèse. Interface reportée à la phase 4 |
 | POR-D19 | Essai de format du circuit vers Évalys : seul du contenu déjà public dans ce dépôt, avec la mention « résumé uniquement, non destinée à l'intégration clinique ». Pas avant la fin de la phase 0 |
 | POR-D21 | Un avis réglementaire commun aux applications, demandé après la bascule de la fiabilisation |
+| POR-D22 | Liste fermée de dix régions du corps, commune à Veille Santé et à Évalys. Régions validées par le porteur du projet le 12 novembre 2026 ; le second champ de cinq thèmes proposé par Évalys attend le pilote « genou » |
 
 ## 6. Décisions du 12 novembre 2026 : format « fiche v2 »
 
@@ -162,9 +163,10 @@ publiée avant la bascule, dernière séance de la phase 1.
 | VS-D13 | La catégorie d'importance, de 1 à 4 et justifiée, remplace le verdict. « Confirme » et « remet en question » restent comme précision ; « change la pratique » correspond à la catégorie 1 ; « à surveiller » disparaît. Remplace, à la bascule, le verdict à quatre niveaux du 1er novembre. Constat : 707 fiches sur 710 portaient « à surveiller » en S45 | Validée |
 | VS-D14 | L'étiquette de preuve prend quatre valeurs : solide, modéré, préliminaire, non évaluable. Remplace, à la bascule, l'étiquette à trois valeurs du 1er novembre. La règle d'attribution est réglée et mesurée au banc d'essai en séance 6 | Validée |
 | VS-D15 | Un court passage exact d'un article n'est publié que si l'article est sous licence CC BY ou CC0, avec sa source. Pour tous les autres, seul l'emplacement est publié. La règle « ni résumé ni texte d'article » est complétée dans ce sens | Validée |
-| VS-D16 | La fiche v2 porte une région anatomique, `classement.themes.region`, à vocabulaire fermé. La liste est commune aux applications de l'écosystème et tenue dans le dépôt de coordination ; elle reste à proposer avec Évalys et à valider. Complément au format, demandé par le portail dans son analyse de CHG-2026-0004 | Validée (questionnaire de fin de séance 3) |
+| VS-D16 | La fiche v2 porte une région anatomique, `classement.themes.region`, à vocabulaire fermé. La liste est commune aux applications de l'écosystème et tenue dans le dépôt de coordination : dix régions, validées le même jour (POR-D22). Complément au format, demandé par le portail dans son analyse de CHG-2026-0004 | Validée (questionnaire de fin de séance 3) |
 | VS-D17 | Proposer au contrat `vs-evalys-connaissance` la règle suivante, par une demande de fusion dans le dépôt de coordination : une fiche corrigée, suspendue ou retirée, ou une publication signalée, fait repasser la proposition liée à « à actualiser » | Validée (questionnaire de fin de séance 3) |
 | VS-D18 | Séance 4 de la phase 1 (texte intégral en accès ouvert, niveaux d'accès) : accord donné, dans la même conversation de développement | Validée (questionnaire de fin de séance 3) |
+| VS-D19 | La fiche v2 porte la date de mise en ligne de l'article (`publication.date_en_ligne`), en plus de la date du numéro de la revue. Remplie par le code à partir de PubMed. Demande d'Évalys, qui déclare des écarts de citation venus de cette confusion | Validée (questionnaire de fin de séance 3) |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
