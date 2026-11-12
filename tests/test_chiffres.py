@@ -139,6 +139,49 @@ def test_le_score_ecarte_les_chiffres_absents_de_l_article():
     assert chiffres.SEUIL_RETROUVES == 0.80
 
 
+# --- Règle de voisinage -----------------------------------------------------------------------
+
+def groupe_effet():
+    return [{**chiffre("effet", "0.45", "douleur"), "groupe": "douleur"},
+            {**chiffre("ic_bas", "0.70", "douleur-ic1"), "groupe": "douleur"},
+            {**chiffre("ic_haut", "0.20", "douleur-ic2"), "groupe": "douleur"},
+            chiffre("effectif", "348", "n")]
+
+
+def test_deux_nombres_colles_par_une_virgule_sont_lus_tous_les_deux():
+    assert chiffres.present(chiffre("ic_haut", "56.43"), "MD = 46.67, 95%CI (36.91,56.43)")
+    assert chiffres.present(chiffre("ic_haut", "8.73"), "95%CI (− 0.50,8.73)")
+    # Un millier écrit à l'anglaise n'est pas coupé en deux.
+    assert chiffres.present(chiffre("effectif", "3274"), "62 trials, 3,274 participants")
+
+
+def test_dans_l_article_un_chiffre_est_confirme_par_ses_voisins():
+    loin = "x" * 400
+    ensemble = "Pain: SMD -0.45 (95% CI -0.70 to -0.20). In all, 348 participants."
+    assert chiffres.confirmes_dans_un_texte(groupe_effet(), ensemble) == {
+        "douleur": True, "douleur-ic1": True, "douleur-ic2": True, "n": True}
+    # Les trois nombres existent, mais éparpillés dans le texte : aucun n'est confirmé.
+    eparpille = f"p = 0.45 {loin} 0.70 {loin} 20% of 348 participants"
+    assert chiffres.confirmes_dans_un_texte(groupe_effet(), eparpille) == {
+        "douleur": False, "douleur-ic1": False, "douleur-ic2": False, "n": True}
+    # Une borne mal recopiée par la revue : elle seule est écartée, l'effet et l'autre borne se confirment.
+    une_borne_fausse = "Pain: SMD -0.45 (95% CI -0.70 to -0.25)."
+    etats = chiffres.confirmes_dans_un_texte(groupe_effet(), une_borne_fausse)
+    assert (etats["douleur"], etats["douleur-ic1"], etats["douleur-ic2"]) == (True, True, False)
+
+
+def test_dans_l_extraction_une_borne_se_retrouve_avec_son_effet():
+    cas = {"chiffres": groupe_effet()}
+    # Effet et intervalle dans le même résultat : tout est retrouvé.
+    e = extraction("348 participants", [("WOMAC douleur", "SMD −0,45", "−0,70 à −0,20")])
+    assert {x["id"]: x["etat"] for x in chiffres.mesurer_cas(cas, e)} == {
+        "douleur": "retrouve", "douleur-ic1": "retrouve", "douleur-ic2": "retrouve", "n": "retrouve"}
+    # L'effet sans son intervalle ; « 0,70 » et « 0,20 » figurent dans un autre résultat, par hasard.
+    e = extraction("348 participants", [("WOMAC douleur", "SMD −0,45", None), ("Raideur", "0,70", "0,20 à 1,10")])
+    etats = {x["id"]: x["etat"] for x in chiffres.mesurer_cas(cas, e)}
+    assert etats == {"douleur": "retrouve", "douleur-ic1": "ailleurs", "douleur-ic2": "ailleurs", "n": "retrouve"}
+
+
 # --- Lecture du tableau d'une revue source ----------------------------------------------------
 
 REVUE = """<article><body><sec><title>Results</title><p>Texte fabriqué.</p>

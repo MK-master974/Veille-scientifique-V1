@@ -18,6 +18,18 @@ Règles de comparaison de deux nombres :
 3. pour une proportion (sensibilité, spécificité, valeurs prédictives, aire sous la courbe), une
    fraction et un pourcentage se valent : « 0,94 » correspond à « 94 % » ;
 4. rien d'autre n'est toléré : aucun calcul, aucune conversion d'unité.
+
+Règle de voisinage. Un petit nombre se retrouve presque toujours quelque part dans un long texte :
+la vérification du 12 novembre 2026 (lancement 43279876823) retrouvait ainsi les 161 chiffres du
+corpus dans leur article, ce qui ne prouvait rien. Les chiffres qui vont ensemble forment donc un
+groupe : un effet et les deux bornes de son intervalle ; la sensibilité, la spécificité et l'aire
+sous la courbe d'un même test.
+- Dans l'article, un chiffre d'un groupe n'est confirmé que s'il se trouve à moins de 300
+  caractères d'un autre chiffre de son groupe (même phrase, même ligne de tableau).
+- Dans l'extraction, une borne d'intervalle n'est retrouvée que dans un résultat qui porte aussi
+  son effet.
+Un chiffre sans groupe (effectif, nombre d'études) est cherché dans tout l'article, et dans le
+champ « effectif » de l'extraction.
 """
 import json
 import re
@@ -44,6 +56,7 @@ NATURES = {
     "ic_haut": ("resultats", False),
 }
 TYPES_ETUDE = ("etude_diagnostique", "meta_analyse", "revue_systematique")
+FENETRE = 300          # distance maximale, en caractères, entre deux chiffres d'un même groupe dans l'article
 
 _MOINS = "-−–‐‑‒"
 # Espaces qui séparent les milliers dans un nombre : insécable, fine insécable, fine.
@@ -82,14 +95,26 @@ def lectures(brut):
     return resultat
 
 
+_COLLES = re.compile(r"(\d\.\d+),(?=[" + _MOINS + r"]?\d+\.\d)")
+
+
+def nombres_places(texte):
+    """Tous les nombres d'un texte, sous toutes leurs lectures : liste de (position, valeur, décimales).
+
+    Deux nombres à point décimal séparés par une virgule sans espace (« 36.91,56.43 ») sont lus tous
+    les deux : la virgule est remplacée par un point-virgule, ce qui ne déplace aucun caractère.
+    """
+    texte = _COLLES.sub(r"\1;", texte or "")
+    trouves = []
+    for motif in (_NOMBRE, _MILLIERS_ESPACES):
+        for m in motif.finditer(texte):
+            trouves.extend((m.start(), valeur, decimales) for valeur, decimales in lectures(m.group(0)))
+    return trouves
+
+
 def nombres(texte):
     """Tous les nombres d'un texte, sous toutes leurs lectures : liste de (valeur, décimales)."""
-    trouves = []
-    for m in _NOMBRE.finditer(texte or ""):
-        trouves.extend(lectures(m.group(0)))
-    for m in _MILLIERS_ESPACES.finditer(texte or ""):
-        trouves.extend(lectures(m.group(0)))
-    return trouves
+    return [(valeur, decimales) for _, valeur, decimales in nombres_places(texte)]
 
 
 def _significatifs(valeur, decimales):
@@ -134,11 +159,34 @@ def valeur_corrige(chiffre):
     return float(brut), len(brut.partition(".")[2])
 
 
-def present(chiffre, texte):
-    """Vrai si le chiffre du corrigé figure dans un texte, selon les règles de comparaison."""
+def positions(chiffre, places):
+    """Positions où le chiffre du corrigé figure, parmi des nombres déjà lus par nombres_places()."""
     cible = valeur_corrige(chiffre)
     proportion = NATURES[chiffre["nature"]][1]
-    return any(correspond(n, cible, proportion) for n in nombres(texte))
+    return [pos for pos, valeur, decimales in places if correspond((valeur, decimales), cible, proportion)]
+
+
+def present(chiffre, texte):
+    """Vrai si le chiffre du corrigé figure dans un texte, selon les règles de comparaison."""
+    return bool(positions(chiffre, nombres_places(texte)))
+
+
+def confirmes_dans_un_texte(chiffres_du_cas, texte, fenetre=FENETRE):
+    """Pour chaque chiffre d'un article : est-il confirmé par ce texte ? Renvoie {identifiant: booléen}.
+
+    Un chiffre sans groupe est confirmé s'il figure dans le texte. Un chiffre d'un groupe l'est s'il
+    figure à moins de « fenetre » caractères d'un autre chiffre de son groupe.
+    """
+    places = nombres_places(texte)
+    ou = {x["id"]: positions(x, places) for x in chiffres_du_cas}
+    etats = {}
+    for x in chiffres_du_cas:
+        voisins = [y for y in chiffres_du_cas if x.get("groupe") and y.get("groupe") == x["groupe"] and y is not x]
+        if not voisins:
+            etats[x["id"]] = bool(ou[x["id"]])
+        else:
+            etats[x["id"]] = any(abs(a - b) <= fenetre for a in ou[x["id"]] for y in voisins for b in ou[y["id"]])
+    return etats
 
 
 # --- Corpus -----------------------------------------------------------------------------------
@@ -183,6 +231,8 @@ def verifier_forme(corpus):
                 identifiants.add(x.get("id"))
                 if not _CORRIGE.fullmatch(str(x.get("valeur", "")).strip()):
                     defauts.append(f"{ident} : valeur mal écrite {x.get('valeur')!r} (attendu : 1029, 0.94)")
+                if "groupe" in x and not isinstance(x["groupe"], str):
+                    defauts.append(f"{ident} : « groupe » doit être un texte ({x.get('id')!r})")
                 if x.get("dans_l_article") not in (True, False, None):
                     defauts.append(f"{ident} : « dans_l_article » doit valoir true, false ou null")
             if not c.get("chiffres"):
@@ -192,15 +242,19 @@ def verifier_forme(corpus):
 
 # --- Mesure -----------------------------------------------------------------------------------
 
+def textes_des_resultats(e):
+    """Un texte par résultat extrait : critère, valeur et intervalle."""
+    return [" | ".join(str(r.get(c) or "") for c in ("critere", "valeur", "intervalle"))
+            for r in (e or {}).get("resultats", [])]
+
+
 def zones_extraction(e):
     """Texte des deux zones d'une extraction où un chiffre du corrigé peut se trouver."""
     if e is None:
         return {"effectif": "", "resultats": ""}
     simples = [e.get(c) for c in ("effectif", "population", "question")]
     effectif = " ; ".join(d["valeur"] for d in simples if d)
-    resultats = " ; ".join(" | ".join(str(r.get(c) or "") for c in ("critere", "valeur", "intervalle"))
-                           for r in e.get("resultats", []))
-    return {"effectif": effectif, "resultats": resultats}
+    return {"effectif": effectif, "resultats": " ; ".join(textes_des_resultats(e))}
 
 
 def mesurer_cas(cas, e):
@@ -210,12 +264,19 @@ def mesurer_cas(cas, e):
     zone de l'extraction), ou « absent ». Seul « retrouve » compte dans le score.
     """
     zones = zones_extraction(e)
+    resultats = textes_des_resultats(e)
+    effets = {x["groupe"]: x for x in cas["chiffres"] if x["nature"] == "effet" and x.get("groupe")}
     lignes = []
     for x in cas["chiffres"]:
         attendue = NATURES[x["nature"]][0]
         autre = "resultats" if attendue == "effectif" else "effectif"
+        effet = effets.get(x.get("groupe")) if x["nature"] in ("ic_bas", "ic_haut") else None
         if e is None:
             etat = "sans_extraction"
+        elif effet is not None:
+            # Une borne d'intervalle : dans un résultat qui porte aussi son effet.
+            etat = "retrouve" if any(present(x, r) and present(effet, r) for r in resultats) else (
+                "ailleurs" if present(x, zones["resultats"]) or present(x, zones["effectif"]) else "absent")
         elif present(x, zones[attendue]):
             etat = "retrouve"
         elif present(x, zones[autre]):

@@ -218,6 +218,11 @@
    "date": "2026-11-12",
    "mode": "verifier",
    "raison": "Corpus des chiffres relevés assemblé : 20 articles, 9 revues sources. Contrôler, avant toute mesure, les licences, la recopie de chaque chiffre depuis la ligne du tableau source, et sa présence dans l'article (VS-D34)."
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "verifier",
+   "raison": "Seconde vérification, après le lancement 43279876823 : licences conformes pour les 20 articles, recopie juste, mais les 161 chiffres étaient tous retrouvés dans leur article, ce qui ne prouvait rien. La règle de voisinage est ajoutée avant toute mesure : un chiffre d'un groupe n'est confirmé qu'à côté d'un autre chiffre de son groupe."
   }
  ]
 }

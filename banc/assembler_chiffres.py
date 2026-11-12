@@ -12,8 +12,9 @@ Trois modes, choisis par la dernière demande de banc/candidats_chiffres.json :
   Sert à écrire le corrigé.
 - « verifier » : pour chaque chiffre de banc/corpus/chiffres_releves.json, trois contrôles :
   licences de la revue source et de l'article ; présence du chiffre dans la ligne du tableau
-  source (recopie) ; présence du chiffre dans l'article lui-même. Un chiffre absent de l'article
-  est écarté du score avant toute mesure (VS-D34).
+  source (recopie) ; présence du chiffre dans l'article lui-même, à côté des chiffres de son
+  groupe (règle de voisinage de banc/chiffres.py). Un chiffre absent de l'article est écarté du
+  score avant toute mesure (VS-D34).
 
 Usage : python banc/assembler_chiffres.py
 """
@@ -452,9 +453,10 @@ def verifier(_demande=None):
         else:
             journal("  article : TEXTE INTÉGRAL NON LU")
         time.sleep(0.3)
+        confirmes = chiffres.confirmes_dans_un_texte(c["chiffres"], lu) if doc else {}
         for x in c["chiffres"]:
             recopie = chiffres.present(x, ligne_source)
-            dans = chiffres.present(x, lu) if doc else None
+            dans = confirmes.get(x["id"]) if doc else None
             etats[f"{c['pmid']}:{x['id']}"] = dans
             bilan["recopie conforme" if recopie else "recopie à revoir"] += 1
             bilan[{True: "dans l'article", False: "absent de l'article", None: "article non lu"}[dans]] += 1

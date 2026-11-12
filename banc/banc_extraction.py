@@ -261,9 +261,9 @@ def mesure_chiffres(cas_chiffres, extractions, documents):
             ligne[niveau] = chiffres.mesurer_cas(cas, e)
         doc = documents.get(ident)
         if doc is not None:
-            lu = texte.texte_lu(doc)
+            confirmes = chiffres.confirmes_dans_un_texte(cas["chiffres"], texte.texte_lu(doc))
             for x in cas["chiffres"]:
-                recalcule = chiffres.present(x, lu)
+                recalcule = confirmes[x["id"]]
                 if recalcule != x.get("dans_l_article"):
                     ecarts.append(f"{cas['pmid']}:{x['id']} — le corpus dit {x.get('dans_l_article')}, "
                                   f"le texte lu par le banc dit {recalcule}")
@@ -469,8 +469,8 @@ def main(argv=None):
                 f"texte intégral non lu pour : {sans_texte or 'aucun'}")
         for c in cas_chiffres:
             doc = documents.get(f"pm{c['pmid']}")
-            lu = texte.texte_lu(doc) if doc else ""
-            etats = [f"{x['id']}={'oui' if chiffres.present(x, lu) else 'NON'}" for x in c["chiffres"]] if doc else ["texte non lu"]
+            confirmes = chiffres.confirmes_dans_un_texte(c["chiffres"], texte.texte_lu(doc)) if doc else {}
+            etats = [f"{x['id']}={'oui' if confirmes[x['id']] else 'NON'}" for x in c["chiffres"]] if doc else ["texte non lu"]
             journal(f"  pm{c['pmid']} ({c['type_etude']}) — chiffres dans le texte lu : " + ", ".join(etats))
 
     # 3. Publications réelles de 2026-S45, si demandé

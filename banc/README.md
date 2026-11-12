@@ -70,6 +70,12 @@ son intervalle de confiance pour une méta-analyse. Personne ne remplit de corri
 - **Règles de comparaison**, fixées avant toute mesure (`chiffres.py`) : le signe est ignoré ;
   l'arrondi est toléré (« 29,56 » correspond à « 29,6 ») ; pour une proportion, une fraction et un
   pourcentage se valent (« 0,94 » et « 94 % »). Rien d'autre n'est toléré.
+- **Règle de voisinage.** Un petit nombre se retrouve presque toujours quelque part dans un long
+  texte. Les chiffres qui vont ensemble forment donc un groupe : un effet et les bornes de son
+  intervalle ; la sensibilité, la spécificité et l'aire sous la courbe d'un même test. Dans
+  l'article, un chiffre d'un groupe n'est confirmé qu'à moins de 300 caractères d'un autre chiffre
+  de son groupe. Dans l'extraction, une borne d'intervalle n'est retrouvée que dans un résultat qui
+  porte aussi son effet.
 - **Un chiffre absent de l'article est écarté du score avant la mesure**, et compté à part
   (VS-D34) : une revue arrondit, recalcule ou se trompe parfois en recopiant. C'est le code qui le
   constate, sur le texte de l'article, sans regarder ce que l'IA a extrait.
