@@ -1,5 +1,5 @@
 {
- "objet": "Demande de lancement d'un banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût. La dernière ligne dit quel banc lancer (« banc » : « chaine » par défaut, ou « extraction »), son plafond de coût et l'accord reçu. « sans_ia » : lecture des textes et estimation du coût seulement, sans aucun appel à l'IA.",
+ "objet": "Demande de lancement d'un banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût. La dernière ligne dit quel banc lancer (« banc » : « chaine » par défaut, ou « extraction »), son plafond de coût et l'accord reçu. « sans_ia » : lecture des textes et estimation du coût seulement, sans aucun appel à l'IA. « parties » (banc « extraction ») : « tout », « historique » (cas mesurés depuis la séance 5) ou « chiffres » (articles aux chiffres relevés, VS-D32).",
  "lancements": [
   {
    "date": "2026-11-11",
@@ -52,6 +52,15 @@
    "raison": "Séance 5 de la phase 1 : mesure de clôture, après l'ajout du champ « comparaison », de la valeur « sans_objet », du contrôle du sens et du second score hors corrigés contestés (VS-D29, VS-D30). Coût estimé : 1,47 $.",
    "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 2,80 $.",
    "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "parties": "chiffres",
+   "sans_ia": true,
+   "raison": "Renforcement du corpus (VS-D32) : vérifier que le banc lit le texte intégral des 20 articles aux chiffres relevés et qu'il y retrouve les chiffres comme le corpus le déclare, et estimer le coût, avant tout appel à l'IA.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : corrigés pris dans les tableaux de revues (VS-D32), enveloppe de 5 $ (VS-D33). Aucune IA appelée : aucun coût.",
+   "budget_usd": 3.0
   }
  ]
 }
