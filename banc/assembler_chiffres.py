@@ -18,6 +18,7 @@ Trois modes, choisis par la dernière demande de banc/candidats_chiffres.json :
 Usage : python banc/assembler_chiffres.py
 """
 import collections
+import difflib
 import importlib.util
 import json
 import re
@@ -64,15 +65,20 @@ def _propre(t):
 
 # --- Lecture d'une revue source (fonctions pures) ---------------------------------------------
 
+_DOI = re.compile(r"10\.\d{4,9}/[^\s\"<>]+")
+
+
 def references(racine):
-    """Identifiant XML d'une référence → {"pmid", "doi", "auteur", "annee"} de l'étude citée."""
+    """Identifiant XML d'une référence → {"pmid", "doi", "auteur", "annee", "titre"} de l'étude citée."""
     refs = {}
     for ref in racine.iter():
         if _local(ref.tag) != "ref" or not ref.get("id"):
             continue
-        infos = {"pmid": "", "doi": "", "auteur": "", "annee": ""}
+        infos = {"pmid": "", "doi": "", "auteur": "", "annee": "", "titre": ""}
+        liens = []
         for el in ref.iter():
             nom, contenu = _local(el.tag), (el.text or "").strip()
+            liens += [v for v in el.attrib.values() if "10." in v]
             if nom == "pub-id" and contenu and el.get("pub-id-type") in ("pmid", "doi") \
                     and not infos[el.get("pub-id-type")]:
                 infos[el.get("pub-id-type")] = contenu.lower() if el.get("pub-id-type") == "doi" else contenu
@@ -80,6 +86,12 @@ def references(racine):
                 infos["auteur"] = contenu
             elif nom == "year" and contenu and not infos["annee"]:
                 infos["annee"] = contenu[:4]
+            elif nom == "article-title" and not infos["titre"]:
+                infos["titre"] = _propre("".join(el.itertext()))
+        if not infos["doi"]:                         # DOI écrit en clair, ou dans un lien
+            m = _DOI.search(" ".join(liens) + " " + " ".join(ref.itertext()))
+            if m:
+                infos["doi"] = m.group(0).rstrip(".,;)").lower()
         refs[ref.get("id")] = infos
     return refs
 
@@ -104,6 +116,14 @@ def _cites_par_nom(ligne, refs):
     for ident, r in refs.items():
         if r["auteur"] and r["annee"] and len(r["auteur"]) > 2 and re.search(
                 rf"\b{re.escape(r['auteur'])}\b[^|]{{0,40}}{r['annee']}", debut, re.I):
+            trouves.append(ident)
+    if trouves or not ligne:
+        return trouves
+    # Sans année dans la ligne : le nom seul, s'il ne désigne qu'une référence de l'article.
+    auteurs = collections.Counter(r["auteur"].lower() for r in refs.values() if r["auteur"])
+    for ident, r in refs.items():
+        if len(r["auteur"]) > 2 and auteurs[r["auteur"].lower()] == 1 and re.match(
+                rf"\W*{re.escape(r['auteur'])}\b", ligne[0], re.I):
             trouves.append(ident)
     return trouves
 
@@ -194,6 +214,37 @@ def decrire(identifiants):
     return infos
 
 
+def _titre_plat(t):
+    return re.sub(r"[^a-z0-9]+", " ", (t or "").lower()).strip()
+
+
+def resoudre(refs, idents):
+    """Référence citée → description Europe PMC, par PMID, par DOI, puis par titre exact.
+
+    La recherche par titre ne garde un résultat que si son titre est presque identique à celui de
+    la référence : une étude mal identifiée fausserait le corrigé.
+    """
+    cle = lambda i: refs[i]["pmid"] or refs[i]["doi"]          # noqa: E731
+    connus = decrire([cle(i) for i in idents if cle(i)])
+    fiches = {i: connus.get(cle(i)) for i in idents if cle(i)}
+    for i in idents:
+        r = refs[i]
+        if fiches.get(i) or len(_titre_plat(r["titre"])) < 25:
+            continue
+        mots = _titre_plat(r["titre"])
+        try:
+            rep = requete("GET", f"{acces.EUROPE_PMC}/search", params={
+                "query": f'TITLE:"{mots}" AND SRC:MED', "format": "json", "resultType": "core", "pageSize": 5}).json()
+        except Exception:
+            continue
+        for x in (rep.get("resultList") or {}).get("result") or []:
+            if difflib.SequenceMatcher(None, mots, _titre_plat(x.get("title"))).ratio() >= 0.92 and x.get("pmid"):
+                fiches[i] = decrire([str(x["pmid"])]).get(str(x["pmid"]))
+                break
+        time.sleep(0.2)
+    return fiches
+
+
 def lire_xml(pmcid):
     xml, etat = acces.texte_integral_xml(pmcid)
     if not xml:
@@ -235,9 +286,10 @@ def reperer(demande):
             journal(entete + f"\n    {len(tabs)} tableaux ; {len(refs)} références, dont "
                     f"{sum(1 for r in refs.values() if r['pmid'])} avec PMID et "
                     f"{sum(1 for r in refs.values() if r['doi'])} avec DOI")
-            cites = {i for t in tabs for l in t["lignes"] for i in l["cites"]}
-            cle = lambda i: refs[i]["pmid"] or refs[i]["doi"]          # noqa: E731
-            etudes = decrire([cle(i) for i in cites if i in refs])
+            retenus = [t for t in tabs if len({i for l in t["lignes"] for i in l["cites"] if i in refs}) >= 2
+                       and score_donnees(t, genre)[0] >= 2 and score_donnees(t, genre)[1] >= 10]
+            etudes = resoudre(refs, sorted({i for t in retenus for l in t["lignes"] for i in l["cites"] if i in refs}))
+            cle = lambda i: i                                          # noqa: E731
             bons, autres = {}, collections.Counter()
             for t in tabs:
                 idents = list(dict.fromkeys(i for l in t["lignes"] for i in l["cites"] if i in refs))
@@ -284,12 +336,18 @@ def lire(demande):
             journal(f"\n=== PMID {pmid} : texte intégral non lu ({etat})")
             continue
         tabs, refs = tableaux(racine)
+        tabs = [t for t in tabs if not d.get("tableaux") or any(meme_libelle(t["label"], x) for x in d["tableaux"])]
+        fiches = resoudre(refs, sorted({i for t in tabs for l in t["lignes"] for i in l["cites"] if i in refs}))
         voulus = {str(p) for p in d.get("pmids", [])}
-        idents = {i for i, r in refs.items() if r["pmid"] in voulus} if voulus else set(refs)
+        # Par défaut : les études sous licence CC BY ou CC0 dont le texte est dans PubMed Central.
+        idents = {i for i, f in fiches.items() if f and (f["pmid"] in voulus if voulus else utilisable(f))}
         journal(f"\n=== PMID {pmid} | {s['pmcid']} | {s['licence']} | {s['revue']} {s['annee']} | {s['doi']}")
+        for i in sorted(idents, key=lambda i: fiches[i]["pmid"]):
+            f = fiches[i]
+            types = ",".join(x for x in f["types"] if x not in ("research-article", "Journal Article"))[:60]
+            journal(f"  étude {f['pmid']} | {f['pmcid']} | {f['licence']} | {f['revue']} {f['annee']} | {f['doi']} | "
+                    f"[{refs[i]['auteur']} {refs[i]['annee']}] {types} | {f['titre'][:90]}")
         for t in tabs:
-            if d.get("tableaux") and not any(meme_libelle(t["label"], x) for x in d["tableaux"]):
-                continue
             lignes = lignes_d_une_etude(t, idents)
             if not lignes:
                 continue
@@ -298,7 +356,7 @@ def lire(demande):
                 if l not in lignes:
                     journal("  en-tête | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
             for l in lignes:
-                qui = ",".join(dict.fromkeys(refs[i]["pmid"] or refs[i]["auteur"] for i in l["cites"] if i in idents))
+                qui = ",".join(dict.fromkeys(fiches[i]["pmid"] for i in l["cites"] if i in idents))
                 journal(f"  [{qui}{' ↳' if l['herite'] else ''}] | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
         time.sleep(0.3)
     return 0
@@ -338,7 +396,9 @@ def verifier(_demande=None):
             time.sleep(0.3)
         tabs, refs = sources[s["pmid"]]
         voulus = [t for t in tabs if any(meme_libelle(t["label"], x) for x in s["tableau"].split(","))]
-        idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])}
+        idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])
+                  or (len(_titre_plat(r["titre"])) >= 25 and difflib.SequenceMatcher(
+                      None, _titre_plat(r["titre"]), _titre_plat(a["titre"])).ratio() >= 0.92)}
         ligne_source = texte_des_lignes(voulus, idents)
         if not ligne_source:
             journal("  recopie : AUCUNE LIGNE du tableau source ne cite cette étude")

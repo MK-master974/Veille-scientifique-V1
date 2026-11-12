@@ -92,6 +92,98 @@
     "34067458",
     "33669679"
    ]
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "lire",
+   "raison": "Lire, dans les revues sources retenues après le repérage (lancement 43276480183), les lignes de tableaux qui portent sur les études sous licence CC BY ou CC0, pour écrire les corrigés.",
+   "lectures": [
+    {
+     "source": "37444127",
+     "tableaux": [
+      "Table 3",
+      "Table 4"
+     ]
+    },
+    {
+     "source": "39014328",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "36151550",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "35150292",
+     "tableaux": [
+      "Table 2"
+     ]
+    },
+    {
+     "source": "39367147"
+    },
+    {
+     "source": "42643227",
+     "tableaux": [
+      "Table 1",
+      "Table 2",
+      "Table 4",
+      "Table 5"
+     ]
+    },
+    {
+     "source": "39026375",
+     "tableaux": [
+      "Table 1",
+      "Table 7"
+     ]
+    },
+    {
+     "source": "40943700",
+     "tableaux": [
+      "Table 1",
+      "Table 3"
+     ]
+    },
+    {
+     "source": "37959210",
+     "tableaux": [
+      "Table 3"
+     ]
+    },
+    {
+     "source": "38786366",
+     "tableaux": [
+      "Table 3"
+     ]
+    },
+    {
+     "source": "42947838",
+     "tableaux": [
+      "Table 2"
+     ]
+    },
+    {
+     "source": "42491100",
+     "tableaux": [
+      "Table 1",
+      "Table 3"
+     ]
+    },
+    {
+     "source": "40469386",
+     "tableaux": [
+      "Table 2",
+      "Table 4"
+     ]
+    }
+   ]
   }
  ]
 }

@@ -158,7 +158,7 @@ REVUE = """<article><body><sec><title>Results</title><p>Texte fabriqué.</p>
 
 def test_les_lignes_d_un_tableau_sont_rattachees_a_l_etude_citee():
     tabs, refs = assembler.tableaux(ET.fromstring(REVUE))
-    assert refs["r1"] == {"pmid": "11111111", "doi": "", "auteur": "Martin", "annee": "2021"}
+    assert refs["r1"] == {"pmid": "11111111", "doi": "", "auteur": "Martin", "annee": "2021", "titre": ""}
     assert refs["r2"]["doi"] == "10.1000/abc"
     lignes = tabs[0]["lignes"]
     assert [l["cites"] for l in lignes] == [[], ["r1"], ["r1"], ["r2"], []]
@@ -171,6 +171,26 @@ def test_les_lignes_d_un_tableau_sont_rattachees_a_l_etude_citee():
     assert not chiffres.present(chiffre("sensibilite", "0.88"), texte)
     assert assembler.score_donnees(tabs[0], "diagnostic")[0] >= 3
     assert assembler.meme_libelle("TABLE 2.", " table 2") and not assembler.meme_libelle("Table 2", "Table 12")
+
+
+def test_une_reference_sans_identifiant_garde_son_doi_ecrit_et_son_titre():
+    xml = """<article><body><table-wrap><label>Table 1</label><table><tbody>
+    <tr><td>Review</td><td>Pooled effect (95% CI)</td></tr>
+    <tr><td>Bernard et al.</td><td>SMD 0.41 (0.12 to 0.70)</td></tr>
+    <tr><td>Petit et al.</td><td>SMD 0.10 (-0.20 to 0.40)</td></tr>
+    </tbody></table></table-wrap></body><back><ref-list>
+    <ref id="a"><mixed-citation><person-group><name><surname>Bernard</surname></name></person-group>
+      <article-title>An invented title about exercise and balance in older adults</article-title> <year>2024</year>
+      doi: 10.1000/xyz.123.</mixed-citation></ref>
+    <ref id="b"><mixed-citation><person-group><name><surname>Petit</surname></name></person-group><year>2020</year></mixed-citation></ref>
+    <ref id="c"><mixed-citation><person-group><name><surname>Petit</surname></name></person-group><year>2022</year></mixed-citation></ref>
+    </ref-list></back></article>"""
+    tabs, refs = assembler.tableaux(ET.fromstring(xml))
+    assert refs["a"]["doi"] == "10.1000/xyz.123"
+    assert refs["a"]["titre"].startswith("An invented title")
+    # Sans année dans la ligne, le nom seul suffit s'il ne désigne qu'une référence : « Bernard » oui,
+    # « Petit » non (deux références portent ce nom).
+    assert [l["cites"] for l in tabs[0]["lignes"]] == [[], ["a"], []]
 
 
 def test_la_demande_du_depot_est_lisible():
