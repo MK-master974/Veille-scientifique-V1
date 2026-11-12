@@ -6,6 +6,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- `CLAUDE.md` renvoie aux fiches de méthode de `.claude/skills/` (VS-D35). Les huit règles
+  impératives et le format des messages n'y changent pas ; le détail du questionnaire de décision
+  est désormais dans la fiche `questionnaire-decision`.
 - Workflow « Banc d'essai » : il lance le banc demandé par la dernière ligne de
   `banc/lancement.json` (chaîne actuelle ou extraction), avec un plafond de coût fixe pour chaque
   banc. Une demande « sans IA » lit les textes et estime le coût sans rien dépenser.
@@ -25,6 +28,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- `.claude/skills/` : les sept fiches de méthode communes aux applications de l'écosystème,
+  copiées du dépôt de coordination (consigne CONS-2026-11-12-01, VS-D35). Seule leur partie
+  « Dans ce projet » est propre à Veille Santé.
 - Phase 1, séance 5 : extraction des données d'une publication, chaque donnée avec son
   emplacement (bloc « extraction » de la fiche v2). `pipeline/texte.py` lit un résumé ou un texte
   intégral en blocs repérés ; `pipeline/extraction.py` et la consigne `extraction.txt` extraient

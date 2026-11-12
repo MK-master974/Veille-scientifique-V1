@@ -50,6 +50,14 @@ Lis d'abord [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (comment c'est construi
 - **Documentation** : une modification de l'architecture se reporte dans
   `docs/ARCHITECTURE.md`, une décision dans `docs/DECISIONS.md`, dans le même changement.
 
+## Fiches de méthode (skills)
+
+Le dossier `.claude/skills/` contient les sept fiches de méthode communes aux applications de
+l'écosystème, copiées du dépôt de coordination (VS-D35). Ouvre celle qui correspond à ce que tu
+fais : `message-cons07`, `questionnaire-decision`, `declaration-portail`, `aucune-donnee-patient`,
+`verifier-avant-terminer`, `debogage-methodique`, `publication-version`. Elles détaillent les
+règles de ce fichier, sans les remplacer : en cas d'écart, ce fichier fait foi.
+
 ## Communication avec le porteur du projet
 
 - En français, avec tutoiement, en phrases simples, pour un lecteur qui n'est pas développeur.
@@ -63,20 +71,12 @@ Lis d'abord [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (comment c'est construi
 - Regroupe les demandes, et rappelle au même endroit celles qui restent en attente.
 - **Décisions : un questionnaire à cliquer.** Chaque fois qu'une décision ou une validation du
   porteur du projet est nécessaire, pose-la avec l'outil de questions (`AskUserQuestion`), pas en
-  texte libre. Règle commune aux applications de l'écosystème (consigne CONS-2026-11-11-15,
-  demandée par le porteur du projet) :
-  - chaque question se suffit à elle-même : de quoi il s'agit, ce qui a été constaté, ce que le
-    choix change ;
-  - 2 à 4 options, chacune avec une ligne sur ce qui se passe si on la choisit ; l'option
-    recommandée en premier, marquée « (Recommandé) » ;
-  - une décision par question, 4 questions au plus ; les décisions en attente sont regroupées ;
-  - après la réponse : rappeler le choix en une ligne, l'inscrire dans `docs/DECISIONS.md`
-    (préfixe VS-), puis agir ;
-  - pas de questionnaire pour une action que le porteur du projet fait lui-même (une fusion reste
-    dans « À FAIRE »), pour un choix que tu peux faire seul, ni pour une tâche programmée avant sa
-    date ;
-  - si l'outil n'est pas disponible : questions numérotées, options lettrées, recommandation en
-    premier.
+  texte libre : une décision par question, 4 questions au plus, l'option recommandée en premier.
+  Après la réponse, rappelle le choix en une ligne, inscris-le dans `docs/DECISIONS.md` (préfixe
+  VS-), puis agis. La méthode complète est dans le skill `questionnaire-decision` (consigne
+  CONS-2026-11-11-15). Deux précisions : pas de questionnaire pour un choix que tu peux faire seul ;
+  si l'outil n'est pas disponible, pose des questions numérotées, aux options lettrées, la
+  recommandation en premier.
 - Distingue ce qui est vérifié, ce qui est une hypothèse, ce qui est une recommandation et ce
   qui reste à arbitrer.
 
@@ -88,7 +88,7 @@ Veille Santé fait partie d'un ensemble de plusieurs applications, coordonnées 
 - **Avant une évolution importante** : lire `contexte/veille-sante.md` de ce dépôt, et citer son
   commit dans les comptes rendus.
 - **Tout changement qui touche une autre application** est déclaré dans `ecosysteme/evolutions/`
-  avant d'être fait.
+  avant d'être fait (skill `declaration-portail`).
 - **Après une évolution transversale** : compte rendu dans `ecosysteme/comptes-rendus/`.
 - **Décisions communes et contrats d'échange** : par demande de fusion dans `ecosysteme`, validée
   par le porteur du projet.

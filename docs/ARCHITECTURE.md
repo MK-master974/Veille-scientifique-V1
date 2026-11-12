@@ -69,6 +69,7 @@ pas du nombre de lecteurs.
 | `.github/workflows/banc-lecture.yml` | Lecture du détail d'un résultat du banc, sans IA |
 | `.github/workflows/acces.yml` | Mesure des niveaux d'accès sur une semaine publiée, sans IA |
 | `CLAUDE.md` | Consignes de travail pour les sessions de développement |
+| `.claude/skills/` | Fiches de méthode communes aux applications de l'écosystème, copiées du dépôt de coordination. Elles détaillent `CLAUDE.md`, qui fait foi |
 
 ## Le moteur (`pipeline/`)
 
