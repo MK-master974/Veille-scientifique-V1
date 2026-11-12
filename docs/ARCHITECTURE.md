@@ -209,7 +209,7 @@ des niveaux d'accès et servira à la future chaîne d'analyse (bloc `acces` de 
 - **Licence** : ramenée à une classe fixe (CC0, CC BY, CC BY-NC…, « autre », « inconnue »). Une
   licence inconnue ou propriétaire ne donne jamais mieux que « résumé uniquement ».
 - **Niveau d'accès** : 1 si le texte a un corps d'au moins 5 000 caractères et deux parties, 2 s'il
-  est partiel, 3 sinon. Le périmètre des licences admises reste à décider.
+  est partiel, 3 sinon. Seules les licences CC BY et CC0 ouvrent le niveau 1 (VS-D21).
 - **Aucun texte d'article n'est gardé** : seules des mesures de sa structure le sont.
 
 ## Données publiées (`site/data/`)

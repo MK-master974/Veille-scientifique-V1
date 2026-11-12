@@ -23,12 +23,17 @@ from .reseau import requete
 
 EUROPE_PMC = "https://www.ebi.ac.uk/europepmc/webservices/rest"
 
-# Périmètres de licences étudiés. Le choix revient au porteur du projet ; rien n'est retenu ici.
+# Périmètres de licences étudiés lors de la mesure du 12 novembre 2026.
 PERIMETRES = {
     "strict": ("CC0", "CC BY"),
     "intermediaire": ("CC0", "CC BY", "CC BY-SA", "CC BY-NC", "CC BY-NC-SA"),
     "large": ("CC0", "CC BY", "CC BY-SA", "CC BY-NC", "CC BY-NC-SA", "CC BY-ND", "CC BY-NC-ND"),
 }
+
+# Périmètre retenu par le porteur du projet le 12 novembre 2026 (VS-D21) : une fiche n'est analysée
+# sur le texte intégral que si l'article est sous licence CC BY ou CC0. Les autres licences sont
+# soumises à l'avis juridique commun.
+PERIMETRE_RETENU = PERIMETRES["strict"]
 
 # En dessous de ces seuils, un texte récupéré est compté « partiel » (niveau 2).
 SEUIL_CARACTERES = 5000

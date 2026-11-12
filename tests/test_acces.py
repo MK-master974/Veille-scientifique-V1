@@ -45,6 +45,15 @@ def test_les_perimetres_s_emboitent():
     assert "autre" not in large and "inconnue" not in large
 
 
+def test_perimetre_retenu_est_le_plus_strict():
+    # VS-D21 : seules les licences CC BY et CC0 ouvrent l'analyse du texte intégral.
+    assert set(acces.PERIMETRE_RETENU) == {"CC0", "CC BY"}
+    texte = acces.decrire_texte(article())
+    assert acces.niveau_acces("PMC1", "CC BY", texte, acces.PERIMETRE_RETENU)[0] == 1
+    assert acces.niveau_acces("PMC1", "CC BY-NC", texte, acces.PERIMETRE_RETENU)[0] == 3
+    assert acces.niveau_acces("PMC1", "CC BY-NC-ND", texte, acces.PERIMETRE_RETENU)[0] == 3
+
+
 # --- Structure d'un texte ---------------------------------------------------------------------
 
 def test_decrire_texte_complet():

@@ -94,10 +94,14 @@ semaine. Le coût au seul périmètre A n'a pas été calculé séparément.
 - Un texte est compté « lisible » s'il a un corps d'au moins 5 000 caractères et 2 parties.
 - La lecture des 435 textes a pris 28 minutes : un texte intégral pèse lourd.
 
+## Décision
+
+Le porteur du projet a retenu le périmètre A le 12 novembre 2026 (VS-D21) : seules les licences
+CC BY et CC0 ouvrent l'analyse du texte intégral.
+
 ## Ce qui reste
 
-1. Choisir le périmètre des licences admises pour le niveau 1.
-2. Mesurer S46 le jour de sa publication.
-3. Demander, dans l'avis juridique commun, si l'analyse d'un texte sous licence « pas d'usage
+1. Mesurer S46 le jour de sa publication (VS-D22).
+2. Demander, dans l'avis juridique commun, si l'analyse d'un texte sous licence « pas d'usage
    commercial » ou « pas de modification » est permise : 187 fiches de cette semaine en dépendent.
-4. Étudier une lecture directe dans PubMed Central, pour ne pas dépendre du retard d'Europe PMC.
+3. Étudier une lecture directe dans PubMed Central, pour ne pas dépendre du retard d'Europe PMC.
