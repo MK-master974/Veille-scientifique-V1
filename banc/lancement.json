@@ -1,5 +1,5 @@
 {
- "objet": "Demande de lancement du banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût.",
+ "objet": "Demande de lancement d'un banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût. La dernière ligne dit quel banc lancer (« banc » : « chaine » par défaut, ou « extraction »), son plafond de coût et l'accord reçu. « sans_ia » : lecture des textes et estimation du coût seulement, sans aucun appel à l'IA.",
  "lancements": [
   {
    "date": "2026-11-11",
@@ -12,6 +12,46 @@
    "raison": "Mesure après correction du contrôle des chiffres (VS-D8) ; piège de l'instruction cachée porté à 64 participants.",
    "accord": "Marvin, questionnaire du 11/11/2026 : « Relancer après correction »",
    "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "sans_ia": true,
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : vérifier la lecture des textes intégraux du corpus et de dix publications de 2026-S45, et estimer le coût, avant tout appel à l'IA.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : plan de la séance 5 (VS-D24). Aucune IA appelée : aucun coût.",
+   "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "raison": "Séance 5 de la phase 1 : première mesure de l'extraction sur le corpus de référence, résumé seul et texte intégral. Coût estimé : 0,95 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27).",
+   "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : deuxième mesure de l'extraction après corrections (repère, effectif, lecteur du banc), et dix publications réelles de 2026-S45 pour la relecture. Coût estimé : 1,43 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 0,73 $.",
+   "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : mesure finale de l'extraction, après la relecture indépendante de dix publications de 2026-S45 et la correction de la consigne. Coût estimé : 1,45 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 1,76 $.",
+   "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : mesure de clôture, après l'ajout du champ « comparaison », de la valeur « sans_objet », du contrôle du sens et du second score hors corrigés contestés (VS-D29, VS-D30). Coût estimé : 1,47 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 2,80 $.",
+   "budget_usd": 2.0
   }
  ]
 }

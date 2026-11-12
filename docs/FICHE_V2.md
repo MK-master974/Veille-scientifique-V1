@@ -1,7 +1,7 @@
 # Fiche v2 — format d'une fiche de veille
 
 Format cible d'une fiche, décidé par le porteur du projet le 12 novembre 2026 (décisions VS-D12 à
-VS-D16 et VS-D19 de [DECISIONS.md](DECISIONS.md)).
+VS-D16, VS-D19 et VS-D30 de [DECISIONS.md](DECISIONS.md)).
 
 **Ce format n'est pas encore produit.** Le moteur et l'application publient des fiches au format
 actuel (« v1 », décrit dans [ARCHITECTURE.md](ARCHITECTURE.md)) jusqu'à la bascule, dernière
@@ -108,8 +108,13 @@ du niveau de preuve ; une publication n'est jamais mise en avant pour sa seule n
 Chaque donnée est « sourcée » : elle porte sa valeur et l'endroit où elle se trouve.
 
 ```json
-{ "valeur": "…", "source": { "emplacement": "résumé | section | tableau 2 | figure 1", "passage": null } }
+{ "valeur": "…", "source": { "emplacement": "résumé | section : … | tableau 2 | figure 1", "passage": null } }
 ```
+
+`emplacement` (précisé le 12 novembre 2026, VS-D30) est écrit par le code, à l'endroit où le
+passage a été retrouvé dans le texte lu. Il prend l'une de ces quatre formes : « résumé » ;
+« section : » suivi des titres de la section, du plus général au plus précis
+(« section : Methods > Participants ») ; « tableau » et son numéro ; « figure » et son numéro.
 
 | Champ | Contenu | R | A |
 | --- | --- | --- | --- |
@@ -117,11 +122,25 @@ Chaque donnée est « sourcée » : elle porte sa valeur et l'endroit où elle s
 | `population`, `effectif` | Population et effectifs | oui | oui |
 | `intervention`, `comparateur` | Ou test évalué et test de référence pour une étude diagnostique | oui | oui |
 | `resultats` | Liste, un élément par critère de jugement (voir ci-dessous) | principal | tous |
-| `evenements_indesirables` | Rapportés ou non, et ce qui en est dit | si rapportés | oui |
+| `evenements_indesirables` | Rapportés ou non, et ce qui en est dit (forme ci-dessous) | si rapportés | oui |
 
-Un résultat porte : `critere`, `rang` (`principal`, `secondaire`, `non_precise`), `sens_mesure`
-(`augmente`, `diminue`, `pas_de_difference`, `non_rapporte`), `en_faveur_de` (`intervention`,
+Un résultat porte : `critere`, `comparaison` (`entre_groupes`, `avant_apres`, `descriptif`,
+`non_precise`), `rang` (`principal`, `secondaire`, `non_precise`), `sens_mesure` (`augmente`,
+`diminue`, `pas_de_difference`, `sans_objet`, `non_rapporte`), `en_faveur_de` (`intervention`,
 `comparateur`, `aucun`, `indetermine`), `valeur`, `intervalle`, `p`, et sa `source`.
+
+Trois précisions du 12 novembre 2026 (VS-D30), nées de la première mesure de l'extraction :
+
+- **`comparaison`** dit ce que le résultat compare : deux groupes ou deux conditions
+  (`entre_groupes`), un seul groupe suivi dans le temps (`avant_apres`), ou rien
+  (`descriptif` : sensibilité d'un test, prévalence, recommandation, constat d'une revue). Un
+  résultat `avant_apres` ou `descriptif` n'est jamais « en faveur de » l'intervention ni du
+  comparateur : sans autre groupe, rien ne dit que l'évolution vient de l'intervention.
+- **`sens_mesure` vaut `sans_objet`** pour un résultat descriptif. `non_rapporte` veut seulement
+  dire : une comparaison est faite, mais le texte lu ne dit pas dans quel sens.
+- **`evenements_indesirables`** est un objet : `rapportes` (`true`, `false`, ou `null` quand le
+  texte dit qu'ils sont rapportés sans passage vérifiable), `valeur` (ce qui en est dit, ou
+  `null`) et `source` (ou `null`).
 
 `sens_mesure` et `en_faveur_de` sont deux champs séparés : une durée d'incapacité qui diminue est
 un résultat favorable. Le banc d'essai du 11 novembre 2026 a montré que les confondre fait
@@ -260,11 +279,11 @@ sont montrés.
                   "categorie": null, "sens_pratique": null, "pertinence": 2 },
   "extraction": {
     "resultats": [
-      { "critere": "KOOS, symptômes", "rang": "non_precise",
+      { "critere": "KOOS, symptômes", "comparaison": "entre_groupes", "rang": "non_precise",
         "sens_mesure": "augmente", "en_faveur_de": "intervention",
         "valeur": "4,44", "intervalle": "1,62 à 7,26",
         "source": { "emplacement": "résumé", "passage": null } },
-      { "critere": "KOOS, douleur", "rang": "non_precise",
+      { "critere": "KOOS, douleur", "comparaison": "entre_groupes", "rang": "non_precise",
         "sens_mesure": "pas_de_difference", "en_faveur_de": "aucun",
         "valeur": "1,95", "intervalle": "−0,27 à 4,17",
         "source": { "emplacement": "résumé", "passage": null } }
@@ -289,4 +308,6 @@ sont montrés.
 
 - Cahier des charges de Veille Santé, chapitres 5.3, 5.4, 5.8, 7.5, 9, 26.1 à 26.3, 26.9 et 29.3.
 - Résultats du banc d'essai : [../banc/resultats/](../banc/resultats/).
+- Déclarations au dépôt de coordination : CHG-2026-0004 (format) et CHG-2026-0007 (précisions du
+  bloc `extraction`).
 - Contrat `vs-evalys-connaissance` du dépôt de coordination, version 0 (brouillon).

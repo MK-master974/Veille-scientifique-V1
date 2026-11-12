@@ -15,6 +15,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Cas « qualité méthodologique » : 5 essais (RoB 2), 3 études diagnostiques (QUADAS-2), 3 revues (AMSTAR 2), 2 recommandations (AGREE II) | Assemblés le 11 novembre 2026 : `corpus/qualite.json`. Les 2 recommandations attendent leur identifiant |
 | Pièges : article rétracté, résumé seul, instruction cachée dans le texte | Construits le 11 novembre 2026 : `corpus/pieges.json` |
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | Écrit le 11 novembre 2026 : `banc.py`, lancé par le workflow « Banc d'essai ». Deux passages faits : voir `resultats/` |
+| Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Quatre mesures faites : `resultats/2026-11-12-extraction.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -60,6 +61,35 @@ critère principal de chaque essai : le banc doit comparer au même critère.
 Le résumé du troisième piège est fictif, écrit pour le banc, et le fichier le signale. Il ne doit
 jamais être publié.
 
+## Le banc de l'extraction
+
+`banc_extraction.py` mesure l'extraction des données d'un article (bloc « extraction » de la
+fiche v2), sans passer par le tri.
+
+- **Deux niveaux d'accès** : chaque référence est extraite à partir de son résumé ; les essais
+  dont le texte intégral est sous licence CC BY ou CC0 le sont une seconde fois à partir du texte
+  intégral. L'écart entre les deux dit ce que le texte intégral apporte.
+- **Contrôles du code** : données proposées, gardées, refusées (passage introuvable, chiffre
+  absent), écarts corrigés.
+- **Sens de l'effet** : un modèle qui ne voit que les données extraites, sans les passages,
+  répond aux 32 questions corrigées par des médecins.
+- **Recoupement** : un passage extrait recoupe-t-il celui que les annotateurs ont retenu ?
+- **Pièges** : les trois mêmes, appliqués à l'extraction.
+- **Coût réel par article**, pour chaque niveau d'accès.
+- **Seuils** fixés par le porteur du projet (VS-D25), sur le texte intégral : au moins 26
+  réponses justes sur 32, aucune erreur de sens, aucun passage ni chiffre gardé hors de l'article,
+  3 pièges sur 3.
+- **Publications réelles** : avec l'option `s45`, des publications de la semaine 2026-S45
+  (kinésithérapie, licence ouverte, types d'étude variés) sont extraites en plus, pour une
+  relecture à la main. Elles n'ont pas de corrigé.
+
+**Pour lancer un banc** : ajouter une ligne à `lancement.json` sur une branche de travail. La
+ligne dit quel banc lancer (`"banc": "chaine"` ou `"extraction"`), son plafond de coût et l'accord
+reçu. `"sans_ia": true` lit les textes et estime le coût sans appeler l'IA.
+
+Le journal et les résultats d'un lancement sont publics : aucun texte d'article n'y figure, hors
+courts passages exacts d'articles sous licence CC BY ou CC0, cités avec leur identifiant.
+
 ## Mesure des niveaux d'accès
 
 `mesure_acces.py` compte, pour une semaine déjà publiée, les fiches dont le texte intégral est
@@ -78,6 +108,13 @@ pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmè
 - Plusieurs études des cas « qualité » n'ont pas de texte intégral en accès libre : le banc ne
   pourra les juger que sur leur résumé, ce qui est en soi un test d'abstention.
 - Une partie des questions n'a qu'un seul annotateur.
+- Plusieurs corrigés « sens de l'effet » sont ambigus ou contredisent leur propre passage : deux
+  corrigés opposés pour un même critère (questions 10151 et 10152), un sens contraire au passage
+  (8983), un critère qui est en fait une chaussure (1676). Le banc de l'extraction du 12 novembre
+  2026 les a relevés. Ils restent dans le corpus : `corpus/corriges_contestes.json` en liste dix,
+  avec leur preuve, et le banc donne un second score sur les 22 autres (VS-D29).
+- Le corpus ne contient que des essais randomisés pour le « sens de l'effet » : il ne mesure pas
+  l'extraction sur une revue ou une étude diagnostique.
 - Ces cas mesurent l'extraction et l'interprétation statistique, pas l'intérêt clinique d'un
   résultat pour un professionnel.
 - Un corrigé peut lui-même contenir une erreur : un écart est un signal à examiner, pas une

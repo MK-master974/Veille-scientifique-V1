@@ -46,8 +46,10 @@ pas du nombre de lecteurs.
 | `pipeline/reseau.py` | Requêtes HTTP avec nouvelles tentatives sur les erreurs passagères |
 | `pipeline/config.py` | Chargement de la configuration, du catalogue et des consignes |
 | `pipeline/acces.py` | Recherche du texte intégral légal, licence et niveau d'accès. Pas encore appelé par la veille |
+| `pipeline/texte.py` | Lecture d'une publication en blocs repérés (résumé, sections, tableaux, figures) et recherche d'un passage mot pour mot. Pas encore appelé par la veille |
+| `pipeline/extraction.py` | Extraction des données d'une publication et contrôle de chaque donnée par le code. Pas encore appelé par la veille |
 | `pipeline/catalogue.json` | Professions et sous-champs |
-| `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` |
+| `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` ; `extraction.txt` pour la future fiche v2 |
 | `site/index.html`, `app.js`, `styles.css` | Application web, sans dépendance |
 | `site/sw.js` | Service worker : lecture hors ligne et mises à jour |
 | `site/manifest.webmanifest`, icônes | Installation sur l'écran d'accueil |
@@ -60,10 +62,10 @@ pas du nombre de lecteurs.
 | `scripts/demo.py` | Site de démonstration : vrai moteur, IA simulée |
 | `scripts/resume_travail.py` | Résumé chiffré d'un dossier de travail |
 | `demo/` | Quatre publications réelles et les réponses d'IA simulées |
-| `tests/` | Tests du moteur, de la chaîne complète et de l'assemblage du corpus, sans réseau |
-| `banc/` | Corpus de référence et banc d'essai de la chaîne d'analyse ; résultats dans `banc/resultats/` |
+| `tests/` | Tests du moteur, de la chaîne complète, de l'extraction, des bancs d'essai et de l'assemblage du corpus, sans réseau |
+| `banc/` | Corpus de référence et bancs d'essai : chaîne actuelle (`banc.py`), extraction (`banc_extraction.py`), lanceur (`lancer.py`) ; résultats dans `banc/resultats/` |
 | `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
-| `.github/workflows/banc.yml` | Banc d'essai : appelle l'IA, a un coût, ne se lance que sur demande |
+| `.github/workflows/banc.yml` | Banc d'essai demandé par `banc/lancement.json` : appelle l'IA, a un coût, ne se lance que sur demande |
 | `.github/workflows/banc-lecture.yml` | Lecture du détail d'un résultat du banc, sans IA |
 | `.github/workflows/acces.yml` | Mesure des niveaux d'accès sur une semaine publiée, sans IA |
 | `CLAUDE.md` | Consignes de travail pour les sessions de développement |
@@ -212,6 +214,46 @@ des niveaux d'accès et servira à la future chaîne d'analyse (bloc `acces` de 
   est partiel, 3 sinon. Seules les licences CC BY et CC0 ouvrent le niveau 1 (VS-D21).
 - **Aucun texte d'article n'est gardé** : seules des mesures de sa structure le sont.
 
+### Lecture d'une publication et extraction (`texte.py`, `extraction.py`)
+
+Modules de la phase 1, séance 5. **La veille hebdomadaire ne les appelle pas** : ils produisent le
+bloc `extraction` de la fiche v2 ([FICHE_V2.md](FICHE_V2.md)) et sont mesurés par
+`banc/banc_extraction.py`.
+
+- **Lecture** (`texte.py`) : une publication devient une suite de blocs repérés. `R` est le
+  résumé ; `S1`, `S2`… les sections, avec le chemin de leurs titres ; `T1`… les tableaux, lus
+  ligne par ligne ; `F1`… les légendes de figures. La source est le résumé de PubMed (niveau
+  d'accès 3) ou le texte intégral au format JATS d'Europe PMC (niveau 1). Les références
+  bibliographiques ne sont pas lues. Un tableau fourni en image est signalé comme non lu. Au-delà
+  de 120 000 caractères, des sections qui ne sont ni la méthode ni les résultats sont laissées de
+  côté, et le document le dit.
+- **Protection** : le texte remis à l'IA est placé entre deux marques, que l'article ne peut pas
+  imiter, et la consigne dit qu'il s'agit d'une donnée, jamais d'une instruction. Une consigne
+  trouvée dans l'article est signalée, pas suivie.
+- **Extraction** (`extraction.py`, consigne `extraction.txt`) : l'IA propose la question, la
+  population, l'effectif, l'intervention, le comparateur, les résultats et les événements
+  indésirables. Chaque donnée vient avec le repère d'un bloc et un passage.
+- **Contrôle par le code**, donnée par donnée :
+  - le passage doit se retrouver mot pour mot dans le texte lu ; seules la casse, les espaces et
+    la typographie (guillemets, tirets) sont ignorées. L'emplacement gardé est celui où le passage
+    se trouve réellement, et l'extrait gardé est recopié du texte lu, pas de la proposition ;
+  - les nombres de la valeur, de l'intervalle et de p doivent figurer dans le passage, ou au moins
+    dans le bloc cité (écart noté). Un nombre absent du bloc ou du texte fait refuser la donnée ;
+  - une valeur fermée invalide ou incohérente est ramenée à la plus prudente (`non_precise`,
+    `non_rapporte`, `indetermine`) ;
+  - un sens (« augmente », « diminue ») que le passage cité ne permet pas de lire, faute de mot
+    de direction ou de nombres à comparer, est ramené à `non_rapporte` ;
+  - une évolution dans un seul groupe (`comparaison` : `avant_apres`) et un résultat descriptif
+    ne sont jamais notés « en faveur de » l'intervention ou du comparateur ; `sans_objet` impose
+    `descriptif` ;
+  - une estimation hors de son intervalle, ou un p qui contredit le sens annoncé, lève un signal
+    sans refuser la donnée.
+- **Une donnée refusée n'est ni corrigée ni gardée** : elle est comptée, avec son motif.
+- **Passage publié** seulement quand le texte lu est sous licence CC BY ou CC0 (VS-D15) ; sinon
+  seul l'emplacement est gardé.
+- **Fiche de repérage** : `reduire_au_reperage` ne garde que le résultat principal, et les
+  événements indésirables s'ils sont rapportés.
+
 ## Données publiées (`site/data/`)
 
 | Fichier | Contenu |
@@ -282,10 +324,14 @@ complète avec IA simulée, et vérification que `installation/` est identique a
 **`corpus.yml`** : à la demande. Assemble les cas du corpus de référence à partir d'un jeu de
 données public, sans IA ni clé. Le résultat est écrit dans le journal et gardé en artefact.
 
-**`banc.yml`** : rejoue la chaîne d'analyse actuelle sur le corpus de référence et mesure ses
-écarts avec les corrigés. Rien n'est publié. Il appelle l'IA et a un coût : il ne se lance que
+**`banc.yml`** : lance le banc d'essai demandé par la dernière ligne de `banc/lancement.json`
+(`banc/lancer.py`) : la chaîne d'analyse actuelle (`banc/banc.py`) ou l'extraction des données
+(`banc/banc_extraction.py`). Rien n'est publié. Il appelle l'IA et a un coût : il ne se lance que
 sur demande, par le bouton de lancement manuel ou quand `banc/lancement.json` est modifié sur une
-branche `claude/**`. Le budget est vérifié avant tout appel.
+branche `claude/**`. Le budget est vérifié avant tout appel, et borné par un plafond fixe pour
+chaque banc. Une demande « sans IA » lit les textes et estime le coût, sans aucun appel. Le
+journal et les résultats sont publics : aucun texte d'article n'y figure, hors courts passages
+exacts d'articles sous licence CC BY ou CC0.
 
 **`banc-lecture.yml`** : affiche dans le journal le détail d'un résultat du banc déjà produit, à
 partir de son artefact. Aucune IA n'est appelée.
