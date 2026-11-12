@@ -37,7 +37,13 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   texte intégral, 14 à partir du résumé seul, contre 7 pour la chaîne actuelle ; 3 pièges sur 3 ;
   334 données gardées sur 335. Le seuil de 26 n'est pas atteint. Relecture indépendante de dix
   publications réelles de 2026-S45 : aucun chiffre contraire à son passage, 1 erreur grave de sens.
-  Résultats et limites dans `banc/resultats/2026-11-12-extraction.md`. Coût : 2,80 $.
+  Résultats et limites dans `banc/resultats/2026-11-12-extraction.md`.
+- `banc/corpus/corriges_contestes.json` : dix questions du corpus dont le corrigé est contesté,
+  avec leur preuve. Elles restent dans le corpus ; le banc de l'extraction donne un second score
+  sur les 22 autres (VS-D29).
+- `docs/FICHE_V2.md`, quatre précisions du bloc « extraction » (VS-D30, déclaration
+  CHG-2026-0007) : forme des événements indésirables et de l'emplacement, valeur `sans_objet` du
+  sens d'un résultat, champ `comparaison` d'un résultat.
 - Phase 1, séance 4 : `pipeline/acces.py` cherche le texte intégral légal d'une publication, lit
   sa licence et attribue un niveau d'accès ; `banc/mesure_acces.py` et le workflow « Niveaux
   d'accès » mesurent ces niveaux sur une semaine déjà publiée. Aucune IA n'est appelée, aucun

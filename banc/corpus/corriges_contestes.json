@@ -1,0 +1,83 @@
+{
+ "nom": "Corpus de référence — questions « sens de l'effet » dont le corrigé est contesté",
+ "etabli_le": "2026-11-12",
+ "decision": "VS-D29",
+ "principe": "Ces questions restent dans le corpus et dans le score sur 32. Le banc d'essai donne un second score, sur les questions qui ne figurent pas ici. Chaque preuve est un extrait du passage que le corrigé cite lui-même dans essais_effet.json.",
+ "etabli_par": "Session de développement de la séance 5, d'après les journaux des trois lancements du banc du 12/11/2026. Liste non relue par un humain.",
+ "categories": {
+  "corrige_discutable": "Le corrigé contredit son propre passage, ou la question est mal posée ou ambiguë.",
+  "comparaison_avant_apres": "La question demande une comparaison avec un groupe témoin ; le passage du corrigé rapporte une évolution dans le seul groupe traité."
+ },
+ "questions": [
+  {
+   "id": "8983",
+   "pmid": "26158769",
+   "categorie": "corrige_discutable",
+   "motif": "Le corrigé dit que le taux d'erreur augmente ; son passage dit qu'il baisse davantage avec l'intervention.",
+   "preuve": "The rate of average trace error (ATE) on right, and left lower limb decreased a mean of 7.29, 10.16 percent, respectively, while controls had a mean decline of 6.76, 9.59 percent"
+  },
+  {
+   "id": "10151",
+   "pmid": "19149880",
+   "categorie": "corrige_discutable",
+   "motif": "Même critère et mêmes données que la question 10152 (14 jours contre 49), avec un corrigé opposé : « augmentation » ici, « diminution » là.",
+   "preuve": "In both physical therapy groups the median POD was 14 days compared to 49 days in the AAU group."
+  },
+  {
+   "id": "10152",
+   "pmid": "19149880",
+   "categorie": "corrige_discutable",
+   "motif": "Même critère et mêmes données que la question 10151 (14 jours contre 49), avec un corrigé opposé : « diminution » ici, « augmentation » là.",
+   "preuve": "In both physical therapy groups the median POD was 14 days compared to 49 days in the AAU group."
+  },
+  {
+   "id": "1676",
+   "pmid": "25991385",
+   "categorie": "corrige_discutable",
+   "motif": "Question mal posée : « mobility » y est donné comme critère, alors que le passage parle de la chaussure de mobilité, une des conditions comparées.",
+   "preuve": "There was no difference in the mobility or barefoot conditions in comparison to the control condition."
+  },
+  {
+   "id": "4020",
+   "pmid": "25923533",
+   "categorie": "corrige_discutable",
+   "motif": "La question nomme la « faiblesse » ; le corrigé « diminution » porte sur la force, qui baisse : le groupe est plus faible.",
+   "preuve": "the experimental group was significantly weaker in the final (77.04 ± 2.82%) than in the manipulation (81.94 ± 2.02%) and baseline (88.36 ± 1.41%) session"
+  },
+  {
+   "id": "421",
+   "pmid": "15924620",
+   "categorie": "corrige_discutable",
+   "motif": "La question porte sur le score KOOS entier ; le passage du corrigé ne couvre que quatre sous-échelles, et la cinquième (qualité de vie) diffère entre les groupes d'après une autre question du corpus (423).",
+   "preuve": "No significant differences in the KOOS subscales assessing pain, other symptoms, or function in daily life or in sport and recreation were seen at any time point between exercisers and controls."
+  },
+  {
+   "id": "8393",
+   "pmid": "24052871",
+   "categorie": "comparaison_avant_apres",
+   "motif": "Évolution du cortisol au réveil dans le seul groupe exercice.",
+   "preuve": "There was a decrease in salivary cortisol at wake (P = 0.025) in the EX"
+  },
+  {
+   "id": "8394",
+   "pmid": "24052871",
+   "categorie": "comparaison_avant_apres",
+   "motif": "Évolution du cortisol une heure après le réveil dans le seul groupe exercice.",
+   "preuve": "a trend (P = 0.07) for a decrease 1 hour after waking"
+  },
+  {
+   "id": "8395",
+   "pmid": "24052871",
+   "categorie": "comparaison_avant_apres",
+   "motif": "Évolution de la masse maigre dans le seul groupe exercice.",
+   "preuve": "The EX had a significant increase in lean tissue mass (LTM) (P < 0.001)"
+  },
+  {
+   "id": "8398",
+   "pmid": "24052871",
+   "categorie": "comparaison_avant_apres",
+   "motif": "Évolution de la masse grasse dans un sous-groupe du seul groupe exercice.",
+   "preuve": "those above 20% decreased fat mass (P = 0.02)"
+  }
+ ]
+}

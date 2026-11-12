@@ -133,10 +133,11 @@ def reponse(**remplace):
         "comparateur": {"valeur": "Soins usuels", "repere": "S2",
                         "passage": "We randomised 64 adults to exercise or usual care"},
         "resultats": [
-            {"critere": "Douleur", "rang": "principal", "sens_mesure": "diminue", "en_faveur_de": "intervention",
+            {"critere": "Douleur", "comparaison": "entre_groupes", "rang": "principal", "sens_mesure": "diminue",
+             "en_faveur_de": "intervention",
              "valeur": "différence moyenne −1,4", "intervalle": "IC à 95 % : −2,0 à −0,8", "p": None, "repere": "S4",
              "passage": "Pain decreased more with exercise – mean difference −1.4 (95% CI −2.0 to −0.8)."},
-            {"critere": "Fonction", "rang": "non_precise", "sens_mesure": "pas_de_difference",
+            {"critere": "Fonction", "comparaison": "entre_groupes", "rang": "non_precise", "sens_mesure": "pas_de_difference",
              "en_faveur_de": "aucun", "valeur": None, "intervalle": None, "p": "p = 0,41", "repere": "S4",
              "passage": "Function did not differ between groups (p = 0.41)."},
         ],
@@ -220,25 +221,50 @@ def test_repere_ecrit_entre_crochets_ou_en_minuscules():
 
 def test_valeurs_fermees_ramenees_a_la_plus_prudente():
     r = json.loads(reponse())
-    r["resultats"][0].update(rang="primaire", sens_mesure="baisse", en_faveur_de="exercice")
+    r["resultats"][0].update(rang="primaire", sens_mesure="baisse", en_faveur_de="exercice", comparaison="groupes")
     r["resultats"][1]["en_faveur_de"] = "intervention"   # incohérent avec « pas de différence »
     e, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
-    assert (e["resultats"][0]["rang"], e["resultats"][0]["sens_mesure"], e["resultats"][0]["en_faveur_de"]) == (
-        "non_precise", "non_rapporte", "indetermine")
+    premier = e["resultats"][0]
+    assert (premier["comparaison"], premier["rang"], premier["sens_mesure"], premier["en_faveur_de"]) == (
+        "non_precise", "non_precise", "non_rapporte", "indetermine")
     assert e["resultats"][1]["en_faveur_de"] == "aucun"
-    assert len(bilan["ecarts"]) == 4
+    assert len(bilan["ecarts"]) == 5
 
 
 def test_evolution_avant_apres_jamais_en_faveur_de_l_intervention():
     # Relecture du 12/11/2026 : des évolutions dans un seul groupe étaient notées « en faveur de l'intervention ».
     r = json.loads(reponse())
-    r["resultats"][0].update(critere="Douleur (groupe exercice, après contre avant)")
+    r["resultats"][0].update(comparaison="avant_apres")
     e, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
     assert e["resultats"][0]["en_faveur_de"] == "indetermine" and e["resultats"][0]["sens_mesure"] == "diminue"
-    assert [x["nature"] for x in bilan["ecarts"]] == ["évolution avant-après : « en faveur de » ramené à « indetermine »"]
+    assert [x["nature"] for x in bilan["ecarts"]] == [
+        "évolution avant-après ou résultat descriptif : « en faveur de » ramené à « indetermine »"]
+    # Le critère le dit, même si le champ « comparaison » dit autre chose : le plus prudent l'emporte.
+    r["resultats"][0].update(comparaison="entre_groupes", critere="Douleur (groupe exercice, après contre avant)")
+    e, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
+    assert (e["resultats"][0]["comparaison"], e["resultats"][0]["en_faveur_de"]) == ("avant_apres", "indetermine")
+    assert len(bilan["ecarts"]) == 2
     # Une comparaison entre groupes garde sa valeur.
     e, _ = extraction.lire_extraction(reponse(), doc(), True)
-    assert e["resultats"][0]["en_faveur_de"] == "intervention"
+    assert (e["resultats"][0]["comparaison"], e["resultats"][0]["en_faveur_de"]) == ("entre_groupes", "intervention")
+
+
+def test_resultat_descriptif_sans_objet():
+    # Précision du format (VS-D30) : la sensibilité d'un test n'a pas de sens « augmente » ou « diminue ».
+    r = json.loads(reponse())
+    r["resultats"][0].update(critere="Sensibilité du test", comparaison="descriptif", sens_mesure="sans_objet",
+                             en_faveur_de="intervention", valeur="64 adultes", intervalle=None,
+                             repere="S2", passage="We randomised 64 adults to exercise or usual care")
+    e, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
+    premier = e["resultats"][0]
+    assert (premier["comparaison"], premier["sens_mesure"], premier["en_faveur_de"]) == ("descriptif", "sans_objet", "indetermine")
+    # « sans objet » impose « descriptif » ; un sens donné à un résultat dit descriptif retire ce qualificatif.
+    r["resultats"][0].update(comparaison="entre_groupes")
+    e, _ = extraction.lire_extraction(json.dumps(r), doc(), True)
+    assert e["resultats"][0]["comparaison"] == "descriptif"
+    r["resultats"][1].update(comparaison="descriptif")              # « pas de différence » : ce n'est pas descriptif
+    e, _ = extraction.lire_extraction(json.dumps(r), doc(), True)
+    assert e["resultats"][1]["comparaison"] == "non_precise"
 
 
 def test_sens_annonce_sans_appui_dans_le_passage():

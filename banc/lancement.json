@@ -44,6 +44,14 @@
    "raison": "Séance 5 de la phase 1 : mesure finale de l'extraction, après la relecture indépendante de dix publications de 2026-S45 et la correction de la consigne. Coût estimé : 1,45 $.",
    "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 1,76 $.",
    "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : mesure de clôture, après l'ajout du champ « comparaison », de la valeur « sans_objet », du contrôle du sens et du second score hors corrigés contestés (VS-D29, VS-D30). Coût estimé : 1,47 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 2,80 $.",
+   "budget_usd": 2.0
   }
  ]
 }

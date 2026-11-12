@@ -111,7 +111,8 @@ pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmè
 - Plusieurs corrigés « sens de l'effet » sont ambigus ou contredisent leur propre passage : deux
   corrigés opposés pour un même critère (questions 10151 et 10152), un sens contraire au passage
   (8983), un critère qui est en fait une chaussure (1676). Le banc de l'extraction du 12 novembre
-  2026 les a relevés ; ils ne sont pas corrigés dans le corpus.
+  2026 les a relevés. Ils restent dans le corpus : `corpus/corriges_contestes.json` en liste dix,
+  avec leur preuve, et le banc donne un second score sur les 22 autres (VS-D29).
 - Le corpus ne contient que des essais randomisés pour le « sens de l'effet » : il ne mesure pas
   l'extraction sur une revue ou une étude diagnostique.
 - Ces cas mesurent l'extraction et l'interprétation statistique, pas l'intérêt clinique d'un

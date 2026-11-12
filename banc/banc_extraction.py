@@ -11,6 +11,8 @@ Mesures :
    écarts corrigés, signaux de cohérence.
 2. Sens de l'effet : les données extraites permettent-elles de répondre aux 32 questions corrigées
    par des médecins ? Elles sont lues par un modèle qui ne voit que les données, sans les passages.
+   Le score est donné deux fois : sur les 32 questions, et sur celles dont le corrigé n'est pas
+   contesté (banc/corpus/corriges_contestes.json, VS-D29).
 3. Recoupement : un passage extrait recoupe-t-il le passage retenu par les annotateurs ?
 4. Pièges : article rétracté, résumé seul, instruction cachée.
 5. Coût réel par article, pour chaque niveau d'accès.
@@ -73,7 +75,9 @@ COMMENT CHERCHER
 - "reponse" ne s'appuie que sur une comparaison entre l'intervention et le comparateur de la
   question. Si la question compare elle-même un « après » à un « avant », cette évolution est la
   comparaison demandée.
-- Si les données ne rapportent, pour ce critère, qu'une évolution avant-après dans le groupe qui
+- Chaque résultat dit ce qu'il compare : "entre_groupes", "avant_apres" (un seul groupe suivi dans
+  le temps) ou "descriptif".
+- Si les données ne rapportent, pour ce critère, qu'un résultat "avant_apres" dans le groupe qui
   reçoit l'intervention, alors que la question demande une comparaison avec un autre groupe :
   "reponse" vaut "non_indique", et tu donnes le sens de cette évolution dans "avant_apres".
 - Si aucun résultat ne correspond, ou si les données ne permettent pas de trancher, dis-le.
@@ -98,7 +102,8 @@ def donnees_pour_lecteur(e):
         lignes.append(f"{champ} : {e[champ]['valeur'] if e.get(champ) else 'non rapporté'}")
     lignes.append("résultats :" if e["resultats"] else "résultats : aucun")
     for n, r in enumerate(e["resultats"], 1):
-        lignes.append(f"{n}. critère : {r['critere']} | rang : {r['rang']} | sens de la mesure : {r['sens_mesure']} | "
+        lignes.append(f"{n}. critère : {r['critere']} | comparaison : {r['comparaison']} | rang : {r['rang']} | "
+                      f"sens de la mesure : {r['sens_mesure']} | "
                       f"en faveur de : {r['en_faveur_de']} | valeur : {r['valeur'] or 'non rapportée'} | "
                       f"intervalle : {r['intervalle'] or 'non rapporté'} | p : {r['p'] or 'non rapporté'}")
     return "\n".join(lignes)
@@ -131,7 +136,7 @@ def categorie_refus(motif):
 def categorie_ecart(nature):
     for cle, nom in (("hors du passage", "chiffre hors du passage, présent dans le bloc"),
                      ("emplacement corrigé", "emplacement corrigé"),
-                     ("avant-après", "évolution avant-après : « en faveur de » corrigé"),
+                     ("avant-après", "évolution avant-après ou résultat descriptif : champ corrigé"),
                      ("non étayé", "sens non étayé par le passage"), ("ramené", "valeur fermée corrigée"),
                      ("au-delà du maximum", "résultats au-delà du maximum")):
         if cle in nature:
@@ -164,6 +169,19 @@ def recoupe(passages_extraits, passages_corriges, minimum=40):
             if m.size >= min(minimum, len(a), len(b)):
                 return True
     return False
+
+
+def charger_contestes():
+    """Questions dont le corrigé est contesté (VS-D29) : {identifiant de la question: catégorie}."""
+    chemin = RACINE / "banc" / "corpus" / "corriges_contestes.json"
+    return {q["id"]: q["categorie"] for q in json.loads(chemin.read_text(encoding="utf-8"))["questions"]}
+
+
+def score_hors_contestes(effet, contestes):
+    """Second score, sur les seules questions dont le corrigé n'est pas contesté."""
+    retenues = [x for x in effet if x["question"] not in contestes]
+    return {"questions": len(retenues), "questions_contestees": len(effet) - len(retenues),
+            **{niveau: dict(collections.Counter(x[niveau]["resultat"] for x in retenues)) for niveau in NIVEAUX}}
 
 
 def piege_resume_seul(e):
@@ -305,7 +323,8 @@ def afficher_extraction(titre, e, bilan, avec_refus_detailles):
         else:
             print(f"  {champ} : non rapporté ou refusé")
     for n, r in enumerate(e["resultats"], 1):
-        print(f"  résultat {n} : {r['critere']} | {r['rang']} | {r['sens_mesure']} | en faveur de {r['en_faveur_de']} | "
+        print(f"  résultat {n} : {r['critere']} | {r['comparaison']} | {r['rang']} | {r['sens_mesure']} | "
+              f"en faveur de {r['en_faveur_de']} | "
               f"valeur {r['valeur']} | intervalle {r['intervalle']} | p {r['p']}  [{r['source']['emplacement']}]"
               + (f"\n      « {r['source']['passage']} »" if r["source"]["passage"] else ""))
     ei = e["evenements_indesirables"]
@@ -466,9 +485,10 @@ def main(argv=None):
                                      "contenu": contenu, "max_sortie": 2000})
     res_lecture = appeler(fournisseur, reqs_lecture, modele) if reqs_lecture else {}
     effet = []
+    contestes = charger_contestes()
     for n, (ident, cas, q) in enumerate(questions):
         ligne = {"pmid": cas["pmid"], "question": q["id"], "critere": q["critere"], "corrige": q["corrige"]["libelle"],
-                 "dans_le_resume": q["dans_le_resume"]}
+                 "dans_le_resume": q["dans_le_resume"], "corrige_conteste": contestes.get(q["id"])}
         for niveau in NIVEAUX:
             e = extractions.get((niveau, ident), (None, None))[0]
             if e is None:
@@ -521,6 +541,7 @@ def main(argv=None):
                        "essais_avec_texte_integral": sum(1 for r in integral if r["id"] in ids_essais)},
         "controles": bilans,
         "sens_de_l_effet": {niveau: compte(niveau) for niveau in NIVEAUX},
+        "sens_de_l_effet_hors_questions_contestees": score_hors_contestes(effet, contestes),
         "questions_dont_le_passage_du_corrige_est_recoupe": f"{sum(x['passage_recoupe'] for x in effet)} sur {len(effet)}",
         "pieges": {x["id"]: x["reussi"] for x in pieges_res},
         "seuils": seuils(compte("integral"), pieges_res, bilans.get("integral", {}).get("gardees", 0)),
@@ -541,7 +562,8 @@ def main(argv=None):
               + " | ".join(f"{niveau} : {x[niveau].get('reponse', '-')}"
                            + (f" (avant-après : {x[niveau]['avant_apres']})" if x[niveau].get("avant_apres") else "")
                            + f" → {x[niveau]['resultat']}" for niveau in NIVEAUX)
-              + f" | passage recoupé : {'oui' if x['passage_recoupe'] else 'non'}")
+              + f" | passage recoupé : {'oui' if x['passage_recoupe'] else 'non'}"
+              + (f" | CORRIGÉ CONTESTÉ ({x['corrige_conteste']})" if x["corrige_conteste"] else ""))
         for niveau in NIVEAUX:
             if x[niveau]["resultat"] not in ("correct", "sans_extraction"):
                 print(f"      {niveau} : résultat utilisé n° {x[niveau].get('resultat_utilise')} — {x[niveau].get('justification', '')}")

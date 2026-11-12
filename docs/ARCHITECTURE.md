@@ -243,8 +243,9 @@ bloc `extraction` de la fiche v2 ([FICHE_V2.md](FICHE_V2.md)) et sont mesurés p
     `non_rapporte`, `indetermine`) ;
   - un sens (« augmente », « diminue ») que le passage cité ne permet pas de lire, faute de mot
     de direction ou de nombres à comparer, est ramené à `non_rapporte` ;
-  - une évolution dans un seul groupe (après contre avant) n'est jamais notée « en faveur de »
-    l'intervention ou du comparateur ;
+  - une évolution dans un seul groupe (`comparaison` : `avant_apres`) et un résultat descriptif
+    ne sont jamais notés « en faveur de » l'intervention ou du comparateur ; `sans_objet` impose
+    `descriptif` ;
   - une estimation hors de son intervalle, ou un p qui contredit le sens annoncé, lève un signal
     sans refuser la donnée.
 - **Une donnée refusée n'est ni corrigée ni gardée** : elle est comptée, avec son motif.

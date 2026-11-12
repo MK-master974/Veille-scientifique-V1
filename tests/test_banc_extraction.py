@@ -36,9 +36,9 @@ def extraction_type(**remplace):
          "population": None, "effectif": {"valeur": "64 participants", "source": source()},
          "intervention": {"valeur": "Programme de marche", "source": source()},
          "comparateur": {"valeur": "Soins usuels", "source": source()},
-         "resultats": [{"critere": "Douleur", "rang": "principal", "sens_mesure": "pas_de_difference",
-                        "en_faveur_de": "aucun", "valeur": None, "intervalle": None, "p": "p = 0,41",
-                        "source": source()}],
+         "resultats": [{"critere": "Douleur", "comparaison": "entre_groupes", "rang": "principal",
+                        "sens_mesure": "pas_de_difference", "en_faveur_de": "aucun", "valeur": None,
+                        "intervalle": None, "p": "p = 0,41", "source": source()}],
          "evenements_indesirables": {"rapportes": False, "valeur": None, "source": None}}
     e.update(remplace)
     return e
@@ -50,7 +50,7 @@ def test_le_lecteur_ne_voit_ni_passage_ni_emplacement():
     e = extraction_type()
     e["resultats"][0]["source"] = source("section : Results", "Pain did not differ between groups (p = 0.41).")
     vu = banc.donnees_pour_lecteur(e)
-    assert "1. critère : Douleur" in vu and "sens de la mesure : pas_de_difference" in vu
+    assert "1. critère : Douleur | comparaison : entre_groupes" in vu and "sens de la mesure : pas_de_difference" in vu
     assert "population : non rapporté" in vu
     assert "Pain did not differ" not in vu and "section : Results" not in vu
 
@@ -88,6 +88,30 @@ def test_recoupement_avec_le_passage_du_corrige():
     assert banc.recoupe(["pain reduction was significantly greater in the active group (50.5)"], corrige)
     assert not banc.recoupe(["Participants were recruited in two outpatient clinics over one year."], corrige)
     assert not banc.recoupe([], corrige)
+
+
+# --- Corrigés contestés -----------------------------------------------------------------------
+
+def test_corriges_contestes_chaque_preuve_est_dans_le_passage_du_corrige():
+    corpus = json.loads((RACINE / "banc/corpus/essais_effet.json").read_text(encoding="utf-8"))
+    par_id = {q["id"]: (c["pmid"], q) for c in corpus["cas"] for q in c["questions"]}
+    fichier = json.loads((RACINE / "banc/corpus/corriges_contestes.json").read_text(encoding="utf-8"))
+    assert len(fichier["questions"]) == 10 and len({q["id"] for q in fichier["questions"]}) == 10
+    for q in fichier["questions"]:
+        pmid, question = par_id[q["id"]]
+        assert q["pmid"] == pmid and q["categorie"] in fichier["categories"] and q["motif"]
+        assert any(q["preuve"] in passage for passage in question["passages"]), q["id"]
+    assert len(par_id) == 32                      # aucune question n'est retirée du corpus
+
+
+def test_second_score_hors_questions_contestees():
+    effet = [{"question": "1", "resume": {"resultat": "correct"}, "integral": {"resultat": "correct"}},
+             {"question": "2", "resume": {"resultat": "non_indique"}, "integral": {"resultat": "sens_inverse"}},
+             {"question": "3", "resume": {"resultat": "non_indique"}, "integral": {"resultat": "correct"}}]
+    score = banc.score_hors_contestes(effet, {"2": "corrige_discutable"})
+    assert score == {"questions": 2, "questions_contestees": 1,
+                     "resume": {"correct": 1, "non_indique": 1}, "integral": {"correct": 2}}
+    assert set(banc.charger_contestes().values()) == {"corrige_discutable", "comparaison_avant_apres"}
 
 
 # --- Pièges -----------------------------------------------------------------------------------
@@ -178,7 +202,8 @@ class IASimulee:
                 donnee = {"valeur": "64 adultes", "repere": "R", "passage": resume[:70]}
                 rep = {"question": donnee, "population": None, "effectif": donnee, "intervention": None,
                        "comparateur": None, "alerte": None,
-                       "resultats": [{"critere": "Douleur", "rang": "principal", "sens_mesure": "pas_de_difference",
+                       "resultats": [{"critere": "Douleur", "comparaison": "entre_groupes", "rang": "principal",
+                                      "sens_mesure": "pas_de_difference",
                                       "en_faveur_de": "aucun", "valeur": "12 points", "intervalle": None, "p": None,
                                       "repere": "R", "passage": resume[:70]}],
                        "evenements_indesirables": {"rapportes": False, "valeur": None, "repere": None, "passage": None}}
@@ -211,6 +236,7 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert sum(r["sens_de_l_effet"]["integral"].values()) == 32 and sum(r["sens_de_l_effet"]["resume"].values()) == 32
     assert r["pieges"]["piege-retractation"] is True
     assert set(r["cout_usd"]["par_article"]) == {"resume", "integral", "s45"}
+    assert r["sens_de_l_effet_hors_questions_contestees"]["questions"] == 22
     assert len(detail["s45"]) == 2
     # Niveau « résumé » : aucun passage n'est gardé. Texte intégral sous licence ouverte : il l'est.
     sur_resume = [x["extraction"] for cle, x in detail["extractions"].items() if cle.startswith("resume:")]

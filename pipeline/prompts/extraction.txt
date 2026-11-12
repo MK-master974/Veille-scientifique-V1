@@ -41,15 +41,21 @@ LES RÉSULTATS
 - Les caractéristiques de départ des participants ne sont pas des résultats.
 - N'oublie pas le résultat que les auteurs présentent comme leur conclusion principale, dans le résumé ou au début de la discussion.
 - critere : nom du critère, avec le moment de la mesure s'il est précisé. Si l'étude compare plus de deux groupes, ou s'il s'agit d'une évolution dans un même groupe, précise la comparaison entre parenthèses : « (groupe A contre groupe C) », « (groupe A, après contre avant) ».
+- comparaison : ce que le résultat compare.
+    "entre_groupes" : deux groupes ou deux conditions sont comparés
+    "avant_apres" : un seul groupe est suivi dans le temps (après contre avant)
+    "descriptif" : aucune comparaison (sensibilité, spécificité, prévalence, recommandation, constat d'une revue)
+    "non_precise" : le texte ne permet pas de le dire
 - rang : "principal" seulement si le texte désigne ce critère comme critère de jugement principal de l'étude ; "secondaire" s'il le désigne comme secondaire ; sinon "non_precise". Une analyse de sensibilité, une analyse en sous-groupes ou une analyse que les auteurs disent exploratoire n'est jamais "principal". Ne devine pas.
 - sens_mesure : ce que fait la mesure avec l'intervention par rapport au comparateur, ou après par rapport à avant.
     "augmente" : la mesure est plus élevée, et la différence est statistiquement significative d'après le texte
     "diminue" : la mesure est plus basse, et la différence est statistiquement significative d'après le texte
     "pas_de_difference" : la différence n'est pas statistiquement significative
-    "non_rapporte" : le texte ne permet pas de le dire, ou le résultat est seulement descriptif (sensibilité, spécificité, prévalence, recommandation)
+    "sans_objet" : le résultat est descriptif (comparaison "descriptif") : il n'y a pas de sens à donner
+    "non_rapporte" : une comparaison est faite, mais le texte ne permet pas de dire dans quel sens
   Le sens se lit dans le passage cité. Si le passage dit seulement qu'une différence est significative, sans dire dans quel sens, écris "non_rapporte" : ne déduis pas le sens d'un autre endroit du texte, ni de ce qui paraît logique.
   Pour une revue sans méta-analyse, un décompte d'études (« cinq études sur huit rapportent… ») vaut "non_rapporte".
-- en_faveur_de : "intervention", "comparateur", "aucun" (pas de différence significative) ou "indetermine". Ce champ est indépendant de sens_mesure : une douleur qui diminue est en faveur de l'intervention. Pour une évolution dans un seul groupe (après contre avant), écris "indetermine" : sans comparaison avec un autre groupe, rien ne dit que l'évolution vient de l'intervention.
+- en_faveur_de : "intervention", "comparateur", "aucun" (pas de différence significative) ou "indetermine". Ce champ est indépendant de sens_mesure : une douleur qui diminue est en faveur de l'intervention. Pour une évolution dans un seul groupe (comparaison "avant_apres") ou un résultat descriptif, écris "indetermine" : sans comparaison avec un autre groupe, rien ne dit que l'évolution vient de l'intervention.
 - valeur : la valeur rapportée (valeur par groupe, différence, rapport, taille d'effet, sensibilité…), telle qu'écrite ; null si absente. Quand le passage donne la valeur de chaque groupe, donne-les toutes, avec le nom du groupe. Si le passage dit dans quel sens se lit l'échelle (un score plus bas est meilleur), dis-le.
 - intervalle : l'intervalle de confiance tel qu'écrit, sinon null.
 - p : la valeur de p telle qu'écrite, sinon null.
@@ -64,8 +70,9 @@ SORTIE : un objet JSON strict, sans aucun texte autour
   "intervention": {"valeur": "", "repere": "", "passage": ""},
   "comparateur": {"valeur": "", "repere": "", "passage": ""},
   "resultats": [
-    {"critere": "", "rang": "principal | secondaire | non_precise",
-     "sens_mesure": "augmente | diminue | pas_de_difference | non_rapporte",
+    {"critere": "", "comparaison": "entre_groupes | avant_apres | descriptif | non_precise",
+     "rang": "principal | secondaire | non_precise",
+     "sens_mesure": "augmente | diminue | pas_de_difference | sans_objet | non_rapporte",
      "en_faveur_de": "intervention | comparateur | aucun | indetermine",
      "valeur": null, "intervalle": null, "p": null, "repere": "", "passage": ""}
   ],

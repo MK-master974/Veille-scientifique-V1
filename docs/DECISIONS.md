@@ -176,10 +176,20 @@ Décisions de la séance 5 de la phase 1 (extraction des données), prises par q
 
 | Référence | Décision | Statut |
 | --- | --- | --- |
-| VS-D24 | Plan de la séance 5 : lecture du texte intégral en blocs repérés, consigne d'extraction, contrôles par le code et banc d'essai « extraction ». Chaque essai du corpus sous licence CC BY est extrait deux fois, sur le résumé seul puis sur le texte intégral, pour mesurer ce que le texte intégral apporte. La veille hebdomadaire et l'application ne sont pas touchées | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D24 | Plan de la séance 5, réalisé : lecture du texte intégral en blocs repérés, consigne d'extraction, contrôles par le code et banc d'essai « extraction ». Chaque essai du corpus sous licence CC BY est extrait deux fois, sur le résumé seul puis sur le texte intégral, pour mesurer ce que le texte intégral apporte. La veille hebdomadaire et l'application ne sont pas touchées | Validée le 12 novembre 2026 (questionnaire) |
 | VS-D25 | Seuils de réussite de l'extraction au banc d'essai, sur le texte intégral : au moins 26 réponses justes sur 32, aucune erreur de sens, aucun passage ni chiffre gardé qui ne soit pas dans l'article, 3 pièges sur 3. Si un seuil n'est pas atteint, les écarts sont présentés avant d'aller plus loin. Le plan prévoyait de fixer des seuils en séance 2 ; aucun ne l'avait été. La session proposait 22 sur 32 ; le porteur du projet a retenu 26 | Validée le 12 novembre 2026 (questionnaire) |
 | VS-D26 | La relecture de dix extractions par le porteur du projet, prévue au plan (section 18), n'a pas lieu en séance 5 : la session de développement la fait elle-même et en rend compte. Conséquence : aucun humain ne relit les extractions à cette séance | Validée le 12 novembre 2026 (questionnaire : « fait sans moi ») |
 | VS-D27 | Budget d'IA de la séance 5 : enveloppe de 5 $. Le coût estimé est annoncé avant chaque lancement du banc, le coût réel après ; la session s'arrête et redemande si l'enveloppe ne suffit pas | Validée le 12 novembre 2026 (questionnaire) |
+
+Décisions du point d'arrêt de la séance 5, prises par questionnaire le 12 novembre 2026 après la
+mesure (résultats : [../banc/resultats/2026-11-12-extraction.md](../banc/resultats/2026-11-12-extraction.md)) :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D28 | Suite de la phase 1 : renforcer d'abord le corpus de référence (revues et études diagnostiques avec corrigé), puis faire la séance 6, dans une conversation neuve. Constat : le seuil de 26 réponses justes n'est pas atteint (24), et les défauts trouvés sur dix publications réelles n'apparaissaient pas dans un corpus fait seulement d'essais | Validée le 12 novembre 2026 (questionnaire ; le porteur du projet a retenu ensemble « séance 6, conversation neuve » et « renforcer d'abord le corpus ») |
+| VS-D29 | Les dix questions du corpus dont le corrigé est contesté sont marquées dans `banc/corpus/corriges_contestes.json`, avec leur preuve, sans être supprimées. Le banc donne deux scores : sur les 32 questions, et sur les 22 non contestées. La liste est établie par la session de développement ; elle n'est pas relue par un humain | Validée le 12 novembre 2026 (questionnaire), réalisée |
+| VS-D30 | Quatre précisions du bloc `extraction` de la fiche v2 : forme de `evenements_indesirables`, forme de `emplacement`, valeur `sans_objet` de `sens_mesure`, champ `comparaison` d'un résultat. Déclarées au dépôt de coordination avant d'être inscrites (CHG-2026-0007). Complète le format figé le 12 novembre (VS-D12 à VS-D19) sans rien en retirer | Validée le 12 novembre 2026 (questionnaire), réalisée |
+| VS-D31 | Ouvrir la demande de fusion du lot de la séance 5 sans attendre la veille du 16 novembre : aucun fichier de la veille hebdomadaire ni de l'application n'est modifié | Validée le 12 novembre 2026 (questionnaire) |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
