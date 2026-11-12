@@ -23,8 +23,8 @@ Voir aussi [ARCHITECTURE.md](ARCHITECTURE.md) et [../CHANGELOG.md](../CHANGELOG.
 | Rythme | Hebdomadaire | Validée, réalisée. En révision : collecte quotidienne à l'étude |
 | Contenus | Recommandations, revues systématiques et méta-analyses, essais randomisés, études diagnostiques | Validée, réalisée |
 | Validation | Contrôle automatique, sans relecture humaine avant publication | Validée, réalisée |
-| Personnalisation | Par domaine : trois niveaux d'intérêt et trois niveaux de détail | Validée, réalisée. En révision : fiche unique progressive à l'étude |
-| Niveau de preuve | Étiquette simple (solide, modéré, préliminaire), détail à déplier | Validée, réalisée. En révision : voir la section 4 |
+| Personnalisation | Par domaine : trois niveaux d'intérêt et trois niveaux de détail | Validée, réalisée. Les trois niveaux de détail sont remplacés, à la bascule vers la fiche v2, par une fiche unique progressive (VS-D12) |
+| Niveau de preuve | Étiquette simple (solide, modéré, préliminaire), détail à déplier | Validée, réalisée. À la bascule vers la fiche v2, l'étiquette prend une quatrième valeur, « non évaluable » (VS-D14) |
 | Fonctions | Archive et recherche, favoris, export pour Zotero, partage d'une fiche | Validée, réalisée |
 
 ## 2. Contenu et méthode
@@ -70,11 +70,15 @@ Quand l'information manque dans le résumé, la valeur la plus prudente est rete
 Quatre niveaux : change la pratique, remet en question, confirme, à surveiller. « Change la
 pratique » est réservé aux recommandations et aux revues ou méta-analyses d'étiquette « solide ».
 
+Décision validée le 1er novembre 2026, en vigueur jusqu'à la bascule vers la fiche v2. Elle est
+alors remplacée par la catégorie d'importance (VS-D13).
+
 ### Mentions et cadre
 
 - Chaque fiche porte un avertissement sur sa production par IA.
 - Aucun résumé ni article n'est reproduit : seulement des synthèses originales, des références et
-  des liens.
+  des liens. Seule exception, décidée le 12 novembre 2026 (VS-D15) : un court passage exact d'un
+  article sous licence CC BY ou CC0, cité avec sa source.
 - Aucune donnée personnelle n'est collectée. Seul l'abonnement aux notifications passerait par un
   service tiers, avec consentement.
 - Le cadre légal reste à faire valider par un juriste avant une ouverture large.
@@ -110,7 +114,7 @@ Les données de travail ont montré trois causes, sur les 806 études retenues a
 | Décision | Contenu | Statut |
 | --- | --- | --- |
 | VS-D6 | Correctif provisoire de la consigne de rédaction : l'étiquette n'est plus abaissée pour une information absente du résumé ; « confirme » et « remet en question » sont mieux définis | Validée et réalisée le 11 novembre 2026. À mesurer sur la semaine suivante |
-| Refonte du niveau de preuve | Remplacer le tableau par une appréciation selon l'outil adapté au type d'étude, distinguer « preuve faible » et « non évaluable » | À arbitrer, prévue en phase 1 |
+| Refonte du niveau de preuve | Remplacer le tableau par une appréciation selon l'outil adapté au type d'étude, distinguer « preuve faible » et « non évaluable » | Format arrêté le 12 novembre 2026 (VS-D14, [FICHE_V2.md](FICHE_V2.md)). La règle d'attribution reste à régler et à mesurer au banc d'essai, en séance 6 |
 
 ## 5. Décisions du 11 novembre 2026
 
@@ -126,8 +130,14 @@ Les données de travail ont montré trois causes, sur les 806 études retenues a
 | Phase 1 | Fiabilisation scientifique en dix séances, chacune terminée par un point d'arrêt. Démarre après la phase 0, sur accord explicite | Validée |
 | Mise en ligne | Toute modification passe par la branche de travail, les tests automatiques, puis une demande de fusion validée par le porteur du projet | Pratique en vigueur |
 
+Décisions prises au fil des séances 2 et 3 de la phase 1 :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
 | VS-D8 | Corriger le contrôle des chiffres avant la veille du 16 novembre : lire les nombres en toutes lettres au-delà de dix et les décimales sans zéro initial, sans accepter de nombre absent de la source. Constat du banc d'essai : 8 fiches sur 16 écartées à tort | Validée le 11 novembre 2026 (questionnaire), réalisée |
 | VS-D9 | Relancer le banc d'essai après la correction pour mesurer le gain (environ 0,12 $) | Validée le 11 novembre 2026 (questionnaire) |
+| VS-D10 | Faire la séance 3 de la phase 1 dans une conversation neuve | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
+| VS-D11 | Modèle d'IA de la session de développement de la séance 3 : choisi par le porteur du projet. Son nom n'est pas inscrit dans le dépôt | Validée le 11 novembre 2026 (questionnaire, d'après le plan, section 22), réalisée |
 
 Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 
@@ -140,7 +150,32 @@ Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 | POR-D19 | Essai de format du circuit vers Évalys : seul du contenu déjà public dans ce dépôt, avec la mention « résumé uniquement, non destinée à l'intégration clinique ». Pas avant la fin de la phase 0 |
 | POR-D21 | Un avis réglementaire commun aux applications, demandé après la bascule de la fiabilisation |
 
-## 6. Règles permanentes
+## 6. Décisions du 12 novembre 2026 : format « fiche v2 »
+
+Séance 3 de la phase 1. Les quatre décisions ont été prises par questionnaire, après relecture du
+brouillon. Le format est décrit dans [FICHE_V2.md](FICHE_V2.md). Rien ne change dans la veille
+publiée avant la bascule, dernière séance de la phase 1.
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D12 | Fiche unique progressive : un en-tête toujours visible (question, résultat principal, impact clinique, limite principale), puis des sections à déplier. Remplace, à la bascule, les trois niveaux de détail du 1er novembre. Le réglage « niveau de détail » du profil sera revu en phase 3 | Validée |
+| VS-D13 | La catégorie d'importance, de 1 à 4 et justifiée, remplace le verdict. « Confirme » et « remet en question » restent comme précision ; « change la pratique » correspond à la catégorie 1 ; « à surveiller » disparaît. Remplace, à la bascule, le verdict à quatre niveaux du 1er novembre. Constat : 707 fiches sur 710 portaient « à surveiller » en S45 | Validée |
+| VS-D14 | L'étiquette de preuve prend quatre valeurs : solide, modéré, préliminaire, non évaluable. Remplace, à la bascule, l'étiquette à trois valeurs du 1er novembre. La règle d'attribution est réglée et mesurée au banc d'essai en séance 6 | Validée |
+| VS-D15 | Un court passage exact d'un article n'est publié que si l'article est sous licence CC BY ou CC0, avec sa source. Pour tous les autres, seul l'emplacement est publié. La règle « ni résumé ni texte d'article » est complétée dans ce sens | Validée |
+
+**Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
+sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
+attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.
+
+| Décision attendue dans le plan | Dans ce registre |
+| --- | --- |
+| D11, première partie : remplacer le tableau des étiquettes | VS-D14 pour le format ; la règle reste à arbitrer |
+| D12 : anciens verdicts et quatre catégories | VS-D13 |
+| D13 : avis juridique sur les textes intégraux | VS-D15 pour les passages publiés ; l'avis reste à demander |
+| D14 : plateforme du service. Le plan l'appelle « VS-D14 » | Pas encore prise, pas encore numérotée ici |
+| D16 : forme de la fiche | VS-D12 |
+
+## 7. Règles permanentes
 
 - La publication hebdomadaire reste automatique et ne dépend d'aucun autre outil ni d'aucune
   autre application.
@@ -152,7 +187,7 @@ Décisions de coordination entre applications, relayées le 11 novembre 2026 :
 - Aucun secret dans le code ni dans `config.json`. L'historique Git n'est jamais réécrit, et
   aucune semaine publiée n'est supprimée de `site/data/`.
 
-## 7. Options écartées
+## 8. Options écartées
 
 | Option | Raison |
 | --- | --- |
