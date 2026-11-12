@@ -21,6 +21,13 @@
    "raison": "Séance 5 de la phase 1 : vérifier la lecture des textes intégraux du corpus et de dix publications de 2026-S45, et estimer le coût, avant tout appel à l'IA.",
    "accord": "Marvin, questionnaire du 12/11/2026 : plan de la séance 5 (VS-D24). Aucune IA appelée : aucun coût.",
    "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "raison": "Séance 5 de la phase 1 : première mesure de l'extraction sur le corpus de référence, résumé seul et texte intégral. Coût estimé : 0,95 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27).",
+   "budget_usd": 2.0
   }
  ]
 }

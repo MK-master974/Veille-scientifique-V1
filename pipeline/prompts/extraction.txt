@@ -24,6 +24,7 @@ LE PASSAGE
 - Pour un tableau, recopie la ligne du tableau telle qu'elle est fournie, avec ses séparateurs.
 - Tous les nombres de "valeur", "intervalle" et "p" figurent dans le passage cité. Si un seul passage ne suffit pas, choisis celui qui porte le résultat.
 - Ne cite jamais le titre.
+- Quand une donnée figure à la fois dans le résumé et dans le corps du texte ou un tableau, cite le corps du texte ou le tableau : le résultat y est plus précis.
 
 DONNÉES À EXTRAIRE
 - question : la question étudiée, en une phrase.

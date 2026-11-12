@@ -214,7 +214,7 @@ def appeler(fournisseur, requetes, modele, simultanes=6, delai=600):
         corps = ia.corps_requete(modele, r["consigne"], r["contenu"], r.get("max_sortie", 2500))
         try:
             rep = requete("POST", f"{fournisseur.url}/chat/completions", json=corps,
-                          headers=fournisseur.entetes, timeout=delai, tentatives=2).json()
+                          headers=fournisseur.entetes, timeout=delai, tentatives=3).json()
             choix = rep["choices"][0]
             return r["id"], (choix["message"]["content"], {**rep.get("usage", {}), "fin": choix.get("finish_reason")})
         except Exception as e:
