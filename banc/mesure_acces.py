@@ -254,7 +254,7 @@ def main(argv=None):
     p.add_argument("--ref", default=None, help="référence Git où lire les données publiées (ex. origin/main)")
     p.add_argument("--sortie", default="resultats-acces", help="dossier des résultats")
     p.add_argument("--limite", type=int, default=0, help="ne mesurer que les N premières fiches (essai)")
-    p.add_argument("--minutes", type=int, default=20, help="durée maximale de la lecture des textes")
+    p.add_argument("--minutes", type=int, default=45, help="durée maximale de la lecture des textes")
     args = p.parse_args(argv)
 
     semaine = choisir_semaine(args.semaine, args.ref)
