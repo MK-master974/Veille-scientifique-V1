@@ -7,7 +7,7 @@
  "groupe": "Les chiffres qui vont ensemble portent le même « groupe » : un effet et les deux bornes de son intervalle ; la sensibilité, la spécificité et l'aire sous la courbe d'un même test. Un chiffre d'un groupe n'est confirmé dans l'article que s'il s'y trouve à côté d'un autre chiffre de son groupe (règle de voisinage de banc/chiffres.py).",
  "dans_l_article": "true : le code retrouve le chiffre dans le texte intégral de l'article, à côté des chiffres de son groupe s'il en a un. false : il ne l'y retrouve pas ; le chiffre est écarté du score et compté à part (VS-D34). null : pas encore vérifié. Valeurs fixées par le workflow « Corpus, chiffres relevés », avant toute mesure.",
  "etabli_par": "Session de développement du 12/11/2026, à partir des lignes de tableaux lues sur GitHub Actions (lancements 43278548445 et 43279523961). Non relu par un humain.",
- "verification": "Lancement 43280778551 du workflow « Corpus, chiffres relevés », sans IA, avant toute mesure : licences conformes pour les 20 articles et les 9 revues sources ; recopie conforme pour 161 chiffres sur 161 ; 161 chiffres sur 161 confirmés dans leur article.",
+ "verification": "Lancement 43284046225 du workflow « Corpus, chiffres relevés », sans IA : licences conformes pour les 20 articles et les 9 revues sources ; recopie conforme pour 161 chiffres sur 161 ; 159 chiffres sur 161 confirmés dans leur article. Les deux autres (sensibilité et spécificité de la règle d'Ottawa, PMID 33083152) sont des valeurs calculées par la revue source : l'article en rapporte d'autres. Une première vérification (43280778551) les confirmait à tort, avant la correction du 12/11/2026 qui ne lit plus le niveau de confiance d'un intervalle comme une donnée.",
  "groupes": [
   {
    "type_etude": "etude_diagnostique",
@@ -566,7 +566,7 @@
        "nature": "sensibilite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.95",
-       "dans_l_article": true,
+       "dans_l_article": false,
        "groupe": "ottawa"
       },
       {
@@ -574,7 +574,7 @@
        "nature": "specificite",
        "libelle": "règle d'Ottawa pour la cheville",
        "valeur": "0.16",
-       "dans_l_article": true,
+       "dans_l_article": false,
        "groupe": "ottawa"
       }
      ]
