@@ -1,0 +1,11 @@
+{
+ "objet": "Demande de mesure des niveaux d'accès. Modifier ce fichier sur une branche de travail lance le workflow « Niveaux d'accès » sur la dernière semaine de la liste. Aucune IA n'est appelée : aucun coût.",
+ "mesures": [
+  {
+   "date": "2026-11-12",
+   "semaine": "2026-S45",
+   "raison": "Séance 4 de la phase 1 : première mesure de la part de fiches dont le texte intégral est accessible légalement.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : plan de la séance 4"
+  }
+ ]
+}

@@ -167,6 +167,7 @@ publiée avant la bascule, dernière séance de la phase 1.
 | VS-D17 | Proposer au contrat `vs-evalys-connaissance` la règle suivante, par une demande de fusion dans le dépôt de coordination : une fiche corrigée, suspendue ou retirée, ou une publication signalée, fait repasser la proposition liée à « à actualiser » | Validée (questionnaire de fin de séance 3) |
 | VS-D18 | Séance 4 de la phase 1 (texte intégral en accès ouvert, niveaux d'accès) : accord donné, dans la même conversation de développement | Validée (questionnaire de fin de séance 3) |
 | VS-D19 | La fiche v2 porte la date de mise en ligne de l'article (`publication.date_en_ligne`), en plus de la date du numéro de la revue. Remplie par le code à partir de PubMed. Demande d'Évalys, qui déclare des écarts de citation venus de cette confusion | Validée (questionnaire de fin de séance 3) |
+| VS-D20 | Plan de la séance 4 : un module qui cherche le texte intégral légal et sa licence, et une mesure à la demande des niveaux d'accès sur une semaine publiée, sans IA et hors de la veille hebdomadaire. Mesure sur S45, puis sur S46 le jour de sa publication. Le périmètre des licences admises sera décidé au point d'arrêt, avec les chiffres | Validée le 12 novembre 2026 (questionnaire) |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
