@@ -103,13 +103,16 @@ def _localiser(brut, doc, chiffres, autorises_doc, publier_passages):
 
 # --- Cohérence d'un résultat ------------------------------------------------------------------
 
-_SIGNE = re.compile(r"[-−–]?\s?\d+(?:[.,]\d+)?")
+# Un signe « moins » s'écrit de plusieurs façons dans les articles : tiret, signe moins, trait d'union
+# typographique (« ‐0.011 »).
+_MOINS = "-−–‐‑‒"
+_SIGNE = re.compile(rf"[{_MOINS}]?\s?\d+(?:[.,]\d+)?")
 
 
 def _valeurs_signees(champ):
     valeurs = []
     for m in _SIGNE.finditer(champ or ""):
-        brut = m.group(0).replace(" ", "").replace("−", "-").replace("–", "-").replace(",", ".")
+        brut = re.sub(rf"[{_MOINS}]", "-", m.group(0).replace(" ", "")).replace(",", ".")
         try:
             valeurs.append(float(brut))
         except ValueError:

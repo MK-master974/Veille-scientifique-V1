@@ -234,6 +234,12 @@ def test_alertes_de_coherence():
     assert alertes({"valeur": "4,44", "intervalle": "IC à 95 % : 1,62 à 7,26", "p": None, "sens_mesure": "augmente"}) == []
     assert alertes({"valeur": "1.95", "intervalle": "−0.27 to 4.17", "p": None, "sens_mesure": "pas_de_difference"}) == []
     assert alertes({"valeur": "4.44", "intervalle": "1.62–7.26", "p": None, "sens_mesure": "augmente"}) == []
+    # Trait d'union typographique employé comme signe moins, vu au banc d'essai du 12/11/2026.
+    assert alertes({"valeur": "0,001", "intervalle": "IC à 95 % : ‐0,011 à 0,013", "p": "0,856",
+                    "sens_mesure": "pas_de_difference"}) == []
+    # Unités différentes dans l'article lui-même : le signal est justifié.
+    assert alertes({"valeur": "0,87", "intervalle": "IC à 95 % : 78,7-93,5 %", "p": None,
+                    "sens_mesure": "non_rapporte"}) == ["estimation hors de son intervalle"]
     assert alertes({"valeur": "9,1", "intervalle": "1,62 à 7,26", "p": None, "sens_mesure": "augmente"}) == [
         "estimation hors de son intervalle"]
     assert alertes({"valeur": None, "intervalle": None, "p": "p = 0,41", "sens_mesure": "diminue"}) == [
