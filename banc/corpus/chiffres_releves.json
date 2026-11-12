@@ -1,0 +1,1425 @@
+{
+ "nom": "Corpus de référence — chiffres déjà relevés par les auteurs d'une revue",
+ "assemble_le": "2026-11-12",
+ "decision": "VS-D32",
+ "principe": "Pour une étude diagnostique ou une méta-analyse, le corrigé est fait des chiffres que les auteurs d'une revue en accès libre ont relevés dans un tableau. La revue source et l'article sont sous licence CC BY ou CC0. Seuls des identifiants, des licences et des chiffres sont gardés : aucun texte d'article.",
+ "ecriture": "Un chiffre s'écrit sans signe ni séparateur de milliers, avec un point décimal. Le signe n'est pas recopié : les règles de comparaison l'ignorent (banc/chiffres.py).",
+ "dans_l_article": "true : le code retrouve le chiffre dans le texte intégral de l'article. false : il ne l'y retrouve pas ; le chiffre est écarté du score et compté à part (VS-D34). null : pas encore vérifié. Valeurs fixées par le workflow « Corpus, chiffres relevés », avant toute mesure.",
+ "etabli_par": "Session de développement du 12/11/2026, à partir des lignes de tableaux lues sur GitHub Actions. Recopie contrôlée par le code ; non relue par un humain.",
+ "groupes": [
+  {
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "37444127",
+    "pmcid": "PMC10341387",
+    "revue": "International Journal of Environmental Research and Public Health",
+    "annee": "2023",
+    "doi": "10.3390/ijerph20136280",
+    "licence": "CC BY",
+    "tableau": "Table 3, Table 4"
+   },
+   "cas": [
+    {
+     "pmid": "31569689",
+     "pmcid": "PMC6801910",
+     "licence": "CC BY",
+     "reference": "O'Caoimh et al. 2019, Int J Environ Res Public Health",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "265",
+       "dans_l_article": null
+      },
+      {
+       "id": "cfs-se",
+       "nature": "sensibilite",
+       "libelle": "Clinical Frailty Scale, seuil 5",
+       "valeur": "0.51",
+       "dans_l_article": null
+      },
+      {
+       "id": "cfs-sp",
+       "nature": "specificite",
+       "libelle": "Clinical Frailty Scale, seuil 5",
+       "valeur": "0.94",
+       "dans_l_article": null
+      },
+      {
+       "id": "isar-se",
+       "nature": "sensibilite",
+       "libelle": "ISAR, seuil 2",
+       "valeur": "0.95",
+       "dans_l_article": null
+      },
+      {
+       "id": "isar-sp",
+       "nature": "specificite",
+       "libelle": "ISAR, seuil 2",
+       "valeur": "0.35",
+       "dans_l_article": null
+      },
+      {
+       "id": "prisma7-se",
+       "nature": "sensibilite",
+       "libelle": "PRISMA-7, seuil 3",
+       "valeur": "0.84",
+       "dans_l_article": null
+      },
+      {
+       "id": "prisma7-sp",
+       "nature": "specificite",
+       "libelle": "PRISMA-7, seuil 3",
+       "valeur": "0.78",
+       "dans_l_article": null
+      },
+      {
+       "id": "cfs-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "Clinical Frailty Scale",
+       "valeur": "0.83",
+       "dans_l_article": null
+      },
+      {
+       "id": "prisma7-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "PRISMA-7",
+       "valeur": "0.88",
+       "dans_l_article": null
+      },
+      {
+       "id": "isar-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "ISAR",
+       "valeur": "0.78",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "27449526",
+     "pmcid": "PMC4957482",
+     "licence": "CC BY",
+     "reference": "Eklund et al. 2016, BMC Emerg Med",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "161",
+       "dans_l_article": null
+      },
+      {
+       "id": "fresh4-se",
+       "nature": "sensibilite",
+       "libelle": "FRESH, version à 4 questions",
+       "valeur": "0.84",
+       "dans_l_article": null
+      },
+      {
+       "id": "fresh4-sp",
+       "nature": "specificite",
+       "libelle": "FRESH, version à 4 questions",
+       "valeur": "0.75",
+       "dans_l_article": null
+      },
+      {
+       "id": "fresh5-se",
+       "nature": "sensibilite",
+       "libelle": "FRESH, version à 5 questions",
+       "valeur": "0.81",
+       "dans_l_article": null
+      },
+      {
+       "id": "fresh5-sp",
+       "nature": "specificite",
+       "libelle": "FRESH, version à 5 questions",
+       "valeur": "0.80",
+       "dans_l_article": null
+      },
+      {
+       "id": "fresh-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "FRESH",
+       "valeur": "0.86",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "35150292",
+    "pmcid": "PMC9464183",
+    "revue": "Knee Surgery, Sports Traumatology, Arthroscopy",
+    "annee": "2022",
+    "doi": "10.1007/s00167-022-06898-4",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "cas": [
+    {
+     "pmid": "26753117",
+     "pmcid": "PMC4695483",
+     "licence": "CC BY",
+     "reference": "Deveci et al. 2015, SpringerPlus",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "patients",
+       "valeur": "117",
+       "dans_l_article": null
+      },
+      {
+       "id": "tiroir-se",
+       "nature": "sensibilite",
+       "libelle": "test du tiroir antérieur",
+       "valeur": "0.60",
+       "dans_l_article": null
+      },
+      {
+       "id": "lachman-se",
+       "nature": "sensibilite",
+       "libelle": "test de Lachman",
+       "valeur": "0.80",
+       "dans_l_article": null
+      },
+      {
+       "id": "levier-se",
+       "nature": "sensibilite",
+       "libelle": "test du levier",
+       "valeur": "0.94",
+       "dans_l_article": null
+      },
+      {
+       "id": "pivot-se",
+       "nature": "sensibilite",
+       "libelle": "test du ressaut (pivot shift)",
+       "valeur": "0.62",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "31281835",
+     "pmcid": "PMC6590604",
+     "licence": "CC BY",
+     "reference": "Gürpınar et al. 2019, Biomed Res Int",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "patients",
+       "valeur": "78",
+       "dans_l_article": null
+      },
+      {
+       "id": "tiroir-se",
+       "nature": "sensibilite",
+       "libelle": "test du tiroir antérieur",
+       "valeur": "0.77",
+       "dans_l_article": null
+      },
+      {
+       "id": "tiroir-sp",
+       "nature": "specificite",
+       "libelle": "test du tiroir antérieur",
+       "valeur": "0.69",
+       "dans_l_article": null
+      },
+      {
+       "id": "lachman-se",
+       "nature": "sensibilite",
+       "libelle": "test de Lachman",
+       "valeur": "0.81",
+       "dans_l_article": null
+      },
+      {
+       "id": "lachman-sp",
+       "nature": "specificite",
+       "libelle": "test de Lachman",
+       "valeur": "0.63",
+       "dans_l_article": null
+      },
+      {
+       "id": "levier-se",
+       "nature": "sensibilite",
+       "libelle": "test du levier",
+       "valeur": "0.92",
+       "dans_l_article": null
+      },
+      {
+       "id": "levier-sp",
+       "nature": "specificite",
+       "libelle": "test du levier",
+       "valeur": "0.94",
+       "dans_l_article": null
+      },
+      {
+       "id": "pivot-se",
+       "nature": "sensibilite",
+       "libelle": "test du ressaut (pivot shift)",
+       "valeur": "0.52",
+       "dans_l_article": null
+      },
+      {
+       "id": "pivot-sp",
+       "nature": "specificite",
+       "libelle": "test du ressaut (pivot shift)",
+       "valeur": "0.94",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "39014328",
+    "pmcid": "PMC11253494",
+    "revue": "BMC Geriatrics",
+    "annee": "2024",
+    "doi": "10.1186/s12877-024-05155-2",
+    "licence": "CC BY",
+    "tableau": "Table 1, Table 2",
+    "lignes": "bloc"
+   },
+   "cas": [
+    {
+     "pmid": "33964883",
+     "pmcid": "PMC8105978",
+     "licence": "CC BY",
+     "reference": "Chen et al. 2021, BMC Geriatr",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "personnes âgées",
+       "valeur": "941",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-seuil-origine-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, hommes, seuil d'origine, en %",
+       "valeur": "64.94",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-seuil-origine-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, hommes, seuil d'origine, en %",
+       "valeur": "85.46",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-nouveau-seuil-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
+       "valeur": "70.65",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-nouveau-seuil-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
+       "valeur": "81.35",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-nouveau-seuil-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, hommes, nouveau seuil, en %",
+       "valeur": "0.81",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-seuil-origine-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, femmes, seuil d'origine, en %",
+       "valeur": "46.91",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-seuil-origine-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, femmes, seuil d'origine, en %",
+       "valeur": "93.22",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-nouveau-seuil-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
+       "valeur": "75.31",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-nouveau-seuil-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
+       "valeur": "79.9",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-nouveau-seuil-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, femmes, nouveau seuil, en %",
+       "valeur": "0.84",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "37443572",
+     "pmcid": "PMC10340775",
+     "licence": "CC BY",
+     "reference": "Ding et al. 2023, Diagnostics (Basel)",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "personnes âgées",
+       "valeur": "215",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "93.2",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "59.1",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "0.83",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "93.3",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "64.7",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "0.84",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "31482974",
+     "pmcid": "PMC6719342",
+     "licence": "CC BY",
+     "reference": "Li et al. 2019, Braz J Med Biol Res",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "personnes âgées",
+       "valeur": "138",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "88.9",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "70.6",
+       "dans_l_article": null
+      },
+      {
+       "id": "hommes-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, hommes, en %",
+       "valeur": "0.87",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-se",
+       "nature": "sensibilite",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "77.8",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-sp",
+       "nature": "specificite",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "68.6",
+       "dans_l_article": null
+      },
+      {
+       "id": "femmes-auc",
+       "nature": "aire_sous_la_courbe",
+       "libelle": "test d'Ishii, femmes, en %",
+       "valeur": "0.78",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "36151550",
+    "pmcid": "PMC9502997",
+    "revue": "BMC Musculoskeletal Disorders",
+    "annee": "2022",
+    "doi": "10.1186/s12891-022-05831-7",
+    "licence": "CC BY",
+    "tableau": "Table 1, Table 2"
+   },
+   "cas": [
+    {
+     "pmid": "33083152",
+     "pmcid": "PMC7548068",
+     "licence": "CC BY",
+     "reference": "Gomes et al. 2020, PeerJ",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "taille de l'échantillon",
+       "valeur": "262",
+       "dans_l_article": null
+      },
+      {
+       "id": "ottawa-se",
+       "nature": "sensibilite",
+       "libelle": "règle d'Ottawa pour la cheville",
+       "valeur": "0.95",
+       "dans_l_article": null
+      },
+      {
+       "id": "ottawa-sp",
+       "nature": "specificite",
+       "libelle": "règle d'Ottawa pour la cheville",
+       "valeur": "0.16",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "23646202",
+     "pmcid": "PMC3640009",
+     "licence": "CC BY",
+     "reference": "Wang et al. 2013, PLoS One",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "taille de l'échantillon",
+       "valeur": "183",
+       "dans_l_article": null
+      },
+      {
+       "id": "ottawa-se",
+       "nature": "sensibilite",
+       "libelle": "règle d'Ottawa pour la cheville",
+       "valeur": "0.97",
+       "dans_l_article": null
+      },
+      {
+       "id": "ottawa-sp",
+       "nature": "specificite",
+       "libelle": "règle d'Ottawa pour la cheville",
+       "valeur": "0.46",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "39026375",
+    "pmcid": "PMC11256411",
+    "revue": "Systematic Reviews",
+    "annee": "2024",
+    "doi": "10.1186/s13643-024-02606-0",
+    "licence": "CC BY",
+    "tableau": "Table 1, Table 7"
+   },
+   "cas": [
+    {
+     "pmid": "23620778",
+     "pmcid": "PMC3631149",
+     "licence": "CC BY",
+     "reference": "Yan et al. 2013, PLoS One",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "7",
+       "dans_l_article": null
+      },
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "348",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur",
+       "nature": "effet",
+       "libelle": "WOMAC douleur, SMD",
+       "valeur": "0.45",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC douleur, SMD, borne de l'intervalle",
+       "valeur": "0.70",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC douleur, SMD, autre borne de l'intervalle",
+       "valeur": "0.20",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur",
+       "nature": "effet",
+       "libelle": "WOMAC raideur, SMD",
+       "valeur": "0.31",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC raideur, SMD, borne de l'intervalle",
+       "valeur": "0.60",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC raideur, SMD, autre borne de l'intervalle",
+       "valeur": "0.02",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction",
+       "nature": "effet",
+       "libelle": "WOMAC fonction physique, SMD",
+       "valeur": "0.61",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC fonction physique, SMD, borne de l'intervalle",
+       "valeur": "0.85",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC fonction physique, SMD, autre borne de l'intervalle",
+       "valeur": "0.37",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "33121082",
+     "pmcid": "PMC7662219",
+     "licence": "CC BY",
+     "reference": "Li et al. 2020, Int J Environ Res Public Health",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "14",
+       "dans_l_article": null
+      },
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "815",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur",
+       "nature": "effet",
+       "libelle": "WOMAC ou KOOS douleur, SMD",
+       "valeur": "0.61",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC ou KOOS douleur, SMD, borne de l'intervalle",
+       "valeur": "0.86",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC ou KOOS douleur, SMD, autre borne de l'intervalle",
+       "valeur": "0.37",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur",
+       "nature": "effet",
+       "libelle": "WOMAC ou KOOS raideur, SMD",
+       "valeur": "0.75",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC ou KOOS raideur, SMD, borne de l'intervalle",
+       "valeur": "1.09",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC ou KOOS raideur, SMD, autre borne de l'intervalle",
+       "valeur": "0.41",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction",
+       "nature": "effet",
+       "libelle": "WOMAC ou KOOS fonction physique, SMD",
+       "valeur": "0.67",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC ou KOOS fonction physique, SMD, borne de l'intervalle",
+       "valeur": "0.82",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC ou KOOS fonction physique, SMD, autre borne de l'intervalle",
+       "valeur": "0.53",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "33879749",
+     "pmcid": "PMC8078456",
+     "licence": "CC BY",
+     "reference": "You et al. 2021, Medicine (Baltimore)",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "11",
+       "dans_l_article": null
+      },
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "603",
+       "dans_l_article": null
+      },
+      {
+       "id": "marche6",
+       "nature": "effet",
+       "libelle": "test de marche de 6 minutes, MD",
+       "valeur": "46.67",
+       "dans_l_article": null
+      },
+      {
+       "id": "marche6-ic1",
+       "nature": "ic_bas",
+       "libelle": "test de marche de 6 minutes, MD, borne de l'intervalle",
+       "valeur": "36.91",
+       "dans_l_article": null
+      },
+      {
+       "id": "marche6-ic2",
+       "nature": "ic_haut",
+       "libelle": "test de marche de 6 minutes, MD, autre borne de l'intervalle",
+       "valeur": "56.43",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug",
+       "nature": "effet",
+       "libelle": "Timed Up and Go, MD",
+       "valeur": "0.89",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic1",
+       "nature": "ic_bas",
+       "libelle": "Timed Up and Go, MD, borne de l'intervalle",
+       "valeur": "1.16",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic2",
+       "nature": "ic_haut",
+       "libelle": "Timed Up and Go, MD, autre borne de l'intervalle",
+       "valeur": "0.61",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction",
+       "nature": "effet",
+       "libelle": "WOMAC fonction physique, MD",
+       "valeur": "11.28",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC fonction physique, MD, borne de l'intervalle",
+       "valeur": "13.33",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC fonction physique, MD, autre borne de l'intervalle",
+       "valeur": "9.24",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "28121996",
+     "pmcid": "PMC5266306",
+     "licence": "CC BY",
+     "reference": "Zhang et al. 2017, PLoS One",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "8",
+       "dans_l_article": null
+      },
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "375",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur",
+       "nature": "effet",
+       "libelle": "douleur, SMD",
+       "valeur": "0.77",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic1",
+       "nature": "ic_bas",
+       "libelle": "douleur, SMD, borne de l'intervalle",
+       "valeur": "1.13",
+       "dans_l_article": null
+      },
+      {
+       "id": "douleur-ic2",
+       "nature": "ic_haut",
+       "libelle": "douleur, SMD, autre borne de l'intervalle",
+       "valeur": "0.41",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction",
+       "nature": "effet",
+       "libelle": "fonction physique, SMD",
+       "valeur": "0.75",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "fonction physique, SMD, borne de l'intervalle",
+       "valeur": "0.98",
+       "dans_l_article": null
+      },
+      {
+       "id": "fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "fonction physique, SMD, autre borne de l'intervalle",
+       "valeur": "0.52",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur",
+       "nature": "effet",
+       "libelle": "raideur, SMD",
+       "valeur": "0.56",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic1",
+       "nature": "ic_bas",
+       "libelle": "raideur, SMD, borne de l'intervalle",
+       "valeur": "0.96",
+       "dans_l_article": null
+      },
+      {
+       "id": "raideur-ic2",
+       "nature": "ic_haut",
+       "libelle": "raideur, SMD, autre borne de l'intervalle",
+       "valeur": "0.16",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-physique",
+       "nature": "effet",
+       "libelle": "SF-36, score physique, SMD",
+       "valeur": "0.57",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-physique-ic1",
+       "nature": "ic_bas",
+       "libelle": "SF-36, score physique, SMD, borne de l'intervalle",
+       "valeur": "0.17",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-physique-ic2",
+       "nature": "ic_haut",
+       "libelle": "SF-36, score physique, SMD, autre borne de l'intervalle",
+       "valeur": "0.97",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-mental",
+       "nature": "effet",
+       "libelle": "SF-36, score mental, SMD",
+       "valeur": "4.12",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-mental-ic1",
+       "nature": "ic_bas",
+       "libelle": "SF-36, score mental, SMD, borne de l'intervalle",
+       "valeur": "0.50",
+       "dans_l_article": null
+      },
+      {
+       "id": "sf36-mental-ic2",
+       "nature": "ic_haut",
+       "libelle": "SF-36, score mental, SMD, autre borne de l'intervalle",
+       "valeur": "8.73",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "42643227",
+    "pmcid": "PMC13503159",
+    "revue": "Frontiers in Nutrition",
+    "annee": "2026",
+    "doi": "10.3389/fnut.2026.1806413",
+    "licence": "CC BY",
+    "tableau": "Table 1, Table 4, Table 5"
+   },
+   "cas": [
+    {
+     "pmid": "29713967",
+     "pmcid": "PMC6097075",
+     "licence": "CC BY",
+     "reference": "Ogata et al. 2018, Clin Rheumatol",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "essais inclus sur la glucosamine",
+       "valeur": "10",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva",
+       "nature": "effet",
+       "libelle": "douleur, échelle visuelle analogique",
+       "valeur": "0.19",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva-ic1",
+       "nature": "ic_bas",
+       "libelle": "douleur, échelle visuelle analogique, borne de l'intervalle",
+       "valeur": "0.36",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva-ic2",
+       "nature": "ic_haut",
+       "libelle": "douleur, échelle visuelle analogique, autre borne de l'intervalle",
+       "valeur": "0.03",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac",
+       "nature": "effet",
+       "libelle": "WOMAC total",
+       "valeur": "0.06",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC total, borne de l'intervalle",
+       "valeur": "0.17",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC total, autre borne de l'intervalle",
+       "valeur": "0.05",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur",
+       "nature": "effet",
+       "libelle": "WOMAC douleur",
+       "valeur": "0.04",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC douleur, borne de l'intervalle",
+       "valeur": "0.13",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC douleur, autre borne de l'intervalle",
+       "valeur": "0.06",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction",
+       "nature": "effet",
+       "libelle": "WOMAC fonction",
+       "valeur": "0.07",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC fonction, borne de l'intervalle",
+       "valeur": "0.17",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC fonction, autre borne de l'intervalle",
+       "valeur": "0.03",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "37489348",
+     "pmcid": "PMC10366893",
+     "licence": "CC BY",
+     "reference": "Vo et al. 2023, Pharmacy (Basel)",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "essais inclus sur la glucosamine",
+       "valeur": "8",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva",
+       "nature": "effet",
+       "libelle": "douleur, échelle visuelle analogique",
+       "valeur": "7.41",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva-ic1",
+       "nature": "ic_bas",
+       "libelle": "douleur, échelle visuelle analogique, borne de l'intervalle",
+       "valeur": "14.3",
+       "dans_l_article": null
+      },
+      {
+       "id": "eva-ic2",
+       "nature": "ic_haut",
+       "libelle": "douleur, échelle visuelle analogique, autre borne de l'intervalle",
+       "valeur": "0.51",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac",
+       "nature": "effet",
+       "libelle": "WOMAC total",
+       "valeur": "2.27",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC total, borne de l'intervalle",
+       "valeur": "5.21",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC total, autre borne de l'intervalle",
+       "valeur": "0.66",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur",
+       "nature": "effet",
+       "libelle": "WOMAC douleur",
+       "valeur": "0.04",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC douleur, borne de l'intervalle",
+       "valeur": "0.13",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-douleur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC douleur, autre borne de l'intervalle",
+       "valeur": "0.06",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-raideur",
+       "nature": "effet",
+       "libelle": "WOMAC raideur",
+       "valeur": "0.07",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-raideur-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC raideur, borne de l'intervalle",
+       "valeur": "0.17",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-raideur-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC raideur, autre borne de l'intervalle",
+       "valeur": "0.03",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction",
+       "nature": "effet",
+       "libelle": "WOMAC fonction",
+       "valeur": "0.30",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction-ic1",
+       "nature": "ic_bas",
+       "libelle": "WOMAC fonction, borne de l'intervalle",
+       "valeur": "0.82",
+       "dans_l_article": null
+      },
+      {
+       "id": "womac-fonction-ic2",
+       "nature": "ic_haut",
+       "libelle": "WOMAC fonction, autre borne de l'intervalle",
+       "valeur": "0.21",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "42947838",
+    "pmcid": "PMC13710104",
+    "revue": "Frontiers in Psychology",
+    "annee": "2026",
+    "doi": "10.3389/fpsyg.2026.1939213",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "cas": [
+    {
+     "pmid": "41296768",
+     "pmcid": "PMC12654900",
+     "licence": "CC BY",
+     "reference": "Li et al. 2025, PLoS One",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "62",
+       "dans_l_article": null
+      },
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "3274",
+       "dans_l_article": null
+      },
+      {
+       "id": "equilibre",
+       "nature": "effet",
+       "libelle": "équilibre, SMD",
+       "valeur": "0.53",
+       "dans_l_article": null
+      },
+      {
+       "id": "equilibre-ic1",
+       "nature": "ic_bas",
+       "libelle": "équilibre, SMD, borne de l'intervalle",
+       "valeur": "0.33",
+       "dans_l_article": null
+      },
+      {
+       "id": "equilibre-ic2",
+       "nature": "ic_haut",
+       "libelle": "équilibre, SMD, autre borne de l'intervalle",
+       "valeur": "0.74",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug",
+       "nature": "effet",
+       "libelle": "Timed Up and Go, SMD",
+       "valeur": "0.44",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic1",
+       "nature": "ic_bas",
+       "libelle": "Timed Up and Go, SMD, borne de l'intervalle",
+       "valeur": "0.60",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic2",
+       "nature": "ic_haut",
+       "libelle": "Timed Up and Go, SMD, autre borne de l'intervalle",
+       "valeur": "0.28",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "36316416",
+     "pmcid": "PMC9622812",
+     "licence": "CC BY",
+     "reference": "Zhen et al. 2022, NPJ Parkinsons Dis",
+     "chiffres": [
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "20",
+       "dans_l_article": null
+      },
+      {
+       "id": "berg",
+       "nature": "effet",
+       "libelle": "échelle d'équilibre de Berg, SMD",
+       "valeur": "0.99",
+       "dans_l_article": null
+      },
+      {
+       "id": "berg-ic1",
+       "nature": "ic_bas",
+       "libelle": "échelle d'équilibre de Berg, SMD, borne de l'intervalle",
+       "valeur": "0.76",
+       "dans_l_article": null
+      },
+      {
+       "id": "berg-ic2",
+       "nature": "ic_haut",
+       "libelle": "échelle d'équilibre de Berg, SMD, autre borne de l'intervalle",
+       "valeur": "1.23",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug",
+       "nature": "effet",
+       "libelle": "Timed Up and Go, SMD",
+       "valeur": "0.41",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic1",
+       "nature": "ic_bas",
+       "libelle": "Timed Up and Go, SMD, borne de l'intervalle",
+       "valeur": "0.61",
+       "dans_l_article": null
+      },
+      {
+       "id": "tug-ic2",
+       "nature": "ic_haut",
+       "libelle": "Timed Up and Go, SMD, autre borne de l'intervalle",
+       "valeur": "0.22",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "40943700",
+    "pmcid": "PMC12429691",
+    "revue": "Journal of Clinical Medicine",
+    "annee": "2025",
+    "doi": "10.3390/jcm14175942",
+    "licence": "CC BY",
+    "tableau": "Table 1"
+   },
+   "cas": [
+    {
+     "pmid": "36833545",
+     "pmcid": "PMC9956295",
+     "licence": "CC BY",
+     "reference": "Yu et al. 2023, Int J Environ Res Public Health",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "patients",
+       "valeur": "1108",
+       "dans_l_article": null
+      },
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "19",
+       "dans_l_article": null
+      }
+     ]
+    },
+    {
+     "pmid": "37468931",
+     "pmcid": "PMC10357808",
+     "licence": "CC BY",
+     "reference": "Zhang et al. 2023, J Orthop Surg Res",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "patients",
+       "valeur": "989",
+       "dans_l_article": null
+      },
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "18",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type_etude": "revue_systematique",
+   "source": {
+    "pmid": "38786366",
+    "pmcid": "PMC11121001",
+    "revue": "Healthcare (Basel)",
+    "annee": "2024",
+    "doi": "10.3390/healthcare12100954",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "cas": [
+    {
+     "pmid": "29089897",
+     "pmcid": "PMC5650970",
+     "licence": "CC BY",
+     "reference": "Barros et al. 2017, Front Physiol",
+     "chiffres": [
+      {
+       "id": "n",
+       "nature": "effectif",
+       "libelle": "participants",
+       "valeur": "1421",
+       "dans_l_article": null
+      },
+      {
+       "id": "k",
+       "nature": "nombre_etudes",
+       "libelle": "études incluses",
+       "valeur": "51",
+       "dans_l_article": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
