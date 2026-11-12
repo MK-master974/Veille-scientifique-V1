@@ -26,6 +26,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   sa licence et attribue un niveau d'accès ; `banc/mesure_acces.py` et le workflow « Niveaux
   d'accès » mesurent ces niveaux sur une semaine déjà publiée. Aucune IA n'est appelée, aucun
   texte d'article n'est gardé, et la veille hebdomadaire n'utilise pas encore ce module.
+- Première mesure des niveaux d'accès, sur 2026-S45 : 61 % des fiches ont un texte intégral
+  lisible dans PubMed Central, 34 % sous une licence CC BY. Résultats dans
+  `banc/resultats/2026-11-12-niveaux-acces-S45.md`. La mesure a désormais une durée maximale et
+  rend toujours un résultat.
+- Licences admises pour l'analyse du texte intégral : CC BY et CC0 seulement (VS-D21).
 - `docs/FICHE_V2.md` : format cible d'une fiche, la « fiche v2 », décidé le 12 novembre 2026
   (VS-D12 à VS-D15). Fiche unique progressive avec l'impact clinique dans l'en-tête, niveau
   d'accès et profondeur d'analyse, données extraites avec leur emplacement, catégorie d'importance

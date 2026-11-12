@@ -28,7 +28,7 @@ concurrency:
 jobs:
   mesurer:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -48,7 +48,8 @@ jobs:
           SEMAINE: ${{ inputs.semaine }}
           NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
           EMAIL_CONTACT: ${{ vars.EMAIL_CONTACT }}
-        run: python banc/mesure_acces.py --semaine "$SEMAINE" --ref origin/main --sortie resultats-acces
+        # La lecture de 435 textes a pris 28 minutes le 12/11/2026 : la durée maximale laisse de la marge.
+        run: python banc/mesure_acces.py --semaine "$SEMAINE" --ref origin/main --sortie resultats-acces --minutes 45
 
       - uses: actions/upload-artifact@v4
         if: always()

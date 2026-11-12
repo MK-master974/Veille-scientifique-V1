@@ -45,6 +45,15 @@ def test_les_perimetres_s_emboitent():
     assert "autre" not in large and "inconnue" not in large
 
 
+def test_perimetre_retenu_est_le_plus_strict():
+    # VS-D21 : seules les licences CC BY et CC0 ouvrent l'analyse du texte intégral.
+    assert set(acces.PERIMETRE_RETENU) == {"CC0", "CC BY"}
+    texte = acces.decrire_texte(article())
+    assert acces.niveau_acces("PMC1", "CC BY", texte, acces.PERIMETRE_RETENU)[0] == 1
+    assert acces.niveau_acces("PMC1", "CC BY-NC", texte, acces.PERIMETRE_RETENU)[0] == 3
+    assert acces.niveau_acces("PMC1", "CC BY-NC-ND", texte, acces.PERIMETRE_RETENU)[0] == 3
+
+
 # --- Structure d'un texte ---------------------------------------------------------------------
 
 def test_decrire_texte_complet():
@@ -199,3 +208,19 @@ def test_mesure_complete_sans_reseau(monkeypatch, tmp_path):
     assert resultat["resume"]["etats_texte"] == {"ok": 1, "absent": 1}
     assert PHRASE.strip() not in (tmp_path / "mesure-acces-2026-S45.json").read_text(encoding="utf-8")
     assert "Niveaux d'accès — semaine 2026-S45" in (tmp_path / "mesure-acces-2026-S45.md").read_text(encoding="utf-8")
+
+
+def test_mesure_s_arrete_a_la_duree_maximale(monkeypatch):
+    """Passé la durée maximale, les textes restants sont notés « non mesuré », sans appel au réseau."""
+    fiches = [{"id": f"pm{n}", "pmid": str(n), "type": "essai_randomise", "domaines": []} for n in (1, 2, 3)]
+    monkeypatch.setattr(acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
+        {p: {"pmcid": f"PMC{p}", "licence": "CC BY", "acces_ouvert": True, "champs": []} for p in pmids}, 0))
+    monkeypatch.setattr(acces, "pmcids_pubmed", lambda pmids, cfg, journal=print, paquet=200: ({}, 0))
+    demandes = []
+    monkeypatch.setattr(acces, "texte_integral_xml", lambda pmcid: (demandes.append(pmcid), (article(), "ok"))[1])
+    lectures = []  # l'horloge vaut 0 au départ et à la première fiche, puis 10 secondes
+    monkeypatch.setattr(mesure.time, "monotonic", lambda: (lectures.append(1), 0 if len(lectures) <= 2 else 10)[1])
+    monkeypatch.setattr(mesure.time, "sleep", lambda s: None)
+    lignes, _ = mesure.mesurer(fiches, {}, journal=lambda m: None, duree_max=5)
+    assert demandes == ["PMC1"]
+    assert [l["etat_texte"] for l in lignes] == ["ok", "non_mesure", "non_mesure"]

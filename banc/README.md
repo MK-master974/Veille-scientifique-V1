@@ -69,7 +69,8 @@ pourraient atteindre le niveau 1 (« texte intégral lu ») selon trois périmè
 - Aucune IA n'est appelée : aucun coût. Le texte des articles n'est pas gardé.
 - **Pour lancer une mesure** : workflow « Niveaux d'accès » dans GitHub Actions, ou une ligne
   ajoutée à `mesures_acces.json` sur une branche de travail.
-- Les résultats sont rangés dans `resultats/`.
+- Les résultats sont rangés dans `resultats/`. Première mesure, sur 2026-S45 :
+  `resultats/2026-11-12-niveaux-acces-S45.md`.
 
 ## Limites connues
 

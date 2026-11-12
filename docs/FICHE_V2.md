@@ -68,7 +68,7 @@ deux peuvent tomber sur des années différentes, ce qui fausse une citation.
 | `niveau` | 1, 2 ou 3 |
 | `origine_texte` | D'où vient le texte lu : `null` pour le résumé seul, sinon l'archive ou la revue |
 | `url_texte` | Lien vers le texte intégral légal, s'il existe |
-| `licence` | Licence du texte lu, telle que la source la déclare ; `null` si elle est inconnue |
+| `licence` | Licence du texte lu, telle que la source la déclare ; `null` si elle est inconnue. Le texte intégral n'est lu que sous licence CC BY ou CC0 (VS-D21) |
 | `consulte_le` | Date de consultation |
 | `parties_lues`, `parties_non_lues` | Listes : résumé, méthode, résultats, tableaux, annexes… |
 
@@ -231,7 +231,6 @@ dépend d'aucune d'elles.
 | --- | --- |
 | Second champ de thèmes proposé par Évalys (sécurité et tri, douleur, post-opératoire, questionnaire, médicament) | Après le pilote « genou » |
 | Liste des types d'étude au-delà des cinq actuels | Avec la révision des règles d'inclusion |
-| Recherche du texte intégral, lecture des licences | Séance 4 |
 | Règle de l'étiquette et de la catégorie, mesurée au banc d'essai | Séance 6 |
 | Longueur maximale des champs de l'en-tête | Séance 7, au banc d'essai |
 | Variante de vérification indépendante | Séance 8 |
