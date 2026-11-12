@@ -210,7 +210,7 @@ def texte_integral_xml(pmcid):
     L'état vaut « ok », « absent » (Europe PMC ne diffuse pas ce texte) ou « echec » (panne).
     """
     try:
-        rep = requete("GET", f"{EUROPE_PMC}/{pmcid}/fullTextXML", tentatives=3)
+        rep = requete("GET", f"{EUROPE_PMC}/{pmcid}/fullTextXML", tentatives=2, timeout=30)
     except requests.HTTPError as e:
         absent = e.response is not None and e.response.status_code in (403, 404)
         return None, "absent" if absent else "echec"

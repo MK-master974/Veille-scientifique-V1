@@ -199,3 +199,19 @@ def test_mesure_complete_sans_reseau(monkeypatch, tmp_path):
     assert resultat["resume"]["etats_texte"] == {"ok": 1, "absent": 1}
     assert PHRASE.strip() not in (tmp_path / "mesure-acces-2026-S45.json").read_text(encoding="utf-8")
     assert "Niveaux d'accès — semaine 2026-S45" in (tmp_path / "mesure-acces-2026-S45.md").read_text(encoding="utf-8")
+
+
+def test_mesure_s_arrete_a_la_duree_maximale(monkeypatch):
+    """Passé la durée maximale, les textes restants sont notés « non mesuré », sans appel au réseau."""
+    fiches = [{"id": f"pm{n}", "pmid": str(n), "type": "essai_randomise", "domaines": []} for n in (1, 2, 3)]
+    monkeypatch.setattr(acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
+        {p: {"pmcid": f"PMC{p}", "licence": "CC BY", "acces_ouvert": True, "champs": []} for p in pmids}, 0))
+    monkeypatch.setattr(acces, "pmcids_pubmed", lambda pmids, cfg, journal=print, paquet=200: ({}, 0))
+    demandes = []
+    monkeypatch.setattr(acces, "texte_integral_xml", lambda pmcid: (demandes.append(pmcid), (article(), "ok"))[1])
+    lectures = []  # l'horloge vaut 0 au départ et à la première fiche, puis 10 secondes
+    monkeypatch.setattr(mesure.time, "monotonic", lambda: (lectures.append(1), 0 if len(lectures) <= 2 else 10)[1])
+    monkeypatch.setattr(mesure.time, "sleep", lambda s: None)
+    lignes, _ = mesure.mesurer(fiches, {}, journal=lambda m: None, duree_max=5)
+    assert demandes == ["PMC1"]
+    assert [l["etat_texte"] for l in lignes] == ["ok", "non_mesure", "non_mesure"]

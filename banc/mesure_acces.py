@@ -31,7 +31,8 @@ from pipeline.config import charger_config  # noqa: E402
 
 DEMANDES = RACINE / "banc" / "mesures_acces.json"
 NOMS_ETATS = {"ok": "texte reçu", "absent": "texte non diffusé", "echec": "panne",
-              "illisible": "texte illisible", "non_demande": "non demandé"}
+              "illisible": "texte illisible", "non_demande": "non demandé",
+              "non_mesure": "non mesuré, faute de temps"}
 NOMS_PERIMETRES = {
     "strict": "A. CC BY et CC0 seulement",
     "intermediaire": "B. A, plus les licences « pas d'usage commercial » et « partage à l'identique »",
@@ -64,8 +65,13 @@ def choisir_semaine(demandee, ref=None):
 
 # --- Mesure -----------------------------------------------------------------------------------
 
-def mesurer(fiches, cfg, journal=print, pause=0.3):
-    """Une ligne de mesure par fiche. N'appelle que des sources ouvertes."""
+def mesurer(fiches, cfg, journal=print, pause=0.3, duree_max=None):
+    """Une ligne de mesure par fiche. N'appelle que des sources ouvertes.
+
+    Au-delà de duree_max secondes, les textes restants ne sont plus demandés : ils sont notés
+    « non mesuré », pour que la mesure rende toujours un résultat.
+    """
+    debut = time.monotonic()
     pmids = [f["pmid"] for f in fiches if f.get("pmid")]
     journal(f"Europe PMC : description de {len(pmids)} publications…")
     europe, echecs_europe = acces.decrire_europe_pmc(pmids, journal)
@@ -77,11 +83,17 @@ def mesurer(fiches, cfg, journal=print, pause=0.3):
     journal(f"Europe PMC : texte intégral demandé pour {len(a_lire)} publications…")
     textes = {}
     for n, f in enumerate(a_lire, 1):
+        if duree_max and time.monotonic() - debut > duree_max:
+            journal(f"  durée maximale atteinte : {len(a_lire) - n + 1} textes non mesurés")
+            for reste in a_lire[n - 1:]:
+                textes[reste["pmid"]] = (None, "non_mesure")
+            break
         pmcid = europe[f["pmid"]]["pmcid"]
         xml, etat = acces.texte_integral_xml(pmcid)
         textes[f["pmid"]] = (acces.decrire_texte(xml) if xml else None, etat)
-        if n % 50 == 0:
-            journal(f"  {n} sur {len(a_lire)}")
+        if n % 25 == 0:
+            compte = collections.Counter(e for _, e in textes.values())
+            journal(f"  {n} sur {len(a_lire)} : {dict(compte)}, {int(time.monotonic() - debut)} s")
         time.sleep(pause)
 
     for f in fiches:
@@ -242,6 +254,7 @@ def main(argv=None):
     p.add_argument("--ref", default=None, help="référence Git où lire les données publiées (ex. origin/main)")
     p.add_argument("--sortie", default="resultats-acces", help="dossier des résultats")
     p.add_argument("--limite", type=int, default=0, help="ne mesurer que les N premières fiches (essai)")
+    p.add_argument("--minutes", type=int, default=20, help="durée maximale de la lecture des textes")
     args = p.parse_args(argv)
 
     semaine = choisir_semaine(args.semaine, args.ref)
@@ -253,7 +266,7 @@ def main(argv=None):
     journal = lambda m: print(m, flush=True)  # noqa: E731
 
     maintenant = datetime.now(timezone.utc)
-    lignes, infos = mesurer(fiches, cfg, journal)
+    lignes, infos = mesurer(fiches, cfg, journal, duree_max=60 * args.minutes)
     modele = cfg["ia"]["modele_redaction"]
     prix = cfg["ia"]["prix_usd_par_million"].get(modele, [None])[0]
     resume = resumer(lignes, prix)
