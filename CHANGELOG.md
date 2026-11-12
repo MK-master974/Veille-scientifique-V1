@@ -40,6 +40,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 - Banc d'essai de l'extraction : mesure des chiffres relevés, faite par le code et sans IA
   lectrice. Seuil fixé avant la mesure : 80 % des chiffres retrouvés à partir du texte intégral
   (VS-D34).
+- Mesure de l'extraction sur le corpus renforcé, deux lancements (2,57 $) : à partir du texte
+  intégral, 148 à 149 chiffres retrouvés sur 159, soit 93 % (études diagnostiques 58 sur 59,
+  méta-analyses 88 à 89 sur 98) ; à partir du résumé seul, 113. Le seuil de 80 % est atteint. Les
+  cas de la séance 5 ne changent pas : 24 réponses justes sur 32, seuil de 26 non atteint.
+  Résultats, défauts trouvés et limites dans `banc/resultats/2026-11-12-chiffres-releves.md`.
 - `.claude/skills/` : les sept fiches de méthode communes aux applications de l'écosystème,
   copiées du dépôt de coordination (consigne CONS-2026-11-12-01, VS-D35). Seule leur partie
   « Dans ce projet » est propre à Veille Santé.

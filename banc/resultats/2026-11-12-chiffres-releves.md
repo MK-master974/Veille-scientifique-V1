@@ -102,9 +102,84 @@ relus en entier, et aucun humain n'a relu ces extractions.
   rangs sont justifiés.
 - Trois articles atteignent ou frôlent le maximum de 40 résultats.
 
+## Mesure sur tout le corpus renforcé
+
+Lancement 43284782799 : les cas mesurés depuis la séance 5 et les 20 articles aux chiffres
+relevés, dans un même lancement, avec les règles corrigées et **fixées avant ce lancement**.
+
+| Mesure, texte intégral | Résultat | Seuil |
+| --- | --- | --- |
+| Chiffres relevés retrouvés | **148 sur 159 (93,1 %)** | 80 % (VS-D34) : atteint |
+| dont études diagnostiques | 58 sur 59 | |
+| dont méta-analyses | 88 sur 98 | |
+| dont revue systématique | 2 sur 2 | |
+| Réponses justes aux 32 questions « sens de l'effet » | 24 | 26 (VS-D25) : non atteint |
+| Réponses justes aux 22 questions dont le corrigé n'est pas contesté | 22 | |
+| Sens inversé selon le corrigé | 2, sur deux questions au corrigé contesté | |
+| Pièges | 3 sur 3 | Atteint |
+| Données gardées après contrôle du code | 867 sur 876 | |
+
+- **Le score des chiffres relevés est stable** : 149 puis 148 sur 159, sur deux lancements. Le
+  chiffre d'écart est un champ « effectif » refusé par le contrôle au second lancement, et gardé
+  au premier : ce défaut varie d'un lancement à l'autre, comme en séance 5.
+- À partir du résumé seul : 113 sur 159 aux deux lancements.
+- Les cas de la séance 5 donnent le même résultat qu'alors (23 ou 24 réponses justes, 22 sur 22
+  hors corrigés contestés, 3 pièges sur 3) : la consigne d'extraction n'a pas changé (empreinte
+  `3c798aea`).
+- Onze chiffres ne sont pas retrouvés : les dix de la première mesure, et un nombre d'études dont
+  le champ « effectif » a été refusé (PMID 36316416).
+
 ## Ce que le texte intégral apporte
 
 À partir du résumé seul, l'extraction retrouve 71 % des chiffres ; à partir du texte intégral,
 94 %. L'écart est le plus net pour les études diagnostiques (41 contre 58 sur 59) : les
 sensibilités et spécificités par test ou par sous-groupe sont dans les tableaux, pas dans le
 résumé.
+
+## Ce que le corpus renforcé a fait apparaître
+
+| Constat | Statut |
+| --- | --- |
+| Un champ refusé par le contrôle reste vide, et cela varie d'un lancement à l'autre (3 champs « effectif » sur 20 articles, selon le lancement) | Défaut connu, confirmé. Séance 7 |
+| Des résultats extraits sans leur valeur chiffrée : 41 sur 439 à la première mesure | Défaut connu, confirmé |
+| Le contrôle refuse un résultat dont l'intervalle est écrit « IC à 95 % » quand le « 95 » n'est pas dans le bloc cité | Défaut nouveau, du contrôle. À corriger : le niveau de confiance n'est pas une donnée |
+| L'extraction ne voit pas qu'un article se contredit (résumé −0,70, corps du texte −0,77) | Défaut connu, confirmé sur un cas |
+| Pour une revue, le champ « effectif » ne donne pas toujours le nombre d'études | Défaut nouveau, mineur |
+| Rang « principal » donné à 37 résultats sur 439, dans 7 articles | Non vérifié : le corpus n'a pas de corrigé pour le rang |
+
+L'extraction elle-même n'a pas été modifiée dans ce travail : ni la consigne, ni les contrôles.
+
+## Coût
+
+| Lancement | Objet | Coût réel |
+| --- | --- | --- |
+| 43276480183, 43278548445, 43279523961, 43279876823, 43280778551, 43284046225 | Repérage, lectures, vérifications, recalcul | 0 $ |
+| 43280778581 | Banc, lecture des textes sans IA | 0 $ |
+| 43281503491 | Première mesure, 20 articles | 0,90 $ |
+| 43284782799 | Mesure sur tout le corpus renforcé | 1,68 $ |
+
+Total : **2,57 $**, sur une enveloppe de 5 $ (VS-D33). Chaque estimation annoncée avant un
+lancement était supérieure à son coût réel (1,18 $ puis 2,14 $).
+
+## Limites
+
+- **Ces cas mesurent si un chiffre est extrait, pas s'il est bien étiqueté.** Une sensibilité
+  attribuée au mauvais test, ou à la mauvaise version d'un questionnaire, compte comme retrouvée.
+  Le sens d'un effet et le rang d'un critère ne sont pas mesurés ici.
+- **Le contrôle fait avant la mesure a une portée limitée** : il a écarté 2 chiffres, et l'examen
+  après la mesure en a trouvé 3 autres qui tiennent à la source. Un écart reste un signal à
+  examiner, pas une preuve.
+- **Les règles de comparaison ont été corrigées une fois après une mesure.** Les deux scores sont
+  publiés ; la mesure sur tout le corpus a été faite avec des règles fixées avant elle.
+- **Le choix des 20 articles n'est pas un tirage au sort** : il dépend des revues sources qui
+  citent des études sous licence CC BY et dont les tableaux se lisent. Les articles sont courts
+  (18 000 à 59 000 caractères) et en anglais.
+- **Une seule revue systématique sans méta-analyse, aucune recommandation.**
+- **Aucun humain n'a relu** ni les corrigés, ni les extractions.
+- Vingt articles, 159 chiffres : un écart d'un ou deux chiffres ne dit rien.
+
+## Suite
+
+Séance 6 de la phase 1 : appréciation par outil selon le type d'étude, catégories d'importance.
+Les revues sources de ce corpus donnent aussi des jugements de qualité (QUADAS-2, AMSTAR 2) sur
+des articles lisibles en entier : ils pourront servir de corrigés.

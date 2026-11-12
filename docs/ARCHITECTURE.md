@@ -330,8 +330,9 @@ données public, sans IA ni clé. Le résultat est écrit dans le journal et gar
 référence (`banc/assembler_chiffres.py`). Pour une étude diagnostique ou une méta-analyse, le
 corrigé est fait des chiffres que les auteurs d'une revue en accès libre ont déjà relevés dans un
 tableau. Le workflow lit ces tableaux dans Europe PMC, la licence de la revue et celle des études
-citées, puis contrôle chaque chiffre du corpus : licences, recopie, présence dans l'article. Aucune
-IA n'est appelée, aucune clé n'est utilisée. Il se lance à la demande, ou quand
+citées, puis contrôle chaque chiffre du corpus : licences, recopie, présence dans l'article. Il peut
+aussi recalculer un score sur les extractions d'un lancement du banc déjà fait, lues dans son
+artefact. Aucune IA n'est appelée, aucune clé n'est utilisée. Il se lance à la demande, ou quand
 `banc/candidats_chiffres.json` est modifié sur une branche `claude/**`. Son journal ne contient que
 des lignes de tableaux de revues sous licence CC BY ou CC0.
 

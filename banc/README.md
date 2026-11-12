@@ -65,7 +65,9 @@ son intervalle de confiance pour une méta-analyse. Personne ne remplit de corri
      et la licence de ces études ;
   2. « lire » : les lignes du tableau qui portent sur les études choisies ;
   3. « vérifier » : pour chaque chiffre du corpus, les licences, la recopie (le chiffre est bien
-     dans la ligne du tableau source) et sa présence dans l'article lui-même.
+     dans la ligne du tableau source) et sa présence dans l'article lui-même ;
+  4. « recalculer » : après une correction des règles, le score est recalculé sur les extractions
+     d'un lancement déjà fait, sans nouvel appel à l'IA.
 - **Ce qui est gardé** (`corpus/chiffres_releves.json`) : des identifiants, des licences et des
   chiffres. Aucun texte d'article.
 - **Règles de comparaison**, fixées avant toute mesure (`chiffres.py`) : le signe est ignoré ;
@@ -77,6 +79,10 @@ son intervalle de confiance pour une méta-analyse. Personne ne remplit de corri
   l'article, un chiffre d'un groupe n'est confirmé qu'à moins de 300 caractères d'un autre chiffre
   de son groupe. Dans l'extraction, une borne d'intervalle n'est retrouvée que dans un résultat qui
   porte aussi son effet.
+- **Quatre corrections faites après la première mesure**, publiées avec les deux scores : un zéro
+  final n'est pas un arrondi ; un nombre d'études écrit en toutes lettres est lu ; le « 95 » de
+  « IC à 95 % » n'est pas une donnée ; une valeur ponctuelle se cherche dans le champ « valeur »
+  d'un résultat.
 - **Un chiffre absent de l'article est écarté du score avant la mesure**, et compté à part
   (VS-D34) : une revue arrondit, recalcule ou se trompe parfois en recopiant. C'est le code qui le
   constate, sur le texte de l'article, sans regarder ce que l'IA a extrait.
@@ -104,9 +110,14 @@ elles-mêmes sous licence CC BY. Neuf ont été gardées : celles dont le tablea
 par étude (et non seulement un décompte), en variant les sujets. Ce choix est fait par la session
 de développement, avant toute mesure ; il n'est pas tiré au sort.
 
-**Vérification avant la mesure** (lancement 43280778551, sans IA) : licences conformes pour les 20
-articles et les 9 revues ; 161 chiffres sur 161 bien recopiés ; 161 sur 161 confirmés dans leur
-article. Aucun chiffre n'a donc été écarté du score.
+**Vérification** (lancement 43284046225, sans IA) : licences conformes pour les 20 articles et les
+9 revues ; 161 chiffres sur 161 bien recopiés ; 159 sur 161 confirmés dans leur article. Les deux
+autres sont des valeurs calculées par la revue source : ils restent dans le corpus, marqués, et ne
+comptent pas dans le score.
+
+**Mesure** (`resultats/2026-11-12-chiffres-releves.md`) : à partir du texte intégral, l'extraction
+retrouve 148 à 149 chiffres sur 159, soit 93 % ; à partir du résumé seul, 113. Le seuil de 80 %
+est atteint.
 
 **Deux pièges du travail sur des tableaux**, que le code traite : dans une revue source, les
 renvois numérotés du tableau ne désignaient pas les études nommées sur la ligne (le nom et l'année
