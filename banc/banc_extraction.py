@@ -59,20 +59,33 @@ CONSIGNE_LECTEUR = """RÔLE
 Tu lis les données extraites d'une publication scientifique, et rien d'autre.
 
 MISSION
-On te pose une question sur le résultat d'une comparaison. Réponds uniquement d'après les données
-extraites fournies, sans aucune connaissance extérieure. Cherche le résultat qui porte sur le même
-critère et la même comparaison que la question ; la question est en anglais, les données en français.
-Si aucun résultat ne correspond, ou si les données ne permettent pas de trancher, dis-le.
+On te pose une question : par rapport à un comparateur, comment une intervention modifie-t-elle un
+critère ? Réponds uniquement d'après les données extraites fournies, sans aucune connaissance
+extérieure. La question est en anglais, les données en français.
 
-RÉPONSES POSSIBLES
-- "augmentation" : les données indiquent que le critère nommé dans la question augmente de façon
-  significative avec l'intervention par rapport au comparateur
-- "diminution" : les données indiquent que ce critère diminue de façon significative
-- "aucune" : les données indiquent qu'il n'y a pas de différence significative
+COMMENT CHERCHER
+- Cherche le résultat qui porte sur le même critère et la même comparaison que la question.
+- Les noms de l'intervention et du comparateur peuvent différer entre la question et les données :
+  rapproche-les par leur sens. L'intervention de la question est la condition étudiée, son
+  comparateur la condition de référence.
+- Réponds pour le critère tel que la question le nomme. S'il nomme une fonction ou une capacité et
+  que les données rapportent une mesure d'erreur ou de déficit, sers-toi de « en faveur de ».
+- "reponse" ne s'appuie que sur une comparaison entre l'intervention et le comparateur de la
+  question. Si la question compare elle-même un « après » à un « avant », cette évolution est la
+  comparaison demandée.
+- Si les données ne rapportent, pour ce critère, qu'une évolution avant-après dans le groupe qui
+  reçoit l'intervention, alors que la question demande une comparaison avec un autre groupe :
+  "reponse" vaut "non_indique", et tu donnes le sens de cette évolution dans "avant_apres".
+- Si aucun résultat ne correspond, ou si les données ne permettent pas de trancher, dis-le.
+
+VALEURS POSSIBLES, pour "reponse" comme pour "avant_apres"
+- "augmentation" : le critère nommé dans la question augmente de façon significative
+- "diminution" : ce critère diminue de façon significative
+- "aucune" : pas de différence significative
 - "non_indique" : les données ne permettent pas de répondre
 
 SORTIE : un objet JSON strict, sans texte autour
-{"reponse": "augmentation | diminution | aucune | non_indique", "resultat": numéro du résultat utilisé ou null, "justification": "une phrase"}
+{"reponse": "augmentation | diminution | aucune | non_indique", "avant_apres": "augmentation | diminution | aucune | non_indique", "resultat": numéro du résultat utilisé ou null, "justification": "une phrase"}
 """
 
 
@@ -89,6 +102,21 @@ def donnees_pour_lecteur(e):
                       f"en faveur de : {r['en_faveur_de']} | valeur : {r['valeur'] or 'non rapportée'} | "
                       f"intervalle : {r['intervalle'] or 'non rapporté'} | p : {r['p'] or 'non rapporté'}")
     return "\n".join(lignes)
+
+
+def evaluer_lecture(rep, code_corrige):
+    """Classe la réponse du lecteur. Une évolution avant-après qui rejoint le corrigé est notée à part.
+
+    « correct » ne compte que les réponses fondées sur une comparaison entre l'intervention et le
+    comparateur. Quand les données n'offrent qu'une évolution dans le groupe traité, la réponse
+    reste « non indiqué » ; « avant_apres » dit si cette évolution va dans le sens du corrigé.
+    """
+    ligne = {"reponse": rep.get("reponse"), "resultat": chaine.evaluer_effet(rep.get("reponse"), code_corrige)}
+    if ligne["resultat"] == "non_indique" and rep.get("avant_apres") in ("augmentation", "diminution", "aucune"):
+        ligne["avant_apres"] = rep["avant_apres"]
+        if chaine.evaluer_effet(rep["avant_apres"], code_corrige) == "correct":
+            ligne["resultat"] = "correct_avant_apres"
+    return ligne
 
 
 def categorie_refus(motif):
@@ -190,9 +218,12 @@ def choisir_s45(fiches, licences, nombre):
 def seuils(effet_integral, pieges, bilans_gardes):
     """Compare le résultat aux seuils fixés par le porteur du projet (VS-D25)."""
     justes = effet_integral.get("correct", 0)
+    avant_apres = effet_integral.get("correct_avant_apres", 0)
     inverses = effet_integral.get("sens_inverse", 0)
     return {
-        f"au moins {SEUIL_JUSTES} réponses justes sur le texte intégral": {"atteint": justes >= SEUIL_JUSTES, "mesure": justes},
+        f"au moins {SEUIL_JUSTES} réponses justes sur le texte intégral": {
+            "atteint": justes >= SEUIL_JUSTES, "mesure": justes,
+            "en_plus_d_apres_une_evolution_avant_apres": avant_apres},
         "aucune erreur de sens": {"atteint": inverses == 0, "mesure": inverses},
         "3 pièges sur 3": {"atteint": all(p["reussi"] is True for p in pieges), "mesure": sum(p["reussi"] is True for p in pieges)},
         "aucun passage ni chiffre gardé hors de l'article": {
@@ -445,9 +476,8 @@ def main(argv=None):
             usages["lecture"].append(usage)
             try:
                 rep = ia.lire_json(reponse)
-                ligne[niveau] = {"reponse": rep.get("reponse"), "resultat_utilise": rep.get("resultat"),
-                                 "justification": str(rep.get("justification") or "")[:300],
-                                 "resultat": chaine.evaluer_effet(rep.get("reponse"), q["corrige"]["code"])}
+                ligne[niveau] = {**evaluer_lecture(rep, q["corrige"]["code"]), "resultat_utilise": rep.get("resultat"),
+                                 "justification": str(rep.get("justification") or "")[:300]}
             except Exception:
                 ligne[niveau] = {"resultat": "illisible"}
         e = extractions.get(("integral", ident), (None, None))[0]
@@ -506,7 +536,9 @@ def main(argv=None):
     print("\n===== SENS DE L'EFFET =====")
     for x in effet:
         print(f"  {x['pmid']} q{x['question']} | {x['critere'][:60]} | corrigé : {x['corrige']} | "
-              + " | ".join(f"{niveau} : {x[niveau].get('reponse', '-')} → {x[niveau]['resultat']}" for niveau in NIVEAUX)
+              + " | ".join(f"{niveau} : {x[niveau].get('reponse', '-')}"
+                           + (f" (avant-après : {x[niveau]['avant_apres']})" if x[niveau].get("avant_apres") else "")
+                           + f" → {x[niveau]['resultat']}" for niveau in NIVEAUX)
               + f" | passage recoupé : {'oui' if x['passage_recoupe'] else 'non'}")
         for niveau in NIVEAUX:
             if x[niveau]["resultat"] not in ("correct", "sans_extraction"):

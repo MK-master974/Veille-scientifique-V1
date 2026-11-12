@@ -28,6 +28,14 @@
    "raison": "Séance 5 de la phase 1 : première mesure de l'extraction sur le corpus de référence, résumé seul et texte intégral. Coût estimé : 0,95 $.",
    "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27).",
    "budget_usd": 2.0
+  },
+  {
+   "date": "2026-11-12",
+   "banc": "extraction",
+   "s45": 10,
+   "raison": "Séance 5 de la phase 1 : deuxième mesure de l'extraction après corrections (repère, effectif, lecteur du banc), et dix publications réelles de 2026-S45 pour la relecture. Coût estimé : 1,43 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 5 $ pour la séance 5 (VS-D27). Dépensé avant ce lancement : 0,73 $.",
+   "budget_usd": 2.0
   }
  ]
 }

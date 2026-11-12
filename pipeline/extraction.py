@@ -73,13 +73,20 @@ def _texte(v):
     return v if v and v.lower() not in ("null", "none", "non rapporté", "non rapporte") else None
 
 
+def _repere(v):
+    """« [S3] », « s3 »… → « S3 » : le repère tel que le document le porte."""
+    v = _texte(v)
+    return re.sub(r"[\[\]\s]", "", v).upper() or None if v else None
+
+
 def _localiser(brut, doc, chiffres, autorises_doc, publier_passages):
     """Vérifie le passage et les nombres d'une donnée. Renvoie (source, motif de refus, écarts)."""
-    bloc, extrait = texte.trouver_passage(doc, brut.get("passage"), _texte(brut.get("repere")))
+    repere = _repere(brut.get("repere"))
+    bloc, extrait = texte.trouver_passage(doc, brut.get("passage"), repere)
     if bloc is None:
         return None, extrait, []
     ecarts = []
-    if _texte(brut.get("repere")) not in (None, bloc["repere"]):
+    if repere not in (None, bloc["repere"]):
         ecarts.append("emplacement corrigé : le passage se trouve dans un autre bloc que celui annoncé")
     dans_passage, dans_bloc = _nombres(extrait), None
     for champ in chiffres:

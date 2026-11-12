@@ -210,6 +210,14 @@ def test_nombre_en_toutes_lettres_dans_la_source():
     assert e["effectif"]["source"]["emplacement"] == "section : Methods > Participants" and not bilan["refus"]
 
 
+def test_repere_ecrit_entre_crochets_ou_en_minuscules():
+    r = json.loads(reponse())
+    r["effectif"]["repere"] = "[S2]"
+    r["resultats"][0]["repere"] = " s4 "
+    _, bilan = extraction.lire_extraction(json.dumps(r), doc(), True)
+    assert not bilan["refus"] and not bilan["ecarts"]
+
+
 def test_valeurs_fermees_ramenees_a_la_plus_prudente():
     r = json.loads(reponse())
     r["resultats"][0].update(rang="primaire", sens_mesure="baisse", en_faveur_de="exercice")

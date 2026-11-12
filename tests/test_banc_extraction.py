@@ -55,6 +55,17 @@ def test_le_lecteur_ne_voit_ni_passage_ni_emplacement():
     assert "Pain did not differ" not in vu and "section : Results" not in vu
 
 
+def test_lecture_une_evolution_avant_apres_est_notee_a_part():
+    juste = banc.evaluer_lecture({"reponse": "diminution"}, -1)
+    assert juste == {"reponse": "diminution", "resultat": "correct"}
+    # Les données n'offrent qu'une évolution dans le groupe traité : elle ne compte pas comme une réponse juste.
+    a_part = banc.evaluer_lecture({"reponse": "non_indique", "avant_apres": "diminution"}, -1)
+    assert a_part["resultat"] == "correct_avant_apres" and a_part["avant_apres"] == "diminution"
+    assert banc.evaluer_lecture({"reponse": "non_indique", "avant_apres": "augmentation"}, -1)["resultat"] == "non_indique"
+    assert banc.evaluer_lecture({"reponse": "non_indique", "avant_apres": "non_indique"}, 0)["resultat"] == "non_indique"
+    assert banc.evaluer_lecture({"reponse": "augmentation", "avant_apres": "diminution"}, -1)["resultat"] == "sens_inverse"
+
+
 # --- Bilans -----------------------------------------------------------------------------------
 
 def test_bilan_global_additionne_et_classe():
@@ -120,6 +131,10 @@ def test_seuils_du_porteur_du_projet():
     pieges = [{"reussi": True}, {"reussi": True}, {"reussi": True}]
     atteints = banc.seuils({"correct": 26, "non_indique": 6}, pieges, 120)
     assert all(s["atteint"] for s in atteints.values())
+    # Une évolution avant-après ne suffit pas à atteindre le seuil : elle est seulement comptée à part.
+    a_part = banc.seuils({"correct": 23, "correct_avant_apres": 4}, pieges, 120)
+    premier = next(iter(a_part.values()))
+    assert premier["atteint"] is False and premier["en_plus_d_apres_une_evolution_avant_apres"] == 4
     manques = banc.seuils({"correct": 25, "sens_inverse": 1}, [{"reussi": True}, {"reussi": None}, {"reussi": True}], 0)
     assert [s["atteint"] for s in manques.values()] == [False, False, False, True]
 
