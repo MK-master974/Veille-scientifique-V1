@@ -1,7 +1,7 @@
 # Fiche v2 — format d'une fiche de veille
 
 Format cible d'une fiche, décidé par le porteur du projet le 12 novembre 2026 (décisions VS-D12 à
-VS-D15 de [DECISIONS.md](DECISIONS.md)).
+VS-D16 de [DECISIONS.md](DECISIONS.md)).
 
 **Ce format n'est pas encore produit.** Le moteur et l'application publient des fiches au format
 actuel (« v1 », décrit dans [ARCHITECTURE.md](ARCHITECTURE.md)) jusqu'à la bascule, dernière
@@ -72,14 +72,25 @@ publication déclarés par PubMed, langue, et `signalement` (`null`, `correction
 
 | Champ | Contenu |
 | --- | --- |
-| `type` | Type d'étude, compatible avec celui déclaré par PubMed |
+| `type` | Type d'étude, compatible avec celui déclaré par PubMed. Valeurs : voir ci-dessous |
 | `domaines` | Sous-champs du catalogue |
-| `themes` | `pathologie`, `population`, `intervention`, `critere` : listes de termes, pour la recherche et la correspondance avec les autres applications |
+| `themes` | `pathologie`, `population`, `intervention`, `critere` : listes de termes libres, pour la recherche. `region` : liste de régions anatomiques, à vocabulaire fermé (VS-D16), voir ci-dessous |
 | `categorie` | Catégorie d'importance, de 1 à 4 (VS-D13) |
 | `justification_categorie` | Obligatoire. Pourquoi cette catégorie |
 | `mise_en_avant` | Obligatoire en catégorie 1 : ce que la publication apporte de nouveau, ce qu'elle remet en question, si elle peut modifier les pratiques, le degré de certitude de cette lecture, les confirmations nécessaires |
 | `sens_pratique` | `confirme`, `remet_en_question` ou `null` : précision gardée de l'ancien verdict |
 | `pertinence` | 1 à 3, gardée telle quelle jusqu'à la refonte de la page de veille : le profil du lecteur s'en sert |
+
+Types d'étude : `recommandation`, `revue_systematique`, `meta_analyse`, `essai_randomise`,
+`etude_diagnostique`. Ce sont les cinq valeurs du moteur actuel (`TYPES` dans `pipeline/regles.py`).
+La liste pourra s'élargir quand les règles d'inclusion seront revues ; ce n'est pas décidé.
+
+Régions : `themes.region` ne prend que des valeurs d'une liste commune aux applications de
+l'écosystème, tenue dans le dépôt de coordination (`referentiels/domaines.md`). Cette liste
+n'existe pas encore : elle sera proposée avec Évalys et validée par le porteur du projet. Le champ
+reste vide quand la publication ne porte sur aucune région, ou tant que la liste n'est pas fixée.
+Le domaine `kine/msk-membre-inf` couvre la hanche, le genou et la cheville : il ne suffit pas à
+rapprocher une fiche d'une région d'Évalys.
 
 Catégories : 1 « évolution potentielle des pratiques », 2 « apport scientifique important »,
 3 « actualisation des connaissances », 4 « veille complémentaire ». La catégorie est indépendante
@@ -202,7 +213,7 @@ supprimée ni réécrite.
 | Origine | `id` et `version` |
 | Impact clinique | `synthese.entete.impact_clinique` |
 | Contenu | `synthese`, `extraction`, `appreciation`, `dates.analyse` |
-| Cible dans Évalys, justification | Hors de la fiche |
+| Cible dans Évalys, justification | Hors de la fiche. `classement.themes.region` aide à trouver la région concernée |
 
 Aucune fiche ne part automatiquement vers une autre application. La publication hebdomadaire ne
 dépend d'aucune d'elles.
@@ -211,6 +222,8 @@ dépend d'aucune d'elles.
 
 | Sujet | Où il se règle |
 | --- | --- |
+| Liste commune des régions anatomiques | Dépôt de coordination, avec Évalys, avant le pilote « genou » |
+| Liste des types d'étude au-delà des cinq actuels | Avec la révision des règles d'inclusion |
 | Recherche du texte intégral, lecture des licences | Séance 4 |
 | Règle de l'étiquette et de la catégorie, mesurée au banc d'essai | Séance 6 |
 | Longueur maximale des champs de l'en-tête | Séance 7, au banc d'essai |
@@ -237,6 +250,7 @@ sont montrés.
   "profondeur": "reperage",
   "classement": { "type": "meta_analyse",
                   "domaines": ["kine/msk-membre-inf", "medecine/rhumatologie", "medecine/mpr"],
+                  "themes": { "region": [] },
                   "categorie": null, "sens_pratique": null, "pertinence": 2 },
   "extraction": {
     "resultats": [

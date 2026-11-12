@@ -27,6 +27,8 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   d'accès et profondeur d'analyse, données extraites avec leur emplacement, catégorie d'importance
   à la place du verdict, étiquette à quatre valeurs, version et historique. Le moteur et
   l'application ne changent pas : la veille publie le format actuel jusqu'à la bascule.
+- `docs/FICHE_V2.md`, complément demandé par le portail : région anatomique à vocabulaire fermé
+  (`classement.themes.region`, VS-D16) et liste des cinq types d'étude actuels.
 - Corpus de référence, suite : cas « qualité méthodologique » (`banc/corpus/qualite.json` : RoB 2,
   QUADAS-2, AMSTAR 2, AGREE II, tirés de revues sous licence CC BY) et trois pièges
   (`banc/corpus/pieges.json`). `banc/extraire_tableaux.py` repère les tableaux d'évaluation dans
