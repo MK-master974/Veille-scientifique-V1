@@ -184,6 +184,35 @@
      ]
     }
    ]
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "lire",
+   "raison": "Seconde lecture, après le lancement 43278548445 : le tableau du test d'Ishii range chaque étude sur un bloc de lignes, et les renvois numérotés du tableau de la règle d'Ottawa ne correspondent pas aux études nommées. Lecture par bloc pour le premier, attribution par le nom écrit pour le second.",
+   "lectures": [
+    {
+     "source": "39014328",
+     "tableaux": [
+      "Table 2"
+     ],
+     "heritage": "bloc",
+     "lignes_entete": 3
+    },
+    {
+     "source": "36151550",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "40469386",
+     "tableaux": [
+      "Table 2",
+      "Table 4"
+     ]
+    }
+   ]
   }
  ]
 }

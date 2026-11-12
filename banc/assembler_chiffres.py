@@ -24,6 +24,7 @@ import json
 import re
 import sys
 import time
+import unicodedata
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -109,6 +110,17 @@ def _cellule(element, cites):
     return _propre("".join(morceaux))
 
 
+def _sans_accents(t):
+    t = unicodedata.normalize("NFKD", (t or "").replace("ı", "i").replace("ø", "o").replace("ł", "l"))
+    return "".join(c for c in t if not unicodedata.combining(c)).lower()
+
+
+def _nomme(ligne, ref):
+    """Vrai si le début de la ligne écrit le nom du premier auteur de la référence."""
+    return len(ref["auteur"]) > 1 and re.search(
+        rf"\b{re.escape(_sans_accents(ref['auteur']))}\b", _sans_accents(" ".join(ligne[:2]))) is not None
+
+
 def _cites_par_nom(ligne, refs):
     """Études citées par « Auteur année » dans les premières cellules, quand il n'y a pas de renvoi."""
     debut = " ".join(ligne[:2])
@@ -133,6 +145,12 @@ def tableaux(racine):
 
     Une ligne sans citation hérite de la précédente quand elle en est la suite : première cellule
     vide, ou moins de cellules que le tableau n'a de colonnes (cellule fusionnée sur plusieurs lignes).
+    « cites_bloc » applique un héritage plus large, pour les tableaux où une étude occupe un bloc de
+    lignes : toute ligne sans citation appartient à la dernière étude citée.
+
+    Un renvoi numéroté peut être faux dans le fichier source. Quand la ligne écrit un nom d'auteur
+    et une année qui désignent une autre référence que le renvoi, c'est le nom écrit qui est suivi.
+    Quand ni le renvoi ni le nom ne concordent, la ligne est marquée « douteux ».
     """
     refs = references(racine)
     resultat = []
@@ -152,16 +170,29 @@ def tableaux(racine):
             if any(cellules):
                 lignes.append({"cellules": cellules, "cites": list(dict.fromkeys(cites)), "herite": False})
         colonnes = max((len(l["cellules"]) for l in lignes), default=0)
-        courant = []
+        courant, bloc = [], []
         for l in lignes:
+            l["douteux"] = False
+            par_nom = _cites_par_nom(l["cellules"], refs)
+            connus = [i for i in l["cites"] if i in refs and refs[i]["auteur"]]
             if not l["cites"]:
-                l["cites"] = _cites_par_nom(l["cellules"], refs)
-            if l["cites"]:
-                courant = l["cites"]
-            elif courant and (not l["cellules"][0] or len(l["cellules"]) < colonnes):
-                l["cites"], l["herite"] = courant, True
+                l["cites"] = par_nom
+            elif connus and not any(_nomme(l["cellules"], refs[i]) for i in connus):
+                if par_nom:
+                    l["cites"] = par_nom               # le nom et l'année écrits l'emportent sur le renvoi
+                else:
+                    l["douteux"] = True
+            if l["douteux"]:
+                courant, bloc, l["cites_bloc"] = [], [], []    # les lignes suivantes n'en héritent pas
+            elif l["cites"]:
+                courant = bloc = l["cites"]
+                l["cites_bloc"] = l["cites"]
             else:
-                courant = []
+                l["cites_bloc"] = bloc
+                if courant and (not l["cellules"][0] or len(l["cellules"]) < colonnes):
+                    l["cites"], l["herite"] = courant, True
+                else:
+                    courant = []
         resultat.append({"label": label or f"Tableau {len(resultat) + 1}", "caption": caption,
                          "lignes": lignes, "colonnes": colonnes})
     return resultat, refs
@@ -178,9 +209,13 @@ def meme_libelle(a, b):
     return forme(a) == forme(b)
 
 
-def lignes_d_une_etude(tableau, idents):
-    """Lignes d'un tableau qui citent l'une des références « idents » (ou en héritent)."""
-    return [l for l in tableau["lignes"] if set(l["cites"]) & set(idents)]
+def lignes_d_une_etude(tableau, idents, bloc=False):
+    """Lignes d'un tableau qui citent l'une des références « idents » (ou en héritent).
+
+    Une ligne dont l'attribution est douteuse n'est jamais retenue.
+    """
+    cle = "cites_bloc" if bloc else "cites"
+    return [l for l in tableau["lignes"] if set(l[cle]) & set(idents) and not l["douteux"]]
 
 
 # --- Réseau -----------------------------------------------------------------------------------
@@ -286,6 +321,8 @@ def reperer(demande):
             journal(entete + f"\n    {len(tabs)} tableaux ; {len(refs)} références, dont "
                     f"{sum(1 for r in refs.values() if r['pmid'])} avec PMID et "
                     f"{sum(1 for r in refs.values() if r['doi'])} avec DOI")
+            for t in tabs:
+                t["lignes"] = [l for l in t["lignes"] if not l["douteux"]]
             retenus = [t for t in tabs if len({i for l in t["lignes"] for i in l["cites"] if i in refs}) >= 2
                        and score_donnees(t, genre)[0] >= 2 and score_donnees(t, genre)[1] >= 10]
             etudes = resoudre(refs, sorted({i for t in retenus for l in t["lignes"] for i in l["cites"] if i in refs}))
@@ -347,26 +384,30 @@ def lire(demande):
             types = ",".join(x for x in f["types"] if x not in ("research-article", "Journal Article"))[:60]
             journal(f"  étude {f['pmid']} | {f['pmcid']} | {f['licence']} | {f['revue']} {f['annee']} | {f['doi']} | "
                     f"[{refs[i]['auteur']} {refs[i]['annee']}] {types} | {f['titre'][:90]}")
+        bloc = d.get("heritage") == "bloc"
         for t in tabs:
-            lignes = lignes_d_une_etude(t, idents)
+            lignes = lignes_d_une_etude(t, idents, bloc)
+            douteuses = sum(1 for l in t["lignes"] if l["douteux"])
             if not lignes:
                 continue
-            journal(f"--- {t['label']} — {t['caption'][:200]}")
+            journal(f"--- {t['label']} — {t['caption'][:200]}" + (f" — {douteuses} ligne(s) à l'attribution douteuse, écartée(s)" if douteuses else ""))
             for l in t["lignes"][:int(d.get("lignes_entete", 2))]:
                 if l not in lignes:
                     journal("  en-tête | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
             for l in lignes:
-                qui = ",".join(dict.fromkeys(fiches[i]["pmid"] for i in l["cites"] if i in idents))
-                journal(f"  [{qui}{' ↳' if l['herite'] else ''}] | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
+                cites = l["cites_bloc"] if bloc else l["cites"]
+                qui = ",".join(dict.fromkeys(fiches[i]["pmid"] for i in cites if i in idents))
+                suite = " ↳" if l["herite"] or not l["cites"] else ""
+                journal(f"  [{qui}{suite}] | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
         time.sleep(0.3)
     return 0
 
 
 # --- Mode « verifier » ------------------------------------------------------------------------
 
-def texte_des_lignes(tableau_ou_liste, idents):
+def texte_des_lignes(tableau_ou_liste, idents, bloc=False):
     tabs = tableau_ou_liste if isinstance(tableau_ou_liste, list) else [tableau_ou_liste]
-    return " ; ".join(" | ".join(l["cellules"]) for t in tabs for l in lignes_d_une_etude(t, idents))
+    return " ; ".join(" | ".join(l["cellules"]) for t in tabs for l in lignes_d_une_etude(t, idents, bloc))
 
 
 def verifier(_demande=None):
@@ -399,7 +440,7 @@ def verifier(_demande=None):
         idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])
                   or (len(_titre_plat(r["titre"])) >= 25 and difflib.SequenceMatcher(
                       None, _titre_plat(r["titre"]), _titre_plat(a["titre"])).ratio() >= 0.92)}
-        ligne_source = texte_des_lignes(voulus, idents)
+        ligne_source = texte_des_lignes(voulus, idents, s.get("lignes") == "bloc")
         if not ligne_source:
             journal("  recopie : AUCUNE LIGNE du tableau source ne cite cette étude")
         xml, _ = acces.texte_integral_xml(a["pmcid"])

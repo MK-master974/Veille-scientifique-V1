@@ -193,6 +193,33 @@ def test_une_reference_sans_identifiant_garde_son_doi_ecrit_et_son_titre():
     assert [l["cites"] for l in tabs[0]["lignes"]] == [[], ["a"], []]
 
 
+def test_un_renvoi_faux_est_corrige_par_le_nom_ecrit_ou_ecarte():
+    xml = """<article><body><table-wrap><label>Table 2</label><table><tbody>
+    <tr><td>Study</td><td>Sensitivity</td><td>Specificity</td></tr>
+    <tr><td>Gürpınar 2019 <xref ref-type="bibr" rid="r1">[1]</xref></td><td>0.92</td><td>0.94</td></tr>
+    <tr><td>Wang 2013 <xref ref-type="bibr" rid="r1">[1]</xref></td><td>0.96</td><td>0.47</td></tr>
+    <tr><td>Men</td><td>0.80</td><td>0.70</td></tr>
+    <tr><td>Can 2008 <xref ref-type="bibr" rid="r2">[2]</xref></td><td>1.00</td><td>0.21</td></tr>
+    <tr><td>Women</td><td>0.33</td><td>0.44</td></tr>
+    </tbody></table></table-wrap></body><back><ref-list>
+    <ref id="r1"><element-citation><name><surname>Gurpinar</surname></name><year>2019</year></element-citation></ref>
+    <ref id="r2"><element-citation><name><surname>Wang</surname></name><year>2013</year></element-citation></ref>
+    </ref-list></back></article>"""
+    tabs, _ = assembler.tableaux(ET.fromstring(xml))
+    lignes = tabs[0]["lignes"]
+    # Le renvoi [1] de « Wang 2013 » est faux : le nom et l'année écrits désignent la référence r2.
+    assert lignes[1]["cites"] == ["r1"] and lignes[2]["cites"] == ["r2"]
+    # « Can 2008 » renvoie à Wang, et aucune référence ne s'appelle Can : attribution douteuse, écartée.
+    assert lignes[4]["douteux"] is True
+    assert "1.00" not in assembler.texte_des_lignes(tabs, {"r2"})
+    assert "0.96" in assembler.texte_des_lignes(tabs, {"r2"})
+    # Héritage par bloc : la ligne « Men » appartient à la dernière étude citée, seulement sur demande.
+    assert "0.80" not in assembler.texte_des_lignes(tabs, {"r2"})
+    assert "0.80" in assembler.texte_des_lignes(tabs, {"r2"}, bloc=True)
+    # La ligne qui suit une attribution douteuse n'appartient à personne, même par bloc.
+    assert "0.33" not in assembler.texte_des_lignes(tabs, {"r1", "r2"}, bloc=True)
+
+
 def test_la_demande_du_depot_est_lisible():
     demandes = json.loads((RACINE / "banc" / "candidats_chiffres.json").read_text(encoding="utf-8"))["demandes"]
     assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier")
