@@ -182,6 +182,41 @@ def test_dans_l_extraction_une_borne_se_retrouve_avec_son_effet():
     assert etats == {"douleur": "retrouve", "douleur-ic1": "ailleurs", "douleur-ic2": "ailleurs", "n": "retrouve"}
 
 
+# --- Corrections de l'instrument après la première mesure --------------------------------------
+
+@pytest.mark.parametrize("nature, corrige, texte, attendu", [
+    # a. Un zéro final n'est pas un arrondi.
+    ("ic_bas", "0.70", "−0,7 à −0,2", True),
+    ("specificite", "0.80", "spécificité 0,8", True),
+    ("effet", "0.26", "SMD 0,3", False),
+    # b. Un effectif ou un nombre d'études écrit en toutes lettres.
+    ("nombre_etudes", "8", "Huit études et 375 patients.", True),
+    ("nombre_etudes", "11", "Eleven RCTs were included", True),
+    ("effet", "8", "Huit études", False),
+    # c. Le niveau de confiance n'est pas une donnée.
+    ("sensibilite", "0.95", "0,37 ; IC à 95 % [0,30–0,44]", False),
+    ("sensibilite", "0.95", "Sensitivity (95% CI) 0.59 (95%CI 0.47-0.71), 95 % confidence interval", False),
+    ("sensibilite", "0.95", "sensibilité 95 %", True),
+    ("sensibilite", "0.95", "0,95 (IC à 95 % : 0,88 à 0,98)", True),
+])
+def test_corrections_de_l_instrument(nature, corrige, texte, attendu):
+    assert chiffres.present(chiffre(nature, corrige), texte) is attendu
+
+
+def test_une_valeur_ponctuelle_se_cherche_dans_la_valeur_d_un_resultat():
+    cas = {"chiffres": [{**chiffre("effet", "0.06", "womac"), "groupe": "womac"},
+                        {**chiffre("ic_bas", "0.17", "womac-ic1"), "groupe": "womac"},
+                        chiffre("sensibilite", "0.95", "se")]}
+    # « 0,06 » n'apparaît que comme borne d'un autre résultat, « 95 » que comme niveau de confiance :
+    # ni l'effet ni la sensibilité ne sont retrouvés.
+    e = extraction(None, [("WOMAC douleur", "−0,04", "IC à 95 % : −0,13 à 0,06"), ("WOMAC total", None, None)])
+    assert {x["id"]: x["etat"] for x in chiffres.mesurer_cas(cas, e)} == {
+        "womac": "ailleurs", "womac-ic1": "absent", "se": "absent"}
+    e = extraction(None, [("WOMAC total", "−0,06", "IC à 95 % : −0,17 à 0,05"), ("Sensibilité", "95 %", None)])
+    assert {x["id"]: x["etat"] for x in chiffres.mesurer_cas(cas, e)} == {
+        "womac": "retrouve", "womac-ic1": "retrouve", "se": "retrouve"}
+
+
 # --- Lecture du tableau d'une revue source ----------------------------------------------------
 
 REVUE = """<article><body><sec><title>Results</title><p>Texte fabriqué.</p>
@@ -265,4 +300,4 @@ def test_un_renvoi_faux_est_corrige_par_le_nom_ecrit_ou_ecarte():
 
 def test_la_demande_du_depot_est_lisible():
     demandes = json.loads((RACINE / "banc" / "candidats_chiffres.json").read_text(encoding="utf-8"))["demandes"]
-    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier")
+    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier", "recalculer")

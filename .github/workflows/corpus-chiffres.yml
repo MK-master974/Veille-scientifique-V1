@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: corpus-chiffres
@@ -35,6 +36,25 @@ jobs:
           cache: pip
 
       - run: pip install -r requirements.txt
+
+      # Mode « recalculer » : les extractions déjà produites par un lancement du banc sont relues
+      # dans son artefact. Aucun appel à l'IA.
+      - name: Lire le lancement à recalculer, s'il y en a un
+        id: demande
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          d = json.load(open("banc/candidats_chiffres.json", encoding="utf-8"))["demandes"][-1]
+          print("lancement=" + (str(d.get("lancement", "")) if d.get("mode") == "recalculer" else ""))
+          PY
+
+      - uses: actions/download-artifact@v4
+        if: steps.demande.outputs.lancement != ''
+        with:
+          name: resultats-banc
+          path: resultats-banc
+          run-id: ${{ steps.demande.outputs.lancement }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Traiter la dernière demande de banc/candidats_chiffres.json
         run: python banc/assembler_chiffres.py

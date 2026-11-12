@@ -5,7 +5,7 @@ d'une revue en accès libre ont déjà relevés dans un tableau. Ce script lit c
 source, dans Europe PMC. Aucune IA n'est appelée : aucun coût. Aucun texte d'article n'est gardé ;
 seules des lignes de tableaux de revues sous licence CC BY ou CC0 sont écrites dans le journal.
 
-Trois modes, choisis par la dernière demande de banc/candidats_chiffres.json :
+Quatre modes, choisis par la dernière demande de banc/candidats_chiffres.json :
 - « reperer » : pour chaque revue candidate, sa licence, ses tableaux, les études que chaque
   tableau cite, et la licence de ces études. Sert à choisir les revues sources et les articles.
 - « lire » : les lignes d'un tableau d'une revue source qui portent sur les études choisies.
@@ -15,6 +15,10 @@ Trois modes, choisis par la dernière demande de banc/candidats_chiffres.json :
   source (recopie) ; présence du chiffre dans l'article lui-même, à côté des chiffres de son
   groupe (règle de voisinage de banc/chiffres.py). Un chiffre absent de l'article est écarté du
   score avant toute mesure (VS-D34).
+
+- « recalculer » : après une vérification, recalcule le score des chiffres relevés à partir des
+  extractions déjà produites par un lancement du banc (son artefact), avec les règles et le corpus
+  du moment. Aucun nouvel appel à l'IA. Sert quand une règle de comparaison a été corrigée.
 
 Usage : python banc/assembler_chiffres.py
 """
@@ -469,16 +473,52 @@ def verifier(_demande=None):
         journal(f"  {k} : {v}")
     journal("\n===== ÉTAT « dans_l_article » DE CHAQUE CHIFFRE =====")
     journal(json.dumps(etats, ensure_ascii=False))
+    return etats if _demande and _demande.get("mode") == "recalculer" else 0
+
+
+# --- Mode « recalculer » ----------------------------------------------------------------------
+
+def recalculer(demande):
+    """Vérifie le corpus, puis recalcule le score sur les extractions d'un lancement déjà fait."""
+    etats = verifier(demande)
+    if not isinstance(etats, dict):
+        return 1
+    chemin = RACINE / demande.get("resultats", "resultats-banc/resultats-extraction.json")
+    if not chemin.exists():
+        journal(f"\nARRÊT : résultats introuvables ({chemin.name}). L'artefact du lancement n'a pas été récupéré.")
+        return 1
+    extractions = json.loads(chemin.read_text(encoding="utf-8"))["extractions"]
+    cas = chiffres.cas_du_corpus(chiffres.charger())
+    for c in cas:
+        for x in c["chiffres"]:
+            x["dans_l_article"] = etats.get(f"{c['pmid']}:{x['id']}")
+    journal(f"\n===== SCORE RECALCULÉ sur les extractions du lancement {demande.get('lancement')} =====")
+    for niveau, nom in (("resume", "résumé seul"), ("integral", "texte intégral")):
+        lignes_par_cas = {c["pmid"]: chiffres.mesurer_cas(c, (extractions.get(f"{niveau}:pm{c['pmid']}") or {}).get("extraction"))
+                          for c in cas}
+        toutes = [x for lignes in lignes_par_cas.values() for x in lignes]
+        journal(f"\n--- {nom} : " + json.dumps(chiffres.score(toutes), ensure_ascii=False))
+        for t in sorted({c["type_etude"] for c in cas}):
+            s = chiffres.score([x for c in cas if c["type_etude"] == t for x in lignes_par_cas[c["pmid"]]])
+            journal(f"    {t} : {s['retrouves']} sur {s['confirmes_dans_l_article']} ({s['part']}), "
+                    f"{s['ecartes_car_absents_de_l_article']} écarté(s)")
+        if niveau == "integral":
+            for c in cas:
+                for x in lignes_par_cas[c["pmid"]]:
+                    if x["etat"] != "retrouve" or x["dans_l_article"] is not True:
+                        journal(f"    PMID {c['pmid']} | {x['id']} | {x['nature']} | {x['valeur']} | {x['etat']} | "
+                                f"dans l'article : {x['dans_l_article']}")
     return 0
 
 
 def main():
     demande = json.loads(DEMANDES.read_text(encoding="utf-8"))["demandes"][-1]
     journal(f"Demande du {demande.get('date')} : mode « {demande.get('mode')} » — {demande.get('raison', '')}")
-    modes = {"reperer": reperer, "lire": lire, "verifier": verifier}
+    modes = {"reperer": reperer, "lire": lire, "verifier": verifier, "recalculer": recalculer}
     if demande.get("mode") not in modes:
         raise SystemExit(f"Mode inconnu : {demande.get('mode')!r} (attendu : {', '.join(modes)})")
-    return modes[demande["mode"]](demande)
+    resultat = modes[demande["mode"]](demande)
+    return resultat if isinstance(resultat, int) else 0
 
 
 if __name__ == "__main__":

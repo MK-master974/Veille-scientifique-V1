@@ -30,12 +30,28 @@ sous la courbe d'un même test.
   son effet.
 Un chiffre sans groupe (effectif, nombre d'études) est cherché dans tout l'article, et dans le
 champ « effectif » de l'extraction.
+
+Corrections de l'instrument après la première mesure (lancement 43281503491, 12 novembre 2026).
+L'examen des chiffres non retrouvés a montré quatre défauts de ces règles, et non de l'extraction.
+Ils sont corrigés ici ; le score obtenu avec les règles d'origine reste publié à côté du score
+recalculé (banc/resultats/2026-11-12-chiffres-releves.md).
+a. Un zéro final n'est pas un arrondi : « 0,7 » est égal à « 0,70 ».
+b. Un effectif ou un nombre d'études écrit en toutes lettres est lu (« Huit études »).
+c. Le niveau de confiance n'est pas une donnée : le « 95 » de « IC à 95 % » n'est plus lu. Il
+   faisait retrouver par hasard toute sensibilité ou spécificité de 0,95.
+d. Dans l'extraction, une valeur ponctuelle (effet, sensibilité, spécificité, aire sous la courbe)
+   se cherche dans le champ « valeur » d'un résultat, plus dans son critère ni dans son intervalle :
+   un effet de 0,06 n'est plus « retrouvé » dans la borne 0,06 d'un autre résultat.
 """
 import json
 import re
+import sys
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RACINE))
+
+from pipeline.controle import _nombres_en_lettres  # noqa: E402
 CORPUS = RACINE / "banc" / "corpus" / "chiffres_releves.json"
 
 # Seuil fixé par le porteur du projet le 12 novembre 2026 (VS-D34), sur le texte intégral.
@@ -56,6 +72,7 @@ NATURES = {
     "ic_haut": ("resultats", False),
 }
 TYPES_ETUDE = ("etude_diagnostique", "meta_analyse", "revue_systematique")
+BORNES = ("ic_bas", "ic_haut")
 FENETRE = 300          # distance maximale, en caractères, entre deux chiffres d'un même groupe dans l'article
 
 _MOINS = "-−–‐‑‒"
@@ -95,6 +112,22 @@ def lectures(brut):
     return resultat
 
 
+# Le niveau de confiance d'un intervalle (« 95% CI », « IC à 95 % ») n'est pas une donnée.
+_NIVEAU = re.compile(
+    r"\b(?:IC|CI|CrI|ICr)\s*(?:à|a|de|of|at)?\s*(?P<apres>9\d(?:[.,]\d)?)\s*%"
+    r"|(?P<avant>9\d(?:[.,]\d)?)\s*%\s*(?:de\s+|d['’]\s*)?(?=(?:CI|IC|CrI|C\.I\.|confidence|credible|intervalles?|intervals?)\b)",
+    re.I)
+
+
+def _sans_niveau_de_confiance(texte):
+    """Remplace par des espaces le nombre d'un niveau de confiance, sans déplacer aucun caractère."""
+    def blanchir(m):
+        nom = "apres" if m.group("apres") else "avant"
+        debut, fin = m.start(nom) - m.start(), m.end(nom) - m.start()
+        return m.group(0)[:debut] + " " * (fin - debut) + m.group(0)[fin:]
+    return _NIVEAU.sub(blanchir, texte)
+
+
 _COLLES = re.compile(r"(\d\.\d+),(?=[" + _MOINS + r"]?\d+\.\d)")
 
 
@@ -103,8 +136,9 @@ def nombres_places(texte):
 
     Deux nombres à point décimal séparés par une virgule sans espace (« 36.91,56.43 ») sont lus tous
     les deux : la virgule est remplacée par un point-virgule, ce qui ne déplace aucun caractère.
+    Le niveau de confiance d'un intervalle (« IC à 95 % ») n'est pas lu.
     """
-    texte = _COLLES.sub(r"\1;", texte or "")
+    texte = _sans_niveau_de_confiance(_COLLES.sub(r"\1;", texte or ""))
     trouves = []
     for motif in (_NOMBRE, _MILLIERS_ESPACES):
         for m in motif.finditer(texte):
@@ -126,6 +160,8 @@ def _significatifs(valeur, decimales):
 def _egaux(a, dec_a, c, dec_c):
     """Vrai si le nombre « a » correspond au chiffre « c » du corrigé, à l'arrondi près."""
     tolerance = 0.5 * 10 ** (-dec_c) + 1e-9
+    if abs(a - c) <= 1e-9:
+        return True                                 # même nombre : un zéro final n'est pas un arrondi
     if dec_a >= dec_c:
         return abs(a - c) <= tolerance              # le nombre est aussi précis que le corrigé, ou plus
     # Le nombre est moins précis que le corrigé : une seule décimale de moins, deux chiffres au moins.
@@ -166,9 +202,15 @@ def positions(chiffre, places):
     return [pos for pos, valeur, decimales in places if correspond((valeur, decimales), cible, proportion)]
 
 
+def _en_lettres(chiffre, texte):
+    """Vrai si un effectif ou un nombre d'études entier est écrit en toutes lettres dans le texte."""
+    valeur, decimales = valeur_corrige(chiffre)
+    return NATURES[chiffre["nature"]][0] == "effectif" and decimales == 0 and repr(valeur) in _nombres_en_lettres(texte)
+
+
 def present(chiffre, texte):
     """Vrai si le chiffre du corrigé figure dans un texte, selon les règles de comparaison."""
-    return bool(positions(chiffre, nombres_places(texte)))
+    return bool(positions(chiffre, nombres_places(texte))) or _en_lettres(chiffre, texte)
 
 
 def confirmes_dans_un_texte(chiffres_du_cas, texte, fenetre=FENETRE):
@@ -183,7 +225,7 @@ def confirmes_dans_un_texte(chiffres_du_cas, texte, fenetre=FENETRE):
     for x in chiffres_du_cas:
         voisins = [y for y in chiffres_du_cas if x.get("groupe") and y.get("groupe") == x["groupe"] and y is not x]
         if not voisins:
-            etats[x["id"]] = bool(ou[x["id"]])
+            etats[x["id"]] = bool(ou[x["id"]]) or _en_lettres(x, texte)
         else:
             etats[x["id"]] = any(abs(a - b) <= fenetre for a in ou[x["id"]] for y in voisins for b in ou[y["id"]])
     return etats
@@ -248,6 +290,12 @@ def textes_des_resultats(e):
             for r in (e or {}).get("resultats", [])]
 
 
+def valeurs_des_resultats(e):
+    """Pour chaque résultat extrait : sa valeur seule, et sa valeur avec son intervalle."""
+    return [(str(r.get("valeur") or ""), f"{r.get('valeur') or ''} ; {r.get('intervalle') or ''}")
+            for r in (e or {}).get("resultats", [])]
+
+
 def zones_extraction(e):
     """Texte des deux zones d'une extraction où un chiffre du corrigé peut se trouver."""
     if e is None:
@@ -260,23 +308,30 @@ def zones_extraction(e):
 def mesurer_cas(cas, e):
     """Compare l'extraction d'un article aux chiffres de son corrigé.
 
-    Renvoie une ligne par chiffre : « retrouve » (dans la zone attendue), « ailleurs » (dans l'autre
-    zone de l'extraction), ou « absent ». Seul « retrouve » compte dans le score.
+    Renvoie une ligne par chiffre : « retrouve » (à l'endroit attendu), « ailleurs » (à un autre
+    endroit de l'extraction), ou « absent ». Seul « retrouve » compte dans le score.
+    - effectif, nombre d'études : dans les champs « effectif », « population » ou « question » ;
+    - valeur ponctuelle (effet, sensibilité, spécificité, aire sous la courbe…) : dans le champ
+      « valeur » d'un résultat ;
+    - borne d'intervalle : dans la valeur ou l'intervalle d'un résultat dont la valeur porte son effet.
     """
     zones = zones_extraction(e)
-    resultats = textes_des_resultats(e)
+    valeurs = valeurs_des_resultats(e)
     effets = {x["groupe"]: x for x in cas["chiffres"] if x["nature"] == "effet" and x.get("groupe")}
+    partout = zones["effectif"] + " ; " + zones["resultats"]
     lignes = []
     for x in cas["chiffres"]:
         attendue = NATURES[x["nature"]][0]
         autre = "resultats" if attendue == "effectif" else "effectif"
-        effet = effets.get(x.get("groupe")) if x["nature"] in ("ic_bas", "ic_haut") else None
+        effet = effets.get(x.get("groupe")) if x["nature"] in BORNES else None
         if e is None:
             etat = "sans_extraction"
-        elif effet is not None:
-            # Une borne d'intervalle : dans un résultat qui porte aussi son effet.
-            etat = "retrouve" if any(present(x, r) and present(effet, r) for r in resultats) else (
-                "ailleurs" if present(x, zones["resultats"]) or present(x, zones["effectif"]) else "absent")
+        elif attendue == "resultats":
+            if effet is not None:
+                trouve = any(present(effet, v) and present(x, vi) for v, vi in valeurs)
+            else:
+                trouve = any(present(x, v) for v, _ in valeurs)
+            etat = "retrouve" if trouve else ("ailleurs" if present(x, partout) else "absent")
         elif present(x, zones[attendue]):
             etat = "retrouve"
         elif present(x, zones[autre]):
