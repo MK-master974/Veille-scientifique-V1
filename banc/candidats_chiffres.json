@@ -1,0 +1,234 @@
+{
+ "objet": "Demandes au workflow « Corpus, chiffres relevés » (banc/assembler_chiffres.py). Modifier ce fichier sur une branche claude/** lance la dernière demande. Aucune IA n'est appelée : aucun coût. Modes : « reperer » (revues candidates, leurs tableaux, licence des études citées), « lire » (lignes d'un tableau pour les études choisies), « verifier » (licences, recopie et présence dans l'article de chaque chiffre du corpus), « recalculer » (vérification, puis score recalculé sur les extractions d'un lancement du banc déjà fait, sans nouvel appel à l'IA).",
+ "demandes": [
+  {
+   "date": "2026-11-12",
+   "mode": "reperer",
+   "raison": "Renforcement du corpus (VS-D32) : repérer, parmi les revues candidates trouvées dans PubMed, celles dont les tableaux portent des chiffres par étude et dont les études citées sont sous licence CC BY ou CC0.",
+   "minimum": 3,
+   "diagnostic": [
+    "37444127",
+    "39014328",
+    "38429720",
+    "41001198",
+    "41680685",
+    "33827512",
+    "36151550",
+    "35511910",
+    "35150292",
+    "36510299",
+    "36513380",
+    "37919746",
+    "36963797",
+    "39478451",
+    "39367147",
+    "42523683",
+    "41484977",
+    "41147849",
+    "41088368"
+   ],
+   "revue": [
+    "42947838",
+    "40469386",
+    "42491100",
+    "42200899",
+    "40454205",
+    "41473657",
+    "35862387",
+    "42643227",
+    "41702669",
+    "43000341",
+    "42973578",
+    "42967503",
+    "42964082",
+    "42958143",
+    "42948606",
+    "42935759",
+    "42774057",
+    "42755580",
+    "42558522",
+    "42131597",
+    "41809491",
+    "39835199",
+    "38034391",
+    "37799468",
+    "35873210",
+    "35186999",
+    "42909756",
+    "42816732",
+    "41545877",
+    "41316496",
+    "41250143",
+    "40616021",
+    "40517337",
+    "39633499",
+    "39026375",
+    "38773659",
+    "38753045",
+    "38040927",
+    "37777748",
+    "37580630",
+    "37574512",
+    "36625965",
+    "35305686",
+    "42452464",
+    "42355856",
+    "42200884",
+    "42043079",
+    "41899381",
+    "40943700",
+    "40142212",
+    "39518755",
+    "39120165",
+    "38921636",
+    "38786366",
+    "38127914",
+    "37987490",
+    "37959210",
+    "37917715",
+    "37053257",
+    "36981477",
+    "36902659",
+    "34067458",
+    "33669679"
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "lire",
+   "raison": "Lire, dans les revues sources retenues après le repérage (lancement 43276480183), les lignes de tableaux qui portent sur les études sous licence CC BY ou CC0, pour écrire les corrigés.",
+   "lectures": [
+    {
+     "source": "37444127",
+     "tableaux": [
+      "Table 3",
+      "Table 4"
+     ]
+    },
+    {
+     "source": "39014328",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "36151550",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "35150292",
+     "tableaux": [
+      "Table 2"
+     ]
+    },
+    {
+     "source": "39367147"
+    },
+    {
+     "source": "42643227",
+     "tableaux": [
+      "Table 1",
+      "Table 2",
+      "Table 4",
+      "Table 5"
+     ]
+    },
+    {
+     "source": "39026375",
+     "tableaux": [
+      "Table 1",
+      "Table 7"
+     ]
+    },
+    {
+     "source": "40943700",
+     "tableaux": [
+      "Table 1",
+      "Table 3"
+     ]
+    },
+    {
+     "source": "37959210",
+     "tableaux": [
+      "Table 3"
+     ]
+    },
+    {
+     "source": "38786366",
+     "tableaux": [
+      "Table 3"
+     ]
+    },
+    {
+     "source": "42947838",
+     "tableaux": [
+      "Table 2"
+     ]
+    },
+    {
+     "source": "42491100",
+     "tableaux": [
+      "Table 1",
+      "Table 3"
+     ]
+    },
+    {
+     "source": "40469386",
+     "tableaux": [
+      "Table 2",
+      "Table 4"
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "lire",
+   "raison": "Seconde lecture, après le lancement 43278548445 : le tableau du test d'Ishii range chaque étude sur un bloc de lignes, et les renvois numérotés du tableau de la règle d'Ottawa ne correspondent pas aux études nommées. Lecture par bloc pour le premier, attribution par le nom écrit pour le second.",
+   "lectures": [
+    {
+     "source": "39014328",
+     "tableaux": [
+      "Table 2"
+     ],
+     "heritage": "bloc",
+     "lignes_entete": 3
+    },
+    {
+     "source": "36151550",
+     "tableaux": [
+      "Table 1",
+      "Table 2"
+     ]
+    },
+    {
+     "source": "40469386",
+     "tableaux": [
+      "Table 2",
+      "Table 4"
+     ]
+    }
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "verifier",
+   "raison": "Corpus des chiffres relevés assemblé : 20 articles, 9 revues sources. Contrôler, avant toute mesure, les licences, la recopie de chaque chiffre depuis la ligne du tableau source, et sa présence dans l'article (VS-D34)."
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "verifier",
+   "raison": "Seconde vérification, après le lancement 43279876823 : licences conformes pour les 20 articles, recopie juste, mais les 161 chiffres étaient tous retrouvés dans leur article, ce qui ne prouvait rien. La règle de voisinage est ajoutée avant toute mesure : un chiffre d'un groupe n'est confirmé qu'à côté d'un autre chiffre de son groupe."
+  },
+  {
+   "date": "2026-11-12",
+   "mode": "recalculer",
+   "lancement": "43281503491",
+   "raison": "Première mesure faite (lancement 43281503491, 0,90 $) : 150 chiffres retrouvés sur 161 à partir du texte intégral. L'examen des 11 autres montre quatre défauts des règles de comparaison (zéro final, nombres en lettres, niveau de confiance lu comme une donnée, valeur cherchée hors du champ « valeur »). Règles corrigées : vérifier de nouveau le corpus, puis recalculer le score sur les mêmes extractions. Aucun appel à l'IA."
+  }
+ ]
+}

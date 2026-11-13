@@ -1,0 +1,60 @@
+name: Corpus, chiffres relevés
+
+# Assemble et vérifie les corrigés « chiffres relevés » du corpus de référence (VS-D32) : pour une
+# étude diagnostique ou une méta-analyse, les chiffres déjà relevés par les auteurs d'une revue en
+# accès libre. La dernière demande de banc/candidats_chiffres.json dit quoi faire : repérer les
+# revues sources, lire les lignes d'un tableau, ou vérifier le corpus.
+# Aucune IA n'est appelée, aucune clé n'est utilisée : aucun coût. Rien n'est publié ni ajouté au
+# dépôt par ce workflow. Le journal est public : il ne contient que des lignes de tableaux de
+# revues sous licence CC BY ou CC0, et aucun texte d'article. La veille hebdomadaire n'est pas
+# concernée.
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths:
+      - "banc/candidats_chiffres.json"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: corpus-chiffres
+  cancel-in-progress: false
+
+jobs:
+  chiffres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Mode « recalculer » : les extractions déjà produites par un lancement du banc sont relues
+      # dans son artefact. Aucun appel à l'IA.
+      - name: Lire le lancement à recalculer, s'il y en a un
+        id: demande
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          d = json.load(open("banc/candidats_chiffres.json", encoding="utf-8"))["demandes"][-1]
+          print("lancement=" + (str(d.get("lancement", "")) if d.get("mode") == "recalculer" else ""))
+          PY
+
+      - uses: actions/download-artifact@v4
+        if: steps.demande.outputs.lancement != ''
+        with:
+          name: resultats-banc
+          path: resultats-banc
+          run-id: ${{ steps.demande.outputs.lancement }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Traiter la dernière demande de banc/candidats_chiffres.json
+        run: python banc/assembler_chiffres.py

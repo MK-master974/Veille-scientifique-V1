@@ -6,8 +6,13 @@ avec l'accord du porteur du projet. Une demande précise :
 - "budget_usd" : plafond du lancement, vérifié avant tout appel. Il ne peut pas dépasser le
   plafond fixé ici pour chaque banc, même si la demande en écrit un plus grand ;
 - pour le banc « extraction » : "s45" (nombre de publications réelles de 2026-S45 à extraire en
-  plus), "effort" (effort de raisonnement, à la place de celui de config.json) et "sans_ia"
-  (lecture des textes et estimation du coût seulement : aucun appel à l'IA, aucun coût).
+  plus), "effort" (effort de raisonnement, à la place de celui de config.json), "parties"
+  (« tout », « historique » : les cas mesurés depuis la séance 5, ou « chiffres » : les articles
+  dont le corrigé est fait de chiffres relevés) et "sans_ia" (lecture des textes et estimation du
+  coût seulement : aucun appel à l'IA, aucun coût).
+
+Plafonds fixes : 1 $ pour la chaîne actuelle ; 3 $ pour l'extraction, porté de 2 $ à 3 $ le
+12 novembre 2026 parce que le corpus grossit (VS-D33).
 
 Usage : python banc/lancer.py --sortie resultats-banc
 """
@@ -19,8 +24,9 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
 DEMANDES = RACINE / "banc" / "lancement.json"
-BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 2.0)}
+BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 3.0)}
 EFFORTS = ("minimal", "low", "medium", "high")
+PARTIES = ("tout", "historique", "chiffres")
 
 
 def commande(demande, sortie):
@@ -38,6 +44,10 @@ def commande(demande, sortie):
             if demande["effort"] not in EFFORTS:
                 raise SystemExit(f"Effort inconnu : {demande['effort']!r}")
             arguments += ["--effort", demande["effort"]]
+        if demande.get("parties"):
+            if demande["parties"] not in PARTIES:
+                raise SystemExit(f"Parties inconnues : {demande['parties']!r} (attendu : {', '.join(PARTIES)})")
+            arguments += ["--parties", demande["parties"]]
         if demande.get("sans_ia") is True:
             arguments.append("--sans-ia")
     return script, arguments

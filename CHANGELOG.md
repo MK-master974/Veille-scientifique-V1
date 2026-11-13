@@ -6,6 +6,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- Banc d'essai de l'extraction : il peut ne mesurer qu'une partie du corpus (« parties » : tout,
+  cas mesurés depuis la séance 5, ou chiffres relevés). Son plafond fixe passe de 2 $ à 3 $ par
+  lancement, parce que le corpus grossit (VS-D33).
+- `CLAUDE.md` renvoie aux fiches de méthode de `.claude/skills/` (VS-D35). Les huit règles
+  impératives et le format des messages n'y changent pas ; le détail du questionnaire de décision
+  est désormais dans la fiche `questionnaire-decision`.
 - Workflow « Banc d'essai » : il lance le banc demandé par la dernière ligne de
   `banc/lancement.json` (chaîne actuelle ou extraction), avec un plafond de coût fixe pour chaque
   banc. Une demande « sans IA » lit les textes et estime le coût sans rien dépenser.
@@ -25,6 +31,23 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
+  diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
+  déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la
+  main. `banc/chiffres.py` fixe les règles de comparaison avant toute mesure ;
+  `banc/assembler_chiffres.py` et le workflow « Corpus, chiffres relevés » lisent les tableaux
+  des revues et vérifient chaque chiffre, sans IA.
+- Banc d'essai de l'extraction : mesure des chiffres relevés, faite par le code et sans IA
+  lectrice. Seuil fixé avant la mesure : 80 % des chiffres retrouvés à partir du texte intégral
+  (VS-D34).
+- Mesure de l'extraction sur le corpus renforcé, deux lancements (2,57 $) : à partir du texte
+  intégral, 148 à 149 chiffres retrouvés sur 159, soit 93 % (études diagnostiques 58 sur 59,
+  méta-analyses 88 à 89 sur 98) ; à partir du résumé seul, 113. Le seuil de 80 % est atteint. Les
+  cas de la séance 5 ne changent pas : 24 réponses justes sur 32, seuil de 26 non atteint.
+  Résultats, défauts trouvés et limites dans `banc/resultats/2026-11-12-chiffres-releves.md`.
+- `.claude/skills/` : les sept fiches de méthode communes aux applications de l'écosystème,
+  copiées du dépôt de coordination (consigne CONS-2026-11-12-01, VS-D35). Seule leur partie
+  « Dans ce projet » est propre à Veille Santé.
 - Phase 1, séance 5 : extraction des données d'une publication, chaque donnée avec son
   emplacement (bloc « extraction » de la fiche v2). `pipeline/texte.py` lit un résumé ou un texte
   intégral en blocs repérés ; `pipeline/extraction.py` et la consigne `extraction.txt` extraient
