@@ -232,6 +232,15 @@ dix fiches (recoupement : [../banc/resultats/2026-11-13-appreciation.md](../banc
 | VS-D46 | Le retour du comité d'experts tient lieu de relecture des dix fiches. Il est inscrit comme avis déclaré, recoupé par la session sur 9 fiches avec les jugements du moteur et sur 6 avec PubMed. Ce n'est pas un corrigé : il ne rejoint le corpus de référence qu'après confirmation par un second lecteur humain | Validée le 13 novembre 2026 (questionnaire) |
 | VS-D47 | La page de relecture est refaite pour capter des désaccords précis (domaine contesté, jugement proposé, passage de l'article, nature de l'erreur, grille et plan d'étude proposés). Les avis sont des annotations avec l'identité du relecteur, séparées du corpus de référence. Aucun coût d'IA, aucun fichier du dépôt. Le partage de la page avec les membres du comité est fait par le porteur du projet | Validée le 13 novembre 2026 (questionnaire) |
 
+Décisions prises par questionnaire le 13 novembre 2026, après la première mesure de la séance 7
+(résultats : [../banc/resultats/2026-11-13-seance-7.md](../banc/resultats/2026-11-13-seance-7.md)) :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D48 | Second cycle de la séance 7, plan d'étude seul : corriger les définitions de « modèle de prédiction » et de « revue d'interventions », puis mesurer l'étape « plan d'étude » sans appréciation. Critère à écrire : développer ou ajuster un modèle sur les données de l'étude relève de PROBAST ; évaluer un test, un score ou un algorithme déjà défini contre une référence relève de QUADAS-2 ; une revue de groupes ou d'expositions sans intervention est descriptive. Mesure sur les 25 articles du corpus « qualité », les 10 publications de 2026-S45 et les études diagnostiques du corpus de chiffres relevés (7 de plus : 2 des 9 figurent déjà au corpus « qualité »), qui servent de contrôle hors du corpus où le défaut a été trouvé. Plafond de dépense : 0,25 $ sur les 0,41 $ restants | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D49 | Étude, sans IA et sans coût, de la récupération des protocoles et des suppléments pour les revues sous licence CC BY : nombre d'articles avec fichiers supplémentaires, numéros de protocole ou de registre cités dans le texte. Aucun changement du moteur ; la session dit ensuite si le développement en vaut la peine | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D50 | Seuil de réussite de la fourchette du jugement global au banc d'essai, fixé avant la mesure : au moins 70 % des articles dont le corrigé est dans la fourchette, la fourchette couvrant deux niveaux au plus. Mesure de la séance 7, premier cycle : 9 articles sur 25 (36 %), seuil non atteint | Validée le 13 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.

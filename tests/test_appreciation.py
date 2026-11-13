@@ -325,6 +325,9 @@ def test_lanceur_du_banc_appreciation():
     assert arguments == ["--sortie", "res", "--budget", "0.6", "--niveaux", "integral", "--sans-declarations"]
     with pytest.raises(SystemExit):
         lancer.commande({"banc": "appreciation", "niveaux": "partout"}, "res")
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.25, "s45": 10, "plan_seul": True,
+                                    "plan_externe": True}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.25", "--s45", "10", "--plan-seul", "--plan-externe"]
 
 
 # --- Le banc en entier, sources et IA simulées ------------------------------------------------
@@ -372,8 +375,11 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(banc.chaine, "recuperer_pubmed", lambda pmids, cfg: [
         {"id": f"pm{p}", "source": "pubmed", "pmid": p, "titre": f"Titre fabriqué {p}", "revue": "Revue fabriquée",
          "resume": PHRASE * 3, "types_publication": []} for p in pmids])
+    diagnostiques = ({c["pmid"] for c in banc.chiffres_banc.cas_du_corpus(banc.chiffres_banc.charger())
+                      if c["type_etude"] == "etude_diagnostique"} - {c["pmid"] for c in banc.charger_cas()})
     monkeypatch.setattr(banc.acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
-        {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids if p in lisibles or len(pmids) > 45}, 0))
+        {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids
+         if p in lisibles or p in diagnostiques or len(pmids) > 45}, 0))
     monkeypatch.setattr(banc.acces, "texte_integral_xml", lambda pmcid: (article, "ok"))
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)
@@ -406,6 +412,9 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert r["plan_etude"]["s45"]["grilles"] == {"aucune": 1, "quadas2": 1}
     # Fourchettes : l'IA simulée juge tout favorablement, la fourchette se réduit à un point.
     assert r["fourchettes"]["articles"] == len(lisibles) and r["fourchettes"]["largeur_moyenne"] == 1.0
+    # Seuil de VS-D50 : le corrigé dans la fourchette, qui couvre deux niveaux au plus (ici, la fourchette est un point).
+    seuil = list(r["fourchettes"]["seuil"].values())[0]
+    assert seuil["mesure"].endswith(f"sur {len(lisibles)}") and 0 <= seuil["part"] <= 1
     # Texte intégral sous licence ouverte : le passage est gardé. Résumé seul : il ne l'est pas.
     avec = [x for x in detail["corpus"] if "integral" in x][0]
     assert avec["integral"]["appreciation"]["domaines"][0]["source"]["passage"]
@@ -417,6 +426,19 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     court = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))["resume"]
     assert court["corpus"]["articles"] == 3 and court["corpus"]["avec_texte_integral"] == 3
     assert court["lecture"] == {"niveaux": "integral", "declarations_hors_du_corps": True}
+    # Plan d'étude seul, avec les études diagnostiques hors du corpus : aucune appréciation, aucune catégorie.
+    capsys.readouterr()
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--plan-seul", "--plan-externe", "--s45", "2"]) == 0
+    plan = json.loads((tmp_path / "resultats-plan.json").read_text(encoding="utf-8"))
+    pr = plan["resume"]
+    assert pr["lecture"]["plan_seul"] and set(pr["cout_usd"]) == {"total", "par_article"}
+    assert pr["plan_etude"]["corpus"]["articles"] == len(lisibles) and pr["plan_etude"]["corpus"]["grilles_perdues"] == []
+    hors = pr["plan_etude"]["hors_corpus_diagnostiques"]
+    assert hors["articles"] == 7 and hors["plan_attendu_retrouve"] == 7        # 7 études diagnostiques hors du corpus « qualité »
+    assert len(plan["s45"]) == 2
+    sortie_plan = capsys.readouterr().out
+    assert "PLAN D'ÉTUDE : HORS CORPUS" in sortie_plan
+    assert "CORPUS : JUGEMENT GLOBAL" not in sortie_plan and "CATÉGORIE D'IMPORTANCE" not in sortie_plan
     # Par défaut : texte intégral seul, aucune appréciation sur résumé, donc aucun coût à ce niveau.
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     seul = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))

@@ -66,7 +66,7 @@ pas du nombre de lecteurs.
 | `scripts/resume_travail.py` | Résumé chiffré d'un dossier de travail |
 | `demo/` | Quatre publications réelles et les réponses d'IA simulées |
 | `tests/` | Tests du moteur, de la chaîne complète, de l'extraction, des bancs d'essai et de l'assemblage du corpus, sans réseau |
-| `banc/` | Corpus de référence et bancs d'essai : chaîne actuelle (`banc.py`), extraction (`banc_extraction.py`), appréciation (`banc_appreciation.py`), lanceur (`lancer.py`), chiffres relevés (`chiffres.py`, `assembler_chiffres.py`) ; résultats dans `banc/resultats/` |
+| `banc/` | Corpus de référence et bancs d'essai : chaîne actuelle (`banc.py`), extraction (`banc_extraction.py`), appréciation (`banc_appreciation.py`), protocoles et suppléments (`supplements.py`), lanceur (`lancer.py`), chiffres relevés (`chiffres.py`, `assembler_chiffres.py`) ; résultats dans `banc/resultats/` |
 | `.github/workflows/corpus.yml` | Assemblage du corpus de référence, à la demande |
 | `.github/workflows/corpus-chiffres.yml` | Assemblage et vérification des corrigés « chiffres relevés », demandés par `banc/candidats_chiffres.json`, sans IA |
 | `.github/workflows/banc.yml` | Banc d'essai demandé par `banc/lancement.json` : appelle l'IA, a un coût, ne se lance que sur demande |

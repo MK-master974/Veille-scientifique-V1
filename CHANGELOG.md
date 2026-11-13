@@ -12,6 +12,15 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   le même texte qu'avant. Défaut trouvé à la première mesure de l'appréciation : pour 9 revues sur
   16, l'IA répondait que ces déclarations manquaient, alors qu'elle ne les avait pas reçues
   (VS-D40).
+- Définitions du plan d'étude : « modèle de prédiction » ne couvre plus que le développement ou
+  l'ajustement d'un modèle sur les données de l'étude ; évaluer un test, un score ou un algorithme
+  déjà défini contre une référence relève de l'étude diagnostique. « Revue d'interventions » ne
+  couvre plus les « expositions » : une revue de groupes ou de lieux est descriptive (VS-D48).
+  Non mesuré à la date de cette entrée.
+- Banc d'essai : le plan d'étude peut se mesurer seul (« plan_seul »), avec les études diagnostiques
+  du corpus de chiffres relevés comme contrôle hors corpus (« plan_externe »). Le seuil de la
+  fourchette du jugement global est fixé (VS-D50). Nouvelle étude sans IA des protocoles et des
+  suppléments (`banc/supplements.py`, VS-D49).
 - Contrôle du coût du banc d'appréciation : l'estimation, prudente, ne refuse plus un lancement
   qu'au-delà de 1,5 fois le plafond ; le coût réel déjà dépensé est vérifié avant chaque groupe de
   requêtes. L'estimation de la sortie est recalée sur les coûts réels.

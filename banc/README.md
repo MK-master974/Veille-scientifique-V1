@@ -157,6 +157,14 @@ et la catégorie d'importance.
 - **Plan d'étude** (séance 7) : une requête par article lu en entier. Pour le corpus, la grille du
   plan est comparée à celle des auteurs de la revue. Pour 2026-S45, la grille est choisie d'après
   le plan ; sans grille applicable, aucune appréciation n'est demandée.
+- **Étude des protocoles et des suppléments** (VS-D49) : `supplements.py`, sans IA et sans coût,
+  lancé par `"banc": "supplements"`. Pour chaque article du corpus « qualité » sous licence CC BY :
+  éléments de matériel supplémentaire déclarés, familles de numéros de protocole ou de registre
+  cités, mentions de fichiers supplémentaires et de listes d'exclus, paquet de fichiers chez Europe
+  PMC. Aucun texte d'article et aucun numéro de registre n'est gardé.
+- **Plan d'étude seul** (VS-D48) : `"plan_seul": true` mesure l'étape sans aucune appréciation ;
+  `"plan_externe": true` y ajoute les études diagnostiques du corpus de chiffres relevés, hors du
+  corpus « qualité », pour contrôler les définitions sur des articles qui ne les ont pas inspirées.
 - **Contrôle du coût** : l'estimation du banc est prudente (entrée comptée au plus haut). Un
   lancement est refusé d'emblée si elle dépasse 1,5 fois le plafond ; ensuite, le coût réel déjà
   dépensé est vérifié avant chaque groupe de requêtes, et un groupe qui dépasserait le plafond

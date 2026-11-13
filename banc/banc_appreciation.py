@@ -47,6 +47,9 @@ from pipeline import acces, appreciation, classement, ia, plan_etude, texte  # n
 from pipeline.config import charger_config, charger_consigne  # noqa: E402
 from pipeline.extraction import version_consigne  # noqa: E402
 
+_chiffres_spec = importlib.util.spec_from_file_location("chiffres_releves_banc", RACINE / "banc" / "chiffres.py")
+chiffres_banc = importlib.util.module_from_spec(_chiffres_spec)
+_chiffres_spec.loader.exec_module(chiffres_banc)
 _spec = importlib.util.spec_from_file_location("banc_extraction", RACINE / "banc" / "banc_extraction.py")
 extraction_banc = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(extraction_banc)
@@ -55,6 +58,7 @@ chaine = extraction_banc.chaine
 CORPUS = RACINE / "banc" / "corpus"
 # Seuils fixés par le porteur du projet le 12 novembre 2026 (VS-D39), sur le texte intégral.
 SEUIL_UN_CRAN = 0.70
+SEUIL_FOURCHETTE = 0.70      # fixé le 13 novembre 2026 (VS-D50)
 NIVEAUX = ("resume", "integral")
 NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
 OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2"}
@@ -168,6 +172,15 @@ def seuils(comparaisons):
     }
 
 
+def seuil_fourchette(articles):
+    """Seuil fixé par le porteur du projet (VS-D50) : le corrigé est dans la fourchette, qui couvre deux niveaux au plus."""
+    bons = sum(1 for x in articles if x["integral"]["contenu"] and x["integral"]["etroit"])
+    part = round(bons / len(articles), 3) if articles else None
+    return {f"au moins {int(SEUIL_FOURCHETTE * 100)} % des articles : le corrigé dans la fourchette, qui couvre deux "
+            f"niveaux au plus": {"atteint": part is not None and part >= SEUIL_FOURCHETTE,
+                                 "mesure": f"{bons} sur {len(articles)}", "part": part}}
+
+
 def repartition(valeurs):
     return dict(sorted(collections.Counter(str(v) for v in valeurs).items()))
 
@@ -231,6 +244,71 @@ def afficher_plan(titre, plan, bilan):
         print(f"  alerte de l'IA : {bilan['alerte_ia']}")
 
 
+def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plans_ext, usages, cfg, modele, prix,
+                        consignes, absents):
+    """Résultats d'une mesure de l'étape « plan d'étude » seule, sans aucune appréciation."""
+    corpus = []
+    for c in cas:
+        if c["doc"]:
+            plan, bilan = plans[c["id"]]
+            grille = plan_etude.choisir_grille(plan["plan"])[0] if plan else None
+            corpus.append({"pmid": c["pmid"], "reference": c["reference"], "outil": c["outil"], "plan": plan["plan"] if plan else None,
+                           "grille_du_plan": grille, "grille_du_corrige_retrouvee": grille == c["outil"],
+                           "ecart_avec_le_tri": plan["ecart_avec_le_tri"] if plan else None, "detail": plan, "bilan": bilan})
+    hors = []
+    for x in externes:
+        plan, bilan = plans_ext[x["ref"]["id"]]
+        hors.append({"pmid": x["pmid"], "reference": x["reference"], "plan": plan["plan"] if plan else None,
+                     "attendu": "etude_diagnostique", "retrouve": bool(plan) and plan["plan"] == "etude_diagnostique",
+                     "detail": plan, "bilan": bilan})
+    fiches = [{"pmid": x["ref"]["pmid"], "titre": x["ref"]["titre"], "type": x["fiche"]["type"], "pmcid": x["pmcid"],
+               "licence": x["licence"], "plan_etude": plans_s45[x["ref"]["id"]][0], "bilan_plan": plans_s45[x["ref"]["id"]][1]}
+              for x in s45]
+    cout = round(ia.cout_reel([u for u in usages["plan"] if u], modele, prix, "direct"), 4)
+    resume = {
+        "date": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "lecture": {"plan_seul": True, "declarations_hors_du_corps": not args.sans_declarations},
+        "chaine": {"modele": modele, "effort": cfg["ia"].get("effort_raisonnement"), "mode": "direct",
+                   "consigne_plan_etude": version_consigne(consignes["plan_etude"])},
+        "cout_usd": {"total": cout, "par_article": round(cout / len(usages["plan"]), 4) if usages["plan"] else None},
+        "plan_etude": {
+            "corpus": {"articles": len(corpus),
+                       "grille_du_corrige_retrouvee": sum(1 for p in corpus if p["grille_du_corrige_retrouvee"]),
+                       "plan_non_determine": sum(1 for p in corpus if p["plan"] in (None, plan_etude.NON_DETERMINE)),
+                       "ecarts_avec_le_tri": sum(1 for p in corpus if p["ecart_avec_le_tri"]),
+                       "repartition": repartition(p["plan"] for p in corpus),
+                       "grilles_perdues": [p["pmid"] for p in corpus if not p["grille_du_corrige_retrouvee"]]},
+            "hors_corpus_diagnostiques": {"articles": len(hors), "plan_attendu_retrouve": sum(1 for h in hors if h["retrouve"]),
+                                          "repartition": repartition(h["plan"] for h in hors)},
+            "s45": {"articles": len(fiches), "plans": repartition((f["plan_etude"] or {}).get("plan") for f in fiches),
+                    "ecarts_avec_le_tri": sum(1 for f in fiches if (f["plan_etude"] or {}).get("ecart_avec_le_tri"))}},
+        "corpus": {"articles": len(cas), "avec_texte_integral": len(corpus), "absents_de_pubmed": absents}}
+    (sortie / "resultats-plan.json").write_text(json.dumps(
+        {"resume": resume, "corpus": corpus, "hors_corpus": hors, "s45": fiches}, ensure_ascii=False, indent=1), encoding="utf-8")
+    print("\n===== RÉSUMÉ =====")
+    print(json.dumps(resume, ensure_ascii=False, indent=1))
+    print("\n===== PLAN D'ÉTUDE : CORPUS, GRILLE DU PLAN CONTRE GRILLE DU CORRIGÉ =====")
+    for p in corpus:
+        print(f"  PMID {p['pmid']} | grille du corrigé : {p['outil']} | plan : {p['plan']} | grille du plan : "
+              f"{p['grille_du_plan'] or 'aucune'} | {'retrouvée' if p['grille_du_corrige_retrouvee'] else 'DIFFÉRENTE'} | "
+              f"écart avec le tri : {p['ecart_avec_le_tri']}")
+    print("\n===== PLAN D'ÉTUDE : HORS CORPUS, ÉTUDES DIAGNOSTIQUES DES CHIFFRES RELEVÉS =====")
+    for h in hors:
+        print(f"  PMID {h['pmid']} | plan : {h['plan']} | attendu : {h['attendu']} | {'retrouvé' if h['retrouve'] else 'DIFFÉRENT'}")
+    print("\n===== PLAN D'ÉTUDE : DÉTAIL DES PLANS DIFFÉRENTS =====")
+    for p in corpus:
+        if not p["grille_du_corrige_retrouvee"]:
+            afficher_plan(f"PMID {p['pmid']} — {p['reference']} — grille du corrigé : {p['outil']}", p["detail"], p["bilan"])
+    for h in hors:
+        if not h["retrouve"]:
+            afficher_plan(f"PMID {h['pmid']} — {h['reference']} — plan attendu : {h['attendu']}", h["detail"], h["bilan"])
+    print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : PLAN D'ÉTUDE =====")
+    for f in fiches:
+        afficher_plan(f"PMID {f['pmid']}, {f['pmcid']}, licence {f['licence']}, {f['type']} — {f['titre'][:110]}",
+                      f["plan_etude"], f["bilan_plan"])
+    return 0
+
+
 # --- Programme --------------------------------------------------------------------------------
 
 def main(argv=None):
@@ -243,6 +321,11 @@ def main(argv=None):
     p.add_argument("--sans-ia", action="store_true", help="lit les textes et estime le coût, sans aucun appel à l'IA")
     p.add_argument("--niveaux", choices=NIVEAUX_DEMANDES, default="integral",
                    help="« integral » (défaut) : pas d'appréciation sur résumé seul ; « tout » : aussi sur résumé")
+    p.add_argument("--plan-seul", action="store_true",
+                   help="mesure l'étape « plan d'étude » seule : aucune appréciation, aucune catégorie")
+    p.add_argument("--plan-externe", action="store_true",
+                   help="ajoute au plan d'étude les études diagnostiques du corpus de chiffres relevés (hors du "
+                        "corpus « qualité »), dont le plan attendu est « étude diagnostique »")
     p.add_argument("--sans-declarations", action="store_true",
                    help="lit le texte intégral sans les déclarations placées hors du corps (lecture d'avant le 13/11/2026)")
     args = p.parse_args(argv)
@@ -286,6 +369,22 @@ def main(argv=None):
                 f"{sum(1 for c in cas if c['doc'] and c['doc'].get('declarations'))} articles sur "
                 f"{sum(1 for c in cas if c['doc'])}")
 
+    # 2 bis. Contrôle hors corpus : études diagnostiques du corpus de chiffres relevés (plan attendu : diagnostique)
+    externes = []
+    if args.plan_externe:
+        deja = {c["pmid"] for c in cas}
+        candidats = [c for c in chiffres_banc.cas_du_corpus(chiffres_banc.charger())
+                     if c["type_etude"] == "etude_diagnostique" and c["pmid"] not in deja]
+        refs_ext = {r["pmid"]: r for r in chaine.recuperer_pubmed(sorted(c["pmid"] for c in candidats), cfg)}
+        infos_ext, _ = acces.decrire_europe_pmc([c["pmid"] for c in candidats], journal)
+        lus_ext = extraction_banc.lire_textes([refs_ext[c["pmid"]] for c in candidats if c["pmid"] in refs_ext],
+                                              infos_ext, declarations=declarations)
+        for c in candidats:
+            ref = refs_ext.get(c["pmid"])
+            if ref and lus_ext[ref["id"]]["doc"]:
+                externes.append({"pmid": c["pmid"], "reference": c["reference"], "ref": ref, "doc": lus_ext[ref["id"]]["doc"]})
+        journal(f"Hors corpus « qualité » : {len(externes)} études diagnostiques lues en entier sur {len(candidats)}")
+
     # 3. Publications réelles de 2026-S45
     s45, a_classer = [], []
     if args.s45 or args.classement:
@@ -318,7 +417,8 @@ def main(argv=None):
     demande_plan = lambda ref, doc, tri, etape: plan_etude.requete_plan(ref, doc, consignes["plan_etude"], tri, etape)  # noqa: E731
     reqs = {
         "plan": [demande_plan(refs[c["pmid"]], c["doc"], c["type_etude"], "plan-corpus") for c in cas if c["doc"]]
-                + [demande_plan(x["ref"], x["doc"], x["fiche"]["type"], "plan-s45") for x in s45],
+                + [demande_plan(x["ref"], x["doc"], x["fiche"]["type"], "plan-s45") for x in s45]
+                + [demande_plan(x["ref"], x["doc"], "etude_diagnostique", "plan-externe") for x in externes],
         "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"],
                            "appreciation-resume", c["outil"]) for c in cas] if args.niveaux == "tout" else [],
         "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral", c["outil"])
@@ -328,8 +428,12 @@ def main(argv=None):
                        for x in a_classer],
     }
     reqs = {k: [r for r in v if r] for k, v in reqs.items()}
+    if args.plan_seul:
+        reqs.update({"resume": [], "integral": [], "classement": []})
+        a_classer = []
     # Borne haute avant tout appel : chaque publication de 2026-S45 serait appréciée avec la grille du tri.
-    s45_borne = [r for r in (demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45") for x in s45) if r]
+    s45_borne = [] if args.plan_seul else [
+        r for r in (demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45") for x in s45) if r]
 
     def estimer(plan, resume, integral, classements):
         return (ia.estimer_cout(plan, modele, prix, SORTIE_ESTIMEE["plan"], "direct")
@@ -338,7 +442,8 @@ def main(argv=None):
                 + ia.estimer_cout(classements, modele, prix, SORTIE_ESTIMEE["classement"], "direct"))
 
     estime = estimer(reqs["plan"], reqs["resume"], reqs["integral"] + s45_borne, reqs["classement"])
-    journal(f"Coût estimé : {estime:.2f} $ (plafond {args.budget:.2f} $) — {len(reqs['plan'])} plans d'étude, "
+    journal(f"Coût estimé : {estime:.2f} $ (plafond {args.budget:.2f} $) — {len(reqs['plan'])} plans d'étude "
+            f"(dont {len(externes)} hors corpus « qualité »), "
             f"{len(reqs['resume'])} appréciations sur résumé, {len(reqs['integral'])} sur texte intégral, "
             f"jusqu'à {len(s45_borne)} sur 2026-S45, {len(reqs['classement'])} classements")
     if estime > args.budget * MARGE_ESTIMATION:
@@ -382,6 +487,11 @@ def main(argv=None):
     plans = {c["id"]: lire_le_plan(res["plan"], "plan-corpus", refs[c["pmid"]], c["doc"], c["type_etude"])
              for c in cas if c["doc"]}
     plans_s45 = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-s45", x["ref"], x["doc"], x["fiche"]["type"]) for x in s45}
+    plans_ext = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-externe", x["ref"], x["doc"], "etude_diagnostique")
+                 for x in externes}
+    if args.plan_seul:
+        return resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plans_ext, usages, cfg,
+                                   modele, prix, consignes, absents)
     routes = {}
     for x in s45:
         plan = plans_s45[x["ref"]["id"]][0]
@@ -503,7 +613,7 @@ def main(argv=None):
                            "lecture_stricte": "un domaine non évalué ou non rapporté compte comme le pire jugement possible",
                            "jugements_de_l_outil": repartition(d["jugement_outil"] for d in integral)},
         "fourchettes": {**stats_fourchette(avec_fourchette), "articles_bien_notes": stats_fourchette(bien_notes),
-                        "note": "mesure descriptive, sans seuil : un seuil reste à fixer par le porteur du projet"},
+                        "seuil": seuil_fourchette(avec_fourchette)},
         "resume_seul": {"etats": repartition(d["etat"] for d in sur_resume),
                         "domaines_non_evaluables": f"{sum(1 for d in domaines_resume if d['jugement'] == appreciation.NON_EVALUABLE)} "
                                                    f"sur {len(domaines_resume)}"},

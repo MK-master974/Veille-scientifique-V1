@@ -147,6 +147,13 @@
    "raison": "Séance 7, cycle de mesure (VS-D44), nouvelle demande : le lancement 43378174522 a lu les textes puis s'est arrêté au contrôle d'estimation sans appeler l'IA (1,18 $ estimés pour un plafond de 1,00 $). L'estimation du banc est prudente : l'entrée est comptée au plus haut et toutes les publications de 2026-S45 sont supposées appréciées, alors que seules celles dont le plan a une grille le seront. Règle de contrôle revue : un lancement n'est refusé d'emblée que si l'estimation dépasse 1,5 fois le plafond ; le coût réel déjà dépensé est ensuite vérifié avant chaque groupe de requêtes. Coût attendu : 0,65 à 0,75 $.",
    "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de dépense de ce lancement : 1,00 $. Aucun argent n'a été dépensé aux deux lancements précédents.",
    "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "supplements",
+   "raison": "Séance 7 (VS-D49) : étudier, sans IA, où se trouvent les protocoles et les suppléments des 35 articles du corpus « qualité » : éléments de matériel supplémentaire déclarés, numéros de registre ou de protocole cités, listes d'études exclues citées, paquet de fichiers chez Europe PMC. Aucun texte d'article ni numéro de registre n'est gardé.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : étudier la récupération des protocoles et des suppléments sans IA (VS-D49). Aucun appel à l'IA : aucun coût.",
+   "budget_usd": 0
   }
  ]
 }
