@@ -12,6 +12,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   le même texte qu'avant. Défaut trouvé à la première mesure de l'appréciation : pour 9 revues sur
   16, l'IA répondait que ces déclarations manquaient, alors qu'elle ne les avait pas reçues
   (VS-D40).
+- Contrôle du coût du banc d'appréciation : l'estimation, prudente, ne refuse plus un lancement
+  qu'au-delà de 1,5 fois le plafond ; le coût réel déjà dépensé est vérifié avant chaque groupe de
+  requêtes. L'estimation de la sortie est recalée sur les coûts réels.
 - Banc d'essai de l'appréciation : il peut ne mesurer que le texte intégral (« niveaux ») et
   rejouer l'ancienne lecture (« sans_declarations »).
 - `docs/FICHE_V2.md`, bloc « appreciation » : trois précisions, déclarées au dépôt de
@@ -50,6 +53,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   « non rapporté », et le jugement global s'accompagne d'une fourchette. Un champ « nature du
   jugement » dit ce que mesure l'axe qualité. Déclaré au dépôt de coordination (CHG-2026-0010).
   Plus d'appréciation sur résumé seul. Pas encore appelé par la veille.
+- Première mesure de la séance 7 (`banc/resultats/2026-11-13-seance-7.md`) : le plan d'étude
+  retrouve l'avis du comité pour 8 fiches sur 10 de 2026-S45, dont les deux essais quasi
+  randomisés, et la grille des auteurs d'une revue pour 20 articles sur 25 du corpus. Défaut
+  trouvé et non corrigé : la définition de « modèle de prédiction » est trop large et retire leur
+  grille à 5 études diagnostiques sur 7. Sur 54 « non » des revues sources, 31 deviennent « non
+  rapporté ». Coût 0,63 $.
 - Phase 1, séance 6 : appréciation méthodologique d'une publication par l'outil adapté à son type
   d'étude (RoB 2, QUADAS-2, AMSTAR 2, AGREE II). `pipeline/appreciation.py` et la consigne
   `appreciation.txt` jugent chaque domaine ; le code exige un passage vérifié pour tout jugement
