@@ -211,6 +211,17 @@ après la mesure (résultats : [../banc/resultats/2026-11-12-chiffres-releves.md
 | VS-D38 | Budget d'IA de la séance 6 : le reste de l'enveloppe du corpus, soit 2,43 $, sans argent nouveau. Le coût estimé est annoncé avant chaque lancement ; la session s'arrête et redemande si cela ne suffit pas. Conséquence annoncée : un lancement complet, probablement pas de seconde mesure après correction | Validée le 12 novembre 2026 (questionnaire) |
 | VS-D39 | Seuil de réussite de l'appréciation au banc d'essai, fixé avant la mesure : au moins 70 % des jugements globaux à un cran au plus du jugement des auteurs d'une revue, et aucun jugement plus favorable que ce corrigé de deux crans. En dessous, les écarts sont présentés avant d'aller plus loin | Validée le 12 novembre 2026 (questionnaire) |
 
+Décisions du point d'arrêt de la séance 6, prises par questionnaire le 13 novembre 2026 après la
+première mesure de l'appréciation (résultats :
+[../banc/resultats/2026-11-13-appreciation.md](../banc/resultats/2026-11-13-appreciation.md)) :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D40 | Suite de la séance 6 : corriger la lecture des déclarations placées hors du corps de l'article (financement, liens d'intérêts), puis remesurer l'appréciation sur texte intégral, sur le reste de l'enveloppe (1,48 $), sans argent nouveau. Avis du porteur du projet, noté tel quel : « garde en tête que je trouve tes avis parfois trop sévère ». La consigne d'appréciation n'est pas modifiée pour cette seconde mesure : la sévérité se règle après la relecture des dix fiches, pour ne pas ajuster la consigne sur les articles qui servent à la mesurer (interprétation de la session de développement) | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D41 | Règle d'attribution de l'étiquette (VS-D14) : décision reportée. La règle écrite dans `pipeline/appreciation.py` reste candidate et n'est pas branchée sur la veille. Elle sera tranchée quand la mesure montrera que le moteur reconnaît une bonne étude | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D42 | Demande de fusion de la séance 6 : ouverte après la fusion du lot 12, pour ne montrer que les fichiers de la séance 6 | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D43 | Accord pour écrire dans le dépôt de coordination : accusé de lecture de la consigne CONS-2026-11-12-01, compte rendu de la séance 6, déclaration des précisions du bloc « appreciation » de la fiche v2 | Validée le 13 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.

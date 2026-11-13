@@ -34,7 +34,57 @@ def doc():
     return texte.document_jats(ARTICLE, REF)
 
 
+# Article fabriqué dont les déclarations sont hors du corps : en tête (<front>) et en fin (<back>).
+AVEC_DECLARATIONS = """<article><front><article-meta>
+<title-group><article-title>Revue fabriquée pour les tests</article-title></title-group>
+<author-notes><corresp id="c1">Correspondence: auteur@example.org</corresp>
+<fn fn-type="equal"><p>These authors contributed equally.</p></fn>
+<fn fn-type="COI-statement"><p>The authors have declared that no competing interests exist.</p></fn></author-notes>
+<funding-group><funding-statement>This invented review was funded by an invented foundation.</funding-statement></funding-group>
+<abstract><p>Invented abstract.</p></abstract></article-meta></front>
+<body><sec><title>Methods</title><p>Two reviewers screened titles in this invented review.</p></sec>
+<sec><title>Funding</title><p>Invented text already in the body.</p></sec></body>
+<back><ack><p>We thank the invented librarians.</p></ack>
+<notes><title>Declarations</title>
+ <notes notes-type="COI-statement"><title>Competing interests</title><p>None declared in this invented review.</p></notes>
+ <notes><title>Funding</title><p>Invented text already in the body.</p></notes></notes>
+<fn-group><fn fn-type="financial-disclosure"><label>1</label><p>Supported by an invented grant.</p></fn></fn-group>
+<app-group><app><title>Appendix A</title><p>Invented search strategy, never read.</p></app></app-group>
+<ref-list><ref id="b1"><mixed-citation>Référence fabriquée, 2020.</mixed-citation></ref></ref-list></back></article>"""
+
+
 # --- Lecture d'une publication ----------------------------------------------------------------
+
+def test_les_declarations_hors_du_corps_ne_sont_lues_que_sur_demande():
+    sans = texte.document_jats(AVEC_DECLARATIONS)
+    assert [b["nom"] for b in sans["blocs"]] == ["Résumé", "Methods", "Funding"] and "declarations" not in sans
+    # Le document de l'extraction ne change pas : même texte remis à l'IA qu'avant cette option.
+    assert "competing interests" not in texte.texte_pour_ia(sans)
+
+    avec = texte.document_jats(AVEC_DECLARATIONS, declarations=True)
+    noms = [b["nom"] for b in avec["blocs"]]
+    assert noms == ["Résumé", "Methods", "Funding", "Author notes", "Funding", "Acknowledgements",
+                    "Declarations > Competing interests", "Notes"]
+    assert avec["declarations"] == 5
+    assert [b["repere"] for b in avec["blocs"]] == ["R", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    # Deux blocs ne portent jamais le même emplacement.
+    assert len({b["emplacement"] for b in avec["blocs"]}) == len(avec["blocs"])
+    lu = texte.texte_lu(avec)
+    assert "no competing interests exist" in lu and "funded by an invented foundation" in lu
+    assert "Supported by an invented grant" in lu and "None declared" in lu
+    # Ni adresse de correspondance, ni note sans rapport, ni annexe, ni référence ; rien en double.
+    assert "example.org" not in lu and "contributed equally" not in lu
+    assert "never read" not in lu and "Référence fabriquée" not in lu
+    assert lu.count("Invented text already in the body.") == 1
+    # Un passage d'une déclaration se vérifie comme un autre.
+    bloc, extrait = texte.trouver_passage(avec, "None declared in this invented review.", "S6")
+    assert bloc["repere"] == "S6" and extrait == "None declared in this invented review."
+
+
+def test_un_article_sans_declaration_hors_du_corps_reste_identique():
+    sans, avec = texte.document_jats(ARTICLE, REF), texte.document_jats(ARTICLE, REF, declarations=True)
+    assert avec.pop("declarations") == 0 and avec == sans
+
 
 def test_blocs_reperes_et_emplacements():
     d = doc()

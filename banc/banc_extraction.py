@@ -328,10 +328,12 @@ def appeler(fournisseur, requetes, modele, simultanes=6, delai=600):
         return dict(ex.map(un, requetes))
 
 
-def lire_textes(refs, infos):
+def lire_textes(refs, infos, declarations=False):
     """Pour chaque référence : licence, niveau d'accès et document du texte intégral s'il est ouvert.
 
     « infos » est la description donnée par Europe PMC (identifiant PMC, licence déclarée).
+    « declarations » ajoute au document les déclarations placées hors du corps de l'article ;
+    l'extraction ne le demande pas.
     """
     lus = {}
     for r in refs:
@@ -341,7 +343,7 @@ def lire_textes(refs, infos):
         if pmcid and licence in acces.PERIMETRE_RETENU:
             xml, etat = acces.texte_integral_xml(pmcid)
             mesure = acces.decrire_texte(xml) if xml else None
-            doc = texte.document_jats(xml, r) if xml else None
+            doc = texte.document_jats(xml, r, declarations=declarations) if xml else None
             time.sleep(0.3)
         niveau, motif = acces.niveau_acces(pmcid, licence, mesure, acces.PERIMETRE_RETENU)
         lus[r["id"]] = {"pmcid": pmcid, "licence": licence, "niveau": niveau, "motif": motif, "etat": etat,

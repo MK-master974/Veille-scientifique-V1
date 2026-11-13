@@ -14,7 +14,9 @@ avec l'accord du porteur du projet. Une demande précise :
 
 - pour le banc « appreciation » : "s45" (publications de 2026-S45 à apprécier sur texte
   intégral), "classement" (publications de 2026-S45 à classer en plus, sur résumé), "limite"
-  (articles au plus par outil, pour un essai court) et "sans_ia".
+  (articles au plus par outil, pour un essai court), "niveaux" (« tout », ou « integral » : pas
+  d'appréciation sur résumé seul), "sans_declarations" (lecture du texte intégral sans les
+  déclarations placées hors du corps de l'article) et "sans_ia".
 
 Plafonds fixes : 1 $ pour la chaîne actuelle ; 3 $ pour l'extraction, porté de 2 $ à 3 $ le
 12 novembre 2026 parce que le corpus grossit (VS-D33) ; 2,43 $ pour l'appréciation, soit toute
@@ -34,6 +36,7 @@ BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 3.0),
          "appreciation": ("banc_appreciation.py", 2.43)}
 EFFORTS = ("minimal", "low", "medium", "high")
 PARTIES = ("tout", "historique", "chiffres")
+NIVEAUX = ("tout", "integral")
 
 
 def commande(demande, sortie):
@@ -61,6 +64,12 @@ def commande(demande, sortie):
         for cle, maximum in (("s45", 12), ("classement", 40), ("limite", 50)):
             if int(demande.get(cle, 0)) > 0:
                 arguments += [f"--{cle}", str(min(int(demande[cle]), maximum))]
+        if demande.get("niveaux"):
+            if demande["niveaux"] not in NIVEAUX:
+                raise SystemExit(f"Niveaux inconnus : {demande['niveaux']!r} (attendu : {', '.join(NIVEAUX)})")
+            arguments += ["--niveaux", demande["niveaux"]]
+        if demande.get("sans_declarations") is True:
+            arguments.append("--sans-declarations")
         if demande.get("sans_ia") is True:
             arguments.append("--sans-ia")
     return script, arguments

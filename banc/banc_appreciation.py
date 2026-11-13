@@ -50,6 +50,7 @@ CORPUS = RACINE / "banc" / "corpus"
 # Seuils fixés par le porteur du projet le 12 novembre 2026 (VS-D39), sur le texte intégral.
 SEUIL_UN_CRAN = 0.70
 NIVEAUX = ("resume", "integral")
+NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
 OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2"}
 SORTIE_ESTIMEE = {"resume": 1500, "integral": 4500, "classement": 700}
 
@@ -191,7 +192,12 @@ def main(argv=None):
     p.add_argument("--classement", type=int, default=0, help="publications de 2026-S45 à classer en plus, sur résumé")
     p.add_argument("--limite", type=int, default=0, help="articles au plus par outil (0 : tous)")
     p.add_argument("--sans-ia", action="store_true", help="lit les textes et estime le coût, sans aucun appel à l'IA")
+    p.add_argument("--niveaux", choices=NIVEAUX_DEMANDES, default="tout",
+                   help="« integral » : pas d'appréciation sur résumé seul")
+    p.add_argument("--sans-declarations", action="store_true",
+                   help="lit le texte intégral sans les déclarations placées hors du corps (lecture d'avant le 13/11/2026)")
     args = p.parse_args(argv)
+    declarations = not args.sans_declarations
     sortie = Path(args.sortie)
     sortie.mkdir(parents=True, exist_ok=True)
     journal = lambda m: print(m, flush=True)   # noqa: E731
@@ -217,13 +223,18 @@ def main(argv=None):
 
     # 2. Textes intégraux sous licence ouverte
     infos, echecs = acces.decrire_europe_pmc([c["pmid"] for c in cas], journal)
-    lus = extraction_banc.lire_textes([refs[c["pmid"]] for c in cas], infos)
+    lus = extraction_banc.lire_textes([refs[c["pmid"]] for c in cas], infos, declarations=declarations)
     for c in cas:
         c["id"] = refs[c["pmid"]]["id"]
         c["doc"] = lus[c["id"]]["doc"]
-        journal("  " + extraction_banc.structure(f"{c['id']} ({c['outil']})", lus[c["id"]]))
+        journal("  " + extraction_banc.structure(f"{c['id']} ({c['outil']})", lus[c["id"]])
+                + (f" | {c['doc'].get('declarations', 0)} déclarations hors du corps" if c["doc"] and declarations else ""))
     journal(f"Texte intégral lu pour {sum(1 for c in cas if c['doc'])} articles sur {len(cas)} "
             f"(paquets Europe PMC en échec : {echecs})")
+    if declarations:
+        journal(f"Déclarations placées hors du corps de l'article : lues pour "
+                f"{sum(1 for c in cas if c['doc'] and c['doc'].get('declarations'))} articles sur "
+                f"{sum(1 for c in cas if c['doc'])}")
 
     # 3. Publications réelles de 2026-S45
     s45, a_classer = [], []
@@ -240,7 +251,7 @@ def main(argv=None):
             if len(s45) >= args.s45 or f["pmid"] not in refs_s45:
                 continue
             ref = refs_s45[f["pmid"]]
-            lu = extraction_banc.lire_textes([ref], licences)[ref["id"]]
+            lu = extraction_banc.lire_textes([ref], licences, declarations=declarations)[ref["id"]]
             if lu["doc"]:
                 s45.append({"ref": ref, "fiche": f, **lu})
         a_classer = [{"ref": x["ref"], "fiche": x["fiche"]} for x in s45] + [
@@ -255,7 +266,7 @@ def main(argv=None):
         ref, doc, consignes["appreciation"], type_etude, etape)
     reqs = {
         "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"], "appreciation-resume")
-                   for c in cas],
+                   for c in cas] if args.niveaux == "tout" else [],
         "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral") for c in cas if c["doc"]],
         "s45": [demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45") for x in s45],
         "classement": [classement.requete_classement(x["ref"], consignes["classement"], x["fiche"]["type"])
@@ -301,7 +312,7 @@ def main(argv=None):
         ligne = {"pmid": c["pmid"], "outil": c["outil"], "reference": c["reference"], "attendu": attendu,
                  "texte_integral": bool(c["doc"])}
         for niveau, doc in (("resume", texte.document_resume(ref)), ("integral", c["doc"])):
-            if doc is None:
+            if doc is None or (niveau == "resume" and args.niveaux != "tout"):
                 continue
             app, bilan = lire(res[niveau], f"appreciation-{niveau}", ref, doc, c["type_etude"], niveau == "integral")
             obtenu = app["jugement_outil"] if app else None
@@ -338,6 +349,7 @@ def main(argv=None):
     domaines_resume = [d for x in sur_resume for d in (x["appreciation"] or {}).get("domaines", [])]
     resume = {
         "date": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "lecture": {"niveaux": args.niveaux, "declarations_hors_du_corps": declarations},
         "chaine": {"modele": modele, "effort": cfg["ia"].get("effort_raisonnement"), "mode": "direct",
                    "consigne_appreciation": version_consigne(consignes["appreciation"]),
                    "consigne_classement": version_consigne(consignes["classement"])},

@@ -266,6 +266,11 @@ def test_lanceur_du_banc_appreciation():
     assert script == "banc_appreciation.py"
     assert arguments == ["--sortie", "res", "--budget", "2.43", "--s45", "10", "--classement", "30", "--limite", "1",
                          "--sans-ia"]
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.6, "niveaux": "integral",
+                                    "sans_declarations": True}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.6", "--niveaux", "integral", "--sans-declarations"]
+    with pytest.raises(SystemExit):
+        lancer.commande({"banc": "appreciation", "niveaux": "partout"}, "res")
 
 
 # --- Le banc en entier, sources et IA simulées ------------------------------------------------
@@ -330,6 +335,13 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     court = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))["resume"]
     assert court["corpus"]["articles"] == 3 and court["corpus"]["avec_texte_integral"] == 3
+    assert court["lecture"] == {"niveaux": "tout", "declarations_hors_du_corps": True}
+    # Texte intégral seul : aucune appréciation sur résumé, donc aucun coût à ce niveau.
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1", "--niveaux", "integral"]) == 0
+    seul = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))
+    assert seul["resume"]["lecture"]["niveaux"] == "integral" and "resume" not in seul["resume"]["cout_usd"]
+    assert all("resume" not in x and "integral" in x for x in seul["corpus"])
+    assert seul["resume"]["resume_seul"]["etats"] == {}
     assert banc.main(["--sortie", str(tmp_path), "--budget", "0.001"]) == 2
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: pytest.fail("l'IA ne doit pas être appelée"))
     assert banc.main(["--sortie", str(tmp_path), "--sans-ia"]) == 0

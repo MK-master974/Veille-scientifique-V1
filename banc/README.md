@@ -152,7 +152,10 @@ relu par un humain.
 et la catégorie d'importance.
 
 - **Deux niveaux d'accès** : chaque article est apprécié à partir de son résumé, puis de son texte
-  intégral s'il est sous licence CC BY ou CC0.
+  intégral s'il est sous licence CC BY ou CC0. Une demande peut ne mesurer que le texte intégral
+  (`"niveaux": "integral"`).
+- **Déclarations hors du corps de l'article** (financement, liens d'intérêts) : lues depuis le
+  13 novembre 2026. `"sans_declarations": true` rejoue la lecture d'avant.
 - **Écart en crans** : le jugement global, calculé par le code, est comparé à celui du corrigé sur
   l'échelle de l'outil (trois crans pour RoB 2 et QUADAS-2, quatre pour AMSTAR 2).
 - **Seuils** fixés par le porteur du projet (VS-D39), sur le texte intégral : au moins 70 % des

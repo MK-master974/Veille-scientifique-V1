@@ -46,7 +46,7 @@ pas du nombre de lecteurs.
 | `pipeline/reseau.py` | Requêtes HTTP avec nouvelles tentatives sur les erreurs passagères |
 | `pipeline/config.py` | Chargement de la configuration, du catalogue et des consignes |
 | `pipeline/acces.py` | Recherche du texte intégral légal, licence et niveau d'accès. Pas encore appelé par la veille |
-| `pipeline/texte.py` | Lecture d'une publication en blocs repérés (résumé, sections, tableaux, figures) et recherche d'un passage mot pour mot. Pas encore appelé par la veille |
+| `pipeline/texte.py` | Lecture d'une publication en blocs repérés (résumé, sections, tableaux, figures ; sur demande, déclarations placées hors du corps de l'article) et recherche d'un passage mot pour mot. Pas encore appelé par la veille |
 | `pipeline/extraction.py` | Extraction des données d'une publication et contrôle de chaque donnée par le code. Pas encore appelé par la veille |
 | `pipeline/appreciation.py` | Appréciation méthodologique par l'outil adapté au type d'étude ; jugement global calculé par le code. Pas encore appelé par la veille |
 | `pipeline/classement.py` | Catégorie d'importance de 1 à 4, justifiée et bornée par des règles. Pas encore appelé par la veille |
@@ -281,6 +281,10 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
   non évaluable).
 - **Certitude GRADE** : reprise seulement si les auteurs la rapportent et que le passage cité la
   nomme. Jamais calculée.
+- **Déclarations hors du corps de l'article** : pour l'appréciation, `texte.document_jats` lit
+  aussi, sur demande, les déclarations de financement et de liens d'intérêts, les remerciements et
+  les notes placés en tête ou en fin de fichier. Les références, les annexes et les fichiers
+  joints ne sont pas lus. L'extraction ne demande pas cette lecture : son texte ne change pas.
 - **Étiquette de façade** : la règle écrite dans le code est une règle candidate, à arbitrer
   (VS-D14).
 - **Catégorie d'importance** (`classement.py`, consigne `classement.txt`) : proposée à partir du

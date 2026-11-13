@@ -105,6 +105,15 @@
    "raison": "Séance 6 (VS-D37) : mesure de l'appréciation sur le corpus « qualité » (35 articles, dont 25 lisibles en entier), dix publications de 2026-S45 appréciées sur texte intégral pour la relecture, et 30 publications de 2026-S45 classées par catégorie d'importance. Seuils fixés avant la mesure (VS-D39). L'essai court 43364297944 a coûté 0,07 $ et confirme le format des réponses. Coût estimé par le lancement sans IA 43363536857 : 1,78 $.",
    "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0,07 $.",
    "budget_usd": 2.3
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "niveaux": "integral",
+   "sans_ia": true,
+   "raison": "Séance 6, suite (VS-D40) : vérifier sans IA que les déclarations placées hors du corps de l'article (financement, liens d'intérêts) sont maintenant lues pour les 25 articles du corpus « qualité », et estimer le coût d'une seconde mesure sur texte intégral seul.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer (VS-D40). Ce lancement n'appelle pas l'IA : aucun coût.",
+   "budget_usd": 1.48
   }
  ]
 }

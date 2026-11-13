@@ -6,6 +6,14 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- Lecture d'un texte intégral (`pipeline/texte.py`) : sur demande, les déclarations placées hors
+  du corps de l'article (financement, liens d'intérêts, remerciements, notes de fin) sont lues
+  aussi. Le banc d'essai de l'appréciation le demande ; l'extraction ne le demande pas, et reçoit
+  le même texte qu'avant. Défaut trouvé à la première mesure de l'appréciation : pour 9 revues sur
+  16, l'IA répondait que ces déclarations manquaient, alors qu'elle ne les avait pas reçues
+  (VS-D40).
+- Banc d'essai de l'appréciation : il peut ne mesurer que le texte intégral (« niveaux ») et
+  rejouer l'ancienne lecture (« sans_declarations »).
 - Banc d'essai de l'extraction : il peut ne mesurer qu'une partie du corpus (« parties » : tout,
   cas mesurés depuis la séance 5, ou chiffres relevés). Son plafond fixe passe de 2 $ à 3 $ par
   lancement, parce que le corpus grossit (VS-D33).
