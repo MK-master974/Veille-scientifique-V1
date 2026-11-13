@@ -201,6 +201,16 @@ début de la conversation de développement qui suit la séance 5 :
 | VS-D34 | Seuil de réussite pour les nouveaux articles, fixé avant la mesure : l'extraction retrouve, à partir du texte intégral, au moins 80 % des chiffres du corrigé. Un chiffre de corrigé que le code ne retrouve pas dans l'article est écarté du score avant la mesure, et compté à part. En dessous du seuil, les écarts sont présentés avant d'aller plus loin | Validée le 12 novembre 2026 (questionnaire). Seuil atteint : 148 à 149 chiffres retrouvés sur 159, soit 93 %. Deux chiffres écartés avant la mesure finale. Quatre règles de comparaison ont été corrigées après la première mesure ; les deux scores sont publiés ([résultats](../banc/resultats/2026-11-12-chiffres-releves.md)) |
 | VS-D35 | Consigne du portail CONS-2026-11-12-01 (décision de coordination POR-D24) appliquée en version prudente : les sept fiches de méthode communes sont copiées dans `.claude/skills/` ; les huit règles impératives et le format des messages restent dans `CLAUDE.md` ; seul le détail du questionnaire y devient un renvoi. `CLAUDE.md` fait foi en cas d'écart | Validée le 12 novembre 2026 (questionnaire), réalisée |
 
+Décisions du point d'arrêt du renforcement du corpus, prises par questionnaire le 12 novembre 2026
+après la mesure (résultats : [../banc/resultats/2026-11-12-chiffres-releves.md](../banc/resultats/2026-11-12-chiffres-releves.md)) :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D36 | Ouvrir sans attendre la demande de fusion du lot « corpus renforcé », séparée de la séance 6 : aucun fichier de la veille hebdomadaire ni de l'application n'est modifié | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D37 | Séance 6 de la phase 1 (appréciation par outil selon le type d'étude, catégories d'importance) : accord donné, dans la même conversation de développement. Plan : corrigés de qualité lus dans les revues sources déjà utilisées, module d'appréciation dont chaque jugement porte un passage vérifié par le code, banc d'essai, dix fiches à relire par le porteur du projet, point d'arrêt | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D38 | Budget d'IA de la séance 6 : le reste de l'enveloppe du corpus, soit 2,43 $, sans argent nouveau. Le coût estimé est annoncé avant chaque lancement ; la session s'arrête et redemande si cela ne suffit pas. Conséquence annoncée : un lancement complet, probablement pas de seconde mesure après correction | Validée le 12 novembre 2026 (questionnaire) |
+| VS-D39 | Seuil de réussite de l'appréciation au banc d'essai, fixé avant la mesure : au moins 70 % des jugements globaux à un cran au plus du jugement des auteurs d'une revue, et aucun jugement plus favorable que ce corrigé de deux crans. En dessous, les écarts sont présentés avant d'aller plus loin | Validée le 12 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.
