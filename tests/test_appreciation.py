@@ -424,5 +424,10 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert all("resume" not in x and "integral" in x for x in seul["corpus"])
     assert seul["resume"]["resume_seul"]["etats"] == {}
     assert banc.main(["--sortie", str(tmp_path), "--budget", "0.001"]) == 2
+    # Après l'étape « plan d'étude », le coût réel est vérifié : un dépassement arrête avant les appréciations.
+    with monkeypatch.context() as m:
+        m.setattr(banc.ia, "cout_reel", lambda *a, **k: 10.0)
+        assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 2
+    assert "le plafond serait dépassé" in capsys.readouterr().out
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: pytest.fail("l'IA ne doit pas être appelée"))
     assert banc.main(["--sortie", str(tmp_path), "--sans-ia"]) == 0

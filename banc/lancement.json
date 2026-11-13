@@ -131,6 +131,14 @@
    "raison": "Séance 7 (VS-D44) : lire sans IA les 25 textes du corpus « qualité » et les 10 publications de 2026-S45, et estimer le coût du cycle de mesure avec l'étape « plan d'étude » (un plan par article lu en entier, puis appréciation à la grille du corrigé pour le corpus et à la grille du plan pour 2026-S45).",
    "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Ce lancement n'appelle pas l'IA : aucun coût.",
    "budget_usd": 0.95
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "raison": "Séance 7, cycle de mesure (VS-D44) : étape « plan d'étude » sur les 25 articles du corpus « qualité » lus en entier et sur les 10 publications de 2026-S45 relues par le comité, puis appréciation à la grille du corrigé (corpus) ou à la grille du plan (2026-S45) ; « non rapporté » et fourchette. Le lancement sans IA 43377261291 a lu les textes (déclarations hors du corps lues pour 15 articles sur 25) et s'est arrêté au contrôle du coût : l'estimation de 1,55 $ comptait 10 classements non demandés et supposait 4 500 jetons de sortie par appréciation, le double du réel. Estimation recalée sur les coûts réels (2 500 jetons, soit environ 20 % de marge), classements retirés. Coût attendu : 0,65 à 0,75 $ (25 appréciations à 0,017 $, 35 plans à environ 0,005 $, 5 à 10 appréciations de 2026-S45 à 0,015 $).",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de ce lancement : 1,00 $, vérifié avant l'étape « plan d'étude », puis avant chaque groupe d'appréciations d'après le coût réel déjà dépensé.",
+   "budget_usd": 1.0
   }
  ]
 }

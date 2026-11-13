@@ -58,7 +58,10 @@ SEUIL_UN_CRAN = 0.70
 NIVEAUX = ("resume", "integral")
 NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
 OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2"}
-SORTIE_ESTIMEE = {"plan": 400, "resume": 1500, "integral": 4500, "classement": 700}
+# Jetons de sortie supposés par réponse. « integral » recalé le 13 novembre 2026 sur trois mesures réelles
+# (0,0172 $ par article à 1 $ et 5 $ le million de jetons, soit environ 1 700 jetons de sortie) : 2 500 garde
+# une marge d'environ 20 % sur le coût réel. Avant, 4 500 donnait une estimation double du coût réel.
+SORTIE_ESTIMEE = {"plan": 600, "resume": 1500, "integral": 2500, "classement": 700}
 
 
 # --- Fonctions pures, testées sans réseau -----------------------------------------------------
@@ -296,8 +299,9 @@ def main(argv=None):
             lu = extraction_banc.lire_textes([ref], licences, declarations=declarations)[ref["id"]]
             if lu["doc"]:
                 s45.append({"ref": ref, "fiche": f, **lu})
-        a_classer = [{"ref": x["ref"], "fiche": x["fiche"]} for x in s45] + [
-            {"ref": refs_s45[f["pmid"]], "fiche": f} for f in autres if f["pmid"] in refs_s45]
+        # Les catégories d'importance ne sont mesurées que sur demande (« --classement ») : pas de coût en plus.
+        a_classer = ([{"ref": x["ref"], "fiche": x["fiche"]} for x in s45] + [
+            {"ref": refs_s45[f["pmid"]], "fiche": f} for f in autres if f["pmid"] in refs_s45]) if args.classement else []
         journal(f"2026-S45 : {len(kine)} fiches de kinésithérapie ; {len(s45)} à apprécier sur texte intégral, "
                 f"{len(a_classer)} à classer")
         for x in s45:
@@ -383,7 +387,15 @@ def main(argv=None):
     if deja + restant > args.budget:
         journal("ARRÊT : le plafond serait dépassé, aucune appréciation n'est lancée.")
         return 2
-    for nom in ("resume", "integral", "s45", "classement"):
+    groupes = {"resume": "resume", "integral": "integral", "s45": "integral", "classement": "classement"}
+    for nom, nature in groupes.items():
+        depense = ia.cout_reel([u for us in usages.values() for u in us if u], modele, prix, "direct")
+        prochain = ia.estimer_cout(reqs[nom], modele, prix, SORTIE_ESTIMEE[nature], "direct")
+        if reqs[nom] and depense + prochain > args.budget:
+            journal(f"{nom} non lancé : {depense:.3f} $ déjà dépensés et {prochain:.2f} $ estimés dépasseraient le "
+                    f"plafond de {args.budget:.2f} $")
+            res[nom] = {}
+            continue
         res[nom] = lancer(nom)
 
     # 6. Appréciations du corpus, à la grille du corrigé ; 2026-S45, à la grille du plan
