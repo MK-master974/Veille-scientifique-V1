@@ -124,6 +124,44 @@ renvois numérotés du tableau ne désignaient pas les études nommées sur la l
 écrits l'emportent ; une ligne dont rien ne concorde est écartée) ; dans une autre, chaque étude
 occupait un bloc de lignes.
 
+## Les cas « qualité », sur des textes lisibles
+
+`corpus/qualite_lisible.json` complète `corpus/qualite.json`, dont presque aucun article n'a de
+texte intégral ouvert. Il réunit 25 articles sous licence CC BY, avec le jugement déjà porté par
+les auteurs d'une revue elle-même sous licence CC BY :
+
+| Outil | Revue source | Articles | Corrigé |
+| --- | --- | --- | --- |
+| QUADAS-2 | PMID 37444127, dépistage de la fragilité aux urgences (variante QUADAS-C) | 2 études diagnostiques | 4 domaines de risque de biais, 3 d'applicabilité |
+| QUADAS-2 | PMID 39367147, logiciels de détection de fractures | 5 études diagnostiques | 3 domaines de risque de biais sur 4, 3 d'applicabilité |
+| RoB 2 | PMID 34006560, rééducation après ligamentoplastie | 2 essais | 5 domaines et jugement global, pour un critère de proprioception |
+| AMSTAR 2 | PMID 39026375, exercices traditionnels chinois et arthrose du genou | 6 revues | 16 questions et confiance globale |
+| AMSTAR 2 | PMID 42643227, glucosamine et arthrose du genou | 2 revues | 16 questions et confiance globale |
+| AMSTAR 2 | PMID 42947838, exercice et maladie de Parkinson | 4 revues | Confiance globale |
+| AMSTAR 2 | PMID 40943700, exercice et lombalgie | 4 revues | Confiance globale |
+
+Répartition des 16 revues : 8 « très faible », 4 « faible », 4 « modérée », aucune « élevée ».
+Les lignes ont été lues sans IA par le workflow « Corpus, chiffres relevés ». Le corrigé n'est pas
+relu par un humain.
+
+## Le banc de l'appréciation
+
+`banc_appreciation.py` mesure l'appréciation méthodologique (bloc « appreciation » de la fiche v2)
+et la catégorie d'importance.
+
+- **Deux niveaux d'accès** : chaque article est apprécié à partir de son résumé, puis de son texte
+  intégral s'il est sous licence CC BY ou CC0.
+- **Écart en crans** : le jugement global, calculé par le code, est comparé à celui du corrigé sur
+  l'échelle de l'outil (trois crans pour RoB 2 et QUADAS-2, quatre pour AMSTAR 2).
+- **Seuils** fixés par le porteur du projet (VS-D39), sur le texte intégral : au moins 70 % des
+  jugements à un cran au plus du corrigé, et aucun jugement plus favorable de deux crans.
+- **Abstention** : sur résumé seul, la part des domaines notés « non évaluable ».
+- **Accord par domaine**, quand le corrigé le donne.
+- **Catégories d'importance** : répartition sur des publications réelles de 2026-S45. Aucun
+  corrigé n'existe pour l'importance : cette mesure décrit, elle ne note pas.
+- **Dix publications de 2026-S45**, appréciées sur leur texte intégral et classées, pour la
+  relecture par le porteur du projet.
+
 ## Les pièges
 
 | Cas | Ce qui est attendu |

@@ -31,6 +31,18 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Phase 1, séance 6 : appréciation méthodologique d'une publication par l'outil adapté à son type
+  d'étude (RoB 2, QUADAS-2, AMSTAR 2, AGREE II). `pipeline/appreciation.py` et la consigne
+  `appreciation.txt` jugent chaque domaine ; le code exige un passage vérifié pour tout jugement
+  favorable et calcule lui-même le jugement global. `pipeline/classement.py` et la consigne
+  `classement.txt` proposent une catégorie d'importance de 1 à 4, bornée par des règles. La veille
+  hebdomadaire n'utilise pas encore ces modules.
+- `banc/corpus/qualite_lisible.json` : 25 articles sous licence CC BY dont le texte intégral se
+  lit, avec le jugement de qualité déjà porté par une revue (16 revues, 7 études diagnostiques,
+  2 essais).
+- Banc d'essai de l'appréciation (`banc/banc_appreciation.py`) : écart en crans avec le corrigé,
+  accord par domaine, abstention sur résumé seul, catégories sur des publications de 2026-S45.
+  Seuils fixés avant la mesure (VS-D39).
 - Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
   diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
   déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la
