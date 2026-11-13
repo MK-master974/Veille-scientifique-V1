@@ -8,18 +8,25 @@ prix plein. Consignes : `appreciation.txt` (empreinte 74839e05) et `classement.t
 
 ## En bref
 
-- **Les deux seuils fixés avant la mesure (VS-D39) sont atteints** : 18 jugements globaux sur 25
-  à un cran au plus du corrigé (72 %, seuil 70 %), et aucun jugement plus favorable que le corrigé
-  de deux crans.
+- **Deux mesures, un résultat au niveau du seuil** (VS-D39, au moins 70 % des jugements globaux à
+  un cran au plus du corrigé) : 18 sur 25 à la première (72 %, atteint), 17 sur 25 à la seconde
+  (68 %, non atteint). Aucun jugement plus favorable que le corrigé de deux crans, dans les deux
+  mesures.
 - **Ce résultat ne prouve pas que le moteur distingue une bonne étude d'une mauvaise.** Répondre
-  toujours « le plus mauvais niveau » aurait donné le même score : 18 sur 25. Le moteur donne le
-  plus mauvais niveau à 21 articles sur 25.
+  toujours « le plus mauvais niveau » aurait donné 18 sur 25. Le moteur donne le plus mauvais
+  niveau à 21 articles sur 25, puis à 22.
+- **L'IA ne répond pas deux fois la même chose** : sur les 10 articles dont le texte était
+  identique d'une mesure à l'autre, 11 jugements par domaine sur 122 changent (9 %), et un article
+  change de jugement global.
+- **Le défaut de lecture des déclarations est corrigé** (VS-D40) : 7 des 9 revues concernées
+  obtiennent maintenant « oui » à la question 16. Le score global n'en profite pas.
 - **Le moteur ne se trompe pas dans le sens dangereux** : aucun jugement global plus favorable
   que le corrigé de deux crans, et deux plus favorables d'un cran.
-- **Le contrôle du code tient** : 2 refus pour 315 domaines jugés, aucune réponse illisible.
+- **Le contrôle du code tient** : 2 refus pour 315 domaines jugés, puis 3, aucune réponse
+  illisible.
 - **L'étiquette candidate (VS-D14) n'est pas utilisable telle quelle** : elle donnerait
   « préliminaire » à 9 des 10 publications réelles appréciées, et ne dirait rien de la dixième.
-- **Coût : 0,95 $** sur l'enveloppe de 2,43 $ (VS-D38).
+- **Coût : 1,38 $** sur l'enveloppe de 2,43 $ (VS-D38).
 
 ## Ce qui est mesuré
 
@@ -39,7 +46,11 @@ en crans sur l'échelle de l'outil.
 | --- | --- | --- |
 | 43363536857 | Lecture des textes, sans IA : 25 textes intégraux lus, 10 publications de 2026-S45 retenues, estimation 1,78 $ | 0 $ |
 | 43364297944 | Essai court : un article par outil, deux classements | 0,07 $ |
-| 43364759666 | Mesure complète | 0,88 $ |
+| 43364759666 | Première mesure, complète | 0,88 $ |
+| 43370197937 | Vérification de la nouvelle lecture, sans IA | 0 $ |
+| 43370405955 | Seconde mesure, texte intégral seul | 0,43 $ |
+
+Les sections qui suivent décrivent la première mesure. La seconde a sa section plus bas.
 
 ## Résultat sur texte intégral
 
@@ -166,6 +177,77 @@ Les deux jugements rendus (PMID 31569689 et 34298491) le sont parce qu'un seul d
 | Refus du contrôle | 2 : un jugement favorable dont le passage est introuvable, une certitude GRADE sans passage qui la nomme | 0 |
 | Alertes de l'IA | 0 | 0 |
 
+## Seconde mesure, après correction de la lecture (VS-D40)
+
+Décision du porteur du projet au point d'arrêt : corriger la lecture des déclarations placées hors
+du corps de l'article, puis remesurer sur texte intégral. Son avis, noté tel quel : « garde en
+tête que je trouve tes avis parfois trop sévère ». La consigne de l'IA n'a pas été modifiée
+(empreinte 74839e05), pour mesurer l'effet de cette seule correction.
+
+**La correction.** `texte.document_jats` lit maintenant, sur demande, les déclarations de
+financement et de liens d'intérêts, les remerciements et les notes placés en tête ou en fin de
+fichier. Les références, les annexes et les adresses de correspondance ne sont pas lues.
+L'extraction ne demande pas cette lecture. Vérification sans IA (lancement 43370197937) : ces
+déclarations existent pour 15 des 25 articles du corpus.
+
+**Ce que la correction change, là où elle porte.** Question 16 d'AMSTAR 2, déclaration des
+conflits d'intérêts et du financement :
+
+| 16 revues | Première mesure | Seconde mesure |
+| --- | --- | --- |
+| Réponse « oui » | 4 | 12 |
+| Réponse « non » | 12 | 4 |
+| dont « ni financement ni conflits d'intérêts dans le texte fourni » | 9 | 0 |
+
+Sur les 9 revues où l'IA n'avait pas reçu ces déclarations, 7 obtiennent « oui » et citent la
+déclaration. Les 4 « non » qui restent disent qu'une seule des deux déclarations manque. L'accord
+avec le corrigé sur cette question ne s'améliore presque pas (2 sur 8, puis
+3 sur 8) : trois corrigés répondent « non » là où le moteur lit une déclaration.
+
+**Le résultat global ne s'améliore pas** (lancement 43370405955) :
+
+| Jugement global, 25 articles | Première mesure | Seconde mesure |
+| --- | --- | --- |
+| Identique au corrigé | 11 | 11 |
+| À un cran du corrigé | 7 | 6 |
+| Plus sévère de deux crans ou plus | 6 | 7 |
+| Plus favorable de deux crans ou plus | 0 | **0** |
+| Non évaluable | 1 | 1 |
+| **À un cran au plus** | 18 sur 25 (72 %) | **17 sur 25 (68 %)** |
+| Plus mauvais niveau de l'échelle donné à | 21 articles | 22 articles |
+| Articles bien notés par leur revue, reconnus à un cran près | 1 sur 7 | 0 sur 7 |
+| Domaines identiques au corrigé, AMSTAR 2 | 84 sur 128 | 80 sur 128 |
+| Domaines identiques au corrigé, QUADAS-2 | 13 sur 44 | 14 sur 44 |
+| Domaines identiques au corrigé, RoB 2 | 5 sur 10 | 6 sur 10 |
+| Refus du contrôle | 2 | 3 |
+
+**Seuils (VS-D39) : au moins 70 % à un cran au plus, non atteint à la seconde mesure ; aucun
+jugement plus favorable de deux crans, atteint.** Une réponse constante, « le plus mauvais
+niveau », obtient toujours 18 sur 25.
+
+**L'écart entre les deux mesures tient à un seul article, et au hasard de l'IA.** La revue
+PMID 36316416, notée « modérée » par le corrigé, passe de « faible » à « très faible ». Son texte
+était le même aux deux mesures : aucune déclaration n'y a été ajoutée. L'IA a répondu autrement à
+trois questions, dont deux critiques.
+
+**Stabilité, mesurée pour la première fois.** Dix articles avaient exactement le même texte et la
+même consigne aux deux mesures :
+
+| Outil | Articles au texte identique | Jugements par domaine qui changent |
+| --- | --- | --- |
+| AMSTAR 2 | 6 | 9 sur 96 |
+| QUADAS-2 | 3 | 1 sur 21 |
+| RoB 2 | 1 | 1 sur 5 |
+| Ensemble | 10 | **11 sur 122 (9 %)** |
+
+Avec AMSTAR 2, où deux « non » critiques suffisent pour « très faible », une réponse sur dix qui
+change suffit à faire changer le niveau d'un article. Un écart d'un article entre deux mesures ne
+veut donc rien dire : le résultat est au niveau du seuil, ni franchement au-dessus, ni franchement
+en dessous.
+
+Pour les 15 articles dont le texte a été complété, 24 jugements changent sur 193, dont 8 à la
+question 16. La part due à la nouvelle lecture et la part due au hasard ne sont pas séparées.
+
 ## Dix publications réelles de 2026-S45
 
 Dix publications de kinésithérapie sous licence CC BY, appréciées sur leur texte intégral et
@@ -232,8 +314,11 @@ pour l'importance : cette mesure décrit, elle ne note pas.
 | 43364297944, essai court | 0,07 $ |
 | 43364759666, mesure complète | 0,88 $ : résumé seul 0,25 $, texte intégral 0,43 $, dix publications de 2026-S45 0,15 $, trente classements 0,06 $ |
 
-Total : **0,95 $** sur l'enveloppe de 2,43 $ (VS-D38). Reste 1,48 $. L'estimation annoncée avant
-la mesure complète était de 1,78 $.
+| 43370197937, vérification sans IA | 0 $ |
+| 43370405955, seconde mesure | 0,43 $ : 25 articles sur texte intégral |
+
+Total : **1,38 $** sur l'enveloppe de 2,43 $ (VS-D38). Reste 1,05 $. Les estimations annoncées
+avant les deux mesures étaient de 1,78 $ et de 0,90 $ ; les coûts réels, de 0,88 $ et de 0,43 $.
 
 Coût par article : 0,007 $ sur résumé, 0,017 $ sur texte intégral, 0,002 $ pour un classement.
 
@@ -249,8 +334,11 @@ Coût par article : 0,007 $ sur résumé, 0,017 $ sur texte intégral, 0,002 $ p
 - **Aucun humain n'a relu** ni les corrigés, ni les appréciations.
 - **Le choix des articles n'est pas un tirage au sort** : il dépend des revues sources qui citent
   des études sous licence CC BY.
-- **Une seule mesure.** Aucune seconde mesure n'a vérifié la stabilité des jugements d'un
-  lancement à l'autre.
+- **Deux mesures seulement, et une IA instable** : 9 % des jugements par domaine changent quand
+  rien d'autre ne change. Les dix publications de 2026-S45 n'ont été appréciées qu'une fois, avec
+  l'ancienne lecture.
+- **Les annexes et les fichiers joints d'un article ne sont toujours pas lus** : une liste d'études
+  exclues ou une équation de recherche placée là reste invisible.
 - Les précisions du bloc « appreciation » (clés des domaines, valeurs, jugement de l'outil) ne
   sont pas inscrites dans `docs/FICHE_V2.md` : elles doivent d'abord être déclarées au dépôt de
   coordination.
@@ -264,9 +352,10 @@ Coût par article : 0,007 $ sur résumé, 0,017 $ sur texte intégral, 0,002 $ p
 2. **Relire les dix fiches** : dire si le moteur est trop sévère, ou si les corrigés sont trop
    indulgents.
 3. **Corriger le défaut de lecture** des déclarations de fin d'article, puis remesurer sur texte
-   intégral (environ 0,45 $, pris sur le reste de l'enveloppe). Ce changement touche
-   `pipeline/texte.py`, que l'extraction utilise aussi.
+   intégral : fait le 13 novembre 2026 (VS-D40), voir la section « Seconde mesure ».
 4. **Compléter le corpus avec des articles bien notés** avant de conclure sur la capacité du
    moteur à reconnaître une bonne étude.
-5. **Régler la consigne QUADAS-2 seulement après la relecture** : la régler sur les 7 études du
-   corpus, puis remesurer sur ces mêmes études, flatterait le score.
+5. **Régler la sévérité seulement après la relecture** : régler la consigne sur les articles du
+   corpus, puis remesurer sur ces mêmes articles, flatterait le score.
+6. **Réduire l'effet du hasard** avant toute bascule : par exemple apprécier chaque article deux
+   fois et ne garder un jugement que s'il est stable. Coût doublé ; non décidé.

@@ -57,6 +57,10 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   constante aurait obtenu le même score. Le jugement global et l'étiquette candidate ne sont pas
   branchés sur la veille. Dix publications de 2026-S45 appréciées et trente classées sont gardées
   dans `banc/resultats/2026-11-13-appreciation-s45.json`, sans passage d'article.
+- Seconde mesure de l'appréciation, après correction de la lecture des déclarations (VS-D40) :
+  7 des 9 revues concernées obtiennent maintenant la bonne lecture de leurs déclarations, mais le
+  score global passe de 18 à 17 jugements sur 25, sous le seuil de 70 %. L'écart tient à un
+  article au texte inchangé : 9 % des jugements par domaine changent d'un lancement à l'autre.
 - Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
   diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
   déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la

@@ -18,7 +18,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Quatre mesures faites : `resultats/2026-11-12-extraction.md` |
 | Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
 | Cas « qualité, articles lisibles en entier » : 16 revues (AMSTAR 2), 7 études diagnostiques (QUADAS-2), 2 essais (RoB 2) | Assemblés le 13 novembre 2026 : `corpus/qualite_lisible.json` |
-| Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Une mesure faite : `resultats/2026-11-13-appreciation.md` |
+| Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Deux mesures faites : `resultats/2026-11-13-appreciation.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -173,6 +173,12 @@ mais une réponse constante, « le plus mauvais niveau », aurait obtenu le mêm
 contient surtout des articles mal notés, et le moteur donne le plus mauvais niveau à 21 articles
 sur 25. Sur les 7 articles bien notés par leur revue, il n'en reconnaît qu'un. Le jugement global
 et l'étiquette candidate ne sont donc pas branchés sur la veille.
+
+**Seconde mesure, le même jour**, après correction de la lecture des déclarations (VS-D40) :
+17 jugements sur 25 à un cran au plus, sous le seuil de 70 %. L'écart tient à un seul article,
+dont le texte n'avait pas changé : sur les 10 articles au texte identique, 11 jugements par
+domaine sur 122 changent d'une mesure à l'autre. Le résultat est au niveau du seuil, et l'IA
+n'est pas stable.
 
 ## Les pièges
 
