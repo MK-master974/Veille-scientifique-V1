@@ -5,6 +5,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 
 ## Non publié
 
+### Corrigé
+- Registre : le retour sur les dix fiches venait d'une IA (ChatGPT), pas d'un comité d'experts. Correction tracée dans VS-D46 et en tête des deux comptes rendus, sans rien effacer (VS-D52).
+
 ### Modifié
 - Lecture d'un texte intégral (`pipeline/texte.py`) : sur demande, les déclarations placées hors
   du corps de l'article (financement, liens d'intérêts, remerciements, notes de fin) sont lues
