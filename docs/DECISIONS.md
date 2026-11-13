@@ -245,7 +245,7 @@ Décision du 14 novembre 2026, par questionnaire, au choix de la prochaine étap
 
 | Référence | Décision | Statut |
 | --- | --- | --- |
-| VS-D51 | Cas mixte du plan d'étude : une étude qui développe un modèle et évalue aussi un outil, un score ou des seuils déjà définis est classée « étude diagnostique » (grille QUADAS-2 pour cette évaluation). Mesure du plan seul, plafond 0,25 $ sur les 0,26 $ restants, sans nouvelle enveloppe | Validée (questionnaire) |
+| VS-D51 | Cas mixte du plan d'étude : une étude qui développe un modèle et évalue aussi un outil, un score ou des seuils déjà définis est classée « étude diagnostique » (grille QUADAS-2 pour cette évaluation). Mesure du plan seul, plafond 0,25 $ sur les 0,26 $ restants, sans nouvelle enveloppe | Validée (questionnaire), réalisée : 0,16 $ ; 24 articles sur 25 du corpus, 7 études hors corpus sur 7 (plus indépendantes de la règle), 10 fiches sur 10. Total des séances 6 et 7 : 2,33 $ sur 2,43 $ |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
