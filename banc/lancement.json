@@ -114,6 +114,14 @@
    "raison": "Séance 6, suite (VS-D40) : vérifier sans IA que les déclarations placées hors du corps de l'article (financement, liens d'intérêts) sont maintenant lues pour les 25 articles du corpus « qualité », et estimer le coût d'une seconde mesure sur texte intégral seul.",
    "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer (VS-D40). Ce lancement n'appelle pas l'IA : aucun coût.",
    "budget_usd": 1.48
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "niveaux": "integral",
+   "raison": "Séance 6, seconde mesure (VS-D40) : appréciation des 25 articles du corpus « qualité » sur texte intégral, avec les déclarations placées hors du corps de l'article. Consigne inchangée (74839e05), pour mesurer l'effet de cette seule correction. Le lancement sans IA 43370197937 lit ces déclarations pour 15 articles sur 25 et estime le coût à 0,90 $ ; la première mesure du même niveau avait coûté 0,43 $.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer, sur le reste de l'enveloppe (VS-D40). Dépensé avant ce lancement : 0,95 $ sur 2,43 $.",
+   "budget_usd": 1.0
   }
  ]
 }
