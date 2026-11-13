@@ -339,9 +339,9 @@ Coût par article : 0,007 $ sur résumé, 0,017 $ sur texte intégral, 0,002 $ p
   l'ancienne lecture.
 - **Les annexes et les fichiers joints d'un article ne sont toujours pas lus** : une liste d'études
   exclues ou une équation de recherche placée là reste invisible.
-- Les précisions du bloc « appreciation » (clés des domaines, valeurs, jugement de l'outil) ne
-  sont pas inscrites dans `docs/FICHE_V2.md` : elles doivent d'abord être déclarées au dépôt de
-  coordination.
+- Les précisions du bloc « appreciation » (clés des domaines, valeurs, jugement de l'outil) ont
+  été déclarées au dépôt de coordination (CHG-2026-0009), puis inscrites dans `docs/FICHE_V2.md`.
+  La déclaration est à l'état « proposé » : le portail et Évalys n'ont pas encore répondu.
 
 ## Suite proposée
 

@@ -156,15 +156,25 @@ qui ne sont pas publiées.
 | Champ | Contenu |
 | --- | --- |
 | `outil` | `rob2`, `robins_i`, `amstar2`, `quadas2`, `agree2`, `autre` ou `aucun` |
-| `jugement` | Qualité méthodologique : `elevee`, `moyenne`, `faible` ou `non_evaluable` |
-| `domaines` | Jugement par domaine de l'outil, avec sa justification et sa source |
+| `jugement` | Qualité méthodologique : `elevee`, `moyenne`, `faible` ou `non_evaluable`. Déduite de `jugement_outil` |
+| `jugement_outil` | Jugement global dans les mots de l'outil, calculé par le code. RoB 2 : `faible`, `quelques_reserves`, `eleve`. QUADAS-2 : `faible`, `incertain`, `eleve`. AMSTAR 2 : `elevee`, `moderee`, `faible`, `tres_faible`. AGREE II : `elevee`, `moyenne`, `faible`. Ou `non_evaluable` |
+| `domaines` | Liste. Pour chaque domaine de l'outil : `domaine` (clé prise dans la liste fermée de l'outil), `jugement` (valeurs de l'outil, `non_evaluable`, ou `sans_objet` pour les trois questions d'AMSTAR 2 réservées aux méta-analyses), `justification`, `source` (`emplacement`, `passage`) |
 | `precision_statistique` | Intervalles de confiance et taille d'effet, seulement s'ils figurent dans l'article ; aucun calcul inventé |
 | `grade_rapporte` | Certitude GRADE telle que les auteurs la donnent ; `null` sinon. Jamais calculée pour une étude isolée |
 | `etiquette` | Étiquette de façade : `solide`, `modere`, `preliminaire` ou `non_evaluable` (VS-D14) |
 | `justification_etiquette` | Une phrase |
 
 `non_evaluable` signifie « ce qui a été lu ne permet pas de juger ». Ce n'est pas une preuve
-faible. La règle qui attribue l'étiquette est réglée et mesurée au banc d'essai en séance 6.
+faible.
+
+Domaines : 5 pour RoB 2, 7 pour QUADAS-2 (4 de risque de biais, 3 d'applicabilité), 16 pour
+AMSTAR 2, 6 pour AGREE II. Leurs clés sont dans `pipeline/appreciation.py`. Ces trois précisions
+(`jugement_outil`, forme de `domaines`, listes fermées) ont été déclarées au dépôt de coordination
+avant d'être inscrites ici (CHG-2026-0009).
+
+La règle qui attribue l'étiquette a été mesurée au banc d'essai en séance 6 : elle reste
+candidate, et sa décision est reportée (VS-D41). Le jugement global n'est pas encore assez fiable
+pour être publié : voir [les résultats](../banc/resultats/2026-11-13-appreciation.md).
 
 ### `synthese` (IA)
 
@@ -289,7 +299,7 @@ sont montrés.
         "source": { "emplacement": "résumé", "passage": null } }
     ]
   },
-  "appreciation": { "outil": "amstar2", "jugement": "non_evaluable",
+  "appreciation": { "outil": "amstar2", "jugement": "non_evaluable", "jugement_outil": "non_evaluable",
                     "grade_rapporte": null, "etiquette": "non_evaluable" },
   "synthese": {
     "titre_fr": "Efficacité de l’entraînement neuromusculaire dans la rééducation de l’arthrose du genou : revue systématique et méta-analyse d’essais randomisés",
@@ -308,6 +318,6 @@ sont montrés.
 
 - Cahier des charges de Veille Santé, chapitres 5.3, 5.4, 5.8, 7.5, 9, 26.1 à 26.3, 26.9 et 29.3.
 - Résultats du banc d'essai : [../banc/resultats/](../banc/resultats/).
-- Déclarations au dépôt de coordination : CHG-2026-0004 (format) et CHG-2026-0007 (précisions du
-  bloc `extraction`).
+- Déclarations au dépôt de coordination : CHG-2026-0004 (format), CHG-2026-0007 (précisions du
+  bloc `extraction`) et CHG-2026-0009 (précisions du bloc `appreciation`).
 - Contrat `vs-evalys-connaissance` du dépôt de coordination, version 0 (brouillon).

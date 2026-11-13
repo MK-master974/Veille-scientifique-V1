@@ -14,6 +14,9 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   (VS-D40).
 - Banc d'essai de l'appréciation : il peut ne mesurer que le texte intégral (« niveaux ») et
   rejouer l'ancienne lecture (« sans_declarations »).
+- `docs/FICHE_V2.md`, bloc « appreciation » : trois précisions, déclarées au dépôt de
+  coordination avant d'être inscrites (CHG-2026-0009). Un champ de plus, `jugement_outil` ; la
+  forme de `domaines` ; la liste fermée des domaines de chaque outil. Aucun champ retiré.
 - Banc d'essai de l'extraction : il peut ne mesurer qu'une partie du corpus (« parties » : tout,
   cas mesurés depuis la séance 5, ou chiffres relevés). Son plafond fixe passe de 2 $ à 3 $ par
   lancement, parce que le corpus grossit (VS-D33).
