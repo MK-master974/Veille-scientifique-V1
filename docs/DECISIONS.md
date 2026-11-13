@@ -249,7 +249,8 @@ Décision du 14 novembre 2026, par questionnaire, au choix de la prochaine étap
 
 | Référence | Décision | Statut |
 | --- | --- | --- |
-| VS-D52 | Relecture des fiches : le porteur du projet relit lui-même 3 ou 4 fiches de son domaine sur la page de relecture, seul avis humain disponible. Un avis d'IA (ChatGPT ou autre) peut servir de second regard, inscrit comme tel, jamais comme une validation | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D52 | Relecture des fiches : le porteur du projet relit lui-même 3 ou 4 fiches de son domaine sur la page de relecture, seul avis humain disponible. Un avis d'IA (ChatGPT ou autre) peut servir de second regard, inscrit comme tel, jamais comme une validation | Remplacée par VS-D53 le 13 novembre 2026 |
+| VS-D53 | Le porteur du projet ne relit pas les appréciations : il dit ne pas avoir les compétences pour en juger et se fie à deux avis d'IA, celui de ChatGPT et celui de la session de développement (Claude). Conséquences, dites au porteur du projet : aucune appréciation n'est validée par un humain ; la relecture par la session est un peu indépendante du moteur (autre fournisseur d'IA), celle de ChatGPT ne l'est pas ; une appréciation publiée devra porter la mention « appréciation automatique, non relue par un professionnel » | Validée le 13 novembre 2026 (message du porteur du projet) |
 
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
