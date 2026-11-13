@@ -1,5 +1,7 @@
 # Appréciation par outil et catégories d'importance — 13 novembre 2026
 
+> **Correction du 13 novembre 2026** : le « comité d'experts » cité dans ce document était en fait une IA (ChatGPT), d'après le porteur du projet. Le texte est gardé tel qu'écrit ; lire « avis d'une IA » partout où il est écrit « comité » (VS-D46, VS-D52).
+
 Séance 6 de la phase 1 (VS-D37) : appréciation méthodologique d'une publication par l'outil adapté
 à son type d'étude, et catégorie d'importance de 1 à 4. Rien n'est publié et la veille
 hebdomadaire n'est pas concernée : les deux modules ne sont pas appelés par elle. Modèle : celui de
