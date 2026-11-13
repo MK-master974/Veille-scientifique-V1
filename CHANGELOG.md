@@ -42,6 +42,14 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
+  (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
+  code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
+  modèle de prédiction, revue descriptive…), la réponse est « aucune grille applicable », avec le
+  nom de la grille qui conviendrait. Pour AMSTAR 2, « non » exige un passage, un silence donne
+  « non rapporté », et le jugement global s'accompagne d'une fourchette. Un champ « nature du
+  jugement » dit ce que mesure l'axe qualité. Déclaré au dépôt de coordination (CHG-2026-0010).
+  Plus d'appréciation sur résumé seul. Pas encore appelé par la veille.
 - Phase 1, séance 6 : appréciation méthodologique d'une publication par l'outil adapté à son type
   d'étude (RoB 2, QUADAS-2, AMSTAR 2, AGREE II). `pipeline/appreciation.py` et la consigne
   `appreciation.txt` jugent chaque domaine ; le code exige un passage vérifié pour tout jugement

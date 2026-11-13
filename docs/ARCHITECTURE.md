@@ -48,10 +48,11 @@ pas du nombre de lecteurs.
 | `pipeline/acces.py` | Recherche du texte intégral légal, licence et niveau d'accès. Pas encore appelé par la veille |
 | `pipeline/texte.py` | Lecture d'une publication en blocs repérés (résumé, sections, tableaux, figures ; sur demande, déclarations placées hors du corps de l'article) et recherche d'un passage mot pour mot. Pas encore appelé par la veille |
 | `pipeline/extraction.py` | Extraction des données d'une publication et contrôle de chaque donnée par le code. Pas encore appelé par la veille |
-| `pipeline/appreciation.py` | Appréciation méthodologique par l'outil adapté au type d'étude ; jugement global calculé par le code. Pas encore appelé par la veille |
+| `pipeline/plan_etude.py` | Plan réel d'une publication, établi avant le choix de la grille : liste fermée, passage vérifié par le code, grille déduite par une table. Pas encore appelé par la veille |
+| `pipeline/appreciation.py` | Appréciation méthodologique par l'outil adapté au plan d'étude ; jugement global et fourchette calculés par le code. Pas encore appelé par la veille |
 | `pipeline/classement.py` | Catégorie d'importance de 1 à 4, justifiée et bornée par des règles. Pas encore appelé par la veille |
 | `pipeline/catalogue.json` | Professions et sous-champs |
-| `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` ; `extraction.txt`, `appreciation.txt` et `classement.txt` pour la future fiche v2 |
+| `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` ; `extraction.txt`, `plan_etude.txt`, `appreciation.txt` et `classement.txt` pour la future fiche v2 |
 | `site/index.html`, `app.js`, `styles.css` | Application web, sans dépendance |
 | `site/sw.js` | Service worker : lecture hors ligne et mises à jour |
 | `site/manifest.webmanifest`, icônes | Installation sur l'écran d'accueil |
@@ -264,8 +265,18 @@ Modules de la phase 1, séance 6. **La veille hebdomadaire ne les appelle pas** 
 bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont mesurés par
 `banc/banc_appreciation.py`.
 
-- **Un outil par type d'étude** : RoB 2 pour un essai randomisé, QUADAS-2 pour une étude
-  diagnostique, AMSTAR 2 pour une revue systématique ou une méta-analyse, AGREE II pour une
+- **Le plan d'abord** (`plan_etude.py`, séance 7) : l'IA lit la méthode, choisit un plan dans une
+  liste fermée (essai randomisé, quasi randomisé, interventionnel non randomisé, observationnel,
+  diagnostique, modèle de prédiction, revue d'interventions, revue descriptive, recommandation,
+  autre) et cite le passage qui le montre ; le code le vérifie mot pour mot. Le titre et le type
+  donné par le tri ne décident pas : ils servent seulement à signaler un écart. Une table déduit
+  la grille du plan.
+- **Aucune grille applicable** quand le plan n'a pas de grille écrite (quasi randomisé,
+  non randomisé, modèle de prédiction, revue descriptive, observationnel) ou n'est pas établi : la
+  réponse est `outil: aucun` avec le nom de la grille qui conviendrait (`robins_i`, `probast`,
+  `robis`, `jbi`), jamais une note forcée. Aucune appréciation n'est faite sur résumé seul.
+- **Un outil par plan** : RoB 2 pour un essai randomisé, QUADAS-2 pour une étude
+  diagnostique, AMSTAR 2 pour une revue d'interventions, AGREE II pour une
   recommandation. L'IA reçoit la liste des domaines de l'outil et juge chacun, avec une phrase de
   justification et le passage qui fonde son jugement (consigne `appreciation.txt`).
 - **Contrôle par le code**, domaine par domaine :
@@ -275,6 +286,11 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
     sans passage vérifié devient aussi « non évaluable » ;
   - une valeur invalide devient « non évaluable » ; une justification qui contient un chiffre
     absent du texte lu est écartée.
+- **« Non rapporté » n'est pas « non »** : pour AMSTAR 2, « non » exige un passage qui montre que
+  le critère n'est pas rempli ; un texte silencieux donne « non rapporté ». Le code calcule une
+  **fourchette** du jugement global : le résultat si chaque domaine non évalué valait le pire, puis
+  le meilleur. Quand les deux diffèrent, le jugement est « non évaluable » et la fourchette dit ce
+  qui reste possible.
 - **Le jugement global est calculé par le code**, jamais repris de l'IA : le plus mauvais domaine
   l'emporte pour RoB 2 et QUADAS-2 ; pour AMSTAR 2, le niveau de confiance suit le nombre de
   faiblesses critiques. Il est ensuite ramené à la qualité de la fiche v2 (élevée, moyenne, faible,

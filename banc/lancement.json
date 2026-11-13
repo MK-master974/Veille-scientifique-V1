@@ -122,6 +122,15 @@
    "raison": "Séance 6, seconde mesure (VS-D40) : appréciation des 25 articles du corpus « qualité » sur texte intégral, avec les déclarations placées hors du corps de l'article. Consigne inchangée (74839e05), pour mesurer l'effet de cette seule correction. Le lancement sans IA 43370197937 lit ces déclarations pour 15 articles sur 25 et estime le coût à 0,90 $ ; la première mesure du même niveau avait coûté 0,43 $.",
    "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer, sur le reste de l'enveloppe (VS-D40). Dépensé avant ce lancement : 0,95 $ sur 2,43 $.",
    "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "sans_ia": true,
+   "raison": "Séance 7 (VS-D44) : lire sans IA les 25 textes du corpus « qualité » et les 10 publications de 2026-S45, et estimer le coût du cycle de mesure avec l'étape « plan d'étude » (un plan par article lu en entier, puis appréciation à la grille du corrigé pour le corpus et à la grille du plan pour 2026-S45).",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Ce lancement n'appelle pas l'IA : aucun coût.",
+   "budget_usd": 0.95
   }
  ]
 }

@@ -151,9 +151,16 @@ relu par un humain.
 `banc_appreciation.py` mesure l'appréciation méthodologique (bloc « appreciation » de la fiche v2)
 et la catégorie d'importance.
 
-- **Deux niveaux d'accès** : chaque article est apprécié à partir de son résumé, puis de son texte
-  intégral s'il est sous licence CC BY ou CC0. Une demande peut ne mesurer que le texte intégral
-  (`"niveaux": "integral"`).
+- **Texte intégral seul par défaut** (depuis la séance 7) : un article n'est apprécié que si son
+  texte intégral est sous licence CC BY ou CC0. `"niveaux": "tout"` rejoue aussi l'appréciation
+  sur résumé seul.
+- **Plan d'étude** (séance 7) : une requête par article lu en entier. Pour le corpus, la grille du
+  plan est comparée à celle des auteurs de la revue. Pour 2026-S45, la grille est choisie d'après
+  le plan ; sans grille applicable, aucune appréciation n'est demandée.
+- **Fourchette du jugement global** (séance 7) : le corrigé est-il dans la fourchette, et la
+  fourchette est-elle étroite ? Mesure descriptive, sans seuil : un seuil reste à fixer par le
+  porteur du projet. Les seuils de VS-D39 portent sur la lecture stricte (un domaine non évalué ou
+  non rapporté compte comme le pire jugement possible).
 - **Déclarations hors du corps de l'article** (financement, liens d'intérêts) : lues depuis le
   13 novembre 2026. `"sans_declarations": true` rejoue la lecture d'avant.
 - **Écart en crans** : le jugement global, calculé par le code, est comparé à celui du corrigé sur

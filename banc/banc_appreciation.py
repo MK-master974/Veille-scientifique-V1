@@ -1,6 +1,6 @@
 """Banc d'essai de l'appréciation méthodologique et de la catégorie d'importance.
 
-Phase 1, séance 6. Rien n'est publié et la veille hebdomadaire n'est pas concernée.
+Phase 1, séances 6 et 7. Rien n'est publié et la veille hebdomadaire n'est pas concernée.
 
 Mesures :
 1. Appréciation : chaque article du corpus « qualité » est apprécié par l'outil de son type
@@ -16,6 +16,12 @@ Mesures :
 5. Dix publications de 2026-S45 (kinésithérapie, licence ouverte) appréciées sur leur texte
    intégral et classées, pour la relecture par le porteur du projet.
 6. Coût réel par article.
+7. Séance 7 (VS-D44) : étape « plan d'étude » avant la grille. Corpus : la grille du plan est
+   comparée à celle des auteurs de la revue. 2026-S45 : la grille est choisie d'après le plan, et
+   « aucune grille applicable » remplace une note forcée. Le jugement global est donné aussi sous
+   forme de fourchette ; mesure descriptive, sans seuil. Les seuils de VS-D39 portent sur la lecture
+   stricte : tout domaine non évalué ou non rapporté compte comme le pire jugement possible.
+   Plus d'appréciation sur résumé seul, sauf demande (« --niveaux tout »).
 
 Aucun texte d'article n'est écrit dans le journal ni dans les résultats, hors courts passages
 exacts d'articles sous licence CC BY ou CC0, cités avec leur identifiant (VS-D15).
@@ -37,7 +43,7 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE))
 
-from pipeline import acces, appreciation, classement, ia, texte  # noqa: E402
+from pipeline import acces, appreciation, classement, ia, plan_etude, texte  # noqa: E402
 from pipeline.config import charger_config, charger_consigne  # noqa: E402
 from pipeline.extraction import version_consigne  # noqa: E402
 
@@ -52,7 +58,7 @@ SEUIL_UN_CRAN = 0.70
 NIVEAUX = ("resume", "integral")
 NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
 OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2"}
-SORTIE_ESTIMEE = {"resume": 1500, "integral": 4500, "classement": 700}
+SORTIE_ESTIMEE = {"plan": 400, "resume": 1500, "integral": 4500, "classement": 700}
 
 
 # --- Fonctions pures, testées sans réseau -----------------------------------------------------
@@ -107,6 +113,15 @@ def comparer(outil, obtenu, attendu):
     return {"etat": etat, "ecart": ecart}
 
 
+def comparer_fourchette(outil, fourchette, attendu):
+    """La fourchette (pire, meilleur) contient-elle le corrigé, et est-elle étroite (deux niveaux au plus) ?"""
+    echelle = appreciation.ECHELLES[outil]
+    if not fourchette or attendu not in echelle or fourchette["pire"] not in echelle or fourchette["meilleur"] not in echelle:
+        return {"contenu": None, "largeur": None, "etroit": None}
+    bas, haut = echelle.index(fourchette["pire"]), echelle.index(fourchette["meilleur"])
+    return {"contenu": bas <= echelle.index(attendu) <= haut, "largeur": haut - bas + 1, "etroit": haut - bas <= 1}
+
+
 def domaines_du_corrige(outil, corrige):
     """Corrigé par domaine, avec les clés du module d'appréciation : {clé: valeur}."""
     if outil == "rob2":
@@ -128,7 +143,8 @@ def accord_domaines(outil, app, corrige):
     lignes = [{"domaine": c, "attendu": v, "obtenu": obtenus.get(c, appreciation.NON_EVALUABLE)}
               for c, v in attendus.items()]
     return {"compares": len(lignes), "identiques": sum(1 for x in lignes if x["attendu"] == x["obtenu"]),
-            "non_evaluables": sum(1 for x in lignes if x["obtenu"] == appreciation.NON_EVALUABLE), "detail": lignes}
+            "non_evaluables": sum(1 for x in lignes if x["obtenu"] == appreciation.NON_EVALUABLE),
+            "non_rapportes": sum(1 for x in lignes if x["obtenu"] == appreciation.NON_RAPPORTE), "detail": lignes}
 
 
 def seuils(comparaisons):
@@ -167,8 +183,13 @@ def afficher_appreciation(titre, app, bilan):
     if app is None:
         print("  aucune appréciation lisible :", "; ".join(r["motif"] for r in bilan["refus"]))
         return
+    if app["outil"] == appreciation.AUCUN:
+        print(f"  aucune grille appliquée : {app['motif']}")
+        return
+    f = app.get("fourchette")
     print(f"  outil {app['outil']} | jugement de l'outil : {app['jugement_outil']} | qualité : {app['jugement']} | "
           f"étiquette candidate : {app['etiquette']}"
+          + (f" | fourchette : {f['pire']} à {f['meilleur']}" if f else "")
           + (f" | GRADE rapporté : {app['grade_rapporte']['valeur']}" if app["grade_rapporte"] else ""))
     for d in app["domaines"]:
         ou = f"  [{d['source']['emplacement']}]" if d["source"] else ""
@@ -178,6 +199,26 @@ def afficher_appreciation(titre, app, bilan):
         print(f"  REFUS {r['domaine']} : {r['motif']}")
     for x in bilan["ecarts"]:
         print(f"  écart {x['domaine']} : {x['nature']}")
+    if bilan["alerte_ia"]:
+        print(f"  alerte de l'IA : {bilan['alerte_ia']}")
+
+
+def afficher_plan(titre, plan, bilan):
+    print(f"\n--- {titre}")
+    if plan is None:
+        print("  plan illisible :", "; ".join(bilan["ecarts"]))
+        return
+    ou = f"  [{plan['source']['emplacement']}]" if plan["source"] else ""
+    print(f"  plan : {plan['plan']} | type du tri : {plan['type_tri']} | écart avec le tri : "
+          f"{'oui' if plan['ecart_avec_le_tri'] else 'non' if plan['ecart_avec_le_tri'] is False else 'sans objet'}{ou}")
+    if plan["justification"]:
+        print(f"  {plan['justification']}")
+    if plan["source"] and plan["source"]["passage"]:
+        print(f"      « {plan['source']['passage']} »")
+    if plan["incertitude"]:
+        print(f"  incertitude : {plan['incertitude']}")
+    for e in bilan["ecarts"]:
+        print(f"  écart : {e}")
     if bilan["alerte_ia"]:
         print(f"  alerte de l'IA : {bilan['alerte_ia']}")
 
@@ -192,8 +233,8 @@ def main(argv=None):
     p.add_argument("--classement", type=int, default=0, help="publications de 2026-S45 à classer en plus, sur résumé")
     p.add_argument("--limite", type=int, default=0, help="articles au plus par outil (0 : tous)")
     p.add_argument("--sans-ia", action="store_true", help="lit les textes et estime le coût, sans aucun appel à l'IA")
-    p.add_argument("--niveaux", choices=NIVEAUX_DEMANDES, default="tout",
-                   help="« integral » : pas d'appréciation sur résumé seul")
+    p.add_argument("--niveaux", choices=NIVEAUX_DEMANDES, default="integral",
+                   help="« integral » (défaut) : pas d'appréciation sur résumé seul ; « tout » : aussi sur résumé")
     p.add_argument("--sans-declarations", action="store_true",
                    help="lit le texte intégral sans les déclarations placées hors du corps (lecture d'avant le 13/11/2026)")
     args = p.parse_args(argv)
@@ -205,7 +246,8 @@ def main(argv=None):
     cfg = charger_config()
     prix = cfg["ia"]["prix_usd_par_million"]
     modele = cfg["ia"]["modele_redaction"]
-    consignes = {"appreciation": charger_consigne("appreciation"), "classement": charger_consigne("classement")}
+    consignes = {"appreciation": charger_consigne("appreciation"), "classement": charger_consigne("classement"),
+                 "plan_etude": charger_consigne("plan_etude")}
 
     # 1. Cas du corpus, limités par outil si demandé : ceux qui ont un texte lisible d'abord
     cas = charger_cas()
@@ -261,23 +303,35 @@ def main(argv=None):
         for x in s45:
             journal("  " + extraction_banc.structure(f"{x['ref']['id']} ({x['fiche']['type']})", x))
 
-    # 4. Requêtes et garde-fou budgétaire
-    demande = lambda ref, doc, type_etude, etape: appreciation.requete_appreciation(   # noqa: E731
-        ref, doc, consignes["appreciation"], type_etude, etape)
+    # 4. Étape « plan d'étude » : une requête par article lu en entier, puis garde-fou budgétaire
+    demande = lambda ref, doc, type_etude, etape, outil=None: appreciation.requete_appreciation(   # noqa: E731
+        ref, doc, consignes["appreciation"], type_etude, etape, outil)
+    demande_plan = lambda ref, doc, tri, etape: plan_etude.requete_plan(ref, doc, consignes["plan_etude"], tri, etape)  # noqa: E731
     reqs = {
-        "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"], "appreciation-resume")
-                   for c in cas] if args.niveaux == "tout" else [],
-        "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral") for c in cas if c["doc"]],
-        "s45": [demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45") for x in s45],
+        "plan": [demande_plan(refs[c["pmid"]], c["doc"], c["type_etude"], "plan-corpus") for c in cas if c["doc"]]
+                + [demande_plan(x["ref"], x["doc"], x["fiche"]["type"], "plan-s45") for x in s45],
+        "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"],
+                           "appreciation-resume", c["outil"]) for c in cas] if args.niveaux == "tout" else [],
+        "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral", c["outil"])
+                     for c in cas if c["doc"]],
+        "s45": [],     # construit après l'étape « plan d'étude » : la grille dépend du plan
         "classement": [classement.requete_classement(x["ref"], consignes["classement"], x["fiche"]["type"])
                        for x in a_classer],
     }
     reqs = {k: [r for r in v if r] for k, v in reqs.items()}
-    estime = (ia.estimer_cout(reqs["resume"], modele, prix, SORTIE_ESTIMEE["resume"], "direct")
-              + ia.estimer_cout(reqs["integral"] + reqs["s45"], modele, prix, SORTIE_ESTIMEE["integral"], "direct")
-              + ia.estimer_cout(reqs["classement"], modele, prix, SORTIE_ESTIMEE["classement"], "direct"))
-    journal(f"Coût estimé : {estime:.2f} $ (plafond {args.budget:.2f} $) — {len(reqs['resume'])} appréciations sur résumé, "
-            f"{len(reqs['integral'])} sur texte intégral, {len(reqs['s45'])} sur 2026-S45, {len(reqs['classement'])} classements")
+    # Borne haute avant tout appel : chaque publication de 2026-S45 serait appréciée avec la grille du tri.
+    s45_borne = [r for r in (demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45") for x in s45) if r]
+
+    def estimer(plan, resume, integral, classements):
+        return (ia.estimer_cout(plan, modele, prix, SORTIE_ESTIMEE["plan"], "direct")
+                + ia.estimer_cout(resume, modele, prix, SORTIE_ESTIMEE["resume"], "direct")
+                + ia.estimer_cout(integral, modele, prix, SORTIE_ESTIMEE["integral"], "direct")
+                + ia.estimer_cout(classements, modele, prix, SORTIE_ESTIMEE["classement"], "direct"))
+
+    estime = estimer(reqs["plan"], reqs["resume"], reqs["integral"] + s45_borne, reqs["classement"])
+    journal(f"Coût estimé : {estime:.2f} $ (plafond {args.budget:.2f} $) — {len(reqs['plan'])} plans d'étude, "
+            f"{len(reqs['resume'])} appréciations sur résumé, {len(reqs['integral'])} sur texte intégral, "
+            f"jusqu'à {len(s45_borne)} sur 2026-S45, {len(reqs['classement'])} classements")
     if estime > args.budget:
         journal("ARRÊT : estimation supérieure au plafond, aucun appel n'est fait.")
         return 2
@@ -294,39 +348,86 @@ def main(argv=None):
         journal(f"{nom} : {len(res)} réponses en {int(time.monotonic() - debut)} s")
         return res
 
-    def lire(res, etape, ref, doc, type_etude, ouvert):
+    def lire(res, etape, ref, doc, type_etude, ouvert, outil=None):
         reponse, usage = res.get(f"{etape}:{ref['id']}", (None, {}))
         usages[etape.split("-")[-1]].append(usage)
-        app, bilan = appreciation.lire_appreciation(reponse, doc, type_etude, publier_passages=ouvert)
+        app, bilan = appreciation.lire_appreciation(reponse, doc, type_etude, publier_passages=ouvert, outil=outil)
         if usage.get("erreur") or usage.get("fin") == "length":
             bilan["refus"].append({"domaine": "réponse", "motif": "réponse illisible : " +
                                    (usage.get("erreur") or "réponse coupée, plafond de sortie atteint")})
         return app, bilan
 
-    # 5. Appréciations du corpus, aux deux niveaux d'accès
-    res = {nom: lancer(nom) for nom in ("resume", "integral", "s45", "classement")}
+    def lire_le_plan(res, etape, ref, doc, tri):
+        reponse, usage = res.get(f"{etape}:{ref['id']}", (None, {}))
+        usages["plan"].append(usage)
+        plan, bilan = plan_etude.lire_plan(reponse, doc, tri, publier_passage=True)
+        if usage.get("erreur") or usage.get("fin") == "length":
+            bilan["ecarts"].append("réponse illisible : " + (usage.get("erreur") or "réponse coupée"))
+        return plan, bilan
+
+    # 5. Plan d'étude : corpus (grille comparée à celle du corrigé) et 2026-S45 (grille choisie d'après le plan)
+    res = {"plan": lancer("plan")}
+    plans = {c["id"]: lire_le_plan(res["plan"], "plan-corpus", refs[c["pmid"]], c["doc"], c["type_etude"])
+             for c in cas if c["doc"]}
+    plans_s45 = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-s45", x["ref"], x["doc"], x["fiche"]["type"]) for x in s45}
+    routes = {}
+    for x in s45:
+        plan = plans_s45[x["ref"]["id"]][0]
+        routes[x["ref"]["id"]] = plan_etude.choisir_grille(plan["plan"] if plan else plan_etude.NON_DETERMINE)
+    reqs["s45"] = [r for r in (demande(x["ref"], x["doc"], x["fiche"]["type"], "appreciation-s45", routes[x["ref"]["id"]][0])
+                               for x in s45 if routes[x["ref"]["id"]][0]) if r]
+    deja = ia.cout_reel([u for u in usages["plan"] if u], modele, prix, "direct")
+    restant = estimer([], reqs["resume"], reqs["integral"] + reqs["s45"], reqs["classement"])
+    journal(f"Plans d'étude lus ({deja:.3f} $) ; {len(reqs['s45'])} publications de 2026-S45 sur {len(s45)} ont une grille ; "
+            f"reste à dépenser au plus {restant:.2f} $")
+    if deja + restant > args.budget:
+        journal("ARRÊT : le plafond serait dépassé, aucune appréciation n'est lancée.")
+        return 2
+    for nom in ("resume", "integral", "s45", "classement"):
+        res[nom] = lancer(nom)
+
+    # 6. Appréciations du corpus, à la grille du corrigé ; 2026-S45, à la grille du plan
     lignes = []
     for c in cas:
         ref = refs[c["pmid"]]
         attendu = corrige_global(c["outil"], c["corrige"])
         ligne = {"pmid": c["pmid"], "outil": c["outil"], "reference": c["reference"], "attendu": attendu,
                  "texte_integral": bool(c["doc"])}
+        if c["doc"]:
+            plan, bilan_plan = plans[c["id"]]
+            grille = plan_etude.choisir_grille(plan["plan"])[0] if plan else None
+            ligne["plan_etude"] = {"plan": plan["plan"] if plan else None, "grille_du_plan": grille,
+                                   "grille_du_corrige_retrouvee": grille == c["outil"],
+                                   "ecart_avec_le_tri": plan["ecart_avec_le_tri"] if plan else None,
+                                   "detail": plan, "bilan": bilan_plan}
         for niveau, doc in (("resume", texte.document_resume(ref)), ("integral", c["doc"])):
             if doc is None or (niveau == "resume" and args.niveaux != "tout"):
                 continue
-            app, bilan = lire(res[niveau], f"appreciation-{niveau}", ref, doc, c["type_etude"], niveau == "integral")
-            obtenu = app["jugement_outil"] if app else None
-            ligne[niveau] = {"obtenu": obtenu, **comparer(c["outil"], obtenu, attendu),
+            app, bilan = lire(res[niveau], f"appreciation-{niveau}", ref, doc, c["type_etude"], niveau == "integral", c["outil"])
+            f = (app or {}).get("fourchette")
+            # Lecture stricte sur texte intégral : un domaine non évalué compte comme le pire jugement possible.
+            obtenu = f["pire"] if (f and niveau == "integral") else (app["jugement_outil"] if app else None)
+            ligne[niveau] = {"obtenu": obtenu, "jugement_outil": app["jugement_outil"] if app else None, "fourchette": f,
+                             **comparer(c["outil"], obtenu, attendu),
+                             **(comparer_fourchette(c["outil"], f, attendu) if niveau == "integral" else {}),
                              "domaines": accord_domaines(c["outil"], app, c["corrige"]),
                              "appreciation": app, "bilan": bilan}
         lignes.append(ligne)
 
-    # 6. Dix publications de 2026-S45 et classements
+    # 7. Dix publications de 2026-S45 et classements
     fiches_s45 = []
     for x in s45:
-        app, bilan = lire(res["s45"], "appreciation-s45", x["ref"], x["doc"], x["fiche"]["type"], True)
+        plan, bilan_plan = plans_s45[x["ref"]["id"]]
+        outil, manquante, motif = routes[x["ref"]["id"]]
+        if outil:
+            app, bilan = lire(res["s45"], "appreciation-s45", x["ref"], x["doc"], x["fiche"]["type"], True, outil)
+        else:
+            app = appreciation.sans_grille(plan, motif, manquante)
+            bilan = {"lisible": True, "outil": appreciation.AUCUN, "proposes": 0, "gardes": 0, "refus": [], "ecarts": [],
+                     "alerte_ia": None}
         fiches_s45.append({"pmid": x["ref"]["pmid"], "titre": x["ref"]["titre"], "type": x["fiche"]["type"],
-                           "pmcid": x["pmcid"], "licence": x["licence"], "appreciation": app, "bilan": bilan})
+                           "pmcid": x["pmcid"], "licence": x["licence"], "plan_etude": plan, "bilan_plan": bilan_plan,
+                           "grille": outil, "grille_manquante": manquante, "appreciation": app, "bilan": bilan})
     classes = []
     for x in a_classer:
         reponse, usage = res["classement"].get(f"classement:{x['ref']['id']}", (None, {}))
@@ -336,7 +437,7 @@ def main(argv=None):
                         "verdict_actuel": x["fiche"].get("verdict"), "etiquette_actuelle": x["fiche"].get("etiquette"),
                         "classement": c, "bilan": bilan})
 
-    # 7. Résumé
+    # 8. Résumé
     cout = {k: round(ia.cout_reel([u for u in us if u], modele, prix, "direct"), 4) for k, us in usages.items()}
     integral = [x["integral"] for x in lignes if "integral" in x]
     sur_resume = [x["resume"] for x in lignes if "resume" in x]
@@ -347,17 +448,42 @@ def main(argv=None):
                             "domaines_identiques": f"{sum(d['domaines']['identiques'] for d in du)} sur "
                                                    f"{sum(d['domaines']['compares'] for d in du)}"}
     domaines_resume = [d for x in sur_resume for d in (x["appreciation"] or {}).get("domaines", [])]
+    plans_corpus = [x["plan_etude"] for x in lignes if "plan_etude" in x]
+    avec_fourchette = [x for x in lignes if "integral" in x and x["integral"].get("contenu") is not None]
+    bien_notes = [x for x in avec_fourchette if appreciation.ECHELLES[x["outil"]].index(x["attendu"]) >= 2]
+
+    def stats_fourchette(xs):
+        n = len(xs)
+        return {"articles": n, "corrige_dans_la_fourchette": sum(1 for x in xs if x["integral"]["contenu"]),
+                "fourchette_etroite": sum(1 for x in xs if x["integral"]["etroit"]),
+                "dans_la_fourchette_et_etroite": sum(1 for x in xs if x["integral"]["contenu"] and x["integral"]["etroit"]),
+                "largeur_moyenne": round(sum(x["integral"]["largeur"] for x in xs) / n, 2) if n else None}
+
     resume = {
         "date": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "lecture": {"niveaux": args.niveaux, "declarations_hors_du_corps": declarations},
         "chaine": {"modele": modele, "effort": cfg["ia"].get("effort_raisonnement"), "mode": "direct",
+                   "consigne_plan_etude": version_consigne(consignes["plan_etude"]),
                    "consigne_appreciation": version_consigne(consignes["appreciation"]),
                    "consigne_classement": version_consigne(consignes["classement"])},
         "cout_usd": {"total": round(sum(cout.values()), 4), **cout,
                      "par_article": {k: round(cout[k] / len(us), 4) for k, us in usages.items() if us}},
         "corpus": {"articles": len(lignes), "avec_texte_integral": len(integral), "absents_de_pubmed": absents},
+        "plan_etude": {
+            "corpus": {"articles": len(plans_corpus),
+                       "grille_du_corrige_retrouvee": sum(1 for p in plans_corpus if p["grille_du_corrige_retrouvee"]),
+                       "plan_non_determine": sum(1 for p in plans_corpus if p["plan"] in (None, plan_etude.NON_DETERMINE)),
+                       "ecarts_avec_le_tri": sum(1 for p in plans_corpus if p["ecart_avec_le_tri"]),
+                       "repartition": repartition(p["plan"] for p in plans_corpus)},
+            "s45": {"articles": len(fiches_s45), "plans": repartition((f["plan_etude"] or {}).get("plan") for f in fiches_s45),
+                    "grilles": repartition(f["grille"] or "aucune" for f in fiches_s45),
+                    "ecarts_avec_le_tri": sum(1 for f in fiches_s45 if (f["plan_etude"] or {}).get("ecart_avec_le_tri"))}},
         "texte_integral": {"etats": repartition(d["etat"] for d in integral),
-                           "jugements_obtenus": repartition(d["obtenu"] for d in integral), "par_outil": par_outil},
+                           "jugements_obtenus": repartition(d["obtenu"] for d in integral), "par_outil": par_outil,
+                           "lecture_stricte": "un domaine non évalué ou non rapporté compte comme le pire jugement possible",
+                           "jugements_de_l_outil": repartition(d["jugement_outil"] for d in integral)},
+        "fourchettes": {**stats_fourchette(avec_fourchette), "articles_bien_notes": stats_fourchette(bien_notes),
+                        "note": "mesure descriptive, sans seuil : un seuil reste à fixer par le porteur du projet"},
         "resume_seul": {"etats": repartition(d["etat"] for d in sur_resume),
                         "domaines_non_evaluables": f"{sum(1 for d in domaines_resume if d['jugement'] == appreciation.NON_EVALUABLE)} "
                                                    f"sur {len(domaines_resume)}"},
@@ -378,12 +504,28 @@ def main(argv=None):
 
     print("\n===== RÉSUMÉ =====")
     print(json.dumps(resume, ensure_ascii=False, indent=1))
+    print("\n===== PLAN D'ÉTUDE : CORPUS, GRILLE DU PLAN CONTRE GRILLE DU CORRIGÉ =====")
+    for x in lignes:
+        p = x.get("plan_etude")
+        if p:
+            print(f"  PMID {x['pmid']} | grille du corrigé : {x['outil']} | plan : {p['plan']} | grille du plan : "
+                  f"{p['grille_du_plan'] or 'aucune'} | {'retrouvée' if p['grille_du_corrige_retrouvee'] else 'DIFFÉRENTE'} | "
+                  f"écart avec le tri : {p['ecart_avec_le_tri']}")
+    print("\n===== PLAN D'ÉTUDE : CORPUS, DÉTAIL DES PLANS DIFFÉRENTS =====")
+    for x in lignes:
+        p = x.get("plan_etude")
+        if p and not p["grille_du_corrige_retrouvee"]:
+            afficher_plan(f"PMID {x['pmid']} — {x['reference']} — grille du corrigé : {x['outil']}", p["detail"], p["bilan"])
     print("\n===== CORPUS : JUGEMENT GLOBAL, OBTENU CONTRE CORRIGÉ =====")
     for x in lignes:
         morceaux = [f"{niveau} : {x[niveau]['obtenu']} → {x[niveau]['etat']}" for niveau in NIVEAUX if niveau in x]
         dom = x.get("integral", x.get("resume", {})).get("domaines", {})
+        f = x.get("integral", {}).get("fourchette")
         print(f"  PMID {x['pmid']} | {x['outil']} | corrigé : {x['attendu']} | " + " | ".join(morceaux)
-              + (f" | domaines identiques : {dom['identiques']} sur {dom['compares']}" if dom.get("compares") else ""))
+              + (f" | fourchette : {f['pire']} à {f['meilleur']} | corrigé dans la fourchette : "
+                 f"{x['integral']['contenu']} | largeur : {x['integral']['largeur']}" if f else "")
+              + (f" | domaines identiques : {dom['identiques']} sur {dom['compares']}"
+                 f" dont non rapportés : {dom['non_rapportes']}" if dom.get("compares") else ""))
     print("\n===== CORPUS : DOMAINES EN DÉSACCORD, TEXTE INTÉGRAL =====")
     for x in lignes:
         for d in x.get("integral", {}).get("domaines", {}).get("detail", []):
@@ -394,20 +536,25 @@ def main(argv=None):
         if "integral" in x:
             afficher_appreciation(f"PMID {x['pmid']} — {x['reference']} — corrigé : {x['attendu']}",
                                   x["integral"]["appreciation"], x["integral"]["bilan"])
+    print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : PLAN D'ÉTUDE =====")
+    for f in fiches_s45:
+        afficher_plan(f"PMID {f['pmid']}, {f['pmcid']}, licence {f['licence']}, {f['type']} — {f['titre'][:110]}",
+                      f["plan_etude"], f["bilan_plan"])
     print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : APPRÉCIATION SUR TEXTE INTÉGRAL =====")
     for f in fiches_s45:
         afficher_appreciation(f"PMID {f['pmid']}, {f['pmcid']}, licence {f['licence']}, {f['type']} — {f['titre'][:110]}",
                               f["appreciation"], f["bilan"])
-    print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : CATÉGORIE D'IMPORTANCE (résumé seul) =====")
-    for c in classes:
-        k = c["classement"]
-        if k is None:
-            print(f"  PMID {c['pmid']} | illisible : {c['bilan']['ecarts']}")
-            continue
-        print(f"  PMID {c['pmid']} | {c['type']} | catégorie {k['categorie']} ({k['libelle']}) | sens : {k['sens_pratique']} | "
-              f"verdict actuel : {c['verdict_actuel']} | {c['titre'][:90]}\n      {k['justification_categorie']}"
-              + (f"\n      mise en avant : {json.dumps(k['mise_en_avant'], ensure_ascii=False)}" if k["mise_en_avant"] else "")
-              + (f"\n      écarts : {c['bilan']['ecarts']}" if c["bilan"]["ecarts"] else ""))
+    if classes:
+        print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : CATÉGORIE D'IMPORTANCE (résumé seul) =====")
+        for c in classes:
+            k = c["classement"]
+            if k is None:
+                print(f"  PMID {c['pmid']} | illisible : {c['bilan']['ecarts']}")
+                continue
+            print(f"  PMID {c['pmid']} | {c['type']} | catégorie {k['categorie']} ({k['libelle']}) | sens : {k['sens_pratique']} | "
+                  f"verdict actuel : {c['verdict_actuel']} | {c['titre'][:90]}\n      {k['justification_categorie']}"
+                  + (f"\n      mise en avant : {json.dumps(k['mise_en_avant'], ensure_ascii=False)}" if k["mise_en_avant"] else "")
+                  + (f"\n      écarts : {c['bilan']['ecarts']}" if c["bilan"]["ecarts"] else ""))
     return 0
 
 

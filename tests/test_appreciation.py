@@ -333,12 +333,24 @@ PHRASE = "This invented review searched two databases and two reviewers selected
 
 
 class IASimulee:
-    """Juge chaque domaine favorablement en citant le résumé, et classe tout en catégorie 3."""
+    """Établit le plan d'après le type du tri (sauf une publication de 2026-S45 « quasi randomisée »), juge chaque
+    domaine favorablement en citant le résumé, et classe tout en catégorie 3."""
+
+    PLANS = {"essai randomisé": "essai_randomise", "étude diagnostique": "etude_diagnostique",
+             "méta-analyse": "revue_interventions", "revue systématique": "revue_interventions",
+             "recommandation": "recommandation"}
 
     def direct(self, requetes, modele, simultanes=8):
         reponses = {}
         for r in requetes:
-            if r["id"].startswith("classement"):
+            if r["id"].startswith("plan"):
+                resume = re.search(r"\[R\] RÉSUMÉ\n(.+)", r["contenu"]).group(1)
+                plan = self.PLANS[re.search(r"TYPE ANNONCÉ PAR LE TRI : ([^(]+) \(", r["contenu"]).group(1).strip()]
+                if r["id"] == "plan-s45:pm42968156":
+                    plan = "essai_quasi_randomise"
+                rep = {"plan": plan, "repere": "R", "passage": resume[:60], "justification": "Simulée.",
+                       "incertitude": None, "alerte": None}
+            elif r["id"].startswith("classement"):
                 rep = {"categorie": 3, "justification_categorie": "Le résultat confirme ce qui est déjà connu.",
                        "sens_pratique": "confirme", "mise_en_avant": None, "alerte": None}
             else:
@@ -366,7 +378,8 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)
 
-    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--s45", "2", "--classement", "3"]) == 0
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--s45", "2", "--classement", "3",
+                      "--niveaux", "tout"]) == 0
     sortie = capsys.readouterr().out
     detail = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))
     r = detail["resume"]
@@ -378,20 +391,34 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert r["texte_integral"]["etats"]["trop_favorable"] >= 8
     assert list(r["seuils"].values())[1]["atteint"] is False
     assert len(detail["s45"]) == 2 and r["categories_s45"] == {**r["categories_s45"], "classees": 5, "repartition": {"3": 5}}
-    assert set(r["cout_usd"]["par_article"]) == {"resume", "integral", "s45", "classement"}
+    assert set(r["cout_usd"]["par_article"]) == {"plan", "resume", "integral", "s45", "classement"}
+    # Étape « plan d'étude » : la grille du plan retrouve celle du corrigé pour tout le corpus lu en entier.
+    pc = r["plan_etude"]["corpus"]
+    assert pc["articles"] == len(lisibles) and pc["grille_du_corrige_retrouvee"] == len(lisibles)
+    assert pc["plan_non_determine"] == 0 and pc["ecarts_avec_le_tri"] == 0
+    # 2026-S45 : le plan quasi randomisé n'a pas de grille écrite : aucune note forcée, aucun appel d'appréciation.
+    quasi = next(f for f in detail["s45"] if f["pmid"] == "42968156")
+    assert quasi["plan_etude"]["plan"] == "essai_quasi_randomise" and quasi["plan_etude"]["ecart_avec_le_tri"] is True
+    assert quasi["grille"] is None and quasi["grille_manquante"] == "robins_i"
+    assert quasi["appreciation"]["outil"] == "aucun" and quasi["appreciation"]["jugement_outil"] == "non_evaluable"
+    autre = next(f for f in detail["s45"] if f["pmid"] == "42972648")
+    assert autre["grille"] == "quadas2" and autre["appreciation"]["outil"] == "quadas2"
+    assert r["plan_etude"]["s45"]["grilles"] == {"aucune": 1, "quadas2": 1}
+    # Fourchettes : l'IA simulée juge tout favorablement, la fourchette se réduit à un point.
+    assert r["fourchettes"]["articles"] == len(lisibles) and r["fourchettes"]["largeur_moyenne"] == 1.0
     # Texte intégral sous licence ouverte : le passage est gardé. Résumé seul : il ne l'est pas.
     avec = [x for x in detail["corpus"] if "integral" in x][0]
     assert avec["integral"]["appreciation"]["domaines"][0]["source"]["passage"]
     assert avec["resume"]["appreciation"]["domaines"][0]["source"]["passage"] is None
-    assert "ARRÊT" not in sortie and "CATÉGORIE D'IMPORTANCE" in sortie
+    assert "ARRÊT" not in sortie and "CATÉGORIE D'IMPORTANCE" in sortie and "PLAN D'ÉTUDE : CORPUS" in sortie
 
     # Essai court : un article par outil. Puis le plafond, qui arrête avant tout appel ; puis sans IA.
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     court = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))["resume"]
     assert court["corpus"]["articles"] == 3 and court["corpus"]["avec_texte_integral"] == 3
-    assert court["lecture"] == {"niveaux": "tout", "declarations_hors_du_corps": True}
-    # Texte intégral seul : aucune appréciation sur résumé, donc aucun coût à ce niveau.
-    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1", "--niveaux", "integral"]) == 0
+    assert court["lecture"] == {"niveaux": "integral", "declarations_hors_du_corps": True}
+    # Par défaut : texte intégral seul, aucune appréciation sur résumé, donc aucun coût à ce niveau.
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     seul = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))
     assert seul["resume"]["lecture"]["niveaux"] == "integral" and "resume" not in seul["resume"]["cout_usd"]
     assert all("resume" not in x and "integral" in x for x in seul["corpus"])
