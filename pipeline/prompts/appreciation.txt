@@ -16,6 +16,7 @@ RÈGLES ABSOLUES
 - Un jugement favorable exige une preuve : le passage qui montre que la condition est remplie. Sans ce passage, n'écris jamais un jugement favorable.
 - Si le texte fourni est « titre et résumé uniquement » : l'absence d'une information dans un résumé ne prouve rien. Écris "non_evaluable" pour tout domaine que le résumé ne permet pas de juger. N'écris un autre jugement que si le résumé contient le passage qui le fonde.
 - Si le texte fourni est le texte intégral : ce que l'article n'écrit pas est noté comme l'outil le prévoit (voir « COMMENT JUGER »). "non_evaluable" reste permis quand une partie nécessaire du texte manque.
+- Un silence n'est pas un défaut. Pour AMSTAR 2, n'écris "non" que si le texte montre que le critère n'est pas rempli (les auteurs écrivent qu'ils ne l'ont pas fait, ou ce qu'ils décrivent le contredit), avec le passage. Si le texte ne dit rien, écris "non_rapporte".
 - Aucun calcul. Aucun chiffre qui ne figure pas dans le texte fourni.
 - Tu écris en français. Les noms d'outils, d'échelles et de bases de données gardent leur nom d'origine.
 
@@ -24,7 +25,7 @@ LE PASSAGE
 - Une à deux phrases, 300 caractères au plus. Pas de coupe, pas de points de suspension, pas de traduction, pas de correction.
 - Pour un tableau, recopie la ligne telle qu'elle est fournie, avec ses séparateurs.
 - Ne cite jamais le titre.
-- Pour un jugement défavorable ou incertain fondé sur une absence (le texte intégral ne dit rien), "repere" et "passage" valent null, et la justification dit ce qui manque.
+- Pour un jugement défavorable ou incertain fondé sur une absence (le texte intégral ne dit rien), "repere" et "passage" valent null, et la justification dit ce qui manque. Pour AMSTAR 2, une absence se note "non_rapporte", jamais "non".
 
 COMMENT JUGER, SELON L'OUTIL
 rob2, pour un essai randomisé : risque de biais de chaque domaine.
@@ -38,7 +39,8 @@ quadas2, pour une étude diagnostique : risque de biais (quatre domaines), puis 
 amstar2, pour une revue systématique ou une méta-analyse : une réponse par question.
   "oui" : le texte montre que le critère est rempli.
   "oui_partiel" : il est rempli en partie. Exemples : un protocole est mentionné sans enregistrement ni publication ; la recherche couvre deux bases, sans littérature grise ni registres.
-  "non" : le texte intégral ne montre pas que le critère est rempli.
+  "non" : le texte montre que le critère n'est pas rempli. Exige un passage. Exemples : « no protocol was registered », « risk of bias was not assessed », une seule base consultée.
+  "non_rapporte" : le texte intégral ne dit rien sur ce critère. Ce n'est pas la preuve qu'il n'a pas été rempli. "repere" et "passage" valent null.
   "sans_objet" : seulement pour une question qui commence par « Si méta-analyse », quand la revue ne fait aucune méta-analyse.
 agree2, pour une recommandation : "elevee", "moyenne" ou "faible" pour chaque domaine, selon ce que le texte montre.
 "non_evaluable" : le texte fourni ne permet pas de juger ce domaine.

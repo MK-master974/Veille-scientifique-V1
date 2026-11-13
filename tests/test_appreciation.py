@@ -50,7 +50,7 @@ def domaine(cle, jugement, passage=None, repere="S1", justification="Justificati
 def test_la_requete_nomme_l_outil_ses_domaines_et_ses_valeurs():
     r = ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "meta_analyse")
     assert "OUTIL À APPLIQUER : amstar2" in r["contenu"] and "q16_conflits_d_interets" in r["contenu"]
-    assert "oui | oui_partiel | non | sans_objet | non_evaluable" in r["contenu"]
+    assert "oui | oui_partiel | non | non_rapporte | sans_objet | non_evaluable" in r["contenu"]
     assert "TEXTE FOURNI : texte intégral" in r["contenu"] and r["max_sortie"] == ap.SORTIE_INTEGRAL
     r = ap.requete_appreciation({"id": "pm1"}, document(False), "consigne", "etude_diagnostique")
     assert "quadas2" in r["contenu"] and "titre et résumé uniquement" in r["contenu"]
@@ -133,8 +133,9 @@ def test_un_jugement_favorable_exige_un_passage_verifie():
     assert par["q04_recherche"]["jugement"] == "oui_partiel"
     # Favorable, mais passage introuvable : non évaluable, et le refus est compté.
     assert par["q05_selection_en_double"]["jugement"] == "non_evaluable"
-    # Défavorable fondé sur une absence, texte intégral lu : gardé sans passage.
-    assert par["q07_etudes_exclues"]["jugement"] == "non" and par["q07_etudes_exclues"]["source"] is None
+    # Un silence n'est pas un défaut : « non » sans passage devient « non rapporté » (VS-D44).
+    assert par["q07_etudes_exclues"]["jugement"] == "non_rapporte" and par["q07_etudes_exclues"]["source"] is None
+    assert any("« non » sans passage" in x["nature"] for x in bilan["ecarts"])
     # Valeur invalide ; « sans objet » hors des questions réservées aux méta-analyses ; domaine absent.
     assert par["q09_risque_de_biais"]["jugement"] == "non_evaluable"
     assert par["q11_methodes_statistiques"]["jugement"] == "sans_objet"
@@ -142,6 +143,59 @@ def test_un_jugement_favorable_exige_un_passage_verifie():
     assert len(a["domaines"]) == 16 and a["jugement_outil"] == "non_evaluable" and a["etiquette"] == "non_evaluable"
     assert bilan["proposes"] == 4 and bilan["gardes"] == 3
     assert any("favorable sans passage" in r["motif"] for r in bilan["refus"])
+
+
+def test_non_exige_un_passage_et_un_silence_est_non_rapporte():
+    rep = {"domaines": [
+        domaine("q02_protocole", "non", "We searched PubMed and Embase."),      # le texte montre une recherche, pas un protocole
+        domaine("q07_etudes_exclues", "non_rapporte", None, None, "Rien sur la liste des exclus."),
+        domaine("q09_risque_de_biais", "non", None, None, "Aucune évaluation du risque de biais.")]}
+    a, bilan = ap.lire_appreciation(json.dumps(rep), document(), "meta_analyse")
+    par = {d["domaine"]: d for d in a["domaines"]}
+    assert par["q02_protocole"]["jugement"] == "non" and par["q02_protocole"]["source"]["emplacement"] == "section : Methods"
+    assert par["q07_etudes_exclues"]["jugement"] == "non_rapporte"
+    assert par["q09_risque_de_biais"]["jugement"] == "non_rapporte"
+    # Le silence ne compte pas comme une faiblesse certaine : le pire et le meilleur sont donnés.
+    # q02 est un « non » certain ; les autres questions critiques sont inconnues : très faible au pire, faible au mieux.
+    assert a["fourchette"] == {"pire": "tres_faible", "meilleur": "faible"}
+    assert a["nature_du_jugement"] == "fiabilite_de_la_methode"
+
+
+def test_fourchette_du_jugement_global():
+    oui = tout("amstar2", "oui")
+    # Une question critique non rapportée : entre « faible » et le meilleur niveau, pas un « non évaluable » sec.
+    assert ap.fourchette("amstar2", {**oui, "q07_etudes_exclues": "non_rapporte"}) == ("faible", "elevee")
+    assert ap.jugement_global("amstar2", {**oui, "q07_etudes_exclues": "non_rapporte"}) == "non_evaluable"
+    # Deux faiblesses critiques acquises : les inconnues n'y changent rien.
+    ferme = {**oui, "q02_protocole": "non", "q07_etudes_exclues": "non", "q09_risque_de_biais": "non_rapporte"}
+    assert ap.fourchette("amstar2", ferme) == ("tres_faible", "tres_faible")
+    assert ap.jugement_global("amstar2", ferme) == "tres_faible"
+    # Question non critique non rapportée : seule la fourchette change quand une « non » est déjà là.
+    assert ap.fourchette("amstar2", {**oui, "q03_plans_d_etude": "non", "q10_financement_des_etudes": "non_rapporte"}) == ("moderee", "elevee")
+    assert ap.fourchette("amstar2", {**oui, "q03_plans_d_etude": "non", "q06_extraction_en_double": "non"}) == ("moderee", "moderee")
+    # Les autres outils : le plus mauvais domaine, avec un domaine inconnu entre le pire et le meilleur.
+    assert ap.fourchette("rob2", tout("rob2", "faible", randomisation="non_evaluable")) == ("eleve", "faible")
+    assert ap.fourchette("rob2", tout("rob2", "faible", mesure_du_critere="quelques_reserves")) == ("quelques_reserves",) * 2
+    assert ap.fourchette("quadas2", tout("quadas2", "faible", applicabilite_reference="non_evaluable")) == ("faible", "faible")
+    assert ap.fourchette("agree2", tout("agree2", "elevee", applicabilite="non_evaluable")) == ("faible", "elevee")
+    # Une question absente de la réponse compte comme non évaluée.
+    assert ap.fourchette("amstar2", {}) == ("tres_faible", "elevee")
+
+
+def test_aucune_grille_applicable_ne_force_aucune_note():
+    a = ap.sans_grille({"plan": "essai_quasi_randomise"}, "aucune grille écrite pour ce plan", "robins_i")
+    assert a["outil"] == "aucun" and a["grille_manquante"] == "robins_i" and a["domaines"] == []
+    assert a["jugement"] == a["jugement_outil"] == a["etiquette"] == "non_evaluable" and a["fourchette"] is None
+    assert a["plan_etude"] == {"plan": "essai_quasi_randomise"}
+
+
+def test_la_grille_peut_etre_imposee_par_le_plan():
+    # Le type du tri dit « essai randomisé » ; le plan réel impose une autre grille.
+    r = ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "essai_randomise", outil="amstar2")
+    assert "OUTIL À APPLIQUER : amstar2" in r["contenu"]
+    rep = {"domaines": [domaine("q02_protocole", "oui", "The protocol was registered in PROSPERO before the search.")]}
+    a, bilan = ap.lire_appreciation(json.dumps(rep), document(), "essai_randomise", outil="amstar2")
+    assert a["outil"] == "amstar2" and bilan["outil"] == "amstar2" and len(a["domaines"]) == 16
 
 
 def test_sur_resume_seul_une_absence_ne_prouve_rien():
