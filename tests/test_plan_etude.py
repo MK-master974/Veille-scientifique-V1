@@ -107,6 +107,7 @@ def test_les_definitions_separent_developper_un_modele_et_evaluer_un_outil_defin
     assert "À PARTIR DES DONNÉES DE L'ÉTUDE" in modele and "déjà défini avant l'étude" in modele
     assert "DÉJÀ DÉFINI" in diagnostic and "outil existant" in diagnostic
     # Une revue d'interventions compare des interventions ; une revue de groupes ou d'expositions est descriptive.
+    assert "CAS MIXTE" in modele and "etude_diagnostique" in modele.split("CAS MIXTE")[1]   # VS-D51
     assert "expositions" not in pe.DEFINITIONS["revue_interventions"]
     assert "expositions" in pe.DEFINITIONS["revue_descriptive"]
     r = pe.requete_plan({"id": "pm1"}, document(), "consigne", "etude_diagnostique")

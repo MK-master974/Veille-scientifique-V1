@@ -19,7 +19,8 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   Mesuré au second cycle (0,16 $) : grille du plan identique à celle des auteurs pour 23 articles
   sur 25 du corpus, avis du comité retrouvé pour 10 fiches sur 10, mais 4 études diagnostiques sur
   7 seulement hors corpus : le cas mixte (développer un modèle et évaluer un outil déjà défini)
-  n'est pas résolu.
+  n'est pas résolu. Règle du cas mixte ajoutée (VS-D51) : 24 articles sur 25 du corpus et 7 études
+  hors corpus sur 7, ces 7 n'étant plus indépendantes de la règle. Coût 0,16 $.
 - Étude des protocoles et des suppléments (sans IA) : 11 revues sur 16 déclarent du matériel
   supplémentaire, surtout Word et PDF ; 9 sur 16 citent un numéro PROSPERO ; 1 sur 16 cite une
   liste des études exclues.
