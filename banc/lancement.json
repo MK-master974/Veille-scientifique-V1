@@ -87,6 +87,15 @@
    "raison": "Séance 6 de la phase 1 (VS-D37) : vérifier que le banc d'appréciation lit les textes du corpus « qualité » et de dix publications de 2026-S45, et estimer le coût, avant tout appel à l'IA.",
    "accord": "Marvin, questionnaire du 12/11/2026 : séance 6 (VS-D37), enveloppe de 2,43 $ (VS-D38). Aucune IA appelée : aucun coût.",
    "budget_usd": 2.43
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "limite": 1,
+   "classement": 2,
+   "raison": "Séance 6 (VS-D37) : essai court avant la mesure, un article par outil (RoB 2, QUADAS-2, AMSTAR 2) et deux classements, pour vérifier que l'IA répond dans le format attendu. Le lancement sans IA 43363536857 estime la mesure complète à 1,78 $ ; cet essai est plafonné à 0,30 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0 $.",
+   "budget_usd": 0.3
   }
  ]
 }
