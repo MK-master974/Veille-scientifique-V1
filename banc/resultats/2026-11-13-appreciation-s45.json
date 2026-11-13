@@ -1,0 +1,1121 @@
+{
+ "nom": "Appréciation et catégorie d'importance de publications réelles de 2026-S45, mesure du 13 novembre 2026",
+ "lancement": 43364759666,
+ "a_savoir": "Essai du banc d'appréciation (phase 1, séance 6). Rien de ceci n'est publié dans la veille. Les jugements par domaine sont ceux de l'IA, contrôlés par le code ; le jugement global, la qualité et l'étiquette candidate sont calculés par le code. Les passages d'articles cités par l'IA ne sont pas recopiés ici : seul leur emplacement est gardé. La catégorie d'importance est proposée à partir du titre et du résumé.",
+ "consignes": {
+  "appreciation": "74839e05",
+  "classement": "73c247ae"
+ },
+ "appreciations_sur_texte_integral": [
+  {
+   "pmid": "42980682",
+   "pmcid": "PMC13737228",
+   "licence": "CC BY",
+   "type": "essai_randomise",
+   "outil": "rob2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "randomisation",
+     "jugement": "eleve",
+     "justification": "L'affectation dépendait des disponibilités et du chirurgien, sans séquence aléatoire.",
+     "emplacement": "section : Methods > Randomisation"
+    },
+    {
+     "domaine": "ecarts_aux_interventions",
+     "jugement": "eleve",
+     "justification": "Les participants présentant un écart aux interventions prévues étaient exclus, ce qui compromet l'analyse en intention de traiter.",
+     "emplacement": "section : Methods > Surgical technique"
+    },
+    {
+     "domaine": "donnees_manquantes",
+     "jugement": "faible",
+     "justification": "Les données de suivi étaient disponibles pour presque tous les participants inclus dans chaque groupe.",
+     "emplacement": "section : Results > Patient enrolment"
+    },
+    {
+     "domaine": "mesure_du_critere",
+     "jugement": "quelques_reserves",
+     "justification": "Les critères sont rapportés par les patients, mais leur insu quant à l'intervention n'est pas précisé.",
+     "emplacement": "section : Methods > Outcomes of interest"
+    },
+    {
+     "domaine": "selection_du_resultat",
+     "jugement": "quelques_reserves",
+     "justification": "Les critères étaient prédéfinis dans un protocole publié, mais le texte ne permet pas de vérifier la conformité des résultats et analyses à ce protocole.",
+     "emplacement": "section : Methods > Outcomes of interest"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42975150",
+   "pmcid": "PMC13729825",
+   "licence": "CC BY",
+   "type": "etude_diagnostique",
+   "outil": "quadas2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "biais_selection_des_patients",
+     "jugement": "incertain",
+     "justification": "Les volontaires étaient des connaissances des auteurs, sans précision sur un recrutement consécutif ou aléatoire.",
+     "emplacement": "section : Methods > Subjects"
+    },
+    {
+     "domaine": "biais_test_evalue",
+     "jugement": "eleve",
+     "justification": "Les seuils ont été déterminés à partir des données de l'étude plutôt que fixés à l'avance.",
+     "emplacement": "section : Methods > Statistical Analyses"
+    },
+    {
+     "domaine": "biais_reference",
+     "jugement": "incertain",
+     "justification": "Le texte ne précise pas comment le respect des consignes de simulation a été vérifié indépendamment des mesures.",
+     "emplacement": null
+    },
+    {
+     "domaine": "biais_flux_et_delais",
+     "jugement": "faible",
+     "justification": "Les mesures ont été réalisées selon les mêmes conditions expérimentales et la figure est décrite comme comprenant toutes les données recueillies.",
+     "emplacement": "section : Results > IV/V and Side Ratio in each Situation"
+    },
+    {
+     "domaine": "applicabilite_selection_des_patients",
+     "jugement": "faible",
+     "justification": "Les volontaires sains correspondent à la population prévue pour ce premier essai expérimental.",
+     "emplacement": "section : Introduction"
+    },
+    {
+     "domaine": "applicabilite_test_evalue",
+     "jugement": "faible",
+     "justification": "Le dispositif et la procédure standardisée correspondent à l'évaluation quantitative prévue du signe de Hoover.",
+     "emplacement": "section : Methods > Measurement Procedure"
+    },
+    {
+     "domaine": "applicabilite_reference",
+     "jugement": "faible",
+     "justification": "Les états de simulation définis par les consignes correspondent à la comparaison expérimentale recherchée.",
+     "emplacement": "section : Methods > Variation of Task Performance for Study"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42968433",
+   "pmcid": "PMC13725074",
+   "licence": "CC BY",
+   "type": "meta_analyse",
+   "outil": "amstar2",
+   "jugement_outil": "tres_faible",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "q01_pico",
+     "jugement": "oui",
+     "justification": "Les critères précisent la population, les charges comparées et le critère de puissance maximale.",
+     "emplacement": "section : METHODS > Inclusion and exclusion criteria"
+    },
+    {
+     "domaine": "q02_protocole",
+     "jugement": "oui_partiel",
+     "justification": "Un protocole enregistré est mentionné, mais l'antériorité de l'enregistrement et les éventuels écarts ne sont pas documentés.",
+     "emplacement": "section : SYSTEMATIC REVIEW PROTOCOL REGISTRATION"
+    },
+    {
+     "domaine": "q03_plans_d_etude",
+     "jugement": "non",
+     "justification": "Le choix des plans d'étude admissibles n'est pas expliqué.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q04_recherche",
+     "jugement": "oui_partiel",
+     "justification": "La recherche couvre quatre bases et fournit des termes, mais aucune recherche de littérature grise ou de registres n'est décrite.",
+     "emplacement": "section : METHODS > Literature search strategy"
+    },
+    {
+     "domaine": "q05_selection_en_double",
+     "jugement": "oui",
+     "justification": "Deux investigateurs ont réalisé indépendamment la sélection, avec arbitrage des désaccords.",
+     "emplacement": "section : METHODS > Study selection"
+    },
+    {
+     "domaine": "q06_extraction_en_double",
+     "jugement": "oui",
+     "justification": "Deux investigateurs ont extrait les données indépendamment à l'aide d'un formulaire standardisé.",
+     "emplacement": "section : METHODS > Data extraction"
+    },
+    {
+     "domaine": "q07_etudes_exclues",
+     "jugement": "non",
+     "justification": "Les motifs d'exclusion sont regroupés, mais les études exclues ne sont pas identifiées individuellement.",
+     "emplacement": "section : RESULTS > Study selection"
+    },
+    {
+     "domaine": "q08_description_des_etudes",
+     "jugement": "non_evaluable",
+     "justification": "La description détaillée des études est renvoyée à un supplément qui n'est pas fourni.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q09_risque_de_biais",
+     "jugement": "non",
+     "justification": "Le cadre utilisé résume la qualité du rapport méthodologique sans constituer une évaluation satisfaisante du risque de biais de chaque étude.",
+     "emplacement": "section : METHODS > Methodological quality assessment"
+    },
+    {
+     "domaine": "q10_financement_des_etudes",
+     "jugement": "non",
+     "justification": "Les sources de financement des études incluses ne sont pas rapportées dans le texte fourni.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q11_methodes_statistiques",
+     "jugement": "non",
+     "justification": "Les méthodes décrites ne précisent pas la prise en compte de l'appariement des mesures répétées dans les estimations combinées.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q12_impact_du_biais",
+     "jugement": "non",
+     "justification": "L'effet du risque de biais des études sur les résultats groupés n'est pas évalué.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q13_biais_dans_l_interpretation",
+     "jugement": "non",
+     "justification": "La discussion ne prend pas en compte une évaluation du risque de biais des études incluses dans l'interprétation des résultats.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q14_heterogeneite",
+     "jugement": "oui",
+     "justification": "L'hétérogénéité élevée est discutée avec plusieurs explications possibles.",
+     "emplacement": "section : DISCUSSION > Limitations and evidence boundaries"
+    },
+    {
+     "domaine": "q15_biais_de_publication",
+     "jugement": "oui",
+     "justification": "Le biais de publication est recherché et son effet sur le résultat groupé est examiné par trim‐and‐fill.",
+     "emplacement": "section : RESULTS > Publication bias"
+    },
+    {
+     "domaine": "q16_conflits_d_interets",
+     "jugement": "oui",
+     "justification": "Les conflits d'intérêts sont déclarés et le financement de la revue est précisé en S28.",
+     "emplacement": "section : CONFLICT OF INTEREST STATEMENT"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42969580",
+   "pmcid": "PMC13725757",
+   "licence": "CC BY",
+   "type": "revue_systematique",
+   "outil": "amstar2",
+   "jugement_outil": "tres_faible",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "q01_pico",
+     "jugement": "non",
+     "justification": "La question et les critères d’inclusion ne précisent pas de comparateur.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q02_protocole",
+     "jugement": "non",
+     "justification": "Aucun protocole préalable ni justification d’éventuels écarts ne sont rapportés.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q03_plans_d_etude",
+     "jugement": "non",
+     "justification": "Les plans d’étude admissibles sont énumérés, mais leur choix n’est pas expliqué.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q04_recherche",
+     "jugement": "oui_partiel",
+     "justification": "La recherche couvre quatre bases et rapporte ses termes, mais les restrictions ne sont pas toutes justifiées.",
+     "emplacement": "section : Materials and Methods > Search strategy"
+    },
+    {
+     "domaine": "q05_selection_en_double",
+     "jugement": "non",
+     "justification": "Les textes intégraux ont été répartis entre les évaluateurs, sans sélection en double démontrée.",
+     "emplacement": "section : Materials and Methods > Study screening"
+    },
+    {
+     "domaine": "q06_extraction_en_double",
+     "jugement": "non",
+     "justification": "L’extraction des données en double n’est pas rapportée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q07_etudes_exclues",
+     "jugement": "non",
+     "justification": "Les motifs d’exclusion sont regroupés, mais aucune liste des études exclues avec leurs raisons individuelles n’est fournie.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q08_description_des_etudes",
+     "jugement": "non",
+     "justification": "Les caractéristiques rapportées ne décrivent pas suffisamment, pour chaque étude, les interventions, comparateurs et durées de suivi.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q09_risque_de_biais",
+     "jugement": "non",
+     "justification": "Les articles de revue inclus n’ont pas fait l’objet d’une évaluation de qualité ou de risque de biais.",
+     "emplacement": "section : Materials and Methods > Quality assessment"
+    },
+    {
+     "domaine": "q10_financement_des_etudes",
+     "jugement": "non",
+     "justification": "Les sources de financement des études incluses ne sont pas rapportées.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q11_methodes_statistiques",
+     "jugement": "sans_objet",
+     "justification": "Les résultats ont été synthétisés de façon narrative, sans méta-analyse.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q12_impact_du_biais",
+     "jugement": "sans_objet",
+     "justification": "La revue ne comporte pas de méta-analyse.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q13_biais_dans_l_interpretation",
+     "jugement": "oui",
+     "justification": "La discussion prend en compte les biais des études dans l’interprétation des estimations de prévalence.",
+     "emplacement": "section : Discussion"
+    },
+    {
+     "domaine": "q14_heterogeneite",
+     "jugement": "oui",
+     "justification": "La discussion examine la variabilité des estimations et avance des explications liées aux critères diagnostiques, aux symptômes et à l’imagerie.",
+     "emplacement": "section : Discussion"
+    },
+    {
+     "domaine": "q15_biais_de_publication",
+     "jugement": "sans_objet",
+     "justification": "La revue ne comporte pas de méta-analyse.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q16_conflits_d_interets",
+     "jugement": "oui",
+     "justification": "Les auteurs déclarent l’absence de conflits d’intérêts et de financement spécifique de la revue.",
+     "emplacement": "section : Conflicts of interest"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42987112",
+   "pmcid": "PMC13722092",
+   "licence": "CC BY",
+   "type": "essai_randomise",
+   "outil": "rob2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "randomisation",
+     "jugement": "quelques_reserves",
+     "justification": "La méthode de génération de la séquence aléatoire n’est pas précisée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "ecarts_aux_interventions",
+     "jugement": "quelques_reserves",
+     "justification": "Les participants n’étaient pas en insu et une analyse en intention de traiter n’est pas décrite.",
+     "emplacement": "section : METHODS > Study design"
+    },
+    {
+     "domaine": "donnees_manquantes",
+     "jugement": "faible",
+     "justification": "Un seul participant randomisé s’est retiré et les autres ont été inclus dans l’analyse.",
+     "emplacement": "section : RESULTS"
+    },
+    {
+     "domaine": "mesure_du_critere",
+     "jugement": "eleve",
+     "justification": "Les évaluateurs connaissaient les groupes, ce qui peut biaiser les mesures d’endurance.",
+     "emplacement": "section : DISCUSSION > Limitations"
+    },
+    {
+     "domaine": "selection_du_resultat",
+     "jugement": "quelques_reserves",
+     "justification": "La date d’enregistrement et la conformité des résultats à un plan d’analyse préalable ne sont pas précisées.",
+     "emplacement": null
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42979604",
+   "pmcid": "PMC13730464",
+   "licence": "CC BY",
+   "type": "etude_diagnostique",
+   "outil": "quadas2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "biais_selection_des_patients",
+     "jugement": "eleve",
+     "justification": "Le plan compare des cas de DMD confirmée à des témoins sains, ce qui expose à un biais de sélection.",
+     "emplacement": "section : Materials and methods > Exclusion criteria"
+    },
+    {
+     "domaine": "biais_test_evalue",
+     "jugement": "eleve",
+     "justification": "Les seuils du modèle SWE ont été déterminés à partir des données de l'étude plutôt que fixés à l'avance.",
+     "emplacement": "section : Materials and methods > Statistical analysis"
+    },
+    {
+     "domaine": "biais_reference",
+     "jugement": "incertain",
+     "justification": "Les modalités d'interprétation de la référence et son application aux témoins ne sont pas précisées.",
+     "emplacement": null
+    },
+    {
+     "domaine": "biais_flux_et_delais",
+     "jugement": "incertain",
+     "justification": "Le délai entre les examens, l'application de la référence à tous et le devenir de tous les patients ne sont pas précisés.",
+     "emplacement": null
+    },
+    {
+     "domaine": "applicabilite_selection_des_patients",
+     "jugement": "eleve",
+     "justification": "La comparaison de cas confirmés à des témoins sains ne correspond pas à la population d'enfants à risque visée pour le triage.",
+     "emplacement": "section : Materials and methods > Exclusion criteria"
+    },
+    {
+     "domaine": "applicabilite_test_evalue",
+     "jugement": "faible",
+     "justification": "Les examens HFUS et SWE réalisés correspondent aux modalités non invasives que l'étude cherchait à évaluer.",
+     "emplacement": "section : Materials and methods > Instruments and methods"
+    },
+    {
+     "domaine": "applicabilite_reference",
+     "jugement": "faible",
+     "justification": "La référence utilisée pour confirmer les cas définit la DMD recherchée par l'étude.",
+     "emplacement": "section : Materials and methods > Study population"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42969067",
+   "pmcid": "PMC13725542",
+   "licence": "CC BY",
+   "type": "meta_analyse",
+   "outil": "amstar2",
+   "jugement_outil": "non_evaluable",
+   "qualite": "non_evaluable",
+   "etiquette_candidate": "non_evaluable",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "q01_pico",
+     "jugement": "oui",
+     "justification": "Les critères d'inclusion précisent la population, l'intervention, le comparateur et les critères de jugement.",
+     "emplacement": "section : Methods > Data Sources, Literature Search, and Inclusion Criteria"
+    },
+    {
+     "domaine": "q02_protocole",
+     "jugement": "oui_partiel",
+     "justification": "Un enregistrement PROSPERO est déclaré, mais son antériorité et les éventuels écarts au protocole ne sont pas précisées.",
+     "emplacement": "section : Methods"
+    },
+    {
+     "domaine": "q03_plans_d_etude",
+     "jugement": "non",
+     "justification": "Le choix de limiter l'inclusion aux essais randomisés n'est pas expliqué.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q04_recherche",
+     "jugement": "oui_partiel",
+     "justification": "La recherche couvre plusieurs bases et les références, mais la stratégie détaillée est dans un supplément non fourni et la restriction linguistique n'est pas justifiée.",
+     "emplacement": "section : Methods > Data Sources, Literature Search, and Inclusion Criteria"
+    },
+    {
+     "domaine": "q05_selection_en_double",
+     "jugement": "oui",
+     "justification": "Deux auteurs ont sélectionné indépendamment les études, avec arbitrage des désaccords.",
+     "emplacement": "section : Methods > Study Selection and Data Extraction"
+    },
+    {
+     "domaine": "q06_extraction_en_double",
+     "jugement": "non",
+     "justification": "Le texte ne précise pas que l'extraction des données a été effectuée en double.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q07_etudes_exclues",
+     "jugement": "non_evaluable",
+     "justification": "Le supplément associé au processus de sélection n'est pas fourni et ne permet pas de vérifier la liste des études exclues et leurs raisons.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q08_description_des_etudes",
+     "jugement": "non_evaluable",
+     "justification": "Le supplément contenant des informations sur les études incluses n'est pas fourni, empêchant de vérifier leur description détaillée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q09_risque_de_biais",
+     "jugement": "oui",
+     "justification": "Le risque de biais des essais inclus a été évalué indépendamment par deux auteurs avec RoB 2.",
+     "emplacement": "section : Methods > Risk of Bias and Quality of Evidence Assessment"
+    },
+    {
+     "domaine": "q10_financement_des_etudes",
+     "jugement": "non",
+     "justification": "Les sources de financement des études incluses ne sont pas rapportées dans le texte fourni.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q11_methodes_statistiques",
+     "jugement": "oui",
+     "justification": "La combinaison utilise une estimation robuste de la variance tenant compte de la dépendance des effets, avec analyse de sensibilité de la corrélation supposée.",
+     "emplacement": "section : Methods > Data Analysis"
+    },
+    {
+     "domaine": "q12_impact_du_biais",
+     "jugement": "non",
+     "justification": "Aucune analyse de l'effet du risque de biais des études sur les résultats groupés n'est rapportée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q13_biais_dans_l_interpretation",
+     "jugement": "oui",
+     "justification": "La discussion invite à interpréter les résultats avec prudence en raison notamment du risque de biais.",
+     "emplacement": "section : Discussion"
+    },
+    {
+     "domaine": "q14_heterogeneite",
+     "jugement": "oui",
+     "justification": "Les auteurs explorent des modérateurs et discutent de sources possibles d'hétérogénéité.",
+     "emplacement": "section : Discussion"
+    },
+    {
+     "domaine": "q15_biais_de_publication",
+     "jugement": "oui",
+     "justification": "Le biais de publication a été recherché et les limites d'interprétation de l'asymétrie des graphiques sont discutées.",
+     "emplacement": "section : Discussion"
+    },
+    {
+     "domaine": "q16_conflits_d_interets",
+     "jugement": "oui",
+     "justification": "Les auteurs déclarent leurs conflits d'intérêts et indiquent n'avoir rien à rapporter concernant le financement.",
+     "emplacement": "section : Conflicts of Interest"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42969584",
+   "pmcid": "PMC13726444",
+   "licence": "CC BY",
+   "type": "revue_systematique",
+   "outil": "amstar2",
+   "jugement_outil": "faible",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "q01_pico",
+     "jugement": "oui",
+     "justification": "Les critères précisent la population, l'exposition géographique, la comparaison rural–urbain et les résultats étudiés.",
+     "emplacement": "section : Methods > Study Inclusion and Exclusion Criteria"
+    },
+    {
+     "domaine": "q02_protocole",
+     "jugement": "oui_partiel",
+     "justification": "Un protocole enregistré est mentionné, mais les écarts éventuels ne sont pas décrits ni justifiés.",
+     "emplacement": "section : Methods"
+    },
+    {
+     "domaine": "q03_plans_d_etude",
+     "jugement": "oui",
+     "justification": "Les auteurs expliquent pourquoi ils excluent les études interventionnelles pour étudier les soins courants.",
+     "emplacement": "section : Methods > Study Inclusion and Exclusion Criteria"
+    },
+    {
+     "domaine": "q04_recherche",
+     "jugement": "oui_partiel",
+     "justification": "Plusieurs bases et les concepts de recherche sont précisés, mais la restriction à l'anglais n'est pas justifiée et la littérature grise est exclue.",
+     "emplacement": "section : Methods > Search Strategy"
+    },
+    {
+     "domaine": "q05_selection_en_double",
+     "jugement": "oui",
+     "justification": "La sélection des titres et résumés puis celle des textes intégraux ont été effectuées indépendamment en double.",
+     "emplacement": "section : Methods > Screening"
+    },
+    {
+     "domaine": "q06_extraction_en_double",
+     "jugement": "non",
+     "justification": "Le texte ne précise pas que l'extraction des données a été réalisée en double.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q07_etudes_exclues",
+     "jugement": "non",
+     "justification": "Le texte fourni ne présente pas de liste des études exclues après examen en texte intégral avec les raisons de leur exclusion.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q08_description_des_etudes",
+     "jugement": "oui",
+     "justification": "Les tableaux décrivent individuellement les études, notamment leur plan, leur taille, leur contexte et leurs résultats.",
+     "emplacement": "tableau 2"
+    },
+    {
+     "domaine": "q09_risque_de_biais",
+     "jugement": "oui",
+     "justification": "Chaque étude a été évaluée indépendamment par deux personnes à l'aide d'outils adaptés à son plan.",
+     "emplacement": "section : Methods > Study Quality Assessment"
+    },
+    {
+     "domaine": "q10_financement_des_etudes",
+     "jugement": "non",
+     "justification": "Les sources de financement des études incluses ne sont pas rapportées.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q11_methodes_statistiques",
+     "jugement": "sans_objet",
+     "justification": "La revue a effectué une synthèse narrative sans méta-analyse.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q12_impact_du_biais",
+     "jugement": "sans_objet",
+     "justification": "Aucune méta-analyse n'a été réalisée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q13_biais_dans_l_interpretation",
+     "jugement": "oui",
+     "justification": "La discussion prend en compte les limites méthodologiques des études dans l'interprétation des résultats.",
+     "emplacement": "section : Discussion > Strengths and Limitations"
+    },
+    {
+     "domaine": "q14_heterogeneite",
+     "jugement": "oui",
+     "justification": "La discussion propose plusieurs sources possibles des différences entre études et examine leurs conséquences.",
+     "emplacement": "section : Discussion > Main Findings"
+    },
+    {
+     "domaine": "q15_biais_de_publication",
+     "jugement": "sans_objet",
+     "justification": "Aucune méta-analyse n'a été réalisée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "q16_conflits_d_interets",
+     "jugement": "oui",
+     "justification": "Les auteurs déclarent leurs conflits d'intérêts et indiquent le financement d'une auteure ainsi que le rôle du financeur.",
+     "emplacement": "section : Conflicts of Interest"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42993769",
+   "pmcid": "PMC13742903",
+   "licence": "CC BY",
+   "type": "essai_randomise",
+   "outil": "rob2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "randomisation",
+     "jugement": "eleve",
+     "justification": "L'affectation alternée selon l'ordre de référencement est prévisible, malgré la description contradictoire d'une randomisation par blocs.",
+     "emplacement": "section : Methods"
+    },
+    {
+     "domaine": "ecarts_aux_interventions",
+     "jugement": "quelques_reserves",
+     "justification": "Les participants étaient en insu, mais pas le thérapeute, et l'analyse en intention de traiter n'est pas précisée.",
+     "emplacement": "section : Discussion > Limitations and future suggestions of the study"
+    },
+    {
+     "domaine": "donnees_manquantes",
+     "jugement": "non_evaluable",
+     "justification": "Le diagramme de flux contenant les effectifs analysés n'est pas fourni, ce qui empêche d'apprécier les données manquantes.",
+     "emplacement": null
+    },
+    {
+     "domaine": "mesure_du_critere",
+     "jugement": "faible",
+     "justification": "Les critères sont des questionnaires validés et les participants ainsi que l'évaluateur étaient en insu.",
+     "emplacement": "section : Discussion > Limitations and future suggestions of the study"
+    },
+    {
+     "domaine": "selection_du_resultat",
+     "jugement": "quelques_reserves",
+     "justification": "L'étude est enregistrée, mais le texte ne permet pas de vérifier que l'enregistrement précédait l'étude ni que les résultats suivent un plan d'analyse préétabli.",
+     "emplacement": "section : Methods"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  },
+  {
+   "pmid": "42999635",
+   "pmcid": "PMC13744266",
+   "licence": "CC BY",
+   "type": "etude_diagnostique",
+   "outil": "quadas2",
+   "jugement_outil": "eleve",
+   "qualite": "faible",
+   "etiquette_candidate": "preliminaire",
+   "etiquette_publiee": "preliminaire",
+   "grade_rapporte": null,
+   "domaines": [
+    {
+     "domaine": "biais_selection_des_patients",
+     "jugement": "faible",
+     "justification": "Le recrutement était consécutif et les exclusions indiquées ne montrent pas de sélection inappropriée.",
+     "emplacement": "section : Material and methods > Study design and participants"
+    },
+    {
+     "domaine": "biais_test_evalue",
+     "jugement": "faible",
+     "justification": "Le seuil était fixé à l'avance et le dépistage précédait l'évaluation par IRM.",
+     "emplacement": "section : Material and methods > Study design and participants"
+    },
+    {
+     "domaine": "biais_reference",
+     "jugement": "incertain",
+     "justification": "L'indépendance de l'évaluation clinique et radiologique par rapport aux résultats du dépistage n'est pas précisée.",
+     "emplacement": null
+    },
+    {
+     "domaine": "biais_flux_et_delais",
+     "jugement": "eleve",
+     "justification": "La vérification diagnostique était partielle et dépendait du résultat du dépistage.",
+     "emplacement": "section : Results > Study population and demographics"
+    },
+    {
+     "domaine": "applicabilite_selection_des_patients",
+     "jugement": "faible",
+     "justification": "Les participants correspondent à la population à risque ciblée pour le dépistage.",
+     "emplacement": "section : Material and methods > Study design and participants"
+    },
+    {
+     "domaine": "applicabilite_test_evalue",
+     "jugement": "faible",
+     "justification": "Le score SCREEN-DCM et le seuil évalués correspondent au test de dépistage posé dans la question.",
+     "emplacement": "résumé"
+    },
+    {
+     "domaine": "applicabilite_reference",
+     "jugement": "faible",
+     "justification": "La référence établit le diagnostic de DCM recherché au moyen d'une évaluation clinique et radiologique.",
+     "emplacement": "section : Material and methods > Study design and participants"
+    }
+   ],
+   "refus": [],
+   "ecarts": []
+  }
+ ],
+ "categories": [
+  {
+   "pmid": "42980682",
+   "type": "essai_randomise",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "La chirurgie assistée par robot est associée à de meilleurs résultats fonctionnels et rapportés par les patients à un an. L’ampleur du bénéfice clinique n’est pas précisée et les deux approches diffèrent aussi par leur organisation opératoire.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42975150",
+   "type": "etude_diagnostique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le dispositif fournit une mesure quantitative du signe de Hoover dans un contexte très particulier : des volontaires sains simulant une faiblesse. Le résumé ne rapporte pas son utilisation chez des patients présentant une faiblesse fonctionnelle.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42968433",
+   "type": "meta_analyse",
+   "categorie": 4,
+   "libelle": "veille complémentaire",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le résultat porte sur la puissance instantanée lors d’exercices d’haltérophilie, sans conséquence plausible pour une décision de soin rapportée dans le résumé.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42969580",
+   "type": "revue_systematique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": "confirme",
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Cette revue actualise les connaissances sur une lésion concernant une population sportive particulière. Elle décrit les pratiques existantes et indique que les bénéfices de la rééducation formelle par rapport au repos seul restent incertains.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42987112",
+   "type": "essai_randomise",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le programme est associé à une réduction du stress et de l’anxiété perçus, ainsi qu’à une amélioration de certains critères d’endurance. Il concerne toutefois une population particulière d’étudiants universitaires.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42979604",
+   "type": "etude_diagnostique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le modèle combiné distingue les enfants atteints de dystrophie musculaire de Duchenne des témoins sains. Le résultat porte sur la performance diagnostique dans une population particulière, sans préciser son effet sur une décision de soin.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42969067",
+   "type": "meta_analyse",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le résumé rapporte une amélioration des capacités cardiorespiratoires et musculaires selon les paramètres de l’exercice. Ces résultats portent sur des critères intermédiaires et ne montrent pas de changement sur un critère clinique important pour le patient.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42969584",
+   "type": "revue_systematique",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "La revue met en évidence des différences d’accès aux soins et de prise en charge de la douleur chronique selon le lieu de résidence. Elle apporte un éclairage utile sur l’organisation des soins, sans indiquer à elle seule quelle décision clinique modifier.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42993769",
+   "type": "essai_randomise",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Chez des femmes présentant une vessie hyperactive, aucune différence significative n’est rapportée entre les deux courants pour les symptômes et la qualité de vie. Ce résultat ne permet pas de conclure à leur équivalence.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42999635",
+   "type": "etude_diagnostique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’étude évalue un score de dépistage chez des adultes consultant pour une maladie dégénérative lombaire. Elle rapporte une performance diagnostique, sans montrer d’effet sur le devenir des patients.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42968156",
+   "type": "essai_randomise",
+   "categorie": 1,
+   "libelle": "évolution potentielle des pratiques",
+   "sens_pratique": "remet_en_question",
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Chez des adultes trachéotomisés présentant une dysphagie neurogène, l’alimentation oro-œsophagienne intermittente est associée à une décanulation plus rapide et plus souvent réussie que l’alimentation par sonde nasogastrique. Ce résultat pourrait modifier le choix de la voie d’alimentation dans ce contexte.",
+   "mise_en_avant": {
+    "nouveaute": "L’alimentation oro-œsophagienne intermittente a réduit le délai de décanulation par rapport à la sonde nasogastrique.",
+    "remise_en_question": "Elle remet en question le recours conventionnel à la sonde nasogastrique dans cette population.",
+    "peut_modifier_les_pratiques": "Le choix de la voie d’alimentation pourrait changer chez ces patients.",
+    "certitude": "Cette lecture reste limitée aux données du résumé.",
+    "confirmations_necessaires": "Une confirmation dans d’autres contextes de soins serait nécessaire."
+   },
+   "ecarts": null
+  },
+  {
+   "pmid": "42972648",
+   "type": "etude_diagnostique",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Ce signe échographique pourrait aider à repérer une rupture transfixiante lorsque les signes directs sont incertains. Son interprétation varie toutefois entre les lecteurs et le résumé ne montre pas à lui seul qu'il change la prise en charge.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42968031",
+   "type": "meta_analyse",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le résultat porte sur l’activité physique, un critère intermédiaire. L’effet global est faible et ne permet pas de conclure avec certitude à l’efficacité des interventions mobiles.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42993906",
+   "type": "recommandation",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Ces recommandations précisent la place du traitement conservateur, du biofeedback et de la chirurgie dans la prise en charge du syndrome de défécation obstructée. Elles apportent un cadre utile aux décisions de soin, sans établir à elles seules un changement de pratique.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42975199",
+   "type": "revue_systematique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "La revue rapporte des résultats préliminaires sur certains symptômes moteurs, sans supériorité démontrée sur le score moteur global. Les bénéfices cliniques durables restent incertains.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42970451",
+   "type": "essai_randomise",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’ajout d’un entraînement à la supplémentation en fer améliore certaines mesures du contrôle postural chez de jeunes femmes présentant une anémie ferriprive. Le résultat porte sur des mesures intermédiaires dans une population particulière.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42978295",
+   "type": "etude_diagnostique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’étude apporte des données sur une échelle d’évaluation motrice dans le contexte particulier de l’AVC chronique. Le résumé ne montre pas de conséquence sur une décision de soin ou sur les résultats pour les patients.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42972238",
+   "type": "meta_analyse",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Les comparaisons précisent les effets de plusieurs techniques sur la douleur et la consommation d'opioïdes après reconstruction du ligament croisé antérieur. Elles ne permettent pas d'établir la supériorité clinique globale d'une stratégie ni de changer à elles seules la pratique.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42977900",
+   "type": "revue_systematique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "La revue rapporte des associations entre des perturbations du microbiote et la sévérité ou la récupération après un AVC. Elle ne rapporte pas de décision de soin directement modifiée par ces résultats.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42972476",
+   "type": "essai_randomise",
+   "categorie": 1,
+   "libelle": "évolution potentielle des pratiques",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Dans cet essai comparatif, les injections de cellules mésenchymateuses ont été associées à une réduction plus importante de la douleur et à une meilleure fonction que l’hyaluronate. Si ces résultats se confirment, ils pourraient modifier le choix du traitement injectable de l’arthrose sévère du genou.",
+   "mise_en_avant": {
+    "nouveaute": "Les injections de cellules mésenchymateuses ont donné de meilleurs résultats sur la douleur et la fonction que l’hyaluronate.",
+    "remise_en_question": "Rien n’indique qu’une pratique établie soit directement contredite.",
+    "peut_modifier_les_pratiques": "Le choix du traitement injectable pourrait changer.",
+    "certitude": "Cette lecture reste incertaine sur le seul résumé.",
+    "confirmations_necessaires": "Des essais plus larges et un suivi plus long de l’efficacité et de la sécurité sont nécessaires."
+   },
+   "ecarts": null
+  },
+  {
+   "pmid": "42981600",
+   "type": "etude_diagnostique",
+   "categorie": 4,
+   "libelle": "veille complémentaire",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’évaluation diagnostique et pronostique repose sur une cohorte de 20 patients présentant un trouble prolongé de la conscience. Le résumé rapporte des performances de classification, sans conséquence établie pour les décisions de soin.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42972353",
+   "type": "meta_analyse",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Les interventions d’activité physique sont associées à une amélioration de l’autorégulation comportementale et cognitive chez les enfants d’âge préscolaire. Le résultat porte sur des compétences mesurées principalement en milieu scolaire, sans préciser de conséquence sur une décision de soin.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42980725",
+   "type": "revue_systematique",
+   "categorie": 4,
+   "libelle": "veille complémentaire",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Cette revue décrit les difficultés diagnostiques et de prise en charge de l’asthme chez les personnes âgées. Le résumé ne rapporte pas de comparaison permettant d’évaluer une conduite de soin.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42985783",
+   "type": "essai_randomise",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’ajout d’une rééducation structurée après PRP est associé à une amélioration à court terme de la douleur et de la fonction par rapport à la physiothérapie conventionnelle seule. Le résumé ne précise pas le contenu de cette approche et ne permet pas de savoir si les bénéfices persistent.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42982323",
+   "type": "etude_diagnostique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Le test RAD présente une sensibilité et une spécificité élevées pour détecter une instabilité définie par l’IRM chez des patients atteints d’épicondylite latérale. Le résumé ne montre pas de conséquence sur les décisions de soin ou les symptômes des patients.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42972395",
+   "type": "meta_analyse",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Les résultats concernent des sportifs de sports collectifs et portent surtout sur la fonction respiratoire et des performances diverses. Aucun effet clair sur l'effort perçu ou la dyspnée n'est rapporté.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42982495",
+   "type": "revue_systematique",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "La revue porte sur la validité des questionnaires de qualité de vie dans une population particulière. Elle rapporte des propriétés psychométriques du SGRQ, mais aussi des limites de contenu et d’utilisation.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42986000",
+   "type": "essai_randomise",
+   "categorie": 3,
+   "libelle": "actualisation des connaissances",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L'entraînement améliore la capacité cardiorespiratoire, un critère intermédiaire. Aucun bénéfice n'est démontré sur la masse maigre ou l'HbA1c.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42984168",
+   "type": "etude_diagnostique",
+   "categorie": 2,
+   "libelle": "apport scientifique important",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "L’étude précise l’utilité de seuils existants de l’échelle de Berg pour distinguer la marche indépendante et la vitesse de marche après un AVC. Elle ne montre pas à elle seule de changement dans une décision de soin.",
+   "mise_en_avant": null,
+   "ecarts": null
+  },
+  {
+   "pmid": "42973526",
+   "type": "meta_analyse",
+   "categorie": 1,
+   "libelle": "évolution potentielle des pratiques",
+   "sens_pratique": null,
+   "verdict_publie": "a_surveiller",
+   "justification_categorie": "Chez les personnes ayant des vertiges résiduels après repositionnement, la phytothérapie est associée à une amélioration des symptômes et de leur retentissement. Si ces résultats se confirment, ils pourraient modifier le choix du traitement.",
+   "mise_en_avant": {
+    "nouveaute": "La phytothérapie est associée à une amélioration des vertiges résiduels par rapport aux soins habituels.",
+    "remise_en_question": "Rien.",
+    "peut_modifier_les_pratiques": "Elle pourrait être proposée en complément des soins habituels.",
+    "certitude": "Cette lecture reste incertaine sur le seul résumé, notamment pour la sécurité.",
+    "confirmations_necessaires": "Des essais supplémentaires sont nécessaires pour confirmer les bénéfices et préciser les effets indésirables."
+   },
+   "ecarts": null
+  }
+ ]
+}

@@ -17,6 +17,8 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | Écrit le 11 novembre 2026 : `banc.py`, lancé par le workflow « Banc d'essai ». Deux passages faits : voir `resultats/` |
 | Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Quatre mesures faites : `resultats/2026-11-12-extraction.md` |
 | Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
+| Cas « qualité, articles lisibles en entier » : 16 revues (AMSTAR 2), 7 études diagnostiques (QUADAS-2), 2 essais (RoB 2) | Assemblés le 13 novembre 2026 : `corpus/qualite_lisible.json` |
+| Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Deux mesures faites : `resultats/2026-11-13-appreciation.md`. Séance 7, plan d'étude : deux cycles, plus l'étude des suppléments, `resultats/2026-11-13-seance-7.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -123,6 +125,80 @@ est atteint.
 renvois numérotés du tableau ne désignaient pas les études nommées sur la ligne (le nom et l'année
 écrits l'emportent ; une ligne dont rien ne concorde est écartée) ; dans une autre, chaque étude
 occupait un bloc de lignes.
+
+## Les cas « qualité », sur des textes lisibles
+
+`corpus/qualite_lisible.json` complète `corpus/qualite.json`, dont presque aucun article n'a de
+texte intégral ouvert. Il réunit 25 articles sous licence CC BY, avec le jugement déjà porté par
+les auteurs d'une revue elle-même sous licence CC BY :
+
+| Outil | Revue source | Articles | Corrigé |
+| --- | --- | --- | --- |
+| QUADAS-2 | PMID 37444127, dépistage de la fragilité aux urgences (variante QUADAS-C) | 2 études diagnostiques | 4 domaines de risque de biais, 3 d'applicabilité |
+| QUADAS-2 | PMID 39367147, logiciels de détection de fractures | 5 études diagnostiques | 3 domaines de risque de biais sur 4, 3 d'applicabilité |
+| RoB 2 | PMID 34006560, rééducation après ligamentoplastie | 2 essais | 5 domaines et jugement global, pour un critère de proprioception |
+| AMSTAR 2 | PMID 39026375, exercices traditionnels chinois et arthrose du genou | 6 revues | 16 questions et confiance globale |
+| AMSTAR 2 | PMID 42643227, glucosamine et arthrose du genou | 2 revues | 16 questions et confiance globale |
+| AMSTAR 2 | PMID 42947838, exercice et maladie de Parkinson | 4 revues | Confiance globale |
+| AMSTAR 2 | PMID 40943700, exercice et lombalgie | 4 revues | Confiance globale |
+
+Répartition des 16 revues : 8 « très faible », 4 « faible », 4 « modérée », aucune « élevée ».
+Les lignes ont été lues sans IA par le workflow « Corpus, chiffres relevés ». Le corrigé n'est pas
+relu par un humain.
+
+## Le banc de l'appréciation
+
+`banc_appreciation.py` mesure l'appréciation méthodologique (bloc « appreciation » de la fiche v2)
+et la catégorie d'importance.
+
+- **Texte intégral seul par défaut** (depuis la séance 7) : un article n'est apprécié que si son
+  texte intégral est sous licence CC BY ou CC0. `"niveaux": "tout"` rejoue aussi l'appréciation
+  sur résumé seul.
+- **Plan d'étude** (séance 7) : une requête par article lu en entier. Pour le corpus, la grille du
+  plan est comparée à celle des auteurs de la revue. Pour 2026-S45, la grille est choisie d'après
+  le plan ; sans grille applicable, aucune appréciation n'est demandée.
+- **Étude des protocoles et des suppléments** (VS-D49) : `supplements.py`, sans IA et sans coût,
+  lancé par `"banc": "supplements"`. Pour chaque article du corpus « qualité » sous licence CC BY :
+  éléments de matériel supplémentaire déclarés, familles de numéros de protocole ou de registre
+  cités, mentions de fichiers supplémentaires et de listes d'exclus, paquet de fichiers chez Europe
+  PMC. Aucun texte d'article et aucun numéro de registre n'est gardé.
+- **Plan d'étude seul** (VS-D48) : `"plan_seul": true` mesure l'étape sans aucune appréciation ;
+  `"plan_externe": true` y ajoute les études diagnostiques du corpus de chiffres relevés, hors du
+  corpus « qualité », pour contrôler les définitions sur des articles qui ne les ont pas inspirées.
+- **Contrôle du coût** : l'estimation du banc est prudente (entrée comptée au plus haut). Un
+  lancement est refusé d'emblée si elle dépasse 1,5 fois le plafond ; ensuite, le coût réel déjà
+  dépensé est vérifié avant chaque groupe de requêtes, et un groupe qui dépasserait le plafond
+  n'est pas lancé. Deux lancements de la séance 7 se sont arrêtés au contrôle d'estimation sans
+  rien dépenser avant ce réglage.
+- **Fourchette du jugement global** (séance 7) : le corrigé est-il dans la fourchette, et la
+  fourchette est-elle étroite ? Mesure descriptive, sans seuil : un seuil reste à fixer par le
+  porteur du projet. Les seuils de VS-D39 portent sur la lecture stricte (un domaine non évalué ou
+  non rapporté compte comme le pire jugement possible).
+- **Déclarations hors du corps de l'article** (financement, liens d'intérêts) : lues depuis le
+  13 novembre 2026. `"sans_declarations": true` rejoue la lecture d'avant.
+- **Écart en crans** : le jugement global, calculé par le code, est comparé à celui du corrigé sur
+  l'échelle de l'outil (trois crans pour RoB 2 et QUADAS-2, quatre pour AMSTAR 2).
+- **Seuils** fixés par le porteur du projet (VS-D39), sur le texte intégral : au moins 70 % des
+  jugements à un cran au plus du corrigé, et aucun jugement plus favorable de deux crans.
+- **Abstention** : sur résumé seul, la part des domaines notés « non évaluable ».
+- **Accord par domaine**, quand le corrigé le donne.
+- **Catégories d'importance** : répartition sur des publications réelles de 2026-S45. Aucun
+  corrigé n'existe pour l'importance : cette mesure décrit, elle ne note pas.
+- **Dix publications de 2026-S45**, appréciées sur leur texte intégral et classées, pour la
+  relecture par le porteur du projet.
+
+**Mesure du 13 novembre 2026** (`resultats/2026-11-13-appreciation.md`) : 18 jugements globaux sur
+25 à un cran au plus du corrigé, aucun plus favorable de deux crans. Les deux seuils sont atteints,
+mais une réponse constante, « le plus mauvais niveau », aurait obtenu le même score : le corpus
+contient surtout des articles mal notés, et le moteur donne le plus mauvais niveau à 21 articles
+sur 25. Sur les 7 articles bien notés par leur revue, il n'en reconnaît qu'un. Le jugement global
+et l'étiquette candidate ne sont donc pas branchés sur la veille.
+
+**Seconde mesure, le même jour**, après correction de la lecture des déclarations (VS-D40) :
+17 jugements sur 25 à un cran au plus, sous le seuil de 70 %. L'écart tient à un seul article,
+dont le texte n'avait pas changé : sur les 10 articles au texte identique, 11 jugements par
+domaine sur 122 changent d'une mesure à l'autre. Le résultat est au niveau du seuil, et l'IA
+n'est pas stable.
 
 ## Les pièges
 

@@ -229,6 +229,70 @@
    "mode": "recalculer",
    "lancement": "43281503491",
    "raison": "Première mesure faite (lancement 43281503491, 0,90 $) : 150 chiffres retrouvés sur 161 à partir du texte intégral. L'examen des 11 autres montre quatre défauts des règles de comparaison (zéro final, nombres en lettres, niveau de confiance lu comme une donnée, valeur cherchée hors du champ « valeur »). Règles corrigées : vérifier de nouveau le corpus, puis recalculer le score sur les mêmes extractions. Aucun appel à l'IA."
+  },
+  {
+   "date": "2026-11-13",
+   "mode": "lire",
+   "raison": "Séance 6 (VS-D37) : lire, dans les revues sources déjà utilisées, les jugements de qualité portés sur les articles sous licence CC BY (QUADAS-2 pour les études diagnostiques, AMSTAR 2 pour les revues), pour en faire des corrigés de l'appréciation sur des textes lisibles en entier.",
+   "lectures": [
+    {
+     "source": "37444127",
+     "tableaux": [
+      "Table 2"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "39014328",
+     "tableaux": [
+      "Table 3"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "39367147",
+     "tableaux": [
+      "Table 3"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "36151550"
+    },
+    {
+     "source": "42643227",
+     "tableaux": [
+      "Table 3",
+      "Table 7"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "39026375",
+     "tableaux": [
+      "Table 2",
+      "Table 3"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "40943700",
+     "tableaux": [
+      "Table 3"
+     ],
+     "lignes_entete": 1
+    },
+    {
+     "source": "42947838",
+     "tableaux": [
+      "Table 2"
+     ],
+     "lignes_entete": 1
+    },
+    {
+     "source": "34006560"
+    }
+   ]
   }
  ]
 }

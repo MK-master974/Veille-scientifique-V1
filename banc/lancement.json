@@ -1,5 +1,5 @@
 {
- "objet": "Demande de lancement d'un banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût. La dernière ligne dit quel banc lancer (« banc » : « chaine » par défaut, ou « extraction »), son plafond de coût et l'accord reçu. « sans_ia » : lecture des textes et estimation du coût seulement, sans aucun appel à l'IA. « parties » (banc « extraction ») : « tout », « historique » (cas mesurés depuis la séance 5) ou « chiffres » (articles aux chiffres relevés, VS-D32).",
+ "objet": "Demande de lancement d'un banc d'essai. Modifier ce fichier sur une branche de travail lance le workflow « Banc d'essai », qui appelle l'IA et a un coût. La dernière ligne dit quel banc lancer (« banc » : « chaine » par défaut, « extraction » ou « appreciation »), son plafond de coût et l'accord reçu. « sans_ia » : lecture des textes et estimation du coût seulement, sans aucun appel à l'IA. « parties » (banc « extraction ») : « tout », « historique » (cas mesurés depuis la séance 5) ou « chiffres » (articles aux chiffres relevés, VS-D32).",
  "lancements": [
   {
    "date": "2026-11-11",
@@ -77,6 +77,93 @@
    "raison": "Renforcement du corpus (VS-D32) : mesure de l'extraction sur tout le corpus renforcé, avec les règles de comparaison corrigées et fixées avant ce lancement. Cas mesurés depuis la séance 5 (8 essais, 32 questions, cas de qualité, pièges) et 20 articles aux chiffres relevés (159 chiffres confirmés dans leur article, 2 écartés). Première mesure des chiffres relevés (lancement 43281503491) : 150 sur 161 avec les règles d'origine, 149 sur 159 après correction. Coût estimé : 2,13 $ au plus.",
    "accord": "Marvin, questionnaire du 12/11/2026 : plan du renforcement (un lancement sur les nouveaux articles, puis un sur tout le corpus) et enveloppe de 5 $ (VS-D33). Dépensé avant ce lancement : 0,90 $.",
    "budget_usd": 3.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "classement": 20,
+   "sans_ia": true,
+   "raison": "Séance 6 de la phase 1 (VS-D37) : vérifier que le banc d'appréciation lit les textes du corpus « qualité » et de dix publications de 2026-S45, et estimer le coût, avant tout appel à l'IA.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : séance 6 (VS-D37), enveloppe de 2,43 $ (VS-D38). Aucune IA appelée : aucun coût.",
+   "budget_usd": 2.43
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "limite": 1,
+   "classement": 2,
+   "raison": "Séance 6 (VS-D37) : essai court avant la mesure, un article par outil (RoB 2, QUADAS-2, AMSTAR 2) et deux classements, pour vérifier que l'IA répond dans le format attendu. Le lancement sans IA 43363536857 estime la mesure complète à 1,78 $ ; cet essai est plafonné à 0,30 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0 $.",
+   "budget_usd": 0.3
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "classement": 20,
+   "raison": "Séance 6 (VS-D37) : mesure de l'appréciation sur le corpus « qualité » (35 articles, dont 25 lisibles en entier), dix publications de 2026-S45 appréciées sur texte intégral pour la relecture, et 30 publications de 2026-S45 classées par catégorie d'importance. Seuils fixés avant la mesure (VS-D39). L'essai court 43364297944 a coûté 0,07 $ et confirme le format des réponses. Coût estimé par le lancement sans IA 43363536857 : 1,78 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0,07 $.",
+   "budget_usd": 2.3
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "niveaux": "integral",
+   "sans_ia": true,
+   "raison": "Séance 6, suite (VS-D40) : vérifier sans IA que les déclarations placées hors du corps de l'article (financement, liens d'intérêts) sont maintenant lues pour les 25 articles du corpus « qualité », et estimer le coût d'une seconde mesure sur texte intégral seul.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer (VS-D40). Ce lancement n'appelle pas l'IA : aucun coût.",
+   "budget_usd": 1.48
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "niveaux": "integral",
+   "raison": "Séance 6, seconde mesure (VS-D40) : appréciation des 25 articles du corpus « qualité » sur texte intégral, avec les déclarations placées hors du corps de l'article. Consigne inchangée (74839e05), pour mesurer l'effet de cette seule correction. Le lancement sans IA 43370197937 lit ces déclarations pour 15 articles sur 25 et estime le coût à 0,90 $ ; la première mesure du même niveau avait coûté 0,43 $.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : corriger la lecture puis remesurer, sur le reste de l'enveloppe (VS-D40). Dépensé avant ce lancement : 0,95 $ sur 2,43 $.",
+   "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "sans_ia": true,
+   "raison": "Séance 7 (VS-D44) : lire sans IA les 25 textes du corpus « qualité » et les 10 publications de 2026-S45, et estimer le coût du cycle de mesure avec l'étape « plan d'étude » (un plan par article lu en entier, puis appréciation à la grille du corrigé pour le corpus et à la grille du plan pour 2026-S45).",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Ce lancement n'appelle pas l'IA : aucun coût.",
+   "budget_usd": 0.95
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "raison": "Séance 7, cycle de mesure (VS-D44) : étape « plan d'étude » sur les 25 articles du corpus « qualité » lus en entier et sur les 10 publications de 2026-S45 relues par le comité, puis appréciation à la grille du corrigé (corpus) ou à la grille du plan (2026-S45) ; « non rapporté » et fourchette. Le lancement sans IA 43377261291 a lu les textes (déclarations hors du corps lues pour 15 articles sur 25) et s'est arrêté au contrôle du coût : l'estimation de 1,55 $ comptait 10 classements non demandés et supposait 4 500 jetons de sortie par appréciation, le double du réel. Estimation recalée sur les coûts réels (2 500 jetons, soit environ 20 % de marge), classements retirés. Coût attendu : 0,65 à 0,75 $ (25 appréciations à 0,017 $, 35 plans à environ 0,005 $, 5 à 10 appréciations de 2026-S45 à 0,015 $).",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de ce lancement : 1,00 $, vérifié avant l'étape « plan d'étude », puis avant chaque groupe d'appréciations d'après le coût réel déjà dépensé.",
+   "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "raison": "Séance 7, cycle de mesure (VS-D44), nouvelle demande : le lancement 43378174522 a lu les textes puis s'est arrêté au contrôle d'estimation sans appeler l'IA (1,18 $ estimés pour un plafond de 1,00 $). L'estimation du banc est prudente : l'entrée est comptée au plus haut et toutes les publications de 2026-S45 sont supposées appréciées, alors que seules celles dont le plan a une grille le seront. Règle de contrôle revue : un lancement n'est refusé d'emblée que si l'estimation dépasse 1,5 fois le plafond ; le coût réel déjà dépensé est ensuite vérifié avant chaque groupe de requêtes. Coût attendu : 0,65 à 0,75 $.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de dépense de ce lancement : 1,00 $. Aucun argent n'a été dépensé aux deux lancements précédents.",
+   "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "supplements",
+   "raison": "Séance 7 (VS-D49) : étudier, sans IA, où se trouvent les protocoles et les suppléments des 35 articles du corpus « qualité » : éléments de matériel supplémentaire déclarés, numéros de registre ou de protocole cités, listes d'études exclues citées, paquet de fichiers chez Europe PMC. Aucun texte d'article ni numéro de registre n'est gardé.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : étudier la récupération des protocoles et des suppléments sans IA (VS-D49). Aucun appel à l'IA : aucun coût.",
+   "budget_usd": 0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "plan_seul": true,
+   "plan_externe": true,
+   "raison": "Séance 7, second cycle (VS-D48) : mesurer l'étape « plan d'étude » seule, avec les définitions corrigées de « modèle de prédiction » et de « revue d'interventions » (consigne plan_etude.txt inchangée, les définitions sont données par la requête). Sur les 25 articles du corpus « qualité » lus en entier, les 10 publications de 2026-S45 et 7 études diagnostiques du corpus de chiffres relevés, hors du corpus où le défaut a été trouvé (plan attendu : étude diagnostique). Aucune appréciation, aucune catégorie. Coût attendu : environ 0,15 $ (42 plans à 0,0036 $).",
+   "accord": "Marvin, questionnaire du 13/11/2026 : corriger puis mesurer le plan seul, plafond de dépense 0,25 $ sur les 0,41 $ restants (VS-D48). Dépensé avant ce lancement : 2,02 $ sur 2,43 $. Le contrôle d'estimation refuse d'emblée au-delà de 1,5 fois le plafond.",
+   "budget_usd": 0.25
   }
  ]
 }

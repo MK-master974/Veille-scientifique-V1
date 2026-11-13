@@ -6,6 +6,35 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Modifié
+- Lecture d'un texte intégral (`pipeline/texte.py`) : sur demande, les déclarations placées hors
+  du corps de l'article (financement, liens d'intérêts, remerciements, notes de fin) sont lues
+  aussi. Le banc d'essai de l'appréciation le demande ; l'extraction ne le demande pas, et reçoit
+  le même texte qu'avant. Défaut trouvé à la première mesure de l'appréciation : pour 9 revues sur
+  16, l'IA répondait que ces déclarations manquaient, alors qu'elle ne les avait pas reçues
+  (VS-D40).
+- Définitions du plan d'étude : « modèle de prédiction » ne couvre plus que le développement ou
+  l'ajustement d'un modèle sur les données de l'étude ; évaluer un test, un score ou un algorithme
+  déjà défini contre une référence relève de l'étude diagnostique. « Revue d'interventions » ne
+  couvre plus les « expositions » : une revue de groupes ou de lieux est descriptive (VS-D48).
+  Mesuré au second cycle (0,16 $) : grille du plan identique à celle des auteurs pour 23 articles
+  sur 25 du corpus, avis du comité retrouvé pour 10 fiches sur 10, mais 4 études diagnostiques sur
+  7 seulement hors corpus : le cas mixte (développer un modèle et évaluer un outil déjà défini)
+  n'est pas résolu.
+- Étude des protocoles et des suppléments (sans IA) : 11 revues sur 16 déclarent du matériel
+  supplémentaire, surtout Word et PDF ; 9 sur 16 citent un numéro PROSPERO ; 1 sur 16 cite une
+  liste des études exclues.
+- Banc d'essai : le plan d'étude peut se mesurer seul (« plan_seul »), avec les études diagnostiques
+  du corpus de chiffres relevés comme contrôle hors corpus (« plan_externe »). Le seuil de la
+  fourchette du jugement global est fixé (VS-D50). Nouvelle étude sans IA des protocoles et des
+  suppléments (`banc/supplements.py`, VS-D49).
+- Contrôle du coût du banc d'appréciation : l'estimation, prudente, ne refuse plus un lancement
+  qu'au-delà de 1,5 fois le plafond ; le coût réel déjà dépensé est vérifié avant chaque groupe de
+  requêtes. L'estimation de la sortie est recalée sur les coûts réels.
+- Banc d'essai de l'appréciation : il peut ne mesurer que le texte intégral (« niveaux ») et
+  rejouer l'ancienne lecture (« sans_declarations »).
+- `docs/FICHE_V2.md`, bloc « appreciation » : trois précisions, déclarées au dépôt de
+  coordination avant d'être inscrites (CHG-2026-0009). Un champ de plus, `jugement_outil` ; la
+  forme de `domaines` ; la liste fermée des domaines de chaque outil. Aucun champ retiré.
 - Banc d'essai de l'extraction : il peut ne mesurer qu'une partie du corpus (« parties » : tout,
   cas mesurés depuis la séance 5, ou chiffres relevés). Son plafond fixe passe de 2 $ à 3 $ par
   lancement, parce que le corpus grossit (VS-D33).
@@ -31,6 +60,42 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
+  (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
+  code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
+  modèle de prédiction, revue descriptive…), la réponse est « aucune grille applicable », avec le
+  nom de la grille qui conviendrait. Pour AMSTAR 2, « non » exige un passage, un silence donne
+  « non rapporté », et le jugement global s'accompagne d'une fourchette. Un champ « nature du
+  jugement » dit ce que mesure l'axe qualité. Déclaré au dépôt de coordination (CHG-2026-0010).
+  Plus d'appréciation sur résumé seul. Pas encore appelé par la veille.
+- Première mesure de la séance 7 (`banc/resultats/2026-11-13-seance-7.md`) : le plan d'étude
+  retrouve l'avis du comité pour 8 fiches sur 10 de 2026-S45, dont les deux essais quasi
+  randomisés, et la grille des auteurs d'une revue pour 20 articles sur 25 du corpus. Défaut
+  trouvé et non corrigé : la définition de « modèle de prédiction » est trop large et retire leur
+  grille à 5 études diagnostiques sur 7. Sur 54 « non » des revues sources, 31 deviennent « non
+  rapporté ». Coût 0,63 $.
+- Phase 1, séance 6 : appréciation méthodologique d'une publication par l'outil adapté à son type
+  d'étude (RoB 2, QUADAS-2, AMSTAR 2, AGREE II). `pipeline/appreciation.py` et la consigne
+  `appreciation.txt` jugent chaque domaine ; le code exige un passage vérifié pour tout jugement
+  favorable et calcule lui-même le jugement global. `pipeline/classement.py` et la consigne
+  `classement.txt` proposent une catégorie d'importance de 1 à 4, bornée par des règles. La veille
+  hebdomadaire n'utilise pas encore ces modules.
+- `banc/corpus/qualite_lisible.json` : 25 articles sous licence CC BY dont le texte intégral se
+  lit, avec le jugement de qualité déjà porté par une revue (16 revues, 7 études diagnostiques,
+  2 essais).
+- Banc d'essai de l'appréciation (`banc/banc_appreciation.py`) : écart en crans avec le corrigé,
+  accord par domaine, abstention sur résumé seul, catégories sur des publications de 2026-S45.
+  Seuils fixés avant la mesure (VS-D39).
+- Première mesure de l'appréciation (`banc/resultats/2026-11-13-appreciation.md`) : les deux
+  seuils sont atteints (18 jugements sur 25 à un cran au plus du corrigé, aucun plus favorable de
+  deux crans), mais le moteur donne presque toujours le plus mauvais niveau et une réponse
+  constante aurait obtenu le même score. Le jugement global et l'étiquette candidate ne sont pas
+  branchés sur la veille. Dix publications de 2026-S45 appréciées et trente classées sont gardées
+  dans `banc/resultats/2026-11-13-appreciation-s45.json`, sans passage d'article.
+- Seconde mesure de l'appréciation, après correction de la lecture des déclarations (VS-D40) :
+  7 des 9 revues concernées obtiennent maintenant la bonne lecture de leurs déclarations, mais le
+  score global passe de 18 à 17 jugements sur 25, sous le seuil de 70 %. L'écart tient à un
+  article au texte inchangé : 9 % des jugements par domaine changent d'un lancement à l'autre.
 - Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
   diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
   déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la

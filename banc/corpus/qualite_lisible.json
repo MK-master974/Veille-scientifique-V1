@@ -1,0 +1,588 @@
+{
+ "nom": "Corpus de référence — qualité méthodologique, articles lisibles en entier",
+ "assemble_le": "2026-11-13",
+ "decision": "VS-D37",
+ "principe": "Jugements déjà portés par les auteurs d'une revue sous licence CC BY sur des articles eux-mêmes sous licence CC BY, dont le texte intégral se lit dans PubMed Central. Seuls des identifiants et des jugements sont repris : aucun texte d'article. Complète qualite.json, dont la plupart des articles n'ont pas de texte intégral ouvert.",
+ "etabli_par": "Session de développement du 13/11/2026, à partir des lignes de tableaux lues sur GitHub Actions (lancements 43278548445 et 43362707543, sans IA). Non relu par un humain.",
+ "valeurs": {
+  "rob2": [
+   "faible",
+   "quelques réserves",
+   "élevé"
+  ],
+  "quadas2": [
+   "faible",
+   "incertain",
+   "élevé"
+  ],
+  "amstar2": [
+   "élevée",
+   "modérée",
+   "faible",
+   "très faible"
+  ],
+  "amstar2_questions": [
+   "oui",
+   "oui partiel",
+   "non"
+  ]
+ },
+ "groupes": [
+  {
+   "outil": "QUADAS-2",
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "37444127",
+    "pmcid": "PMC10341387",
+    "revue": "International Journal of Environmental Research and Public Health",
+    "annee": "2023",
+    "doi": "10.3390/ijerph20136280",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "note": "La revue applique QUADAS-C, la variante de QUADAS-2 pour les études qui comparent plusieurs tests : mêmes domaines.",
+   "cas": [
+    {
+     "pmid": "27449526",
+     "pmcid": "PMC4957482",
+     "licence": "CC BY",
+     "reference": "Eklund et al. 2016, BMC Emerg Med",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "incertain",
+       "reference": "incertain",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "31569689",
+     "pmcid": "PMC6801910",
+     "licence": "CC BY",
+     "reference": "O'Caoimh et al. 2019, Int J Environ Res Public Health",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "outil": "QUADAS-2",
+   "type_etude": "etude_diagnostique",
+   "source": {
+    "pmid": "39367147",
+    "pmcid": "PMC11452402",
+    "revue": "Scientific Reports",
+    "annee": "2024",
+    "doi": "10.1038/s41598-024-73058-8",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Logiciels de détection de fractures. La revue juge trois domaines de risque de biais sur quatre : elle remplace « flux et délais » par le financement, qui n'est pas repris ici.",
+   "cas": [
+    {
+     "pmid": "35271382",
+     "pmcid": "PMC10996416",
+     "licence": "CC BY",
+     "reference": "Gipson et al. 2022, Br J Radiol",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      }
+     }
+    },
+    {
+     "pmid": "33145440",
+     "pmcid": "PMC7599208",
+     "licence": "CC BY",
+     "reference": "Jones et al. 2020, NPJ Digit Med",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "36676172",
+     "pmcid": "PMC9864518",
+     "licence": "CC BY",
+     "reference": "Oppenheimer et al. 2023, Life (Basel)",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      }
+     }
+    },
+    {
+     "pmid": "36941993",
+     "pmcid": "PMC10023863",
+     "licence": "CC BY",
+     "reference": "Parpaleix et al. 2023, Eur J Radiol Open",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      }
+     }
+    },
+    {
+     "pmid": "39080893",
+     "pmcid": "PMC8321374",
+     "licence": "CC BY",
+     "reference": "Reichert et al. 2021, J Imaging",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "élevé",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      },
+      "applicabilite": {
+       "selection_des_patients": "incertain",
+       "test_evalue": "faible",
+       "reference": "élevé"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "outil": "RoB 2",
+   "type_etude": "essai_randomise",
+   "source": {
+    "pmid": "34006560",
+    "pmcid": "PMC8130739",
+    "revue": "BMJ Open",
+    "annee": "2021",
+    "doi": "10.1136/bmjopen-2021-049226",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Jugements portés pour un critère de proprioception (sens de la position du genou), pas forcément le critère principal de l'essai. L'essai de Kaya figure aussi dans qualite.json.",
+   "cas": [
+    {
+     "pmid": "31828089",
+     "pmcid": "PMC6881759",
+     "licence": "CC BY",
+     "reference": "Kaya et al. 2019, Biomed Res Int",
+     "corrige": {
+      "randomisation": "quelques réserves",
+      "ecarts_aux_interventions": "élevé",
+      "donnees_manquantes": "élevé",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "quelques réserves",
+      "global": "élevé"
+     }
+    },
+    {
+     "pmid": "29796857",
+     "pmcid": "PMC6060748",
+     "licence": "CC BY",
+     "reference": "Zult et al. 2018, Eur J Appl Physiol",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "quelques réserves",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "élevé",
+      "selection_du_resultat": "quelques réserves",
+      "global": "élevé"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "39026375",
+    "pmcid": "PMC11256411",
+    "revue": "Systematic Reviews",
+    "annee": "2024",
+    "doi": "10.1186/s13643-024-02606-0",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "note": "Exercices traditionnels chinois et arthrose du genou. Réponse à chacune des 16 questions, et niveau de confiance global.",
+   "cas": [
+    {
+     "pmid": "36419784",
+     "pmcid": "PMC9676488",
+     "licence": "CC BY",
+     "reference": "Guo et al. 2022, Front Med (Lausanne)",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "oui",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "oui",
+       "q12": "non",
+       "q13": "non",
+       "q14": "oui",
+       "q15": "non",
+       "q16": "oui"
+      }
+     }
+    },
+    {
+     "pmid": "23620778",
+     "pmcid": "PMC3631149",
+     "licence": "CC BY",
+     "reference": "Yan et al. 2013, PLoS One",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "non",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui partiel",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "non",
+       "q12": "oui",
+       "q13": "non",
+       "q14": "oui",
+       "q15": "oui",
+       "q16": "non"
+      }
+     }
+    },
+    {
+     "pmid": "33121082",
+     "pmcid": "PMC7662219",
+     "licence": "CC BY",
+     "reference": "Li et al. 2020, Int J Environ Res Public Health",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "non",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui partiel",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "non",
+       "q12": "non",
+       "q13": "oui",
+       "q14": "non",
+       "q15": "oui",
+       "q16": "oui"
+      }
+     }
+    },
+    {
+     "pmid": "27635148",
+     "pmcid": "PMC5011213",
+     "licence": "CC BY",
+     "reference": "Chang et al. 2016, Evid Based Complement Alternat Med",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "non",
+       "q02": "non",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "non",
+       "q06": "non",
+       "q07": "non",
+       "q08": "non",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "non",
+       "q12": "non",
+       "q13": "oui",
+       "q14": "non",
+       "q15": "non",
+       "q16": "oui"
+      }
+     }
+    },
+    {
+     "pmid": "33879749",
+     "pmcid": "PMC8078456",
+     "licence": "CC BY",
+     "reference": "You et al. 2021, Medicine (Baltimore)",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "non",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "non",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui partiel",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "oui",
+       "q12": "non",
+       "q13": "non",
+       "q14": "oui",
+       "q15": "non",
+       "q16": "non"
+      }
+     }
+    },
+    {
+     "pmid": "28121996",
+     "pmcid": "PMC5266306",
+     "licence": "CC BY",
+     "reference": "Zhang et al. 2017, PLoS One",
+     "corrige": {
+      "confiance_globale": "très faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "non",
+       "q03": "non",
+       "q04": "oui partiel",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "non",
+       "q12": "non",
+       "q13": "oui",
+       "q14": "oui",
+       "q15": "non",
+       "q16": "non"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "42643227",
+    "pmcid": "PMC13503159",
+    "revue": "Frontiers in Nutrition",
+    "annee": "2026",
+    "doi": "10.3389/fnut.2026.1806413",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Glucosamine et arthrose du genou. Réponse à chacune des 16 questions, et niveau de confiance global. Trois autres revues de ce tableau sont notées « en attente d'évaluation » par la revue source : elles ne sont pas reprises.",
+   "cas": [
+    {
+     "pmid": "29980200",
+     "pmcid": "PMC6035477",
+     "licence": "CC BY",
+     "reference": "Zhu et al. 2018, J Orthop Surg Res",
+     "corrige": {
+      "confiance_globale": "faible",
+      "questions": {
+       "q01": "oui",
+       "q02": "non",
+       "q03": "oui",
+       "q04": "oui",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "non",
+       "q08": "oui",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "oui",
+       "q12": "oui",
+       "q13": "oui",
+       "q14": "oui",
+       "q15": "oui partiel",
+       "q16": "oui"
+      }
+     }
+    },
+    {
+     "pmid": "30961569",
+     "pmcid": "PMC6454763",
+     "licence": "CC BY",
+     "reference": "Charlesworth et al. 2019, BMC Musculoskelet Disord",
+     "corrige": {
+      "confiance_globale": "modérée",
+      "questions": {
+       "q01": "oui",
+       "q02": "oui",
+       "q03": "oui",
+       "q04": "oui",
+       "q05": "oui",
+       "q06": "oui",
+       "q07": "oui",
+       "q08": "oui",
+       "q09": "oui",
+       "q10": "non",
+       "q11": "non",
+       "q12": "oui",
+       "q13": "oui",
+       "q14": "oui",
+       "q15": "oui partiel",
+       "q16": "oui"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "42947838",
+    "pmcid": "PMC13710104",
+    "revue": "Frontiers in Psychology",
+    "annee": "2026",
+    "doi": "10.3389/fpsyg.2026.1939213",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "note": "Exercice et équilibre dans la maladie de Parkinson. Seul le niveau de confiance global est donné.",
+   "cas": [
+    {
+     "pmid": "41296768",
+     "pmcid": "PMC12654900",
+     "licence": "CC BY",
+     "reference": "Li et al. 2025, PLoS One",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "36316416",
+     "pmcid": "PMC9622812",
+     "licence": "CC BY",
+     "reference": "Zhen et al. 2022, NPJ Parkinsons Dis",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "35847669",
+     "pmcid": "PMC9285003",
+     "licence": "CC BY",
+     "reference": "Wu et al. 2022, Front Aging Neurosci",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "39787155",
+     "pmcid": "PMC11717240",
+     "licence": "CC BY",
+     "reference": "Song et al. 2025, PLoS One",
+     "corrige": {
+      "confiance_globale": "faible"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "source": {
+    "pmid": "40943700",
+    "pmcid": "PMC12429691",
+    "revue": "Journal of Clinical Medicine",
+    "annee": "2025",
+    "doi": "10.3390/jcm14175942",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Exercice et lombalgie. Seul le niveau de confiance global est donné (colonne « Study Quality » ; le résumé de la revue dit qu'elle applique AMSTAR 2).",
+   "cas": [
+    {
+     "pmid": "37468931",
+     "pmcid": "PMC10357808",
+     "licence": "CC BY",
+     "reference": "Zhang et al. 2023, J Orthop Surg Res",
+     "corrige": {
+      "confiance_globale": "faible"
+     }
+    },
+    {
+     "pmid": "36833545",
+     "pmcid": "PMC9956295",
+     "licence": "CC BY",
+     "reference": "Yu et al. 2023, Int J Environ Res Public Health",
+     "corrige": {
+      "confiance_globale": "faible"
+     }
+    },
+    {
+     "pmid": "36331870",
+     "pmcid": "PMC9639467",
+     "licence": "CC BY",
+     "reference": "Hernandez-Lucas et al. 2022, Ann Med",
+     "corrige": {
+      "confiance_globale": "très faible"
+     }
+    },
+    {
+     "pmid": "33037280",
+     "pmcid": "PMC7547082",
+     "licence": "CC BY",
+     "reference": "Mueller et Niederer 2020, Sci Rep",
+     "corrige": {
+      "confiance_globale": "très faible"
+     }
+    }
+   ]
+  }
+ ]
+}

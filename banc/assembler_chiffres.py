@@ -198,8 +198,9 @@ def tableaux(racine):
                     l["cites"], l["herite"] = courant, True
                 else:
                     courant = []
+        notes = " ".join(_propre("".join(e.itertext())) for e in tw.iter() if _local(e.tag) == "table-wrap-foot")
         resultat.append({"label": label or f"Tableau {len(resultat) + 1}", "caption": caption,
-                         "lignes": lignes, "colonnes": colonnes})
+                         "lignes": lignes, "colonnes": colonnes, "notes": notes})
     return resultat, refs
 
 
@@ -399,6 +400,8 @@ def lire(demande):
             for l in t["lignes"][:int(d.get("lignes_entete", 2))]:
                 if l not in lignes:
                     journal("  en-tête | " + " | ".join(c[:CELLULE_LECTURE] for c in l["cellules"]))
+            if t.get("notes"):
+                journal(f"  notes | {t['notes'][:600]}")
             for l in lignes:
                 cites = l["cites_bloc"] if bloc else l["cites"]
                 qui = ",".join(dict.fromkeys(fiches[i]["pmid"] for i in cites if i in idents))

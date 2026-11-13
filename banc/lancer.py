@@ -2,7 +2,9 @@
 
 Chaque lancement appelle l'IA et a un coût : il n'a lieu que sur demande écrite dans ce fichier,
 avec l'accord du porteur du projet. Une demande précise :
-- "banc" : "chaine" (chaîne actuelle de la veille, valeur par défaut) ou "extraction" ;
+- "banc" : "chaine" (chaîne actuelle de la veille, valeur par défaut), "extraction",
+  "appreciation" (appréciation méthodologique et catégorie d'importance, séance 6) ou
+  "supplements" (étude sans IA des protocoles et des suppléments du corpus « qualité », séance 7) ;
 - "budget_usd" : plafond du lancement, vérifié avant tout appel. Il ne peut pas dépasser le
   plafond fixé ici pour chaque banc, même si la demande en écrit un plus grand ;
 - pour le banc « extraction » : "s45" (nombre de publications réelles de 2026-S45 à extraire en
@@ -11,8 +13,18 @@ avec l'accord du porteur du projet. Une demande précise :
   dont le corrigé est fait de chiffres relevés) et "sans_ia" (lecture des textes et estimation du
   coût seulement : aucun appel à l'IA, aucun coût).
 
+- pour le banc « appreciation » : "s45" (publications de 2026-S45 à apprécier sur texte
+  intégral), "classement" (publications de 2026-S45 à classer en plus, sur résumé), "limite"
+  (articles au plus par outil, pour un essai court), "niveaux" (« integral » par défaut : pas
+  d'appréciation sur résumé seul ; « tout » : aussi sur résumé), "sans_declarations" (lecture du
+  texte intégral sans les déclarations placées hors du corps de l'article), "plan_seul" (mesure
+  l'étape « plan d'étude » seule, sans appréciation), "plan_externe" (ajoute les études
+  diagnostiques du corpus de chiffres relevés, hors du corpus « qualité ») et "sans_ia". Le banc
+  établit d'abord le plan d'étude de chaque article lu en entier (séance 7, VS-D44).
+
 Plafonds fixes : 1 $ pour la chaîne actuelle ; 3 $ pour l'extraction, porté de 2 $ à 3 $ le
-12 novembre 2026 parce que le corpus grossit (VS-D33).
+12 novembre 2026 parce que le corpus grossit (VS-D33) ; 2,43 $ pour l'appréciation, soit toute
+l'enveloppe de la séance 6 (VS-D38).
 
 Usage : python banc/lancer.py --sortie resultats-banc
 """
@@ -24,9 +36,11 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
 DEMANDES = RACINE / "banc" / "lancement.json"
-BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 3.0)}
+BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 3.0),
+         "appreciation": ("banc_appreciation.py", 2.43), "supplements": ("supplements.py", 0.0)}
 EFFORTS = ("minimal", "low", "medium", "high")
 PARTIES = ("tout", "historique", "chiffres")
+NIVEAUX = ("tout", "integral")
 
 
 def commande(demande, sortie):
@@ -48,6 +62,22 @@ def commande(demande, sortie):
             if demande["parties"] not in PARTIES:
                 raise SystemExit(f"Parties inconnues : {demande['parties']!r} (attendu : {', '.join(PARTIES)})")
             arguments += ["--parties", demande["parties"]]
+        if demande.get("sans_ia") is True:
+            arguments.append("--sans-ia")
+    if banc == "appreciation":
+        for cle, maximum in (("s45", 12), ("classement", 40), ("limite", 50)):
+            if int(demande.get(cle, 0)) > 0:
+                arguments += [f"--{cle}", str(min(int(demande[cle]), maximum))]
+        if demande.get("niveaux"):
+            if demande["niveaux"] not in NIVEAUX:
+                raise SystemExit(f"Niveaux inconnus : {demande['niveaux']!r} (attendu : {', '.join(NIVEAUX)})")
+            arguments += ["--niveaux", demande["niveaux"]]
+        if demande.get("sans_declarations") is True:
+            arguments.append("--sans-declarations")
+        if demande.get("plan_seul") is True:
+            arguments.append("--plan-seul")
+        if demande.get("plan_externe") is True:
+            arguments.append("--plan-externe")
         if demande.get("sans_ia") is True:
             arguments.append("--sans-ia")
     return script, arguments
