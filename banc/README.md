@@ -157,6 +157,11 @@ et la catégorie d'importance.
 - **Plan d'étude** (séance 7) : une requête par article lu en entier. Pour le corpus, la grille du
   plan est comparée à celle des auteurs de la revue. Pour 2026-S45, la grille est choisie d'après
   le plan ; sans grille applicable, aucune appréciation n'est demandée.
+- **Contrôle du coût** : l'estimation du banc est prudente (entrée comptée au plus haut). Un
+  lancement est refusé d'emblée si elle dépasse 1,5 fois le plafond ; ensuite, le coût réel déjà
+  dépensé est vérifié avant chaque groupe de requêtes, et un groupe qui dépasserait le plafond
+  n'est pas lancé. Deux lancements de la séance 7 se sont arrêtés au contrôle d'estimation sans
+  rien dépenser avant ce réglage.
 - **Fourchette du jugement global** (séance 7) : le corrigé est-il dans la fourchette, et la
   fourchette est-elle étroite ? Mesure descriptive, sans seuil : un seuil reste à fixer par le
   porteur du projet. Les seuils de VS-D39 portent sur la lecture stricte (un domaine non évalué ou

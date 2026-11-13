@@ -62,6 +62,11 @@ OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2
 # (0,0172 $ par article à 1 $ et 5 $ le million de jetons, soit environ 1 700 jetons de sortie) : 2 500 garde
 # une marge d'environ 20 % sur le coût réel. Avant, 4 500 donnait une estimation double du coût réel.
 SORTIE_ESTIMEE = {"plan": 600, "resume": 1500, "integral": 2500, "classement": 700}
+# L'estimation reste prudente : l'entrée est comptée au plus haut. Elle valait 2,0 à 2,1 fois le coût réel sur
+# deux lancements, et 1,6 fois attendu après le recalage de la sortie. Un lancement n'est refusé d'emblée que
+# si l'estimation dépasse MARGE_ESTIMATION fois le plafond ; le coût réel déjà dépensé est ensuite vérifié
+# avant chaque groupe de requêtes, et c'est lui qui arrête la dépense au plafond.
+MARGE_ESTIMATION = 1.5
 
 
 # --- Fonctions pures, testées sans réseau -----------------------------------------------------
@@ -336,9 +341,12 @@ def main(argv=None):
     journal(f"Coût estimé : {estime:.2f} $ (plafond {args.budget:.2f} $) — {len(reqs['plan'])} plans d'étude, "
             f"{len(reqs['resume'])} appréciations sur résumé, {len(reqs['integral'])} sur texte intégral, "
             f"jusqu'à {len(s45_borne)} sur 2026-S45, {len(reqs['classement'])} classements")
-    if estime > args.budget:
+    if estime > args.budget * MARGE_ESTIMATION:
         journal("ARRÊT : estimation supérieure au plafond, aucun appel n'est fait.")
         return 2
+    if estime > args.budget:
+        journal(f"Estimation prudente au-dessus du plafond, sous {MARGE_ESTIMATION} fois le plafond : "
+                f"le coût réel est vérifié avant chaque groupe de requêtes.")
     if args.sans_ia:
         journal("Lancement sans IA : arrêt ici, aucun appel n'est fait, aucun coût.")
         return 0
@@ -384,7 +392,7 @@ def main(argv=None):
     restant = estimer([], reqs["resume"], reqs["integral"] + reqs["s45"], reqs["classement"])
     journal(f"Plans d'étude lus ({deja:.3f} $) ; {len(reqs['s45'])} publications de 2026-S45 sur {len(s45)} ont une grille ; "
             f"reste à dépenser au plus {restant:.2f} $")
-    if deja + restant > args.budget:
+    if deja >= args.budget:
         journal("ARRÊT : le plafond serait dépassé, aucune appréciation n'est lancée.")
         return 2
     groupes = {"resume": "resume", "integral": "integral", "s45": "integral", "classement": "classement"}

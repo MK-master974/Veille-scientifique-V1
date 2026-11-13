@@ -425,6 +425,15 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert seul["resume"]["resume_seul"]["etats"] == {}
     assert banc.main(["--sortie", str(tmp_path), "--budget", "0.001"]) == 2
     # Après l'étape « plan d'étude », le coût réel est vérifié : un dépassement arrête avant les appréciations.
+    # L'estimation est prudente : refus d'emblée seulement au-delà de 1,5 fois le plafond ; entre les deux, le coût
+    # réel est vérifié avant chaque groupe.
+    capsys.readouterr()
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--sans-ia"]) == 0
+    estime = float(re.search(r"Coût estimé : ([\d.]+) \$", capsys.readouterr().out).group(1))
+    assert banc.main(["--sortie", str(tmp_path), "--budget", str(estime / 1.2)]) == 0
+    assert "Estimation prudente au-dessus du plafond" in capsys.readouterr().out
+    assert banc.main(["--sortie", str(tmp_path), "--budget", str(estime / 1.6)]) == 2
+    assert "ARRÊT : estimation supérieure au plafond" in capsys.readouterr().out
     with monkeypatch.context() as m:
         m.setattr(banc.ia, "cout_reel", lambda *a, **k: 10.0)
         assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 2

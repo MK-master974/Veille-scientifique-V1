@@ -139,6 +139,14 @@
    "raison": "Séance 7, cycle de mesure (VS-D44) : étape « plan d'étude » sur les 25 articles du corpus « qualité » lus en entier et sur les 10 publications de 2026-S45 relues par le comité, puis appréciation à la grille du corrigé (corpus) ou à la grille du plan (2026-S45) ; « non rapporté » et fourchette. Le lancement sans IA 43377261291 a lu les textes (déclarations hors du corps lues pour 15 articles sur 25) et s'est arrêté au contrôle du coût : l'estimation de 1,55 $ comptait 10 classements non demandés et supposait 4 500 jetons de sortie par appréciation, le double du réel. Estimation recalée sur les coûts réels (2 500 jetons, soit environ 20 % de marge), classements retirés. Coût attendu : 0,65 à 0,75 $ (25 appréciations à 0,017 $, 35 plans à environ 0,005 $, 5 à 10 appréciations de 2026-S45 à 0,015 $).",
    "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de ce lancement : 1,00 $, vérifié avant l'étape « plan d'étude », puis avant chaque groupe d'appréciations d'après le coût réel déjà dépensé.",
    "budget_usd": 1.0
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "raison": "Séance 7, cycle de mesure (VS-D44), nouvelle demande : le lancement 43378174522 a lu les textes puis s'est arrêté au contrôle d'estimation sans appeler l'IA (1,18 $ estimés pour un plafond de 1,00 $). L'estimation du banc est prudente : l'entrée est comptée au plus haut et toutes les publications de 2026-S45 sont supposées appréciées, alors que seules celles dont le plan a une grille le seront. Règle de contrôle revue : un lancement n'est refusé d'emblée que si l'estimation dépasse 1,5 fois le plafond ; le coût réel déjà dépensé est ensuite vérifié avant chaque groupe de requêtes. Coût attendu : 0,65 à 0,75 $.",
+   "accord": "Marvin, questionnaire du 13/11/2026 : le reste de l'enveloppe, soit 1,05 $, sans argent nouveau (VS-D45). Plafond de dépense de ce lancement : 1,00 $. Aucun argent n'a été dépensé aux deux lancements précédents.",
+   "budget_usd": 1.0
   }
  ]
 }
