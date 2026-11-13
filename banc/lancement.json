@@ -164,6 +164,16 @@
    "raison": "Séance 7, second cycle (VS-D48) : mesurer l'étape « plan d'étude » seule, avec les définitions corrigées de « modèle de prédiction » et de « revue d'interventions » (consigne plan_etude.txt inchangée, les définitions sont données par la requête). Sur les 25 articles du corpus « qualité » lus en entier, les 10 publications de 2026-S45 et 7 études diagnostiques du corpus de chiffres relevés, hors du corpus où le défaut a été trouvé (plan attendu : étude diagnostique). Aucune appréciation, aucune catégorie. Coût attendu : environ 0,15 $ (42 plans à 0,0036 $).",
    "accord": "Marvin, questionnaire du 13/11/2026 : corriger puis mesurer le plan seul, plafond de dépense 0,25 $ sur les 0,41 $ restants (VS-D48). Dépensé avant ce lancement : 2,02 $ sur 2,43 $. Le contrôle d'estimation refuse d'emblée au-delà de 1,5 fois le plafond.",
    "budget_usd": 0.25
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "s45": 10,
+   "plan_seul": true,
+   "plan_externe": true,
+   "raison": "VS-D51 : règle du cas mixte ajoutée aux définitions du plan d'étude ; plan seul, mêmes articles que le second cycle. Les 7 études hors corpus ne sont plus indépendantes de la règle : le résultat sera dit tel quel. Coût attendu environ 0,16 $.",
+   "accord": "Marvin, questionnaire du 14/11/2026 : cas mixte, sur les 0,26 $ restants, sans nouvelle enveloppe. Plafond 0,25 $.",
+   "budget_usd": 0.25
   }
  ]
 }
