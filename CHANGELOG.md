@@ -43,6 +43,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 - Banc d'essai de l'appréciation (`banc/banc_appreciation.py`) : écart en crans avec le corrigé,
   accord par domaine, abstention sur résumé seul, catégories sur des publications de 2026-S45.
   Seuils fixés avant la mesure (VS-D39).
+- Première mesure de l'appréciation (`banc/resultats/2026-11-13-appreciation.md`) : les deux
+  seuils sont atteints (18 jugements sur 25 à un cran au plus du corrigé, aucun plus favorable de
+  deux crans), mais le moteur donne presque toujours le plus mauvais niveau et une réponse
+  constante aurait obtenu le même score. Le jugement global et l'étiquette candidate ne sont pas
+  branchés sur la veille. Dix publications de 2026-S45 appréciées et trente classées sont gardées
+  dans `banc/resultats/2026-11-13-appreciation-s45.json`, sans passage d'article.
 - Corpus de référence renforcé (VS-D32) : `banc/corpus/chiffres_releves.json` réunit 9 études
   diagnostiques, 10 méta-analyses et 1 revue systématique sous licence CC BY, avec 161 chiffres
   déjà relevés par les auteurs de 9 revues en accès libre. Personne n'a rempli de corrigé à la
