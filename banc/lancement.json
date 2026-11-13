@@ -96,6 +96,15 @@
    "raison": "Séance 6 (VS-D37) : essai court avant la mesure, un article par outil (RoB 2, QUADAS-2, AMSTAR 2) et deux classements, pour vérifier que l'IA répond dans le format attendu. Le lancement sans IA 43363536857 estime la mesure complète à 1,78 $ ; cet essai est plafonné à 0,30 $.",
    "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0 $.",
    "budget_usd": 0.3
+  },
+  {
+   "date": "2026-11-13",
+   "banc": "appreciation",
+   "s45": 10,
+   "classement": 20,
+   "raison": "Séance 6 (VS-D37) : mesure de l'appréciation sur le corpus « qualité » (35 articles, dont 25 lisibles en entier), dix publications de 2026-S45 appréciées sur texte intégral pour la relecture, et 30 publications de 2026-S45 classées par catégorie d'importance. Seuils fixés avant la mesure (VS-D39). L'essai court 43364297944 a coûté 0,07 $ et confirme le format des réponses. Coût estimé par le lancement sans IA 43363536857 : 1,78 $.",
+   "accord": "Marvin, questionnaire du 12/11/2026 : enveloppe de 2,43 $ pour la séance 6 (VS-D38). Dépensé avant ce lancement : 0,07 $.",
+   "budget_usd": 2.3
   }
  ]
 }
