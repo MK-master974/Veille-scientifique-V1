@@ -222,6 +222,16 @@ première mesure de l'appréciation (résultats :
 | VS-D42 | Demande de fusion de la séance 6 : ouverte après la fusion du lot 12, pour ne montrer que les fichiers de la séance 6 | Validée le 13 novembre 2026 (questionnaire) |
 | VS-D43 | Accord pour écrire dans le dépôt de coordination : accusé de lecture de la consigne CONS-2026-11-12-01, compte rendu de la séance 6, déclaration des précisions du bloc « appreciation » de la fiche v2 | Validée le 13 novembre 2026 (questionnaire), réalisée : commit `05757ba` du dépôt de coordination (déclaration CHG-2026-0009, compte rendu du 13 novembre, accusé de lecture) |
 
+Décisions prises par questionnaire le 13 novembre 2026, après le retour du comité d'experts sur les
+dix fiches (recoupement : [../banc/resultats/2026-11-13-appreciation.md](../banc/resultats/2026-11-13-appreciation.md)) :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D44 | Séance 7 : le socle d'abord. Quatre corrections sans nouvel outil d'appréciation : (1) une étape « plan d'étude » avant le choix de la grille, avec « aucune grille applicable » quand rien ne convient ; (2) « non rapporté » distinct de « non », et une fourchette du jugement global au lieu de « non évaluable » ; (3) un champ « nature du jugement » pour que l'axe qualité ne soit plus lu comme une certitude, déclaré au dépôt de coordination avant d'être inscrit dans `docs/FICHE_V2.md` ; (4) plus d'appréciation sur résumé seul. ROBINS-I, PROBAST, ROBIS et les grilles JBI viennent après, chacun avec son corpus de référence | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D45 | Budget d'IA de la séance 7 : le reste de l'enveloppe de la séance 6, soit 1,05 $, sans argent nouveau. Un seul cycle de mesure ; si un second est nécessaire, la session s'arrête et redemande | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D46 | Le retour du comité d'experts tient lieu de relecture des dix fiches. Il est inscrit comme avis déclaré, recoupé par la session sur 9 fiches avec les jugements du moteur et sur 6 avec PubMed. Ce n'est pas un corrigé : il ne rejoint le corpus de référence qu'après confirmation par un second lecteur humain | Validée le 13 novembre 2026 (questionnaire) |
+| VS-D47 | La page de relecture est refaite pour capter des désaccords précis (domaine contesté, jugement proposé, passage de l'article, nature de l'erreur, grille et plan d'étude proposés). Les avis sont des annotations avec l'identité du relecteur, séparées du corpus de référence. Aucun coût d'IA, aucun fichier du dépôt. Le partage de la page avec les membres du comité est fait par le porteur du projet | Validée le 13 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.

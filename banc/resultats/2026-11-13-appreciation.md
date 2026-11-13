@@ -268,6 +268,30 @@ articles. Le porteur du projet les relit sur une page privée, hors du dépôt.
 | [42969580](https://pubmed.ncbi.nlm.nih.gov/42969580/) | Revue systématique | AMSTAR 2 | confiance très faible | préliminaire | préliminaire | 3 |
 | [42969584](https://pubmed.ncbi.nlm.nih.gov/42969584/) | Revue systématique | AMSTAR 2 | confiance faible | préliminaire | préliminaire | 2 |
 
+## Retour du comité d'experts sur les dix fiches (13 novembre 2026)
+
+Avis déclaré, reçu du porteur du projet après une relecture des dix fiches (VS-D46). Ce n'est pas
+un corrigé. La session l'a recoupé avec les jugements du moteur pour 9 fiches, et avec les résumés
+PubMed pour 6 (fiches 1, 2, 4, 6, 7 et 9). Le texte intégral n'a pas pu être relu : Europe PMC est
+injoignable depuis l'environnement de développement. La fiche 8 n'a pas été recoupée (seul son
+titre est connu).
+
+| Observation du comité | Recoupement |
+| --- | --- |
+| La grille ne convient pas au plan réel (fiches 1, 4, 6, 8, 9) | **Confirmé pour 1, 4, 6, 9.** Fiche 1 : le titre dit « quasi-randomised » et PubMed l'étiquette « Randomized Controlled Trial » ; ce cas avait été signalé le 12 novembre, sans correction. Fiche 9 : le moteur a lui-même relevé une affectation alternée, puis appliqué RoB 2. Fiche 4 : revue descriptive jugée « non » parce que la question ne précise pas de comparateur. Fiche 6 : le résumé dit que des modèles diagnostiques sont construits. Fiche 8 : non recoupée |
+| Un critère non rapporté est pris pour un défaut | **Confirmé.** Fiche 3 : « non » parce que les méthodes « ne précisent pas » la gestion des mesures répétées. Corpus : 9 revues sur 16 avaient reçu « non » à la question 16 faute de déclarations dans le texte fourni. Cause : la consigne d'appréciation fait écrire « non » quand le texte intégral se tait |
+| Risque de biais, qualité, certitude et importance sont confondus | **Confirmé pour les trois premiers** : un seul axe « qualité » alimente l'étiquette et met sur la même échelle le risque de biais d'une étude et la fiabilité de la méthode d'une revue. L'importance est déjà indépendante : la catégorie est proposée sans voir la qualité |
+| Fiche 2 : comparaison entre volontaires sains simulant une faiblesse et patients | **À corriger.** D'après le résumé PubMed, l'étude ne compte aucun patient : 42 volontaires sains. La limite est plus grave que décrite. Le moteur a jugé l'applicabilité « sans réserve » : erreur du moteur |
+| Fiche 5 : l'absence d'insu ne doit pas donner « risque élevé » aux écarts aux interventions | **Non constaté.** Le moteur a mis « quelques réserves » sur ce domaine ; le « élevé » porte sur la mesure du critère |
+| Conclusions trop affirmatives | **Non constaté dans le texte publié** : les synthèses publiées des fiches 1, 5 et 9 sont prudentes. Le défaut est dans l'appréciation |
+| Fiche 7 : « non évaluable » non conforme à AMSTAR 2, suppléments à récupérer | **Confirmé.** Le moteur écrit que les suppléments manquent ; la règle du code rend le jugement global « non évaluable ». Une fourchette répond mieux |
+| Fiche 10 : analyse convaincante, biais de vérification partielle bien identifié | **Confirmé** : le moteur classe le domaine « flux et délais » à risque élevé pour cette raison |
+| Traçabilité | **Déjà en place** : jugement, justification, passage, emplacement. **Manquent** : un niveau de confiance et la liste des informations manquantes. Non relevé par le comité : l'IA n'est pas stable (voir la seconde mesure) |
+
+La sévérité n'est pas expliquée par la seule inadéquation des grilles : sur des études diagnostiques
+bien classées du corpus, le moteur reste plus sévère que le corrigé des revues (16 domaines de
+biais sur 23, première mesure).
+
 ## L'étiquette candidate (VS-D14)
 
 La règle candidate part de la qualité méthodologique : élevée donne « solide », moyenne
