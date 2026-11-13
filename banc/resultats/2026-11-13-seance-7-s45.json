@@ -1,5 +1,5 @@
 {
- "nom": "Plan d'étude et grille des dix publications de 2026-S45, séance 7, premier cycle, 13 novembre 2026",
+ "nom": "Plan d'étude et grille des dix publications de 2026-S45, séance 7, 13 novembre 2026 : premier cycle (fiches) et second cycle (second_cycle)",
  "lancement": 43378868507,
  "a_savoir": "Essai du banc d'appréciation. Rien de ceci n'est publié dans la veille. Le plan d'étude est proposé par l'IA, le passage est vérifié par le code, la grille se déduit d'une table. Les passages d'articles cités par l'IA ne sont pas recopiés ici : seul leur emplacement est gardé.",
  "consignes": {
@@ -20,7 +20,16 @@
    "grille": null,
    "motif_sans_grille": "aucune grille écrite pour ce plan (essai quasi randomisé) : robins_i serait la grille adaptée",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "essai_quasi_randomise",
+    "emplacement_du_passage": "section : Methods > Randomisation",
+    "ecart_avec_le_tri": true,
+    "justification": "L’affectation dépendait de la disponibilité des consultations et des chirurgiens, dont la technique opératoire habituelle déterminait le groupe.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": "robins_i"
+   }
   },
   {
    "pmid": "42975150",
@@ -35,7 +44,16 @@
    "grille": null,
    "motif_sans_grille": "aucune grille applicable à ce plan (autre plan)",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "autre",
+    "emplacement_du_passage": "résumé",
+    "ecart_avec_le_tri": true,
+    "justification": "Il s’agit d’une preuve de concept technique chez des volontaires sains simulant une faiblesse, sans participants atteints de l’état recherché.",
+    "incertitude": "L’étude ne correspond à aucun autre plan permis, malgré la détermination de seuils sur les données recueillies.",
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": null
+   }
   },
   {
    "pmid": "42968433",
@@ -50,7 +68,16 @@
    "grille": "amstar2",
    "motif_sans_grille": null,
    "jugement_outil": "non_evaluable",
-   "fourchette": "tres_faible à faible"
+   "fourchette": "tres_faible à faible",
+   "second_cycle": {
+    "plan": "revue_interventions",
+    "emplacement_du_passage": "section : METHODS > Inclusion and exclusion criteria",
+    "ecart_avec_le_tri": false,
+    "justification": "La revue synthétise des études expérimentales comparant différentes charges d’exercice.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": "amstar2",
+    "grille_manquante": null
+   }
   },
   {
    "pmid": "42969580",
@@ -65,7 +92,16 @@
    "grille": null,
    "motif_sans_grille": "aucune grille écrite pour ce plan (revue descriptive ou qualitative) : robis serait la grille adaptée",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "revue_descriptive",
+    "emplacement_du_passage": "résumé",
+    "ecart_avec_le_tri": true,
+    "justification": "La revue synthétise des études sur le diagnostic, la prise en charge, l’imagerie et le retour au sport, sans avoir pour objectif principal de comparer des interventions.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": "robis"
+   }
   },
   {
    "pmid": "42987112",
@@ -80,7 +116,16 @@
    "grille": "rob2",
    "motif_sans_grille": null,
    "jugement_outil": "eleve",
-   "fourchette": "eleve à eleve"
+   "fourchette": "eleve à eleve",
+   "second_cycle": {
+    "plan": "essai_randomise",
+    "emplacement_du_passage": "section : METHODS > Study design",
+    "ecart_avec_le_tri": false,
+    "justification": "Les participants ont été affectés aux groupes par une randomisation utilisant des enveloppes opaques scellées.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": "rob2",
+    "grille_manquante": null
+   }
   },
   {
    "pmid": "42979604",
@@ -95,7 +140,16 @@
    "grille": null,
    "motif_sans_grille": "aucune grille écrite pour ce plan (développement ou validation d'un modèle de prédiction) : probast serait la grille adaptée",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "modele_de_prediction",
+    "emplacement_du_passage": "section : Materials and methods > Statistical analysis",
+    "ecart_avec_le_tri": true,
+    "justification": "L’étude construit des modèles diagnostiques à partir des données recueillies, notamment par analyse en composantes principales et régression logistique.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": "probast"
+   }
   },
   {
    "pmid": "42969067",
@@ -110,7 +164,16 @@
    "grille": "amstar2",
    "motif_sans_grille": null,
    "jugement_outil": "non_evaluable",
-   "fourchette": "faible à elevee"
+   "fourchette": "faible à elevee",
+   "second_cycle": {
+    "plan": "revue_interventions",
+    "emplacement_du_passage": "résumé",
+    "ecart_avec_le_tri": false,
+    "justification": "Cette revue systématique synthétise des essais comparant des interventions d’exercice à des groupes témoins sans exercice.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": "amstar2",
+    "grille_manquante": null
+   }
   },
   {
    "pmid": "42969584",
@@ -125,7 +188,16 @@
    "grille": "amstar2",
    "motif_sans_grille": null,
    "jugement_outil": "non_evaluable",
-   "fourchette": "faible à elevee"
+   "fourchette": "faible à elevee",
+   "second_cycle": {
+    "plan": "revue_descriptive",
+    "emplacement_du_passage": "section : Methods",
+    "ecart_avec_le_tri": true,
+    "justification": "Cette revue rapproche les populations urbaines et rurales pour décrire les disparités de prise en charge et de résultats, sans comparer d’interventions.",
+    "incertitude": null,
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": "robis"
+   }
   },
   {
    "pmid": "42993769",
@@ -140,7 +212,16 @@
    "grille": null,
    "motif_sans_grille": "aucune grille écrite pour ce plan (essai quasi randomisé) : robins_i serait la grille adaptée",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "essai_quasi_randomise",
+    "emplacement_du_passage": "section : Methods",
+    "ecart_avec_le_tri": true,
+    "justification": "L’affectation alternée des participantes aux groupes suit une règle non aléatoire.",
+    "incertitude": "Cette affectation alternée contredit la randomisation par blocs et enveloppes décrite en S3.",
+    "grille_qui_s_appliquerait": null,
+    "grille_manquante": "robins_i"
+   }
   },
   {
    "pmid": "42999635",
@@ -155,7 +236,18 @@
    "grille": null,
    "motif_sans_grille": "aucune grille écrite pour ce plan (développement ou validation d'un modèle de prédiction) : probast serait la grille adaptée",
    "jugement_outil": null,
-   "fourchette": null
+   "fourchette": null,
+   "second_cycle": {
+    "plan": "etude_diagnostique",
+    "emplacement_du_passage": "section : Material and methods > Study design and participants",
+    "ecart_avec_le_tri": false,
+    "justification": "L’objectif principal est d’évaluer un score de dépistage prédéfini par rapport à un diagnostic clinique et radiologique.",
+    "incertitude": "L’optimisation d’un modèle est un objectif secondaire ; la vérification par IRM n’a pas concerné tous les participants.",
+    "grille_qui_s_appliquerait": "quadas2",
+    "grille_manquante": null
+   }
   }
- ]
+ ],
+ "lancement_second_cycle": 43381835588,
+ "consigne_plan_etude_second_cycle": "e511f88b, définitions corrigées dans la requête (VS-D48)"
 }

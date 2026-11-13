@@ -16,7 +16,13 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   l'ajustement d'un modèle sur les données de l'étude ; évaluer un test, un score ou un algorithme
   déjà défini contre une référence relève de l'étude diagnostique. « Revue d'interventions » ne
   couvre plus les « expositions » : une revue de groupes ou de lieux est descriptive (VS-D48).
-  Non mesuré à la date de cette entrée.
+  Mesuré au second cycle (0,16 $) : grille du plan identique à celle des auteurs pour 23 articles
+  sur 25 du corpus, avis du comité retrouvé pour 10 fiches sur 10, mais 4 études diagnostiques sur
+  7 seulement hors corpus : le cas mixte (développer un modèle et évaluer un outil déjà défini)
+  n'est pas résolu.
+- Étude des protocoles et des suppléments (sans IA) : 11 revues sur 16 déclarent du matériel
+  supplémentaire, surtout Word et PDF ; 9 sur 16 citent un numéro PROSPERO ; 1 sur 16 cite une
+  liste des études exclues.
 - Banc d'essai : le plan d'étude peut se mesurer seul (« plan_seul »), avec les études diagnostiques
   du corpus de chiffres relevés comme contrôle hors corpus (« plan_externe »). Le seuil de la
   fourchette du jugement global est fixé (VS-D50). Nouvelle étude sans IA des protocoles et des
