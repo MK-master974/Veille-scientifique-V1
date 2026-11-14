@@ -162,6 +162,13 @@ et la catégorie d'importance.
   éléments de matériel supplémentaire déclarés, familles de numéros de protocole ou de registre
   cités, mentions de fichiers supplémentaires et de listes d'exclus, paquet de fichiers chez Europe
   PMC. Aucun texte d'article et aucun numéro de registre n'est gardé.
+- **ROBINS-I** (VS-D54) : `"outils": ["robins_i"]` ne mesure que cette grille, sur
+  `corpus/robins_i.json` ; `"s45_pmids"` limite 2026-S45 aux publications nommées (les deux essais
+  quasi randomisés de la séance 7). Le critère jugé par la revue source est donné à l'IA. Seuils
+  fixés avant la mesure (VS-D56), en lecture stricte : au moins 50 % des jugements globaux
+  identiques au corrigé, plus qu'une réponse fixe au niveau le plus fréquent du corpus, et aucun
+  jugement plus favorable de deux crans. Le seuil « à un cran au plus » de VS-D39 n'est pas repris :
+  sur quatre niveaux, une réponse fixe « sérieux » serait à un cran de presque tout.
 - **Plan d'étude seul** (VS-D48) : `"plan_seul": true` mesure l'étape sans aucune appréciation ;
   `"plan_externe": true` y ajoute les études diagnostiques du corpus de chiffres relevés, hors du
   corpus « qualité », pour contrôler les définitions sur des articles qui ne les ont pas inspirées.
