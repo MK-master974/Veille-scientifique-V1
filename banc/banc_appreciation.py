@@ -65,7 +65,7 @@ CORPUS = RACINE / "banc" / "corpus"
 # Seuils fixés par le porteur du projet le 12 novembre 2026 (VS-D39), sur le texte intégral.
 SEUIL_UN_CRAN = 0.70
 SEUIL_FOURCHETTE = 0.70      # fixé le 13 novembre 2026 (VS-D50)
-SEUIL_IDENTIQUE_ROBINS = 0.50     # fixé le 14 novembre 2026 (VS-D56), ROBINS-I seulement
+SEUIL_IDENTIQUE_ROBINS = 0.50     # fixé le 14 novembre 2026 (VS-D56) ; repris pour les quatre premières grilles (VS-D75)
 NIVEAUX = ("resume", "integral")
 NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
 OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2",
@@ -205,6 +205,31 @@ def seuils_robins(comparaisons, attendus):
         "plus de jugements identiques qu'une réponse fixe au niveau le plus fréquent du corpus": {
             "atteint": n > 0 and identiques > fixe, "mesure": f"{identiques} contre {fixe}",
             "reponse_fixe": frequents[0][0] if frequents else None},
+        "aucun jugement plus favorable que le corrigé de deux crans": {"atteint": n > 0 and favorables == 0,
+                                                                      "mesure": favorables},
+    }
+
+
+def seuils_grilles(comparaisons, attendus, outils):
+    """Seuil des quatre premières grilles (VS-D75, qui remplace VS-D39), en lecture stricte, sur le modèle de
+    VS-D56. Plusieurs grilles ayant chacune son échelle, la réponse fixe donne, pour chaque grille, le niveau le
+    plus fréquent de ses corrigés : elle obtient la somme de ces effectifs.
+    """
+    triplets = [(c, a, o) for c, a, o in zip(comparaisons, attendus, outils) if c["etat"] != "sans_corrige"]
+    n = len(triplets)
+    identiques = sum(1 for c, _, _ in triplets if c["etat"] == "exact")
+    fixe, reponse = 0, {}
+    for outil in sorted({o for _, _, o in triplets}):
+        niveau, effectif = collections.Counter(a for _, a, o in triplets if o == outil).most_common(1)[0]
+        fixe += effectif
+        reponse[outil] = niveau
+    favorables = sum(1 for c, _, _ in triplets if c["etat"] == "trop_favorable")
+    part = round(identiques / n, 3) if n else None
+    return {
+        f"au moins {int(SEUIL_IDENTIQUE_ROBINS * 100)} % des jugements globaux identiques au corrigé": {
+            "atteint": part is not None and part >= SEUIL_IDENTIQUE_ROBINS, "mesure": f"{identiques} sur {n}", "part": part},
+        "plus de jugements identiques qu'une réponse fixe au niveau le plus fréquent de chaque grille": {
+            "atteint": n > 0 and identiques > fixe, "mesure": f"{identiques} contre {fixe}", "reponse_fixe": reponse},
         "aucun jugement plus favorable que le corrigé de deux crans": {"atteint": n > 0 and favorables == 0,
                                                                       "mesure": favorables},
     }
@@ -720,6 +745,10 @@ def main(argv=None):
                         "domaines_non_evaluables": f"{sum(1 for d in domaines_resume if d['jugement'] == appreciation.NON_EVALUABLE)} "
                                                    f"sur {len(domaines_resume)}"},
         "seuils": seuils([x["integral"] for x in lignes if "integral" in x and x["outil"] != "robins_i"]),
+        # VS-D75 : seuil des quatre premières grilles, qui remplace celui de VS-D39 (gardé ci-dessus pour comparaison).
+        "seuils_grilles": seuils_grilles([x["integral"] for x in lignes if "integral" in x and x["outil"] != "robins_i"],
+                                         [x["attendu"] for x in lignes if "integral" in x and x["outil"] != "robins_i"],
+                                         [x["outil"] for x in lignes if "integral" in x and x["outil"] != "robins_i"]),
         "seuils_robins_i": seuils_robins([x["integral"] for x in lignes if "integral" in x and x["outil"] == "robins_i"],
                                          [x["attendu"] for x in lignes if "integral" in x and x["outil"] == "robins_i"]),
         # Second score, comme pour VS-D29 : sans les corrigés marqués contestés avant la mesure.

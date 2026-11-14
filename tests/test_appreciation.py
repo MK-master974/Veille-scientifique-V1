@@ -417,6 +417,23 @@ def test_les_corpus_qualite_sont_lisibles_par_le_banc():
             assert all(c["licence"] in ("CC BY", "CC0") and c["pmcid"] for c in g["cas"])
 
 
+def test_seuil_des_quatre_premieres_grilles():
+    # VS-D75 : identiques au corrigé, contre une réponse fixe au niveau le plus fréquent de chaque grille.
+    attendus = ["tres_faible", "tres_faible", "moderee", "eleve", "faible"]
+    outils = ["amstar2", "amstar2", "amstar2", "quadas2", "quadas2"]
+    obtenus = ["tres_faible", "tres_faible", "moderee", "eleve", "eleve"]
+    comparaisons = [banc.comparer(o, x, a) for o, x, a in zip(outils, obtenus, attendus)]
+    identiques, fixe, favorable = banc.seuils_grilles(comparaisons, attendus, outils).values()
+    assert identiques == {"atteint": True, "mesure": "4 sur 5", "part": 0.8}
+    # Réponse fixe : « très faible » pour AMSTAR 2 (2 identiques), un niveau de QUADAS-2 (1 identique) : 3.
+    assert fixe["mesure"] == "4 contre 3" and fixe["atteint"] is True and fixe["reponse_fixe"]["amstar2"] == "tres_faible"
+    assert favorable == {"atteint": True, "mesure": 0}
+    # Toujours le pire niveau : autant d'identiques que la réponse fixe, donc le seuil n'est pas atteint.
+    pire = [banc.comparer(o, x, a) for o, x, a in zip(outils, ["tres_faible"] * 3 + ["eleve"] * 2, attendus)]
+    assert list(banc.seuils_grilles(pire, attendus, outils).values())[1]["atteint"] is False
+    assert not any(x["atteint"] for x in banc.seuils_grilles([], [], []).values())
+
+
 def test_robins_i_au_banc_lecture_du_corrige_et_seuils():
     # « Pas d'information » de ROBINS-I se lit « non rapporté » ; les accents et les espaces ne comptent pas.
     assert banc.cle("pas d'information") == banc.cle("Pas d’information") == "non_rapporte"

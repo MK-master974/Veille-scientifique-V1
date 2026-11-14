@@ -583,6 +583,423 @@
      }
     }
    ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "lot": 2,
+   "source": {
+    "pmid": "42783760",
+    "pmcid": "PMC13609052",
+    "revue": "Metabolites",
+    "annee": "2026",
+    "doi": "10.3390/metabo16090635",
+    "licence": "CC BY",
+    "tableau": "Table 1"
+   },
+   "note": "Courtes séances d'exercice et métabolisme du glucose. Niveau de confiance AMSTAR 2 seulement (colonne « AMSTAR 2 » ; la colonne suivante est un jugement ROBIS).",
+   "colonnes": [
+    "confiance_globale"
+   ],
+   "indices": [
+    5
+   ],
+   "cas": [
+    {
+     "pmid": "31267483",
+     "pmcid": "PMC6745307",
+     "licence": "CC BY",
+     "reference": "Murphy et al. 2019, Sports Med",
+     "corrige": {
+      "confiance_globale": "élevée"
+     }
+    },
+    {
+     "pmid": "31552570",
+     "pmcid": "PMC6985064",
+     "licence": "CC BY",
+     "reference": "Loh et al. 2020, Sports Med",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "35147898",
+     "pmcid": "PMC9325803",
+     "licence": "CC BY",
+     "reference": "Buffey et al. 2022, Sports Med",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "lot": 2,
+   "source": {
+    "pmid": "42661515",
+    "pmcid": "PMC13522903",
+    "revue": "Journal of Global Health",
+    "annee": "2026",
+    "doi": "10.7189/jogh-16-04282",
+    "licence": "CC BY",
+    "tableau": "Table 1"
+   },
+   "note": "Exercice et fertilité. Niveau de confiance AMSTAR 2 seulement (dernière colonne ; l'avant-dernière est un jugement ROBIS).",
+   "colonnes": [
+    "confiance_globale"
+   ],
+   "indices": [
+    -1
+   ],
+   "cas": [
+    {
+     "pmid": "32311937",
+     "pmcid": "PMC7220722",
+     "licence": "CC BY",
+     "reference": "Dos Santos et al. 2020, Medicine (Baltimore)",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "32112628",
+     "pmcid": "PMC7139226",
+     "licence": "CC BY",
+     "reference": "Espinós et al. 2020, Int J Fertil Steril",
+     "corrige": {
+      "confiance_globale": "élevée"
+     }
+    },
+    {
+     "pmid": "37199654",
+     "pmcid": "PMC10258032",
+     "licence": "CC BY",
+     "reference": "Chen et al. 2023, Aging (Albany NY)",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "lot": 2,
+   "source": {
+    "pmid": "42661179",
+    "pmcid": "PMC13523256",
+    "revue": "BMC Geriatrics",
+    "annee": "2026",
+    "doi": "10.1186/s12877-026-07933-6",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Interventions non médicamenteuses chez les personnes âgées avec trouble cognitif léger. Niveau de confiance AMSTAR 2 seulement (troisième colonne).",
+   "colonnes": [
+    "confiance_globale"
+   ],
+   "indices": [
+    2
+   ],
+   "cas": [
+    {
+     "pmid": "29973193",
+     "pmcid": "PMC6032764",
+     "licence": "CC BY",
+     "reference": "Gheysen et al. 2018, Int J Behav Nutr Phys Act",
+     "corrige": {
+      "confiance_globale": "élevée"
+     }
+    },
+    {
+     "pmid": "34770049",
+     "pmcid": "PMC8583509",
+     "licence": "CC BY",
+     "reference": "Jung et al. 2021, Int J Environ Res Public Health",
+     "corrige": {
+      "confiance_globale": "élevée"
+     }
+    },
+    {
+     "pmid": "37065695",
+     "pmcid": "PMC10100799",
+     "licence": "CC BY",
+     "reference": "Wu et al. 2023, PeerJ",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "AMSTAR 2",
+   "type_etude": "meta_analyse",
+   "lot": 2,
+   "source": {
+    "pmid": "42645457",
+    "pmcid": "PMC13511329",
+    "revue": "Dentistry Journal",
+    "annee": "2026",
+    "doi": "10.3390/dj14080483",
+    "licence": "CC BY",
+    "tableau": "Table 1"
+   },
+   "note": "Élévation du plancher sinusien par voie crestale. Niveau de confiance AMSTAR 2 seulement (dernière colonne).",
+   "colonnes": [
+    "confiance_globale"
+   ],
+   "indices": [
+    -1
+   ],
+   "cas": [
+    {
+     "pmid": "36836403",
+     "pmcid": "PMC9960634",
+     "licence": "CC BY",
+     "reference": "Mester et al. 2023, J Pers Med",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    },
+    {
+     "pmid": "36070150",
+     "pmcid": "PMC9643210",
+     "licence": "CC BY",
+     "reference": "Toledano et al. 2022, Clin Oral Investig",
+     "corrige": {
+      "confiance_globale": "modérée"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "RoB 2",
+   "type_etude": "essai_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "42987036",
+    "pmcid": "PMC13722408",
+    "revue": "Arquivos de Gastroenterologia",
+    "annee": "2026",
+    "doi": "10.1590/s0004-2803.24612026-066",
+    "licence": "CC BY",
+    "tableau": "TABLE 2"
+   },
+   "note": "Encéphalopathie hépatique et cirrhose alcoolique. Quatre domaines de RoB 2 (pas celui des écarts aux interventions) et jugement global.",
+   "colonnes": [
+    "randomisation",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "cas": [
+    {
+     "pmid": "34768404",
+     "pmcid": "PMC8584661",
+     "licence": "CC BY",
+     "reference": "Ventura-Cots et al. 2021, J Clin Med",
+     "corrige": {
+      "randomisation": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "RoB 2",
+   "type_etude": "essai_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "42964546",
+    "pmcid": "PMC13720765",
+    "revue": "Frontiers in Psychology",
+    "annee": "2026",
+    "doi": "10.3389/fpsyg.2026.1955322",
+    "licence": "CC BY",
+    "tableau": "Table 5"
+   },
+   "note": "Tai-chi et fonctions exécutives. Cinq domaines de RoB 2 et jugement global.",
+   "colonnes": [
+    "randomisation",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "cas": [
+    {
+     "pmid": "40338913",
+     "pmcid": "PMC12061109",
+     "licence": "CC BY",
+     "reference": "Li et al. 2025, PLoS One",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "RoB 2",
+   "type_etude": "essai_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "42484767",
+    "pmcid": "PMC13562163",
+    "revue": "Journal of Clinical Monitoring and Computing",
+    "annee": "2026",
+    "doi": "10.1007/s10877-026-01463-7",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "note": "Vasopresseurs en boucle fermée. Cinq domaines de RoB 2 et jugement global.",
+   "colonnes": [
+    "randomisation",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "cas": [
+    {
+     "pmid": "19068113",
+     "pmcid": "PMC2646320",
+     "licence": "CC BY",
+     "reference": "Merouani et al. 2008, Crit Care",
+     "corrige": {
+      "randomisation": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "QUADAS-2",
+   "type_etude": "etude_diagnostique",
+   "lot": 2,
+   "source": {
+    "pmid": "42911355",
+    "pmcid": "PMC13690828",
+    "revue": "Current Urology Reports",
+    "annee": "2026",
+    "doi": "10.1007/s11934-026-01370-z",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "note": "Imagerie avant la chirurgie du cancer de la vessie. Quatre domaines de risque de biais et trois d'applicabilité.",
+   "colonnes": [
+    "biais.selection_des_patients",
+    "biais.test_evalue",
+    "biais.reference",
+    "biais.flux_et_delais",
+    "applicabilite.selection_des_patients",
+    "applicabilite.test_evalue",
+    "applicabilite.reference"
+   ],
+   "cas": [
+    {
+     "pmid": "40100278",
+     "pmcid": "PMC12454477",
+     "licence": "CC BY",
+     "reference": "Aslan et al. 2025, Abdom Radiol",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "35505425",
+     "pmcid": "PMC9066808",
+     "licence": "CC BY",
+     "reference": "Bricio et al. 2022, Cancer Imaging",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    },
+    {
+     "pmid": "39598099",
+     "pmcid": "PMC11595213",
+     "licence": "CC BY",
+     "reference": "Piramide et al. 2024, J Clin Med",
+     "corrige": {
+      "biais": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible",
+       "flux_et_delais": "faible"
+      },
+      "applicabilite": {
+       "selection_des_patients": "faible",
+       "test_evalue": "faible",
+       "reference": "faible"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "lot_2": "VS-D74 : articles neufs jugés favorablement par les revues (AMSTAR 2 « élevée » ou « modérée », RoB 2 « faible », QUADAS-2 « faible » pour les quatre domaines de risque de biais), repérés sans IA dans 120 revues générales AMSTAR 2 (lancement 43575275633), 240 revues RoB 2 (43575302210, 43577954975) et 240 revues QUADAS-2 (43576346606, 43577970543) ; lignes lues (43577412045, 43579503514). Choisis dans l'ordre du repérage, 3 au plus par revue : 17 articles, faute de tableaux lisibles en nombre suffisant pour RoB 2 et QUADAS-2 (souvent des figures). Non relu par un humain.",
+ "ecartees_lot_2": [
+  {
+   "pmid": "40819867",
+   "source": "42911355",
+   "motif": "protocole d'essai publié sans résultats, jugé favorablement par la revue"
+  },
+  {
+   "pmid": null,
+   "source": "42381990",
+   "motif": "tableau QUADAS-2 en symboles indiscernibles une fois le texte extrait (faible et élevé s'écrivent pareil)"
+  },
+  {
+   "pmid": null,
+   "source": "41887411",
+   "motif": "jugements « Higher Quality » et « Lower Quality », hors de l'échelle d'AMSTAR 2"
+  },
+  {
+   "pmid": null,
+   "source": "42978617",
+   "motif": "études de laboratoire (dents extraites), pas d'essais chez des participants"
+  },
+  {
+   "pmid": "37905924",
+   "source": "42769426",
+   "motif": "modèle appliqué à des génomes bactériens, pas une étude diagnostique chez des patients"
   }
  ]
 }
