@@ -3,7 +3,7 @@
  "assemble_le": "2026-11-14",
  "decision": "VS-D54",
  "principe": "Jugements ROBINS-I déjà portés par les auteurs d'une revue sous licence CC BY sur des études elles-mêmes sous licence CC BY, dont le texte intégral se lit dans PubMed Central (méthode VS-D32). Seuls des identifiants, des licences et des jugements sont repris : aucun texte d'article.",
- "etabli_par": "Session de développement du 14/11/2026. Revues repérées sans IA dans 477 candidates trouvées dans PubMed (workflow « Corpus, chiffres relevés », lancements 43544892135 et 43545601896) ; lignes de tableaux lues sans IA (lancement 43546071416) ; plan de chaque étude lu par la session dans son résumé PubMed. Non relu par un humain.",
+ "etabli_par": "Session de développement du 14/11/2026. Revues repérées sans IA dans 352 des 477 candidates trouvées dans PubMed (workflow « Corpus, chiffres relevés », lancements 43544892135 et 43545601896) ; lignes de tableaux lues sans IA (lancements 43546071416 et 43546699778) ; plan de chaque étude lu par la session dans son résumé PubMed. Non relu par un humain.",
  "ecartees": [
   {
    "pmid": "41805956",
@@ -26,7 +26,7 @@
    "motif": "étude de précision diagnostique d'un logiciel, qui relève de QUADAS-2"
   }
  ],
- "corriges_contestes": "Marqués avant toute mesure, sans être retirés (comme VS-D29) : 7 études sans groupe de comparaison que leur revue juge « faible » pour la confusion. Le banc donne deux scores : sur tout le corpus, et sans ces corrigés.",
+ "corriges_contestes": "Marqués avant toute mesure, sans être retirés (comme VS-D29), selon un seul critère : étude sans comparateur (aucun groupe sans l'intervention étudiée) que sa revue juge « faible » ou « modéré » pour la confusion. Le banc donne deux scores : sur tout le corpus, et sans ces corrigés.",
  "valeurs": {
   "robins_i": [
    "faible",
@@ -122,7 +122,7 @@
       "selection_du_resultat": "faible",
       "global": "faible"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     },
     {
      "pmid": "37461778",
@@ -141,7 +141,7 @@
       "selection_du_resultat": "faible",
       "global": "modéré"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     }
    ]
   },
@@ -185,7 +185,8 @@
       "mesure_du_critere": "sérieux",
       "selection_du_resultat": "faible",
       "global": "sérieux"
-     }
+     },
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « modéré » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     }
    ]
   },
@@ -310,7 +311,7 @@
       "selection_du_resultat": "faible",
       "global": "modéré"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     },
     {
      "pmid": "33474622",
@@ -329,7 +330,7 @@
       "selection_du_resultat": "faible",
       "global": "sérieux"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     },
     {
      "pmid": "34306530",
@@ -348,7 +349,7 @@
       "selection_du_resultat": "faible",
       "global": "modéré"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     },
     {
      "pmid": "36294929",
@@ -367,7 +368,7 @@
       "selection_du_resultat": "faible",
       "global": "modéré"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     }
    ]
   },
@@ -412,7 +413,7 @@
       "selection_du_resultat": "faible",
       "global": "faible"
      },
-     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     },
     {
      "pmid": "33495254",
@@ -511,6 +512,183 @@
       "selection_du_resultat": "faible",
       "global": "modéré"
      }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "42897524",
+    "pmcid": "PMC13682095",
+    "revue": "BMC Musculoskeletal Disorders",
+    "annee": "2026",
+    "doi": "10.1186/s12891-026-10241-0",
+    "licence": "CC BY",
+    "tableau": "Table 5"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "legende": {
+    "+": "faible",
+    "?": "modéré",
+    "x": "sérieux",
+    "!": "critique"
+   },
+   "note": "Corset et fonction respiratoire dans la scoliose idiopathique de l'adolescent. La revue note par symboles ; sa note de tableau en donne la légende : + faible, ? modéré, x sérieux, ! critique.",
+   "cas": [
+    {
+     "pmid": "34683052",
+     "pmcid": "PMC8535408",
+     "licence": "CC BY",
+     "reference": "Di Maria et al. 2021, Healthcare (Basel)",
+     "plan_selon_l_article": "un seul groupe, mesures sans puis avec le corset",
+     "critere": "fonction respiratoire (volumes pulmonaires) sous corset",
+     "corrige": {
+      "confusion": "sérieux",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "sérieux"
+     }
+    },
+    {
+     "pmid": "34828715",
+     "pmcid": "PMC8619345",
+     "licence": "CC BY",
+     "reference": "León-Morillas et al. 2021, Children (Basel)",
+     "plan_selon_l_article": "série de cas, trois groupes (sans traitement, corset, rééducation posturale globale)",
+     "critere": "fonction respiratoire et force des muscles inspiratoires",
+     "corrige": {
+      "confusion": "sérieux",
+      "selection_des_participants": "sérieux",
+      "classement_des_interventions": "modéré",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "modéré",
+      "global": "sérieux"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "42420766",
+    "pmcid": "PMC13538795",
+    "revue": "Diabetes, Obesity and Metabolism",
+    "annee": "2026",
+    "doi": "10.1111/dom.71084",
+    "licence": "CC BY",
+    "tableau": "TABLE 7"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Aggravation précoce de la rétinopathie diabétique après le début d'un système d'insuline automatisé.",
+   "cas": [
+    {
+     "pmid": "40445741",
+     "pmcid": "PMC7618701",
+     "licence": "CC BY",
+     "reference": "Liarakos et al. 2025, Diabetes Technol Ther",
+     "plan_selon_l_article": "un seul groupe, observationnel en vie réelle, avant-après",
+     "critere": "aggravation précoce de la rétinopathie diabétique",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "critique",
+      "mesure_du_critere": "critique",
+      "selection_du_resultat": "faible",
+      "global": "critique"
+     },
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « modéré » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "41821872",
+    "pmcid": "PMC12975979",
+    "revue": "Frontiers in Neuroscience",
+    "annee": "2026",
+    "doi": "10.3389/fnins.2026.1778985",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Implant cochléaire et qualité de vie des personnes âgées.",
+   "cas": [
+    {
+     "pmid": "38353767",
+     "pmcid": "PMC11211127",
+     "licence": "CC BY",
+     "reference": "Issing et al. 2024, Eur Arch Otorhinolaryngol",
+     "plan_selon_l_article": "un seul groupe, longitudinal prospectif",
+     "critere": "qualité de vie",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "modéré",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "modéré",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « modéré » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
+    },
+    {
+     "pmid": "35366712",
+     "pmcid": "PMC9519647",
+     "licence": "CC BY",
+     "reference": "Issing et al. 2022, Eur Arch Otorhinolaryngol",
+     "plan_selon_l_article": "transversal, trois groupes tous implantés (selon l'ancienneté de l'implant)",
+     "critere": "qualité de vie",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "modéré",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "modéré",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « modéré » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
     }
    ]
   }

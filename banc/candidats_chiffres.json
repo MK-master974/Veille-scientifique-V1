@@ -1190,6 +1190,11 @@
      "lignes_entete": 12
     }
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "verifier_robins",
+   "raison": "VS-D54, étape 1 : vérifier le corpus banc/corpus/robins_i.json (21 études, 10 revues sources) : licences de chaque étude et de sa revue source, recopie des niveaux ROBINS-I depuis la ligne du tableau source, dans l'ordre des colonnes, et lecture du texte intégral de chaque étude. Aucune IA, aucun coût."
   }
  ]
 }
