@@ -8,6 +8,8 @@ seules des lignes de tableaux de revues sous licence CC BY ou CC0 sont écrites 
 Quatre modes, choisis par la dernière demande de banc/candidats_chiffres.json :
 - « reperer » : pour chaque revue candidate, sa licence, ses tableaux, les études que chaque
   tableau cite, et la licence de ces études. Sert à choisir les revues sources et les articles.
+  Le genre « robins_i » (VS-D54) repère les tableaux de jugements ROBINS-I, qui portent des mots
+  (« serious », « moderate ») plutôt que des chiffres.
 - « lire » : les lignes d'un tableau d'une revue source qui portent sur les études choisies.
   Sert à écrire le corrigé.
 - « verifier » : pour chaque chiffre de banc/corpus/chiffres_releves.json, trois contrôles :
@@ -54,7 +56,14 @@ MOTS = {
                    "auc", "likelihood", "predictive", "sample size", "reference standard", "index test"),
     "revue": ("smd", " md", "wmd", "95% ci", "95%ci", "95 % ci", "effect size", "pooled", "i2", "i²",
               "odds ratio", "risk ratio", " rr", " or", "hedges", "number of studies", "participants"),
+    # Tableaux de jugements ROBINS-I (VS-D54) : noms des domaines et niveaux de risque.
+    "robins_i": ("robins", "confounding", "selection of participants", "classification of intervention",
+                 "deviation", "missing data", "measurement of outcome", "selection of the reported",
+                 "reported result", "serious", "critical", "moderate", "no information"),
 }
+# Pour retenir un tableau : nombre minimal de mots-clés, puis de nombres. Un tableau de jugements
+# ROBINS-I contient des mots, pas des chiffres.
+SEUILS_REPERAGE = {"diagnostic": (2, 10), "revue": (2, 10), "robins_i": (4, 0)}
 
 
 def journal(message=""):
@@ -303,10 +312,14 @@ def utilisable(fiche):
 # --- Mode « reperer » -------------------------------------------------------------------------
 
 def reperer(demande):
-    for genre in ("diagnostic", "revue"):
+    for genre in ("diagnostic", "revue", "robins_i"):
         sources = [str(p) for p in demande.get(genre, [])]
+        if demande.get("tranche"):                   # une partie de la liste, pour tenir dans le délai
+            debut, fin = demande["tranche"]
+            sources = sources[debut:fin]
         if not sources:
             continue
+        min_mots, min_nombres = SEUILS_REPERAGE[genre]
         journal(f"\n##### {genre.upper()} — {len(sources)} revues candidates")
         infos = decrire(sources)
         for pmid in sources:
@@ -330,14 +343,14 @@ def reperer(demande):
             for t in tabs:
                 t["lignes"] = [l for l in t["lignes"] if not l["douteux"]]
             retenus = [t for t in tabs if len({i for l in t["lignes"] for i in l["cites"] if i in refs}) >= 2
-                       and score_donnees(t, genre)[0] >= 2 and score_donnees(t, genre)[1] >= 10]
+                       and score_donnees(t, genre)[0] >= min_mots and score_donnees(t, genre)[1] >= min_nombres]
             etudes = resoudre(refs, sorted({i for t in retenus for l in t["lignes"] for i in l["cites"] if i in refs}))
             cle = lambda i: i                                          # noqa: E731
             bons, autres = {}, collections.Counter()
             for t in tabs:
                 idents = list(dict.fromkeys(i for l in t["lignes"] for i in l["cites"] if i in refs))
                 mots, nb = score_donnees(t, genre)
-                if len(idents) < 2 or mots < 2 or nb < 10:
+                if len(idents) < 2 or mots < min_mots or nb < min_nombres:
                     continue
                 ok = [i for i in idents if utilisable(etudes.get(cle(i)))]
                 entete_t = " | ".join(c[:CELLULE_REPERAGE] for c in t["lignes"][0]["cellules"])
