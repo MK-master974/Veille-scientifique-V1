@@ -292,6 +292,19 @@
    "raison": "VS-D74 et VS-D76, avant la mesure : lire les textes intégraux et estimer le coût de la mesure des grilles RoB 2, QUADAS-2 et AMSTAR 2 sur le lot 2 du corpus « qualité » (17 articles neufs jugés favorablement par des revues, vérifiés sans IA : lancement corpus-chiffres 43580024170). Aucun appel à l'IA, aucun coût.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D76) : enveloppe nouvelle de 0,60 $ qui s'ajoute aux 0,16 $ restants, plafond 0,75 $ pour un lancement. Ce passage sans IA ne dépense rien.",
    "budget_usd": 0.75
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "rob2",
+    "quadas2",
+    "amstar2"
+   ],
+   "lot": 2,
+   "raison": "VS-D74 à VS-D76 : mesure du moteur actuel (consigne appreciation.txt 4ce7fb70, inchangée) avec les grilles RoB 2, QUADAS-2 et AMSTAR 2 sur le lot 2 du corpus « qualité » : 17 articles neufs jugés favorablement par des revues (11 AMSTAR 2, 3 RoB 2, 3 QUADAS-2). Seuil de VS-D75, sur les 42 articles mesurés avec cette consigne (25 du lancement 43378868507 et ces 17) : au moins 21 jugements globaux identiques au corrigé, plus que la réponse fixe (20), aucun plus favorable de deux crans. Estimation prudente du banc : 0,64 $ (lancement 43580529821, sans dépense, 17 textes intégraux lus sur 17) ; dépense réelle attendue : environ 0,35 $.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D76) : enveloppe nouvelle de 0,60 $ qui s'ajoute aux 0,16 $ restants, soit 0,76 $, un lancement, plafond 0,75 $. Dépensé avant ce lancement sur ces 0,76 $ : 0 $.",
+   "budget_usd": 0.75
   }
  ]
 }
