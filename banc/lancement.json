@@ -255,6 +255,18 @@
    "raison": "VS-D63 à VS-D66 : mesure de la consigne ROBINS-I corrigée pour le classement des interventions (VS-D64, empreinte 4ec71ef0) sur les 10 articles neufs du lot 3 (vérifiés : lancement 43558883716), qui n'ont servi ni à trouver le défaut ni à écrire la correction. Seuils de VS-D56 inchangés ; pour le domaine corrigé, sont comptés les jugements identiques, plus sévères, plus favorables, et ceux plus favorables de deux crans. Estimation prudente du banc : 0,34 $ (lancement 43559641076, sans dépense) ; dépense réelle attendue : environ 0,20 $.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D66) : un seul lancement, 10 articles neufs au plus, sans 2026-S45, plafond 0,34 $ (reste de l'enveloppe de VS-D55). Dépensé avant ce lancement : 0,76 $ sur 1,10 $.",
    "budget_usd": 0.34
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "s45": 10,
+   "plan_seul": true,
+   "plan_externe": true,
+   "plan_temoins": true,
+   "sans_ia": true,
+   "raison": "VS-D70, avant la mesure : lire les textes et estimer le coût de la mesure du plan d'étude seul (plan « étude observationnelle d'une intervention », VS-D69) sur 86 articles : 25 du corpus « qualité », 38 du corpus ROBINS-I, 7 études diagnostiques hors corpus, 6 témoins d'exposition et 10 fiches de 2026-S45. Aucun appel à l'IA, aucun coût.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D70) : enveloppe nouvelle de 0,35 $ qui s'ajoute aux 0,155 $ restants, un lancement, plafond 0,50 $. Ce passage sans IA ne dépense rien.",
+   "budget_usd": 0.5
   }
  ]
 }
