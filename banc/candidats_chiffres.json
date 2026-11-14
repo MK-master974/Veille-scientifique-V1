@@ -2048,6 +2048,111 @@
     "42569195",
     "42567064"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "lire",
+   "raison": "VS-D65 : lire les lignes ROBINS-I des études utilisables de 8 revues du quatrième lot (lancements 43557433512 et 43557452808) dont le tableau donne les sept domaines et le jugement global, étude par étude. Le choix des articles du lot 3 suit la règle fixée avant : études admissibles, dans l'ordre du repérage, 3 au plus par revue, 10 au plus. Aucune IA, aucun coût.",
+   "lectures": [
+    {
+     "source": "42940504",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "30034336",
+      "31695670",
+      "25220656"
+     ],
+     "lignes_entete": 4
+    },
+    {
+     "source": "42935813",
+     "tableaux": [
+      "Table 12b"
+     ],
+     "pmids": [
+      "33406700",
+      "31035481",
+      "40638458"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42960283",
+     "tableaux": [
+      "Table 4"
+     ],
+     "pmids": [
+      "38664763",
+      "29441123"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42930145",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "37240873",
+      "41737541"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42904270",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "33549056",
+      "34079015"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42903226",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "26960572",
+      "35413915",
+      "34966472",
+      "36311949",
+      "37403615",
+      "34372819"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42795725",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "41801349",
+      "40788269",
+      "40095702",
+      "39914043",
+      "37864103",
+      "32144569",
+      "36099589"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42739069",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "41030892"
+     ],
+     "lignes_entete": 2
+    }
+   ]
   }
  ]
 }
