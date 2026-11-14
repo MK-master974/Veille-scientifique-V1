@@ -266,17 +266,19 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
 `banc/banc_appreciation.py`.
 
 - **Le plan d'abord** (`plan_etude.py`, séance 7) : l'IA lit la méthode, choisit un plan dans une
-  liste fermée (essai randomisé, quasi randomisé, interventionnel non randomisé, observationnel,
+  liste fermée (essai randomisé, quasi randomisé, interventionnel non randomisé, observationnel d'une
+  intervention reçue en soins courants, observationnel sans intervention étudiée,
   diagnostique, modèle de prédiction, revue d'interventions, revue descriptive, recommandation,
   autre) et cite le passage qui le montre ; le code le vérifie mot pour mot. Le titre et le type
   donné par le tri ne décident pas : ils servent seulement à signaler un écart. Une table déduit
   la grille du plan.
 - **Aucune grille applicable** quand le plan n'a pas de grille écrite (modèle de prédiction, revue
-  descriptive, observationnel) ou n'est pas établi : la réponse est `outil: aucun` avec le nom de
+  descriptive, observationnel sans intervention étudiée) ou n'est pas établi : la réponse est `outil: aucun` avec le nom de
   la grille qui conviendrait (`probast`, `robis`, `jbi`), jamais une note forcée. Aucune
   appréciation n'est faite sur résumé seul.
 - **Un outil par plan** : RoB 2 pour un essai randomisé, ROBINS-I (version 1) pour un essai quasi
-  randomisé ou une étude interventionnelle non randomisée (depuis le 14 novembre 2026, VS-D54),
+  randomisé, une étude interventionnelle non randomisée (depuis le 14 novembre 2026, VS-D54) ou une
+  étude observationnelle d'une intervention reçue en soins courants (VS-D69),
   QUADAS-2 pour une étude diagnostique, AMSTAR 2 pour une revue d'interventions, AGREE II pour une
   recommandation. L'IA reçoit la liste des domaines de l'outil et juge chacun, avec une phrase de
   justification et le passage qui fonde son jugement (consigne `appreciation.txt` ; pour ROBINS-I,

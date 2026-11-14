@@ -165,6 +165,8 @@ et la catégorie d'importance.
   PMC. Aucun texte d'article et aucun numéro de registre n'est gardé.
 - **ROBINS-I** (VS-D54) : `"outils": ["robins_i"]` ne mesure que cette grille, sur
   `corpus/robins_i.json` ; `"lot"` ne mesure qu'un lot de ce corpus (2 ou 3 : articles neufs) ;
+  `"plan_temoins"`, avec `"plan_seul"`, ajoute les 6 témoins d'exposition de ce corpus, pour lesquels
+  aucune grille ROBINS-I n'est attendue (VS-D70) ;
   `"s45_pmids"` limite 2026-S45 aux publications nommées (les deux essais
   quasi randomisés de la séance 7). Le critère jugé par la revue source est donné à l'IA. Seuils
   fixés avant la mesure (VS-D56), en lecture stricte : au moins 50 % des jugements globaux

@@ -97,6 +97,13 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   250 revues, 38 études vérifiées). Ce domaine est identique au corrigé 7 fois sur 10 (lot 2 : 1 sur 6),
   sans jugement trop favorable. Le seuil de VS-D56 reste non atteint (4 sur 10) ; celui de la fourchette
   est atteint (8 sur 10). Non branché sur la veille.
+- Plan d'étude, cohortes de patients traités (VS-D69 à VS-D71, 0,345 $) : nouveau plan « étude
+  observationnelle d'une intervention » (traitement reçu en soins courants, cohorte, avant-après),
+  jugé avec ROBINS-I ; « observationnel » ne garde que les études d'exposition, de facteurs pronostiques
+  ou descriptives. Valeur ajoutée à la liste fermée de la fiche v2 après déclaration au dépôt de
+  coordination (CHG-2026-0012). Mesuré sur 86 articles : ROBINS-I choisie pour 36 études sur 38 du
+  corpus ROBINS-I (avant : 14), aucun des 6 témoins d'exposition envoyé vers ROBINS-I, pas de recul
+  ailleurs. Banc d'essai : témoins d'exposition (« plan_temoins »). Non branché sur la veille.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
