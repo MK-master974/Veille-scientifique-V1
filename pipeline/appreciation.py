@@ -21,6 +21,10 @@ L'IA juge chaque domaine de l'outil et cite le passage qui fonde son jugement. L
   sans passage est refusé. La grille a sa propre consigne, appreciation_robins_i.txt. Exception
   (VS-D59) : pour les écarts aux interventions, la consigne permet « faible » quand l'article décrit
   l'intervention réalisée sans aucun signe d'écart ; le passage est alors celui qui la décrit.
+  Correction (VS-D64), d'après le guide de l'outil : pour le classement des interventions, un traitement
+  enregistré au moment où il est donné (prescription, technique opératoire) reste « faible » même relu
+  après coup dans des dossiers ; « sérieux » suppose des groupes mal définis ou un classement qui a pu
+  dépendre de la connaissance du résultat.
 « Non évaluable » veut dire : ce qui a été lu ne permet pas de juger. Ce n'est pas une preuve faible.
 """
 import re

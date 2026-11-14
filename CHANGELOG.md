@@ -89,6 +89,14 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   « faible » 4 fois sur 7, mais le seuil reste non atteint (1 sur 7). La relecture trouve un autre
   défaut de la consigne, non corrigé : un classement « établi à partir de dossiers » est jugé
   « sérieux » à tort.
+- ROBINS-I, classement des interventions (VS-D63 à VS-D66, 0,19 $) : consigne corrigée d'après le guide
+  de l'outil. Un traitement enregistré au moment où il est donné (prescription, technique opératoire)
+  reste « faible », même relu après coup dans des dossiers ; « sérieux » suppose des groupes mal définis
+  ou un classement qui a pu dépendre du résultat. Correction enregistrée avant le choix des articles,
+  puis mesurée sur 10 articles neufs (lot 3 du corpus, trouvés sans IA dans un quatrième lot de
+  250 revues, 38 études vérifiées). Ce domaine est identique au corrigé 7 fois sur 10 (lot 2 : 1 sur 6),
+  sans jugement trop favorable. Le seuil de VS-D56 reste non atteint (4 sur 10) ; celui de la fourchette
+  est atteint (8 sur 10). Non branché sur la veille.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
