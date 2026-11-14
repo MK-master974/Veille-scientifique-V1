@@ -19,8 +19,12 @@ avec l'accord du porteur du projet. Une demande précise :
   d'appréciation sur résumé seul ; « tout » : aussi sur résumé), "sans_declarations" (lecture du
   texte intégral sans les déclarations placées hors du corps de l'article), "plan_seul" (mesure
   l'étape « plan d'étude » seule, sans appréciation), "plan_externe" (ajoute les études
-  diagnostiques du corpus de chiffres relevés, hors du corpus « qualité ») et "sans_ia". Le banc
-  établit d'abord le plan d'étude de chaque article lu en entier (séance 7, VS-D44).
+  diagnostiques du corpus de chiffres relevés, hors du corpus « qualité »), "outils" (grilles du
+  corpus à mesurer, par exemple ["robins_i"], VS-D54), "s45_pmids" (publications de 2026-S45
+  nommées par leur PMID), "sans_contestes" (seulement les articles dont le corrigé n'est pas
+  contesté, VS-D57), "lot" (un lot du corpus ROBINS-I : 2 pour les articles neufs, VS-D59) et
+  "sans_ia". Le banc établit d'abord le plan d'étude de chaque article
+  lu en entier (séance 7, VS-D44).
 
 Plafonds fixes : 1 $ pour la chaîne actuelle ; 3 $ pour l'extraction, porté de 2 $ à 3 $ le
 12 novembre 2026 parce que le corpus grossit (VS-D33) ; 2,43 $ pour l'appréciation, soit toute
@@ -41,6 +45,7 @@ BANCS = {"chaine": ("banc.py", 1.0), "extraction": ("banc_extraction.py", 3.0),
 EFFORTS = ("minimal", "low", "medium", "high")
 PARTIES = ("tout", "historique", "chiffres")
 NIVEAUX = ("tout", "integral")
+OUTILS = {"rob2", "quadas2", "amstar2", "agree2", "robins_i"}
 
 
 def commande(demande, sortie):
@@ -78,6 +83,20 @@ def commande(demande, sortie):
             arguments.append("--plan-seul")
         if demande.get("plan_externe") is True:
             arguments.append("--plan-externe")
+        if demande.get("outils"):
+            outils = [str(o) for o in demande["outils"]]
+            if not set(outils) <= OUTILS:
+                raise SystemExit(f"Outils inconnus : {outils!r} (attendu : {', '.join(sorted(OUTILS))})")
+            arguments += ["--outils", ",".join(outils)]
+        if demande.get("sans_contestes") is True:
+            arguments.append("--sans-contestes")
+        if int(demande.get("lot", 0)) > 0:
+            arguments += ["--lot", str(int(demande["lot"]))]
+        if demande.get("s45_pmids"):
+            pmids = [str(x) for x in demande["s45_pmids"]]
+            if not all(x.isdigit() for x in pmids):
+                raise SystemExit(f"PMID invalides : {pmids!r}")
+            arguments += ["--s45-pmids", ",".join(pmids)]
         if demande.get("sans_ia") is True:
             arguments.append("--sans-ia")
     return script, arguments

@@ -15,6 +15,12 @@ L'IA juge chaque domaine de l'outil et cite le passage qui fonde son jugement. L
   rempli ; un texte silencieux donne « non rapporté ». Le code calcule une fourchette du jugement
   global (le pire et le meilleur possibles) au lieu d'un « non évaluable » sec ; quand aucune grille
   ne convient, la réponse est « aucune grille applicable ».
+- ROBINS-I (VS-D54), pour un essai quasi randomisé ou une étude interventionnelle non randomisée :
+  tout jugement exige son passage. « Sérieux » ou « critique » sans passage devient « non rapporté »
+  (la case « pas d'information » de l'outil), comme « non » pour AMSTAR 2 ; « faible » ou « modéré »
+  sans passage est refusé. La grille a sa propre consigne, appreciation_robins_i.txt. Exception
+  (VS-D59) : pour les écarts aux interventions, la consigne permet « faible » quand l'article décrit
+  l'intervention réalisée sans aucun signe d'écart ; le passage est alors celui qui la décrit.
 « Non évaluable » veut dire : ce qui a été lu ne permet pas de juger. Ce n'est pas une preuve faible.
 """
 import re
@@ -24,7 +30,7 @@ from .extraction import _absents, _nombres, _repere, _texte
 from .ia import lire_json
 
 NON_EVALUABLE = "non_evaluable"
-NON_RAPPORTE = "non_rapporte"            # AMSTAR 2 : le texte intégral ne dit rien sur le critère
+NON_RAPPORTE = "non_rapporte"            # AMSTAR 2, ROBINS-I : le texte intégral ne dit rien sur le critère
 INCONNUS = (NON_EVALUABLE, NON_RAPPORTE)
 AUCUN = "aucun"                          # aucune grille applicable
 
@@ -68,6 +74,17 @@ DOMAINES = {
         ("q15_biais_de_publication", "Si méta-analyse : le biais de publication est recherché et son effet discuté"),
         ("q16_conflits_d_interets", "Les conflits d'intérêts et le financement de la revue sont déclarés"),
     ],
+    # ROBINS-I, version 1 (Sterne et al., BMJ 2016) : sept domaines, pour un critère donné, en jugeant l'effet
+    # de l'attribution à l'intervention.
+    "robins_i": [
+        ("confusion", "Biais de confusion : des facteurs pronostiques ont-ils pu influencer à la fois l'intervention reçue et le résultat ? Facteurs de confusion importants mesurés et pris en compte par la conception ou l'analyse (ajustement, appariement, stratification) ; groupes comparables au départ"),
+        ("selection_des_participants", "Sélection des participants : l'entrée dans l'étude ou dans l'analyse dépend-elle de caractéristiques observées après le début de l'intervention ? Le début du suivi coïncide-t-il avec le début de l'intervention ?"),
+        ("classement_des_interventions", "Classement des interventions : groupes d'intervention définis clairement, statut de chaque participant fixé au début de l'intervention, sans dépendre du résultat"),
+        ("ecarts_aux_interventions", "Écarts par rapport aux interventions prévues : écarts dus au contexte de l'étude (co-interventions déséquilibrées entre les groupes, changements de groupe) et leur prise en compte dans l'analyse"),
+        ("donnees_manquantes", "Données manquantes : résultat disponible pour presque tous les participants, manquants peu nombreux et équilibrés entre les groupes, ou analyse qui en tient compte"),
+        ("mesure_du_critere", "Mesure du critère : méthode adaptée et identique dans les groupes ; évaluateurs ignorant l'intervention reçue, ou critère objectif peu sujet à interprétation"),
+        ("selection_du_resultat", "Sélection du résultat rapporté : résultat choisi parmi plusieurs mesures, analyses ou sous-groupes ? Protocole ou plan d'analyse établi avant, résultats conformes à ce plan"),
+    ],
     "agree2": [
         ("champ_et_objectifs", "Champ et objectifs : objectifs, questions de santé et population décrits précisément"),
         ("participation_des_groupes", "Participation des groupes concernés : professionnels et patients associés, utilisateurs définis"),
@@ -80,11 +97,16 @@ DOMAINES = {
 
 # Valeurs permises par outil, de la plus favorable à la moins favorable. « non_evaluable » en plus.
 VALEURS = {"rob2": ("faible", "quelques_reserves", "eleve"), "quadas2": ("faible", "incertain", "eleve"),
-           "amstar2": ("oui", "oui_partiel", "non", NON_RAPPORTE), "agree2": ("elevee", "moyenne", "faible")}
+           "amstar2": ("oui", "oui_partiel", "non", NON_RAPPORTE), "agree2": ("elevee", "moyenne", "faible"),
+           "robins_i": ("faible", "modere", "serieux", "critique", NON_RAPPORTE)}
 # Ce que mesure l'axe « jugement » : jamais une certitude des preuves (VS-D44).
-NATURE_DU_JUGEMENT = {"rob2": "risque_de_biais", "quadas2": "risque_de_biais",
+NATURE_DU_JUGEMENT = {"rob2": "risque_de_biais", "quadas2": "risque_de_biais", "robins_i": "risque_de_biais",
                       "amstar2": "fiabilite_de_la_methode", "agree2": "fiabilite_de_la_methode"}
-FAVORABLES = {"rob2": ("faible",), "quadas2": ("faible",), "amstar2": ("oui", "oui_partiel"), "agree2": ("elevee", "moyenne")}
+FAVORABLES = {"rob2": ("faible",), "quadas2": ("faible",), "amstar2": ("oui", "oui_partiel"), "agree2": ("elevee", "moyenne"),
+              "robins_i": ("faible", "modere")}
+# Jugements défavorables qui exigent le passage montrant le défaut, sur texte intégral : sans lui, le domaine
+# devient « non rapporté » (un silence n'est pas un défaut).
+DEFAVORABLES_A_PROUVER = {"amstar2": ("non",), "robins_i": ("serieux", "critique")}
 SANS_OBJET = "sans_objet"                 # AMSTAR 2 : questions réservées aux méta-analyses
 AMSTAR_SI_META_ANALYSE = ("q11_methodes_statistiques", "q12_impact_du_biais", "q15_biais_de_publication")
 AMSTAR_CRITIQUES = ("q02_protocole", "q04_recherche", "q07_etudes_exclues", "q09_risque_de_biais",
@@ -92,12 +114,14 @@ AMSTAR_CRITIQUES = ("q02_protocole", "q04_recherche", "q07_etudes_exclues", "q09
 
 # Jugement global de chaque outil, du moins bon au meilleur : l'échelle des « crans » du banc d'essai.
 ECHELLES = {"rob2": ("eleve", "quelques_reserves", "faible"), "quadas2": ("eleve", "incertain", "faible"),
-            "amstar2": ("tres_faible", "faible", "moderee", "elevee"), "agree2": ("faible", "moyenne", "elevee")}
+            "amstar2": ("tres_faible", "faible", "moderee", "elevee"), "agree2": ("faible", "moyenne", "elevee"),
+            "robins_i": ("critique", "serieux", "modere", "faible")}
 # Jugement global de l'outil → qualité méthodologique de la fiche v2.
 QUALITE = {"rob2": {"faible": "elevee", "quelques_reserves": "moyenne", "eleve": "faible"},
            "quadas2": {"faible": "elevee", "incertain": "moyenne", "eleve": "faible"},
            "amstar2": {"elevee": "elevee", "moderee": "moyenne", "faible": "faible", "tres_faible": "faible"},
-           "agree2": {"elevee": "elevee", "moyenne": "moyenne", "faible": "faible"}}
+           "agree2": {"elevee": "elevee", "moyenne": "moyenne", "faible": "faible"},
+           "robins_i": {"faible": "elevee", "modere": "moyenne", "serieux": "faible", "critique": "faible"}}
 GRADES = ("eleve", "modere", "faible", "tres_faible")
 _NOMME_GRADE = re.compile(r"grade|certainty|certitude|quality of (?:the )?evidence|qualité de(?:s)? preuves?", re.I)
 
@@ -108,11 +132,12 @@ MAX_JUSTIFICATION = 400
 
 # --- Requête ----------------------------------------------------------------------------------
 
-def requete_appreciation(ref, doc, consigne, type_etude, etape="appreciation", outil=None):
+def requete_appreciation(ref, doc, consigne, type_etude, etape="appreciation", outil=None, critere=None):
     """Requête d'appréciation. Renvoie None si aucun outil ne correspond au type d'étude.
 
     « outil » impose la grille (choisie d'après le plan d'étude) ; à défaut, elle se déduit du type
-    d'étude donné par le tri.
+    d'étude donné par le tri. « critere » nomme le critère à juger, quand l'outil juge un critère
+    donné (ROBINS-I) ; à défaut, le critère principal de l'étude.
     """
     outil = outil or OUTILS.get(type_etude)
     if outil is None:
@@ -123,6 +148,8 @@ def requete_appreciation(ref, doc, consigne, type_etude, etape="appreciation", o
               "VALEURS PERMISES : " + " | ".join(valeurs),
               "DOMAINES À JUGER (clé : ce qu'il faut juger)"]
     lignes += [f"- {cle} : {libelle}" for cle, libelle in DOMAINES[outil]]
+    if critere:
+        lignes.append(f"CRITÈRE À JUGER : {critere}")
     lignes.append("TEXTE FOURNI : " + ("texte intégral" if integral else
                                        "titre et résumé uniquement ; le reste de l'article n'est pas fourni"))
     lignes += ["", texte.texte_pour_ia(doc)]
@@ -156,6 +183,8 @@ def fourchette(outil, domaines):
     - AMSTAR 2 : niveau de confiance selon les faiblesses. Plus d'une faiblesse critique : très
       faible ; une seule : faible ; plus d'une faiblesse non critique : modérée ; sinon élevée.
     - AGREE II : le plus mauvais domaine l'emporte.
+    - ROBINS-I : le plus mauvais domaine l'emporte (faible si tous sont faibles, modéré si tous sont
+      faibles ou modérés, sérieux si l'un est sérieux sans aucun critique, critique si l'un est critique).
     """
     pire_valeur, meilleur_valeur = ("non", "oui") if outil == "amstar2" else (ECHELLES[outil][0], ECHELLES[outil][-1])
     cles = [c for c, _ in DOMAINES[outil]]
@@ -177,17 +206,18 @@ def jugement_global(outil, domaines):
     return pire if pire == meilleur else NON_EVALUABLE
 
 
-def etiquette_candidate(type_etude, qualite, grade=None):
+def etiquette_candidate(type_etude, qualite, grade=None, outil=None):
     """RÈGLE CANDIDATE de l'étiquette de façade, à arbitrer par le porteur du projet (VS-D14).
 
     Elle part de la qualité méthodologique et garde deux règles déjà validées : un essai isolé
-    n'est jamais « solide » ; une étude diagnostique non plus. Une certitude GRADE faible ou très
+    n'est jamais « solide » ; une étude diagnostique non plus. Une étude non randomisée jugée avec
+    ROBINS-I, étude isolée elle aussi, ne l'est pas davantage. Une certitude GRADE faible ou très
     faible, rapportée par les auteurs, plafonne l'étiquette.
     """
     if qualite == NON_EVALUABLE:
         return NON_EVALUABLE
     etiquette = {"elevee": "solide", "moyenne": "modere", "faible": "preliminaire"}[qualite]
-    if type_etude in ("essai_randomise", "etude_diagnostique") and etiquette == "solide":
+    if (type_etude in ("essai_randomise", "etude_diagnostique") or outil == "robins_i") and etiquette == "solide":
         etiquette = "modere"
     if grade == "faible" and etiquette == "solide":
         etiquette = "modere"
@@ -255,10 +285,10 @@ def lire_appreciation(reponse, doc, type_etude, publier_passages=False, outil=No
             continue
         bilan["proposes"] += 1
         bloc, extrait = texte.trouver_passage(doc, d.get("passage"), _repere(d.get("repere")))
-        if valeur == "non" and outil == "amstar2" and bloc is None and integral:
-            # Un silence n'est pas un défaut : « non » exige le passage qui montre le critère non rempli.
+        if valeur in DEFAVORABLES_A_PROUVER.get(outil, ()) and bloc is None and integral:
+            # Un silence n'est pas un défaut : un jugement défavorable exige le passage qui montre le défaut.
+            bilan["ecarts"].append({"domaine": cle, "nature": f"« {valeur} » sans passage : ramené à « non rapporté »"})
             valeur = NON_RAPPORTE
-            bilan["ecarts"].append({"domaine": cle, "nature": "« non » sans passage : ramené à « non rapporté »"})
         favorable = valeur in FAVORABLES[outil]
         if bloc is None and favorable:
             bilan["refus"].append({"domaine": cle, "motif": f"jugement favorable sans passage vérifiable ({extrait})"})
@@ -293,7 +323,7 @@ def lire_appreciation(reponse, doc, type_etude, publier_passages=False, outil=No
         else:
             bilan["refus"].append({"domaine": "grade", "motif": "certitude GRADE sans passage qui la nomme"})
 
-    etiquette = etiquette_candidate(type_etude, qualite, grade["valeur"] if grade else None)
+    etiquette = etiquette_candidate(type_etude, qualite, grade["valeur"] if grade else None, outil)
     appreciation = {"outil": outil, "jugement": qualite, "jugement_outil": global_outil,
                     "fourchette": {"pire": pire, "meilleur": meilleur},
                     "nature_du_jugement": NATURE_DU_JUGEMENT[outil], "domaines": domaines,

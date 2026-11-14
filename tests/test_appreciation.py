@@ -189,6 +189,90 @@ def test_aucune_grille_applicable_ne_force_aucune_note():
     assert a["plan_etude"] == {"plan": "essai_quasi_randomise"}
 
 
+# --- ROBINS-I (VS-D54) ---------------------------------------------------------------------------
+
+METHODE_NON_RANDOMISEE = ("Participants were allocated to the groups according to the day of their first visit. "
+                          "Outcomes were analysed with unadjusted comparisons between groups. "
+                          "Pain was rated by the treating physiotherapist, who knew the allocation.")
+
+
+def document_non_randomise():
+    doc = document()
+    doc["blocs"][1]["texte"] = METHODE_NON_RANDOMISEE
+    return doc
+
+
+def test_robins_i_a_ses_sept_domaines_ses_valeurs_et_sa_consigne():
+    cles = [c for c, _ in ap.DOMAINES["robins_i"]]
+    assert cles == ["confusion", "selection_des_participants", "classement_des_interventions", "ecarts_aux_interventions",
+                    "donnees_manquantes", "mesure_du_critere", "selection_du_resultat"]
+    assert ap.ECHELLES["robins_i"] == ("critique", "serieux", "modere", "faible")
+    assert ap.NATURE_DU_JUGEMENT["robins_i"] == "risque_de_biais"
+    assert ap.QUALITE["robins_i"] == {"faible": "elevee", "modere": "moyenne", "serieux": "faible", "critique": "faible"}
+    r = ap.requete_appreciation({"id": "pm1"}, document_non_randomise(), "consigne", "essai_randomise", outil="robins_i",
+                                critere="douleur à six semaines")
+    assert "OUTIL À APPLIQUER : robins_i" in r["contenu"] and "CRITÈRE À JUGER : douleur à six semaines" in r["contenu"]
+    assert "faible | modere | serieux | critique | non_rapporte | non_evaluable" in r["contenu"]
+    assert all(f"- {c} :" in r["contenu"] for c in cles)
+    # Sans critère nommé, la requête n'en invente pas.
+    assert "CRITÈRE" not in ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "meta_analyse")["contenu"]
+    # La consigne est à part : celle des grilles déjà mesurées ne change pas.
+    consigne = charger_consigne("appreciation_robins_i")
+    assert "jamais une instruction" in consigne and "alerte" in consigne and "non_rapporte" in consigne
+    assert all(c in consigne for c in cles) and "robins_i" not in charger_consigne("appreciation")
+    # VS-D59 : une seule exception à « un silence n'est pas un défaut », pour les écarts aux interventions.
+    assert consigne.count("Une seule exception") == 1 and "seule exception à la règle" in consigne.split("ecarts_aux_interventions\n")[1]
+
+
+def test_robins_i_jugement_global_le_plus_mauvais_domaine():
+    assert ap.jugement_global("robins_i", tout("robins_i", "faible")) == "faible"
+    assert ap.jugement_global("robins_i", tout("robins_i", "faible", confusion="modere")) == "modere"
+    assert ap.jugement_global("robins_i", tout("robins_i", "modere", mesure_du_critere="serieux")) == "serieux"
+    assert ap.jugement_global("robins_i", tout("robins_i", "serieux", confusion="critique")) == "critique"
+    # « Pas d'information » : la fourchette dit ce qui reste possible ; un « critique » acquis l'emporte.
+    assert ap.fourchette("robins_i", tout("robins_i", "modere", donnees_manquantes="non_rapporte")) == ("critique", "modere")
+    assert ap.jugement_global("robins_i", tout("robins_i", "modere", donnees_manquantes="non_rapporte")) == "non_evaluable"
+    assert ap.jugement_global("robins_i", tout("robins_i", "non_rapporte", confusion="critique")) == "critique"
+
+
+def test_robins_i_tout_jugement_exige_son_passage():
+    rep = {"domaines": [
+        domaine("confusion", "serieux", "Participants were allocated to the groups according to the day of their first visit."),
+        domaine("selection_des_participants", "faible", "Un passage que le texte ne contient pas."),
+        domaine("classement_des_interventions", "modere", None, None),
+        domaine("ecarts_aux_interventions", "non_rapporte", None, None, "Rien sur les co-interventions."),
+        domaine("donnees_manquantes", "serieux", None, None, "Aucun chiffre de perdus de vue."),
+        domaine("mesure_du_critere", "serieux",
+                "Pain was rated by the treating physiotherapist, who knew the allocation."),
+        domaine("selection_du_resultat", "critique", None, None, "Pas de protocole.")]}
+    a, bilan = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "essai_randomise", outil="robins_i",
+                                    publier_passages=True)
+    par = {d["domaine"]: d["jugement"] for d in a["domaines"]}
+    # Un défaut montré par un passage vérifié est gardé, avec sa source.
+    assert par["confusion"] == "serieux" and par["mesure_du_critere"] == "serieux"
+    assert a["domaines"][0]["source"]["emplacement"] == "section : Methods"
+    # Favorable sans passage vérifiable : refusé, non évaluable.
+    assert par["selection_des_participants"] == "non_evaluable" and par["classement_des_interventions"] == "non_evaluable"
+    # Défaut sans passage : un silence n'est pas un défaut, le domaine devient « non rapporté ».
+    assert par["donnees_manquantes"] == "non_rapporte" and par["selection_du_resultat"] == "non_rapporte"
+    assert par["ecarts_aux_interventions"] == "non_rapporte"
+    assert any("« critique » sans passage" in x["nature"] for x in bilan["ecarts"])
+    # Deux domaines « sérieux » acquis : au pire critique, au mieux sérieux ; jamais mieux.
+    assert a["fourchette"] == {"pire": "critique", "meilleur": "serieux"} and a["jugement_outil"] == "non_evaluable"
+    assert a["outil"] == "robins_i" and a["nature_du_jugement"] == "risque_de_biais" and a["grade_rapporte"] is None
+
+
+def test_robins_i_etiquette_jamais_solide_et_qualite():
+    rep = {"domaines": [domaine(c, "faible", "Outcomes were analysed with unadjusted comparisons between groups.")
+                        for c, _ in ap.DOMAINES["robins_i"]]}
+    a, _ = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "meta_analyse", outil="robins_i")
+    assert a["jugement_outil"] == "faible" and a["jugement"] == "elevee"
+    # Étude isolée non randomisée : jamais « solide », quel que soit le type donné par le tri.
+    assert a["etiquette"] == "modere"
+    assert ap.etiquette_candidate("meta_analyse", "elevee", outil="robins_i") == "modere"
+    assert ap.etiquette_candidate("meta_analyse", "faible", outil="robins_i") == "preliminaire"
+
+
 def test_la_grille_peut_etre_imposee_par_le_plan():
     # Le type du tri dit « essai randomisé » ; le plan réel impose une autre grille.
     r = ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "essai_randomise", outil="amstar2")
@@ -304,14 +388,46 @@ def test_les_corpus_qualite_sont_lisibles_par_le_banc():
     cas = banc.charger_cas()
     assert len(cas) >= 30 and len({c["pmid"] for c in cas}) == len(cas)
     for c in cas:
-        assert c["outil"] in ("rob2", "quadas2", "amstar2") and ap.OUTILS[c["type_etude"]] == c["outil"]
-        assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES[c["outil"]], c["pmid"]
+        if c["outil"] == "robins_i":
+            # ROBINS-I : la grille ne se déduit pas du type du tri mais du plan d'étude ; le critère jugé est nommé.
+            assert c["critere"] and c["type_etude"] in ("essai_quasi_randomise", "interventionnel_non_randomise"), c["pmid"]
+            assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES["robins_i"] + (ap.NON_RAPPORTE,), c["pmid"]
+        else:
+            assert c["outil"] in ("rob2", "quadas2", "amstar2") and ap.OUTILS[c["type_etude"]] == c["outil"]
+            assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES[c["outil"]], c["pmid"]
         for valeur in banc.domaines_du_corrige(c["outil"], c["corrige"]).values():
             assert valeur in ap.VALEURS[c["outil"]], (c["pmid"], valeur)
-    lisible = json.loads((RACINE / "banc/corpus/qualite_lisible.json").read_text(encoding="utf-8"))
-    for g in lisible["groupes"]:
-        assert g["source"]["licence"] in ("CC BY", "CC0")
-        assert all(c["licence"] in ("CC BY", "CC0") and c["pmcid"] for c in g["cas"])
+    for nom in ("qualite_lisible.json", "robins_i.json"):
+        chemin = RACINE / "banc/corpus" / nom
+        if not chemin.exists():
+            continue
+        for g in json.loads(chemin.read_text(encoding="utf-8"))["groupes"]:
+            assert g["source"]["licence"] in ("CC BY", "CC0")
+            assert all(c["licence"] in ("CC BY", "CC0") and c["pmcid"] for c in g["cas"])
+
+
+def test_robins_i_au_banc_lecture_du_corrige_et_seuils():
+    # « Pas d'information » de ROBINS-I se lit « non rapporté » ; les accents et les espaces ne comptent pas.
+    assert banc.cle("pas d'information") == banc.cle("Pas d’information") == "non_rapporte"
+    assert banc.cle("modéré") == "modere" and banc.cle("sérieux") == "serieux"
+    corrige = {"confusion": "sérieux", "selection_des_participants": "faible", "mesure_du_critere": "pas d'information",
+               "global": "sérieux"}
+    assert banc.corrige_global("robins_i", corrige) == "serieux"
+    assert banc.domaines_du_corrige("robins_i", corrige) == {"confusion": "serieux", "selection_des_participants": "faible",
+                                                              "mesure_du_critere": "non_rapporte"}
+    # Seuils de VS-D56 : 50 % d'identiques, plus qu'une réponse fixe, aucun jugement plus favorable de deux crans.
+    attendus = ["serieux", "serieux", "serieux", "modere"]
+    comparaisons = [banc.comparer("robins_i", o, a) for o, a in zip(["serieux", "serieux", "critique", "modere"], attendus)]
+    s = list(banc.seuils_robins(comparaisons, attendus).values())
+    assert s[0]["atteint"] is True and s[0]["mesure"] == "3 sur 4"
+    # Répondre partout « sérieux » donnerait 3 identiques : 3 ne fait pas mieux, le seuil n'est pas atteint.
+    assert s[1]["atteint"] is False and s[1]["mesure"] == "3 contre 3" and s[1]["reponse_fixe"] == "serieux"
+    assert s[2]["atteint"] is True
+    trop = [banc.comparer("robins_i", "faible", "serieux")]
+    assert trop[0]["etat"] == "trop_favorable"
+    assert list(banc.seuils_robins(trop, ["serieux"]).values())[2]["atteint"] is False
+    # Aucun article : aucun seuil n'est atteint.
+    assert not any(x["atteint"] for x in banc.seuils_robins([], []).values())
 
 
 def test_lanceur_du_banc_appreciation():
@@ -328,6 +444,20 @@ def test_lanceur_du_banc_appreciation():
     _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.25, "s45": 10, "plan_seul": True,
                                     "plan_externe": True}, "res")
     assert arguments == ["--sortie", "res", "--budget", "0.25", "--s45", "10", "--plan-seul", "--plan-externe"]
+    # ROBINS-I (VS-D54) : une grille seulement, et des publications de 2026-S45 nommées.
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.45, "s45": 2, "outils": ["robins_i"],
+                                    "s45_pmids": ["42980682", "42993769"]}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.45", "--s45", "2", "--outils", "robins_i",
+                         "--s45-pmids", "42980682,42993769"]
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.6, "outils": ["robins_i"],
+                                    "sans_contestes": True}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.6", "--outils", "robins_i", "--sans-contestes"]
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.52, "outils": ["robins_i"], "lot": 2}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.52", "--outils", "robins_i", "--lot", "2"]
+    with pytest.raises(SystemExit):
+        lancer.commande({"banc": "appreciation", "outils": ["probast"]}, "res")
+    with pytest.raises(SystemExit):
+        lancer.commande({"banc": "appreciation", "s45_pmids": ["42980682; rm"]}, "res")
 
 
 # --- Le banc en entier, sources et IA simulées ------------------------------------------------
@@ -348,7 +478,9 @@ class IASimulee:
         for r in requetes:
             if r["id"].startswith("plan"):
                 resume = re.search(r"\[R\] RÉSUMÉ\n(.+)", r["contenu"]).group(1)
-                plan = self.PLANS[re.search(r"TYPE ANNONCÉ PAR LE TRI : ([^(]+) \(", r["contenu"]).group(1).strip()]
+                annonce = re.search(r"TYPE ANNONCÉ PAR LE TRI : ([^(]+) \(", r["contenu"])
+                # Corpus ROBINS-I : aucun type du tri n'est annoncé ; l'IA simulée y voit une étude non randomisée.
+                plan = self.PLANS[annonce.group(1).strip()] if annonce else "interventionnel_non_randomise"
                 if r["id"] == "plan-s45:pm42968156":
                     plan = "essai_quasi_randomise"
                 rep = {"plan": plan, "repere": "R", "passage": resume[:60], "justification": "Simulée.",
@@ -370,8 +502,11 @@ class IASimulee:
 def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     article = ("<article><front><article-meta><abstract><p>" + PHRASE * 3 + "</p></abstract></article-meta></front><body>"
                + "".join(f"<sec><title>{t}</title><p>{PHRASE * 60}</p></sec>" for t in ("Methods", "Results")) + "</body></article>")
-    lisibles = {c["pmid"] for g in json.loads((RACINE / "banc/corpus/qualite_lisible.json").read_text(encoding="utf-8"))["groupes"]
-                for c in g["cas"]}
+    lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json")
+                for g in json.loads((RACINE / "banc/corpus" / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
+    robins = {c["pmid"] for c in banc.charger_cas() if c["outil"] == "robins_i"}
+    semaine_s45 = {f.get("pmid") for f in json.loads((RACINE / "site/data/semaines/2026-S45.json").read_text(
+        encoding="utf-8"))["fiches"]}
     monkeypatch.setattr(banc.chaine, "recuperer_pubmed", lambda pmids, cfg: [
         {"id": f"pm{p}", "source": "pubmed", "pmid": p, "titre": f"Titre fabriqué {p}", "revue": "Revue fabriquée",
          "resume": PHRASE * 3, "types_publication": []} for p in pmids])
@@ -379,7 +514,7 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
                       if c["type_etude"] == "etude_diagnostique"} - {c["pmid"] for c in banc.charger_cas()})
     monkeypatch.setattr(banc.acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
         {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids
-         if p in lisibles or p in diagnostiques or len(pmids) > 45}, 0))
+         if p in lisibles or p in diagnostiques or p in semaine_s45}, 0))
     monkeypatch.setattr(banc.acces, "texte_integral_xml", lambda pmcid: (article, "ok"))
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)
@@ -396,20 +531,27 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert set(r["texte_integral"]["jugements_obtenus"]) == {"elevee", "faible"}
     assert r["texte_integral"]["etats"]["trop_favorable"] >= 8
     assert list(r["seuils"].values())[1]["atteint"] is False
+    # ROBINS-I (VS-D56) : tout « faible » ne retrouve que les corrigés « faible », et dépasse de deux crans les « sérieux ».
+    sr = list(r["seuils_robins_i"].values())
+    assert sr[0]["mesure"].endswith(f"sur {len(robins)}") and sr[0]["atteint"] is False and sr[2]["atteint"] is False
     assert len(detail["s45"]) == 2 and r["categories_s45"] == {**r["categories_s45"], "classees": 5, "repartition": {"3": 5}}
     assert set(r["cout_usd"]["par_article"]) == {"plan", "resume", "integral", "s45", "classement"}
     # Étape « plan d'étude » : la grille du plan retrouve celle du corrigé pour tout le corpus lu en entier.
     pc = r["plan_etude"]["corpus"]
     assert pc["articles"] == len(lisibles) and pc["grille_du_corrige_retrouvee"] == len(lisibles)
     assert pc["plan_non_determine"] == 0 and pc["ecarts_avec_le_tri"] == 0
-    # 2026-S45 : le plan quasi randomisé n'a pas de grille écrite : aucune note forcée, aucun appel d'appréciation.
+    # 2026-S45 : le plan quasi randomisé est jugé avec ROBINS-I depuis le 14 novembre 2026 (VS-D54), et non
+    # avec la grille du tri (RoB 2). L'IA simulée juge tout « faible » : l'étiquette candidate d'une étude non
+    # randomisée reste plafonnée à « modéré », comme celle d'un essai isolé.
     quasi = next(f for f in detail["s45"] if f["pmid"] == "42968156")
     assert quasi["plan_etude"]["plan"] == "essai_quasi_randomise" and quasi["plan_etude"]["ecart_avec_le_tri"] is True
-    assert quasi["grille"] is None and quasi["grille_manquante"] == "robins_i"
-    assert quasi["appreciation"]["outil"] == "aucun" and quasi["appreciation"]["jugement_outil"] == "non_evaluable"
+    assert quasi["grille"] == "robins_i" and quasi["grille_manquante"] is None
+    assert quasi["appreciation"]["outil"] == "robins_i" and quasi["appreciation"]["jugement_outil"] == "faible"
+    assert quasi["appreciation"]["nature_du_jugement"] == "risque_de_biais" and quasi["appreciation"]["etiquette"] == "modere"
+    assert [d["domaine"] for d in quasi["appreciation"]["domaines"]] == [c for c, _ in ap.DOMAINES["robins_i"]]
     autre = next(f for f in detail["s45"] if f["pmid"] == "42972648")
     assert autre["grille"] == "quadas2" and autre["appreciation"]["outil"] == "quadas2"
-    assert r["plan_etude"]["s45"]["grilles"] == {"aucune": 1, "quadas2": 1}
+    assert r["plan_etude"]["s45"]["grilles"] == {"robins_i": 1, "quadas2": 1}
     # Fourchettes : l'IA simulée juge tout favorablement, la fourchette se réduit à un point.
     assert r["fourchettes"]["articles"] == len(lisibles) and r["fourchettes"]["largeur_moyenne"] == 1.0
     # Seuil de VS-D50 : le corrigé dans la fourchette, qui couvre deux niveaux au plus (ici, la fourchette est un point).
@@ -424,7 +566,19 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     # Essai court : un article par outil. Puis le plafond, qui arrête avant tout appel ; puis sans IA.
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     court = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))["resume"]
-    assert court["corpus"]["articles"] == 3 and court["corpus"]["avec_texte_integral"] == 3
+    assert court["corpus"]["articles"] == 4 and court["corpus"]["avec_texte_integral"] == 4   # RoB 2, QUADAS-2, AMSTAR 2, ROBINS-I
+    # ROBINS-I seul (VS-D54) : seuls les articles de cette grille sont mesurés, avec la consigne qui lui est propre.
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--outils", "robins_i"]) == 0
+    seul = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))
+    assert {x["outil"] for x in seul["corpus"]} == {"robins_i"} and seul["resume"]["corpus"]["articles"] == len(robins)
+    assert seul["resume"]["chaine"]["consigne_appreciation_robins_i"] != seul["resume"]["chaine"]["consigne_appreciation"]
+    assert all(x["plan_etude"]["grille_du_corrige_retrouvee"] for x in seul["corpus"])
+    assert banc.main(["--sortie", str(tmp_path / "stab"), "--budget", "9", "--outils", "robins_i", "--sans-contestes"]) == 0
+    stab = json.loads((tmp_path / "stab" / "resultats-appreciation.json").read_text(encoding="utf-8"))
+    assert stab["corpus"] and not any(x["corrige_conteste"] for x in stab["corpus"])
+    contestes = sum(1 for x in seul["corpus"] if x["corrige_conteste"])
+    assert contestes >= 1 and list(seul["resume"]["seuils_robins_i_sans_corriges_contestes"].values())[0][
+        "mesure"].endswith(f"sur {len(robins) - contestes}")
     assert court["lecture"] == {"niveaux": "integral", "declarations_hors_du_corps": True}
     # Plan d'étude seul, avec les études diagnostiques hors du corpus : aucune appréciation, aucune catégorie.
     capsys.readouterr()

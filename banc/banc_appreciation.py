@@ -22,12 +22,18 @@ Mesures :
    forme de fourchette ; mesure descriptive, sans seuil. Les seuils de VS-D39 portent sur la lecture
    stricte : tout domaine non évalué ou non rapporté compte comme le pire jugement possible.
    Plus d'appréciation sur résumé seul, sauf demande (« --niveaux tout »).
+8. ROBINS-I (VS-D54) : corpus `corpus/robins_i.json`, jugements ROBINS-I déjà publiés par une revue
+   sous licence CC BY. Seuil fixé par le porteur du projet (VS-D56), en lecture stricte : au moins
+   50 % des jugements globaux identiques au corrigé, plus qu'une réponse fixe au niveau le plus
+   fréquent du corpus, et aucun jugement plus favorable de deux crans. « --outils robins_i » ne
+   mesure que cette grille ; « --s45-pmids » limite 2026-S45 aux publications nommées.
 
 Aucun texte d'article n'est écrit dans le journal ni dans les résultats, hors courts passages
 exacts d'articles sous licence CC BY ou CC0, cités avec leur identifiant (VS-D15).
 
 Usage : python banc/banc_appreciation.py --sortie resultats [--budget 1.5] [--s45 10]
                                          [--classement 30] [--limite 0] [--sans-ia]
+                                         [--outils robins_i] [--s45-pmids 42980682,42993769]
 « --limite N » : N articles au plus par outil, pour un essai court et peu coûteux.
 """
 import argparse
@@ -59,9 +65,14 @@ CORPUS = RACINE / "banc" / "corpus"
 # Seuils fixés par le porteur du projet le 12 novembre 2026 (VS-D39), sur le texte intégral.
 SEUIL_UN_CRAN = 0.70
 SEUIL_FOURCHETTE = 0.70      # fixé le 13 novembre 2026 (VS-D50)
+SEUIL_IDENTIQUE_ROBINS = 0.50     # fixé le 14 novembre 2026 (VS-D56), ROBINS-I seulement
 NIVEAUX = ("resume", "integral")
 NIVEAUX_DEMANDES = ("tout", "integral")       # « integral » : pas d'appréciation sur résumé seul
-OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2"}
+OUTILS_DU_CORPUS = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2", "AGREE II": "agree2",
+                    "ROBINS-I": "robins_i"}
+CORPUS_QUALITE = ("qualite.json", "qualite_lisible.json", "robins_i.json")
+# ROBINS-I : la case « pas d'information » de l'outil se lit « non rapporté ».
+PAS_D_INFORMATION = ("pas_d'information", "pas_d_information", "no_information")
 # Jetons de sortie supposés par réponse. « integral » recalé le 13 novembre 2026 sur trois mesures réelles
 # (0,0172 $ par article à 1 $ et 5 $ le million de jetons, soit environ 1 700 jetons de sortie) : 2 500 garde
 # une marge d'environ 20 % sur le coût réel. Avant, 4 500 donnait une estimation double du coût réel.
@@ -76,16 +87,18 @@ MARGE_ESTIMATION = 1.5
 # --- Fonctions pures, testées sans réseau -----------------------------------------------------
 
 def cle(valeur):
-    """« quelques réserves », « très faible » → « quelques_reserves », « tres_faible »."""
+    """« quelques réserves », « très faible » → « quelques_reserves », « tres_faible ». ROBINS-I : « pas
+    d'information » → « non_rapporte »."""
     sans = "".join(c for c in unicodedata.normalize("NFD", str(valeur or "")) if unicodedata.category(c) != "Mn")
-    return sans.lower().strip().replace(" ", "_")
+    forme = sans.lower().strip().replace(" ", "_").replace("’", "'")
+    return appreciation.NON_RAPPORTE if forme in PAS_D_INFORMATION else forme
 
 
 def charger_cas():
     """Les cas des deux corpus « qualité », à plat. Un article présent deux fois n'est gardé qu'une fois :
     la version « lisible », plus récente, l'emporte."""
     cas = {}
-    for nom in ("qualite.json", "qualite_lisible.json"):
+    for nom in CORPUS_QUALITE:
         chemin = CORPUS / nom
         if not chemin.exists():
             continue
@@ -96,7 +109,8 @@ def charger_cas():
                     type_etude = "meta_analyse" if g["type_etude"] == "revue" else g["type_etude"]
                     cas[c["pmid"]] = {"pmid": c["pmid"], "outil": outil, "type_etude": type_etude,
                                       "reference": c.get("reference", ""), "corrige": c["corrige"],
-                                      "source": g["source"]["pmid"]}
+                                      "source": g["source"]["pmid"], "critere": c.get("critere"),
+                                      "conteste": bool(c.get("corrige_conteste")), "lot": g.get("lot", 1)}
     return list(cas.values())
 
 
@@ -104,7 +118,7 @@ def corrige_global(outil, corrige):
     """Jugement global du corrigé, dans les mots de l'outil. None si le corrigé n'en permet pas."""
     if outil == "amstar2":
         return cle(corrige.get("confiance_globale")) or None
-    if outil == "rob2":
+    if outil in ("rob2", "robins_i"):
         return cle(corrige.get("global")) or None
     if outil == "quadas2":                            # pas de jugement global : le plus mauvais domaine
         valeurs = [cle(v) for v in (corrige.get("biais") or {}).values()]
@@ -136,7 +150,7 @@ def comparer_fourchette(outil, fourchette, attendu):
 
 def domaines_du_corrige(outil, corrige):
     """Corrigé par domaine, avec les clés du module d'appréciation : {clé: valeur}."""
-    if outil == "rob2":
+    if outil in ("rob2", "robins_i"):
         return {k: cle(v) for k, v in corrige.items() if k != "global"}
     if outil == "quadas2":
         d = {f"biais_{k}": cle(v) for k, v in (corrige.get("biais") or {}).items()}
@@ -169,6 +183,30 @@ def seuils(comparaisons):
         f"au moins {int(SEUIL_UN_CRAN * 100)} % des jugements à un cran au plus du corrigé, texte intégral": {
             "atteint": part is not None and part >= SEUIL_UN_CRAN, "mesure": f"{proches} sur {len(juges)}", "part": part},
         "aucun jugement plus favorable que le corrigé de deux crans": {"atteint": favorables == 0, "mesure": favorables},
+    }
+
+
+def seuils_robins(comparaisons, attendus):
+    """Seuils fixés par le porteur du projet pour ROBINS-I (VS-D56), en lecture stricte.
+
+    « attendus » : jugements globaux des corrigés. La réponse fixe répond partout le niveau le plus
+    fréquent des corrigés : elle obtient autant d'identiques que ce niveau compte d'articles.
+    """
+    paires = [(c, a) for c, a in zip(comparaisons, attendus) if c["etat"] != "sans_corrige"]
+    n = len(paires)
+    identiques = sum(1 for c, _ in paires if c["etat"] == "exact")
+    frequents = collections.Counter(a for _, a in paires).most_common(1)
+    fixe = frequents[0][1] if frequents else 0
+    favorables = sum(1 for c, _ in paires if c["etat"] == "trop_favorable")
+    part = round(identiques / n, 3) if n else None
+    return {
+        f"au moins {int(SEUIL_IDENTIQUE_ROBINS * 100)} % des jugements globaux identiques au corrigé": {
+            "atteint": part is not None and part >= SEUIL_IDENTIQUE_ROBINS, "mesure": f"{identiques} sur {n}", "part": part},
+        "plus de jugements identiques qu'une réponse fixe au niveau le plus fréquent du corpus": {
+            "atteint": n > 0 and identiques > fixe, "mesure": f"{identiques} contre {fixe}",
+            "reponse_fixe": frequents[0][0] if frequents else None},
+        "aucun jugement plus favorable que le corrigé de deux crans": {"atteint": n > 0 and favorables == 0,
+                                                                      "mesure": favorables},
     }
 
 
@@ -326,6 +364,14 @@ def main(argv=None):
     p.add_argument("--plan-externe", action="store_true",
                    help="ajoute au plan d'étude les études diagnostiques du corpus de chiffres relevés (hors du "
                         "corpus « qualité »), dont le plan attendu est « étude diagnostique »")
+    p.add_argument("--outils", default="",
+                   help="grilles du corpus à mesurer, séparées par des virgules (par défaut : toutes), ex. robins_i")
+    p.add_argument("--lot", type=int, default=0,
+                   help="ne mesure que les articles d'un lot du corpus (par exemple 2 : articles neufs, VS-D59)")
+    p.add_argument("--sans-contestes", action="store_true",
+                   help="ne mesure que les articles dont le corrigé n'est pas marqué contesté (stabilité, VS-D57)")
+    p.add_argument("--s45-pmids", default="",
+                   help="limite 2026-S45 aux publications nommées (PMID séparés par des virgules)")
     p.add_argument("--sans-declarations", action="store_true",
                    help="lit le texte intégral sans les déclarations placées hors du corps (lecture d'avant le 13/11/2026)")
     args = p.parse_args(argv)
@@ -338,12 +384,20 @@ def main(argv=None):
     prix = cfg["ia"]["prix_usd_par_million"]
     modele = cfg["ia"]["modele_redaction"]
     consignes = {"appreciation": charger_consigne("appreciation"), "classement": charger_consigne("classement"),
-                 "plan_etude": charger_consigne("plan_etude")}
+                 "plan_etude": charger_consigne("plan_etude"),
+                 "appreciation_robins_i": charger_consigne("appreciation_robins_i")}
 
     # 1. Cas du corpus, limités par outil si demandé : ceux qui ont un texte lisible d'abord
     cas = charger_cas()
-    lisibles = {c["pmid"] for g in json.loads((CORPUS / "qualite_lisible.json").read_text(encoding="utf-8"))["groupes"]
-                for c in g["cas"]} if (CORPUS / "qualite_lisible.json").exists() else set()
+    outils = {o.strip() for o in args.outils.split(",") if o.strip()}
+    if outils:
+        cas = [c for c in cas if c["outil"] in outils]
+    if args.sans_contestes:
+        cas = [c for c in cas if not c.get("conteste")]
+    if args.lot:
+        cas = [c for c in cas if c.get("lot", 1) == args.lot]
+    lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json") if (CORPUS / nom).exists()
+                for g in json.loads((CORPUS / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
     cas.sort(key=lambda c: (c["outil"], c["pmid"] not in lisibles, c["pmid"]))
     if args.limite:
         garde = collections.Counter()
@@ -392,7 +446,9 @@ def main(argv=None):
         kine = [f for f in donnees["fiches"] if f.get("source") == "pubmed"
                 and any(d.startswith("kine/") for d in f.get("domaines", []))]
         licences, _ = acces.decrire_europe_pmc([f["pmid"] for f in kine], journal)
-        candidates = extraction_banc.choisir_s45(kine, licences, args.s45) if args.s45 else []
+        voulus = {x.strip() for x in args.s45_pmids.split(",") if x.strip()}
+        choisies = [f for f in kine if f["pmid"] in voulus] if voulus else kine
+        candidates = extraction_banc.choisir_s45(choisies, licences, args.s45) if args.s45 else []
         autres = choisir_classement(kine, {f["pmid"] for f in candidates[:args.s45]}, args.classement)
         refs_s45 = {r["pmid"]: r for r in chaine.recuperer_pubmed(
             sorted({f["pmid"] for f in candidates + autres}), cfg)}
@@ -412,8 +468,10 @@ def main(argv=None):
             journal("  " + extraction_banc.structure(f"{x['ref']['id']} ({x['fiche']['type']})", x))
 
     # 4. Étape « plan d'étude » : une requête par article lu en entier, puis garde-fou budgétaire
-    demande = lambda ref, doc, type_etude, etape, outil=None: appreciation.requete_appreciation(   # noqa: E731
-        ref, doc, consignes["appreciation"], type_etude, etape, outil)
+    def demande(ref, doc, type_etude, etape, outil=None, critere=None):
+        consigne = consignes["appreciation_robins_i" if outil == "robins_i" else "appreciation"]
+        return appreciation.requete_appreciation(ref, doc, consigne, type_etude, etape, outil, critere)
+
     demande_plan = lambda ref, doc, tri, etape: plan_etude.requete_plan(ref, doc, consignes["plan_etude"], tri, etape)  # noqa: E731
     reqs = {
         "plan": [demande_plan(refs[c["pmid"]], c["doc"], c["type_etude"], "plan-corpus") for c in cas if c["doc"]]
@@ -421,8 +479,8 @@ def main(argv=None):
                 + [demande_plan(x["ref"], x["doc"], "etude_diagnostique", "plan-externe") for x in externes],
         "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"],
                            "appreciation-resume", c["outil"]) for c in cas] if args.niveaux == "tout" else [],
-        "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral", c["outil"])
-                     for c in cas if c["doc"]],
+        "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral", c["outil"],
+                             c.get("critere")) for c in cas if c["doc"]],
         "s45": [],     # construit après l'étape « plan d'étude » : la grille dépend du plan
         "classement": [classement.requete_classement(x["ref"], consignes["classement"], x["fiche"]["type"])
                        for x in a_classer],
@@ -522,7 +580,7 @@ def main(argv=None):
         ref = refs[c["pmid"]]
         attendu = corrige_global(c["outil"], c["corrige"])
         ligne = {"pmid": c["pmid"], "outil": c["outil"], "reference": c["reference"], "attendu": attendu,
-                 "texte_integral": bool(c["doc"])}
+                 "texte_integral": bool(c["doc"]), "corrige_conteste": c.get("conteste", False)}
         if c["doc"]:
             plan, bilan_plan = plans[c["id"]]
             grille = plan_etude.choisir_grille(plan["plan"])[0] if plan else None
@@ -595,6 +653,7 @@ def main(argv=None):
         "chaine": {"modele": modele, "effort": cfg["ia"].get("effort_raisonnement"), "mode": "direct",
                    "consigne_plan_etude": version_consigne(consignes["plan_etude"]),
                    "consigne_appreciation": version_consigne(consignes["appreciation"]),
+                   "consigne_appreciation_robins_i": version_consigne(consignes["appreciation_robins_i"]),
                    "consigne_classement": version_consigne(consignes["classement"])},
         "cout_usd": {"total": round(sum(cout.values()), 4), **cout,
                      "par_article": {k: round(cout[k] / len(us), 4) for k, us in usages.items() if us}},
@@ -617,7 +676,13 @@ def main(argv=None):
         "resume_seul": {"etats": repartition(d["etat"] for d in sur_resume),
                         "domaines_non_evaluables": f"{sum(1 for d in domaines_resume if d['jugement'] == appreciation.NON_EVALUABLE)} "
                                                    f"sur {len(domaines_resume)}"},
-        "seuils": seuils(integral),
+        "seuils": seuils([x["integral"] for x in lignes if "integral" in x and x["outil"] != "robins_i"]),
+        "seuils_robins_i": seuils_robins([x["integral"] for x in lignes if "integral" in x and x["outil"] == "robins_i"],
+                                         [x["attendu"] for x in lignes if "integral" in x and x["outil"] == "robins_i"]),
+        # Second score, comme pour VS-D29 : sans les corrigés marqués contestés avant la mesure.
+        "seuils_robins_i_sans_corriges_contestes": seuils_robins(
+            [x["integral"] for x in lignes if "integral" in x and x["outil"] == "robins_i" and not x["corrige_conteste"]],
+            [x["attendu"] for x in lignes if "integral" in x and x["outil"] == "robins_i" and not x["corrige_conteste"]]),
         "etiquettes_candidates": {
             "corpus_texte_integral": repartition((d["appreciation"] or {}).get("etiquette") for d in integral),
             "corpus_resume_seul": repartition((d["appreciation"] or {}).get("etiquette") for d in sur_resume),
@@ -651,7 +716,8 @@ def main(argv=None):
         morceaux = [f"{niveau} : {x[niveau]['obtenu']} → {x[niveau]['etat']}" for niveau in NIVEAUX if niveau in x]
         dom = x.get("integral", x.get("resume", {})).get("domaines", {})
         f = x.get("integral", {}).get("fourchette")
-        print(f"  PMID {x['pmid']} | {x['outil']} | corrigé : {x['attendu']} | " + " | ".join(morceaux)
+        print(f"  PMID {x['pmid']} | {x['outil']} | corrigé : {x['attendu']}"
+              + (" (contesté)" if x.get("corrige_conteste") else "") + " | " + " | ".join(morceaux)
               + (f" | fourchette : {f['pire']} à {f['meilleur']} | corrigé dans la fourchette : "
                  f"{x['integral']['contenu']} | largeur : {x['integral']['largeur']}" if f else "")
               + (f" | domaines identiques : {dom['identiques']} sur {dom['compares']}"
