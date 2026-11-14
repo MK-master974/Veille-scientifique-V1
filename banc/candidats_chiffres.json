@@ -2542,6 +2542,307 @@
     "41742842",
     "41706100"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "lire",
+   "raison": "VS-D74 : lire les lignes des tableaux de jugements de 22 revues repérées (AMSTAR 2 : lancement 43575275633 ; RoB 2 : 43575302210 ; QUADAS-2 : 43576346606), pour les études sous licence CC BY ou CC0 avec texte dans PubMed Central. Le choix des 20 articles suit la règle fixée avant (VS-D74) : jugement global favorable, ordre du repérage, 3 au plus par revue. Aucune IA, aucun coût.",
+   "lectures": [
+    {
+     "source": "42828202",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "35361692",
+      "38451302",
+      "41096111"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42783760",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "31267483",
+      "31552570",
+      "35147898",
+      "35072806",
+      "41356824",
+      "40814152",
+      "41464286",
+      "40881585",
+      "41586003",
+      "42646264",
+      "42200178",
+      "41755895"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42739690",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "36163077"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42661515",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "32311937",
+      "32112628",
+      "37199654",
+      "38020109",
+      "40104136"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42652783",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "39274654",
+      "32204501",
+      "41393478"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42661179",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "29973193",
+      "32854323",
+      "34770049",
+      "37065695",
+      "39361605",
+      "38746830"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42645457",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "32245996",
+      "34013452",
+      "34368916",
+      "36197540",
+      "40377845",
+      "38999315",
+      "36836403",
+      "35806845",
+      "36070150"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42620566",
+     "tableaux": [
+      "TABLE 2"
+     ],
+     "pmids": [
+      "37035186",
+      "27418936",
+      "30992708",
+      "38191442"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "41887411",
+     "tableaux": [
+      "TABLE 2"
+     ],
+     "pmids": [
+      "37268972",
+      "36339933",
+      "37696529",
+      "35990084"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42668799",
+     "tableaux": [
+      "Table 6"
+     ],
+     "pmids": [
+      "40933383",
+      "40890879"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42157575",
+     "tableaux": [
+      "TABLE 4"
+     ],
+     "pmids": [
+      "36386952",
+      "34390670",
+      "32045424",
+      "31581272",
+      "36771386",
+      "35104297",
+      "36227595"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42987036",
+     "tableaux": [
+      "TABLE 2"
+     ],
+     "pmids": [
+      "34768404"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42991231",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "38941601",
+      "29513683",
+      "37225248",
+      "39813671",
+      "41767018",
+      "41701967"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42978617",
+     "tableaux": [
+      "Table 4"
+     ],
+     "pmids": [
+      "36984568",
+      "41623796",
+      "40248541"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42956068",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "39079927",
+      "40529140",
+      "29670895"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "43009940",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "21439083",
+      "17967201"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42911355",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "40100278",
+      "35505425",
+      "39598099",
+      "40819867",
+      "38633828",
+      "37240473",
+      "37482566",
+      "40272498"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42931490",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "39428414",
+      "35976288",
+      "41413889",
+      "38314342",
+      "34056670",
+      "40075806",
+      "37642657",
+      "35440037",
+      "36431331"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42717339",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "36498643"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42541433",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "29184636",
+      "36661554"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42769426",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "39141668",
+      "37905924",
+      "40724667"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "42895056",
+     "tableaux": [
+      "TABLE 3"
+     ],
+     "pmids": [
+      "37659103",
+      "39924305"
+     ],
+     "lignes_entete": 3
+    }
+   ]
   }
  ]
 }
