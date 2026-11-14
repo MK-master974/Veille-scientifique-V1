@@ -18,6 +18,10 @@ Quatre modes, choisis par la dernière demande de banc/candidats_chiffres.json :
   groupe (règle de voisinage de banc/chiffres.py). Un chiffre absent de l'article est écarté du
   score avant toute mesure (VS-D34).
 
+- « verifier_robins » (VS-D54) : pour chaque étude de banc/corpus/robins_i.json, les licences de
+  l'étude et de la revue source, la recopie (les niveaux lus dans la ligne du tableau source, dans
+  l'ordre des colonnes, sont ceux du corpus) et la lecture du texte intégral de l'étude.
+
 - « recalculer » : après une vérification, recalcule le score des chiffres relevés à partir des
   extractions déjà produites par un lancement du banc (son artefact), avec les règles et le corpus
   du moment. Aucun nouvel appel à l'IA. Sert quand une règle de comparaison a été corrigée.
@@ -501,6 +505,79 @@ def verifier(_demande=None):
     return etats if _demande and _demande.get("mode") == "recalculer" else 0
 
 
+# --- Mode « verifier_robins » (VS-D54) ---------------------------------------------------------
+
+CORPUS_ROBINS = RACINE / "banc" / "corpus" / "robins_i.json"
+# Niveau ROBINS-I écrit dans une cellule de tableau → niveau du corpus. L'ordre compte : « no information »
+# avant « low », « moderate » avant « low » (« moderate to low » n'existe pas dans l'outil).
+NIVEAUX_ROBINS = (("pas d'information", r"\bno information\b|\bnot reported\b|^\s*ni\s*$"),
+                  ("critique", r"\bcritical\b"), ("sérieux", r"\bserious\b"),
+                  ("modéré", r"\bmoderate\b"), ("faible", r"\blow\b"))
+
+
+def niveau_robins(cellule, legende=None):
+    """Niveau ROBINS-I d'une cellule de tableau (en français, comme dans le corpus), ou None.
+
+    « legende » traduit les symboles propres à une revue (« L », « ? »…), d'après la note du tableau.
+    """
+    brut = _propre(cellule)
+    if legende and brut in legende:
+        return legende[brut]
+    for niveau, motif in NIVEAUX_ROBINS:
+        if re.search(motif, brut, re.I):
+            return niveau
+    return None
+
+
+def niveaux_d_une_ligne(cellules, legende=None):
+    """Niveaux lus dans une ligne de tableau, cellule par cellule, dans l'ordre."""
+    return [n for n in (niveau_robins(c, legende) for c in cellules) if n]
+
+
+def verifier_robins(_demande=None):
+    corpus = json.loads(CORPUS_ROBINS.read_text(encoding="utf-8"))
+    groupes = corpus["groupes"]
+    fiches = decrire([c["pmid"] for g in groupes for c in g["cas"]] + [g["source"]["pmid"] for g in groupes])
+    bilan = collections.Counter()
+    for g in groupes:
+        s = g["source"]
+        fs = fiches.get(s["pmid"])
+        journal(f"\n##### Revue source PMID {s['pmid']} ({fs['licence'] if fs else 'introuvable'}), {s['tableau']}")
+        racine = lire_xml(fs["pmcid"])[0] if utilisable(fs) else None
+        tabs, refs = tableaux(racine) if racine is not None else ([], {})
+        voulus = [t for t in tabs if any(meme_libelle(t["label"], x) for x in s["tableau"].split(","))]
+        for c in g["cas"]:
+            a = fiches.get(c["pmid"])
+            licence_ok = utilisable(a) and utilisable(fs)
+            bilan["licences conformes" if licence_ok else "licences NON CONFORMES"] += 1
+            journal(f"=== PMID {c['pmid']} — licences : étude {a['licence'] if a else 'introuvable'} "
+                    f"({a['pmcid'] if a else '-'}), revue {fs['licence'] if fs else '-'} → "
+                    f"{'conformes' if licence_ok else 'NON CONFORMES'}")
+            if not licence_ok:
+                continue
+            idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])
+                      or (len(_titre_plat(r["titre"])) >= 25 and difflib.SequenceMatcher(
+                          None, _titre_plat(r["titre"]), _titre_plat(a["titre"])).ratio() >= 0.92)}
+            lignes = [l for t in voulus for l in lignes_d_une_etude(t, idents)]
+            lus = [niveaux_d_une_ligne(l["cellules"], g.get("legende")) for l in lignes]
+            attendu = [c["corrige"][k] for k in g["colonnes"]]
+            recopie = attendu in lus
+            bilan["recopie conforme" if recopie else "recopie À REVOIR"] += 1
+            journal(f"  recopie : {'conforme' if recopie else 'À REVOIR'} — corpus {attendu} ; tableau "
+                    f"{lus if lus else 'AUCUNE LIGNE ne cite cette étude'}")
+            xml, _ = acces.texte_integral_xml(a["pmcid"])
+            doc = texte.document_jats(xml, None) if xml else None
+            bilan["texte intégral lu" if doc else "texte intégral NON LU"] += 1
+            journal(f"  article : " + (f"{sum(len(b['texte']) for b in doc['blocs'])} caractères lus, "
+                                       f"{sum(1 for b in doc['blocs'] if b['type'] == 'section')} sections"
+                                       if doc else "TEXTE INTÉGRAL NON LU"))
+            time.sleep(0.3)
+    journal("\n===== BILAN =====")
+    for k, v in sorted(bilan.items()):
+        journal(f"  {k} : {v}")
+    return 0 if not any("NON" in k or "À REVOIR" in k for k in bilan) else 1
+
+
 # --- Mode « recalculer » ----------------------------------------------------------------------
 
 def recalculer(demande):
@@ -539,7 +616,8 @@ def recalculer(demande):
 def main():
     demande = json.loads(DEMANDES.read_text(encoding="utf-8"))["demandes"][-1]
     journal(f"Demande du {demande.get('date')} : mode « {demande.get('mode')} » — {demande.get('raison', '')}")
-    modes = {"reperer": reperer, "lire": lire, "verifier": verifier, "recalculer": recalculer}
+    modes = {"reperer": reperer, "lire": lire, "verifier": verifier, "recalculer": recalculer,
+             "verifier_robins": verifier_robins}
     if demande.get("mode") not in modes:
         raise SystemExit(f"Mode inconnu : {demande.get('mode')!r} (attendu : {', '.join(modes)})")
     resultat = modes[demande["mode"]](demande)

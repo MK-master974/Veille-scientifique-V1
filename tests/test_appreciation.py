@@ -471,7 +471,9 @@ class IASimulee:
         for r in requetes:
             if r["id"].startswith("plan"):
                 resume = re.search(r"\[R\] RÉSUMÉ\n(.+)", r["contenu"]).group(1)
-                plan = self.PLANS[re.search(r"TYPE ANNONCÉ PAR LE TRI : ([^(]+) \(", r["contenu"]).group(1).strip()]
+                annonce = re.search(r"TYPE ANNONCÉ PAR LE TRI : ([^(]+) \(", r["contenu"])
+                # Corpus ROBINS-I : aucun type du tri n'est annoncé ; l'IA simulée y voit une étude non randomisée.
+                plan = self.PLANS[annonce.group(1).strip()] if annonce else "interventionnel_non_randomise"
                 if r["id"] == "plan-s45:pm42968156":
                     plan = "essai_quasi_randomise"
                 rep = {"plan": plan, "repere": "R", "passage": resume[:60], "justification": "Simulée.",
@@ -493,8 +495,9 @@ class IASimulee:
 def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     article = ("<article><front><article-meta><abstract><p>" + PHRASE * 3 + "</p></abstract></article-meta></front><body>"
                + "".join(f"<sec><title>{t}</title><p>{PHRASE * 60}</p></sec>" for t in ("Methods", "Results")) + "</body></article>")
-    lisibles = {c["pmid"] for g in json.loads((RACINE / "banc/corpus/qualite_lisible.json").read_text(encoding="utf-8"))["groupes"]
-                for c in g["cas"]}
+    lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json")
+                for g in json.loads((RACINE / "banc/corpus" / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
+    robins = {c["pmid"] for c in banc.charger_cas() if c["outil"] == "robins_i"}
     monkeypatch.setattr(banc.chaine, "recuperer_pubmed", lambda pmids, cfg: [
         {"id": f"pm{p}", "source": "pubmed", "pmid": p, "titre": f"Titre fabriqué {p}", "revue": "Revue fabriquée",
          "resume": PHRASE * 3, "types_publication": []} for p in pmids])
@@ -502,7 +505,7 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
                       if c["type_etude"] == "etude_diagnostique"} - {c["pmid"] for c in banc.charger_cas()})
     monkeypatch.setattr(banc.acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
         {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids
-         if p in lisibles or p in diagnostiques or len(pmids) > 45}, 0))
+         if p in lisibles or p in diagnostiques or len(pmids) > 60}, 0))
     monkeypatch.setattr(banc.acces, "texte_integral_xml", lambda pmcid: (article, "ok"))
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)
@@ -519,6 +522,9 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert set(r["texte_integral"]["jugements_obtenus"]) == {"elevee", "faible"}
     assert r["texte_integral"]["etats"]["trop_favorable"] >= 8
     assert list(r["seuils"].values())[1]["atteint"] is False
+    # ROBINS-I (VS-D56) : tout « faible » ne retrouve que les corrigés « faible », et dépasse de deux crans les « sérieux ».
+    sr = list(r["seuils_robins_i"].values())
+    assert sr[0]["mesure"].endswith(f"sur {len(robins)}") and sr[0]["atteint"] is False and sr[2]["atteint"] is False
     assert len(detail["s45"]) == 2 and r["categories_s45"] == {**r["categories_s45"], "classees": 5, "repartition": {"3": 5}}
     assert set(r["cout_usd"]["par_article"]) == {"plan", "resume", "integral", "s45", "classement"}
     # Étape « plan d'étude » : la grille du plan retrouve celle du corrigé pour tout le corpus lu en entier.
@@ -551,7 +557,16 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     # Essai court : un article par outil. Puis le plafond, qui arrête avant tout appel ; puis sans IA.
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0
     court = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))["resume"]
-    assert court["corpus"]["articles"] == 3 and court["corpus"]["avec_texte_integral"] == 3
+    assert court["corpus"]["articles"] == 4 and court["corpus"]["avec_texte_integral"] == 4   # RoB 2, QUADAS-2, AMSTAR 2, ROBINS-I
+    # ROBINS-I seul (VS-D54) : seuls les articles de cette grille sont mesurés, avec la consigne qui lui est propre.
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--outils", "robins_i"]) == 0
+    seul = json.loads((tmp_path / "resultats-appreciation.json").read_text(encoding="utf-8"))
+    assert {x["outil"] for x in seul["corpus"]} == {"robins_i"} and seul["resume"]["corpus"]["articles"] == len(robins)
+    assert seul["resume"]["chaine"]["consigne_appreciation_robins_i"] != seul["resume"]["chaine"]["consigne_appreciation"]
+    assert all(x["plan_etude"]["grille_du_corrige_retrouvee"] for x in seul["corpus"])
+    contestes = sum(1 for x in seul["corpus"] if x["corrige_conteste"])
+    assert contestes >= 1 and list(seul["resume"]["seuils_robins_i_sans_corriges_contestes"].values())[0][
+        "mesure"].endswith(f"sur {len(robins) - contestes}")
     assert court["lecture"] == {"niveaux": "integral", "declarations_hors_du_corps": True}
     # Plan d'étude seul, avec les études diagnostiques hors du corpus : aucune appréciation, aucune catégorie.
     capsys.readouterr()

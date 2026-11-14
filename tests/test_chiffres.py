@@ -300,4 +300,15 @@ def test_un_renvoi_faux_est_corrige_par_le_nom_ecrit_ou_ecarte():
 
 def test_la_demande_du_depot_est_lisible():
     demandes = json.loads((RACINE / "banc" / "candidats_chiffres.json").read_text(encoding="utf-8"))["demandes"]
-    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier", "recalculer")
+    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier", "recalculer", "verifier_robins")
+
+
+def test_niveaux_robins_lus_dans_une_ligne_de_tableau():
+    # Lignes fabriquées : les cellules sans niveau (nom, plan) sont ignorées, l'ordre est gardé.
+    ligne = ["Auteur 2020", "Non-randomized", "Serious", "Low", "Low risk", "Moderate", "No information", "Low", "Low", "Serious"]
+    assert assembler.niveaux_d_une_ligne(ligne) == ["sérieux", "faible", "faible", "modéré", "pas d'information",
+                                                      "faible", "faible", "sérieux"]
+    assert assembler.niveau_robins("Critical risk") == "critique" and assembler.niveau_robins("NI") == "pas d'information"
+    # Une revue qui note par symboles : la légende de son tableau les traduit.
+    assert assembler.niveaux_d_une_ligne(["Auteur 2021", "+", "?"], {"+": "faible", "?": "pas d'information"}) == [
+        "faible", "pas d'information"]

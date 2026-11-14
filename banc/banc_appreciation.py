@@ -109,7 +109,8 @@ def charger_cas():
                     type_etude = "meta_analyse" if g["type_etude"] == "revue" else g["type_etude"]
                     cas[c["pmid"]] = {"pmid": c["pmid"], "outil": outil, "type_etude": type_etude,
                                       "reference": c.get("reference", ""), "corrige": c["corrige"],
-                                      "source": g["source"]["pmid"], "critere": c.get("critere")}
+                                      "source": g["source"]["pmid"], "critere": c.get("critere"),
+                                      "conteste": bool(c.get("corrige_conteste"))}
     return list(cas.values())
 
 
@@ -571,7 +572,7 @@ def main(argv=None):
         ref = refs[c["pmid"]]
         attendu = corrige_global(c["outil"], c["corrige"])
         ligne = {"pmid": c["pmid"], "outil": c["outil"], "reference": c["reference"], "attendu": attendu,
-                 "texte_integral": bool(c["doc"])}
+                 "texte_integral": bool(c["doc"]), "corrige_conteste": c.get("conteste", False)}
         if c["doc"]:
             plan, bilan_plan = plans[c["id"]]
             grille = plan_etude.choisir_grille(plan["plan"])[0] if plan else None
@@ -670,6 +671,10 @@ def main(argv=None):
         "seuils": seuils([x["integral"] for x in lignes if "integral" in x and x["outil"] != "robins_i"]),
         "seuils_robins_i": seuils_robins([x["integral"] for x in lignes if "integral" in x and x["outil"] == "robins_i"],
                                          [x["attendu"] for x in lignes if "integral" in x and x["outil"] == "robins_i"]),
+        # Second score, comme pour VS-D29 : sans les corrigés marqués contestés avant la mesure.
+        "seuils_robins_i_sans_corriges_contestes": seuils_robins(
+            [x["integral"] for x in lignes if "integral" in x and x["outil"] == "robins_i" and not x["corrige_conteste"]],
+            [x["attendu"] for x in lignes if "integral" in x and x["outil"] == "robins_i" and not x["corrige_conteste"]]),
         "etiquettes_candidates": {
             "corpus_texte_integral": repartition((d["appreciation"] or {}).get("etiquette") for d in integral),
             "corpus_resume_seul": repartition((d["appreciation"] or {}).get("etiquette") for d in sur_resume),
@@ -703,7 +708,8 @@ def main(argv=None):
         morceaux = [f"{niveau} : {x[niveau]['obtenu']} → {x[niveau]['etat']}" for niveau in NIVEAUX if niveau in x]
         dom = x.get("integral", x.get("resume", {})).get("domaines", {})
         f = x.get("integral", {}).get("fourchette")
-        print(f"  PMID {x['pmid']} | {x['outil']} | corrigé : {x['attendu']} | " + " | ".join(morceaux)
+        print(f"  PMID {x['pmid']} | {x['outil']} | corrigé : {x['attendu']}"
+              + (" (contesté)" if x.get("corrige_conteste") else "") + " | " + " | ".join(morceaux)
               + (f" | fourchette : {f['pire']} à {f['meilleur']} | corrigé dans la fourchette : "
                  f"{x['integral']['contenu']} | largeur : {x['integral']['largeur']}" if f else "")
               + (f" | domaines identiques : {dom['identiques']} sur {dom['compares']}"

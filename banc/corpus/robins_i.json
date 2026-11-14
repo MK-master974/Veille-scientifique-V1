@@ -1,0 +1,518 @@
+{
+ "nom": "Corpus de référence — ROBINS-I, articles lisibles en entier",
+ "assemble_le": "2026-11-14",
+ "decision": "VS-D54",
+ "principe": "Jugements ROBINS-I déjà portés par les auteurs d'une revue sous licence CC BY sur des études elles-mêmes sous licence CC BY, dont le texte intégral se lit dans PubMed Central (méthode VS-D32). Seuls des identifiants, des licences et des jugements sont repris : aucun texte d'article.",
+ "etabli_par": "Session de développement du 14/11/2026. Revues repérées sans IA dans 477 candidates trouvées dans PubMed (workflow « Corpus, chiffres relevés », lancements 43544892135 et 43545601896) ; lignes de tableaux lues sans IA (lancement 43546071416) ; plan de chaque étude lu par la session dans son résumé PubMed. Non relu par un humain.",
+ "ecartees": [
+  {
+   "pmid": "41805956",
+   "source": "42502420",
+   "motif": "essai randomisé jugé avec RoB 2 dans un tableau mixte"
+  },
+  {
+   "pmid": "30958831",
+   "source": "42502420",
+   "motif": "essai randomisé jugé avec RoB 2 dans un tableau mixte"
+  },
+  {
+   "pmid": "35892494",
+   "source": "41356853",
+   "motif": "comparaison de deux modes de lecture d'un examen par logiciel, pas une intervention sur des participants"
+  },
+  {
+   "pmid": "37495849",
+   "source": "41356853",
+   "motif": "étude de précision diagnostique d'un logiciel, qui relève de QUADAS-2"
+  }
+ ],
+ "corriges_contestes": "Marqués avant toute mesure, sans être retirés (comme VS-D29) : 7 études sans groupe de comparaison que leur revue juge « faible » pour la confusion. Le banc donne deux scores : sur tout le corpus, et sans ces corrigés.",
+ "valeurs": {
+  "robins_i": [
+   "faible",
+   "modéré",
+   "sérieux",
+   "critique",
+   "pas d'information"
+  ]
+ },
+ "groupes": [
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "42255822",
+    "pmcid": "PMC13233854",
+    "revue": "Cureus",
+    "annee": "2026",
+    "doi": "10.7759/cureus.108271",
+    "licence": "CC BY",
+    "tableau": "Table 3"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Mise en œuvre de recommandations sur le sepsis aux urgences. Jugement ROBINS-I par étude, sept domaines et jugement global.",
+   "cas": [
+    {
+     "pmid": "41225388",
+     "pmcid": "PMC12613919",
+     "licence": "CC BY",
+     "reference": "Corsini et al. 2025, BMC Infect Dis",
+     "plan_selon_l_article": "avant-après rétrospectif (deux périodes), série chronologique interrompue",
+     "critere": "indicateurs de prise en charge du sepsis aux urgences (adhésion au protocole)",
+     "corrige": {
+      "confusion": "sérieux",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "modéré",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "sérieux"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "42051847",
+    "pmcid": "PMC13111858",
+    "revue": "Cureus",
+    "annee": "2026",
+    "doi": "10.7759/cureus.106011",
+    "licence": "CC BY",
+    "tableau": "Table 6"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Échographie au lit du patient pour la pose de voies veineuses périphériques. La revue donne aussi le plan de chaque étude.",
+   "cas": [
+    {
+     "pmid": "39262556",
+     "pmcid": "PMC11390159",
+     "licence": "CC BY",
+     "reference": "McKinley et al. 2024, Cureus",
+     "plan_selon_l_article": "un seul groupe, prospectif (formation d'infirmiers)",
+     "critere": "réussite de la pose échoguidée d'une voie veineuse périphérique",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    },
+    {
+     "pmid": "37461778",
+     "pmcid": "PMC10350309",
+     "licence": "CC BY",
+     "reference": "Kalam et al. 2023, Cureus",
+     "plan_selon_l_article": "un seul groupe, amélioration de la qualité, prospectif",
+     "critere": "conduite du remplissage vasculaire guidée par l'échographie infirmière",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "38081839",
+    "pmcid": "PMC10713621",
+    "revue": "Scientific Reports",
+    "annee": "2023",
+    "doi": "10.1038/s41598-023-48179-1",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Exercice thérapeutique et fonction motrice des adultes porteurs de trisomie 21.",
+   "cas": [
+    {
+     "pmid": "36189007",
+     "pmcid": "PMC9397808",
+     "licence": "CC BY",
+     "reference": "Post et al. 2022, Front Rehabil Sci",
+     "plan_selon_l_article": "un seul groupe, avant-après",
+     "critere": "fonction motrice et condition physique",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "sérieux",
+      "selection_du_resultat": "faible",
+      "global": "sérieux"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "38001455",
+    "pmcid": "PMC10675971",
+    "revue": "BMC Oral Health",
+    "annee": "2023",
+    "doi": "10.1186/s12903-023-03681-w",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Douleur et qualité de vie liée à la santé bucco-dentaire, aligneurs contre appareils fixes. Tableau des études non randomisées.",
+   "cas": [
+    {
+     "pmid": "32635196",
+     "pmcid": "PMC7408790",
+     "licence": "CC BY",
+     "reference": "Antonio-Zancajo et al. 2020, J Clin Med",
+     "plan_selon_l_article": "quatre groupes comparés, prospectif",
+     "critere": "douleur et qualité de vie liée à la santé bucco-dentaire",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "pas d'information",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "34356964",
+     "pmcid": "PMC8304849",
+     "licence": "CC BY",
+     "reference": "Zamora-Martínez et al. 2021, Medicina (Kaunas)",
+     "plan_selon_l_article": "quatre groupes comparés",
+     "critere": "qualité de vie liée à la santé bucco-dentaire",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "pas d'information",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "25416143",
+     "pmcid": "PMC4240829",
+     "licence": "CC BY",
+     "reference": "Fujiyama et al. 2014, Prog Orthod",
+     "plan_selon_l_article": "trois groupes comparés, prospectif",
+     "critere": "douleur",
+     "corrige": {
+      "confusion": "sérieux",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "modéré",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "sérieux"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "37620781",
+    "pmcid": "PMC10464440",
+    "revue": "BMC Oral Health",
+    "annee": "2023",
+    "doi": "10.1186/s12903-023-03302-6",
+    "licence": "CC BY",
+    "tableau": "Table 5"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Expansion d'arcade par aligneurs Invisalign. Les études comparent le résultat obtenu à la simulation du logiciel.",
+   "cas": [
+    {
+     "pmid": "33301484",
+     "pmcid": "PMC7728268",
+     "licence": "CC BY",
+     "reference": "Morales-Burruezo et al. 2020, PLoS One",
+     "plan_selon_l_article": "un seul groupe (résultat obtenu contre résultat prévu)",
+     "critere": "expansion d'arcade obtenue par rapport à la simulation",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    },
+    {
+     "pmid": "33474622",
+     "pmcid": "PMC8310473",
+     "licence": "CC BY",
+     "reference": "Riede et al. 2021, Clin Oral Investig",
+     "plan_selon_l_article": "un seul groupe, rétrospectif",
+     "critere": "expansion d'arcade obtenue par rapport à la simulation",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "sérieux",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "sérieux"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    },
+    {
+     "pmid": "34306530",
+     "pmcid": "PMC8291161",
+     "licence": "CC BY",
+     "reference": "Vidal-Bernárdez et al. 2021, J Clin Exp Dent",
+     "plan_selon_l_article": "un seul groupe, rétrospectif",
+     "critere": "expansion d'arcade obtenue par rapport à la simulation",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "modéré",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    },
+    {
+     "pmid": "36294929",
+     "pmcid": "PMC9604589",
+     "licence": "CC BY",
+     "reference": "Lione et al. 2022, Life (Basel)",
+     "plan_selon_l_article": "un seul groupe, rétrospectif",
+     "critere": "dérotation de la première molaire et expansion obtenues par rapport à la simulation",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "36749760",
+    "pmcid": "PMC9904500",
+    "revue": "PLoS One",
+    "annee": "2023",
+    "doi": "10.1371/journal.pone.0281406",
+    "licence": "CC BY",
+    "tableau": "Table 4"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Coaching et bien-être des médecins. Tableau des études interventionnelles non randomisées.",
+   "cas": [
+    {
+     "pmid": "30345195",
+     "pmcid": "PMC6188216",
+     "licence": "CC BY",
+     "reference": "Kakarala et al. 2018, Cureus",
+     "plan_selon_l_article": "un seul groupe, enquête avant-après",
+     "critere": "épuisement professionnel",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     },
+     "corrige_conteste": "étude sans groupe de comparaison, jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée"
+    },
+    {
+     "pmid": "33495254",
+     "pmcid": "PMC7839886",
+     "licence": "CC BY",
+     "reference": "Solms et al. 2021, BMJ Open",
+     "plan_selon_l_article": "quasi expérimental avec groupe témoin",
+     "critere": "épuisement professionnel",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "pas d'information",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "source": {
+    "pmid": "34886407",
+    "pmcid": "PMC8657257",
+    "revue": "International Journal of Environmental Research and Public Health",
+    "annee": "2021",
+    "doi": "10.3390/ijerph182312685",
+    "licence": "CC BY",
+    "tableau": "Table A2"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Thérapie en forêt, dépression et anxiété. Le tableau réunit RoB 2 pour les essais et ROBINS-I pour les études non randomisées ; seules ces dernières sont reprises.",
+   "cas": [
+    {
+     "pmid": "30208583",
+     "pmcid": "PMC6163462",
+     "licence": "CC BY",
+     "reference": "Bang et al. 2018, Int J Environ Res Public Health",
+     "plan_selon_l_article": "quasi expérimental avec groupe témoin",
+     "critere": "symptômes dépressifs",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "28678203",
+     "pmcid": "PMC5551166",
+     "licence": "CC BY",
+     "reference": "Bang et al. 2017, Int J Environ Res Public Health",
+     "plan_selon_l_article": "quasi expérimental avec groupe témoin",
+     "critere": "dépression",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "26927141",
+     "pmcid": "PMC4808918",
+     "licence": "CC BY",
+     "reference": "Han et al. 2016, Int J Environ Res Public Health",
+     "plan_selon_l_article": "affectation non aléatoire, groupe témoin",
+     "critere": "dépression",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "modéré",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    }
+   ]
+  }
+ ]
+}
