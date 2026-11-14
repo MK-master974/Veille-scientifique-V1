@@ -299,6 +299,12 @@ Décisions du 14 novembre 2026, par questionnaire, sur les cohortes de patients 
 | VS-D71 | Seuil de réussite, fixé avant la mesure : ROBINS-I choisie pour au moins 34 études sur 38 du corpus ROBINS-I (90 %) ; au plus 1 témoin d'exposition sur 6 envoyé vers ROBINS-I ; sur les autres corpus, pas plus d'un article de moins qu'à la mesure de VS-D51 (24 sur 25 du corpus « qualité », 7 sur 7 hors corpus, 10 fiches sur 10) | Validée le 14 novembre 2026 (questionnaire). Mesuré : **atteint** ; ROBINS-I pour 36 études sur 38 (avant : 14), 0 témoin sur 6 envoyé vers ROBINS-I, corpus « qualité » 23 sur 25 (à la limite ; deux revues AMSTAR 2 sans lien avec le changement), 7 sur 7 hors corpus, 10 fiches sur 10 |
 | VS-D72 | Ouvrir la demande de fusion sans attendre à la fin du travail (le plan d'étude n'est toujours pas branché sur la veille ; aucun fichier de la veille, de l'application ni des workflows ne change). La session la surveille et ne la fusionne jamais elle-même | Validée le 14 novembre 2026 (questionnaire), réalisée : demande de fusion n° 18, surveillée par la session |
 
+Décision du 14 novembre 2026, par questionnaire, après la fusion de la demande n° 18 :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D73 | Suite du juge de fiabilité : diagnostic des quatre premières grilles (RoB 2, QUADAS-2, AMSTAR 2, AGREE II), sans IA et sans coût. Il porte sur leurs désaccords avec les revues, domaine par domaine, d'après les journaux des mesures déjà faites (dernière mesure complète : lancement 43378868507, consigne 4ce7fb70). La session revient avec les causes et un plan chiffré avant toute dépense. Constat qui l'a motivé : 20 jugements sur 25 à un cran au plus, quand une réponse fixe en obtient 18 ; fourchette trop large (9 articles sur 25). Options écartées pour l'instant : confirmer la règle des cohortes sur des études neuves ; les pistes ROBINS-I de VS-D68 ; une pause | Validée le 14 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.
