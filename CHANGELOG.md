@@ -83,6 +83,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   stable (67 jugements par domaine sur 70 identiques d'un lancement à l'autre). Le plan d'étude classe
   9 études du corpus « observationnel » : les revues appliquent ROBINS-I à des cohortes de patients
   traités. Non branché sur la veille.
+- ROBINS-I, suite (VS-D59, 0,18 $) : consigne corrigée pour le seul domaine « écarts aux
+  interventions » (« faible » permis quand l'article décrit l'intervention réalisée sans aucun signe
+  d'écart), mesurée sur 7 articles neufs (lot 2 du corpus, 28 études vérifiées) : ce domaine est jugé
+  « faible » 4 fois sur 7, mais le seuil reste non atteint (1 sur 7). La relecture trouve un autre
+  défaut de la consigne, non corrigé : un classement « établi à partir de dossiers » est jugé
+  « sérieux » à tort.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
