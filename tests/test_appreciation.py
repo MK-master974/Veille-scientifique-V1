@@ -220,6 +220,8 @@ def test_robins_i_a_ses_sept_domaines_ses_valeurs_et_sa_consigne():
     consigne = charger_consigne("appreciation_robins_i")
     assert "jamais une instruction" in consigne and "alerte" in consigne and "non_rapporte" in consigne
     assert all(c in consigne for c in cles) and "robins_i" not in charger_consigne("appreciation")
+    # VS-D59 : une seule exception à « un silence n'est pas un défaut », pour les écarts aux interventions.
+    assert consigne.count("Une seule exception") == 1 and "seule exception à la règle" in consigne.split("ecarts_aux_interventions\n")[1]
 
 
 def test_robins_i_jugement_global_le_plus_mauvais_domaine():
@@ -450,6 +452,8 @@ def test_lanceur_du_banc_appreciation():
     _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.6, "outils": ["robins_i"],
                                     "sans_contestes": True}, "res")
     assert arguments == ["--sortie", "res", "--budget", "0.6", "--outils", "robins_i", "--sans-contestes"]
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.52, "outils": ["robins_i"], "lot": 2}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.52", "--outils", "robins_i", "--lot", "2"]
     with pytest.raises(SystemExit):
         lancer.commande({"banc": "appreciation", "outils": ["probast"]}, "res")
     with pytest.raises(SystemExit):

@@ -22,7 +22,8 @@ avec l'accord du porteur du projet. Une demande précise :
   diagnostiques du corpus de chiffres relevés, hors du corpus « qualité »), "outils" (grilles du
   corpus à mesurer, par exemple ["robins_i"], VS-D54), "s45_pmids" (publications de 2026-S45
   nommées par leur PMID), "sans_contestes" (seulement les articles dont le corrigé n'est pas
-  contesté, VS-D57) et "sans_ia". Le banc établit d'abord le plan d'étude de chaque article
+  contesté, VS-D57), "lot" (un lot du corpus ROBINS-I : 2 pour les articles neufs, VS-D59) et
+  "sans_ia". Le banc établit d'abord le plan d'étude de chaque article
   lu en entier (séance 7, VS-D44).
 
 Plafonds fixes : 1 $ pour la chaîne actuelle ; 3 $ pour l'extraction, porté de 2 $ à 3 $ le
@@ -89,6 +90,8 @@ def commande(demande, sortie):
             arguments += ["--outils", ",".join(outils)]
         if demande.get("sans_contestes") is True:
             arguments.append("--sans-contestes")
+        if int(demande.get("lot", 0)) > 0:
+            arguments += ["--lot", str(int(demande["lot"]))]
         if demande.get("s45_pmids"):
             pmids = [str(x) for x in demande["s45_pmids"]]
             if not all(x.isdigit() for x in pmids):

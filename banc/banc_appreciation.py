@@ -110,7 +110,7 @@ def charger_cas():
                     cas[c["pmid"]] = {"pmid": c["pmid"], "outil": outil, "type_etude": type_etude,
                                       "reference": c.get("reference", ""), "corrige": c["corrige"],
                                       "source": g["source"]["pmid"], "critere": c.get("critere"),
-                                      "conteste": bool(c.get("corrige_conteste"))}
+                                      "conteste": bool(c.get("corrige_conteste")), "lot": g.get("lot", 1)}
     return list(cas.values())
 
 
@@ -366,6 +366,8 @@ def main(argv=None):
                         "corpus « qualité »), dont le plan attendu est « étude diagnostique »")
     p.add_argument("--outils", default="",
                    help="grilles du corpus à mesurer, séparées par des virgules (par défaut : toutes), ex. robins_i")
+    p.add_argument("--lot", type=int, default=0,
+                   help="ne mesure que les articles d'un lot du corpus (par exemple 2 : articles neufs, VS-D59)")
     p.add_argument("--sans-contestes", action="store_true",
                    help="ne mesure que les articles dont le corrigé n'est pas marqué contesté (stabilité, VS-D57)")
     p.add_argument("--s45-pmids", default="",
@@ -392,6 +394,8 @@ def main(argv=None):
         cas = [c for c in cas if c["outil"] in outils]
     if args.sans_contestes:
         cas = [c for c in cas if not c.get("conteste")]
+    if args.lot:
+        cas = [c for c in cas if c.get("lot", 1) == args.lot]
     lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json") if (CORPUS / nom).exists()
                 for g in json.loads((CORPUS / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
     cas.sort(key=lambda c: (c["outil"], c["pmid"] not in lisibles, c["pmid"]))
