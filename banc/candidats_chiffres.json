@@ -3223,6 +3223,12 @@
      "lignes_entete": 3
     }
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "verifier_qualite",
+   "lot": 2,
+   "raison": "VS-D74 : vérifier le lot 2 du corpus « qualité » (17 articles neufs jugés favorablement : 11 AMSTAR 2, 3 RoB 2, 3 QUADAS-2) : licences de chaque article et de sa revue source, recopie des niveaux depuis la ligne du tableau source dans l'ordre des colonnes, lecture du texte intégral. Aucune IA, aucun coût."
   }
  ]
 }
