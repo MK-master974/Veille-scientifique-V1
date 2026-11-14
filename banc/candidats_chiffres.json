@@ -1457,6 +1457,68 @@
     "30593183",
     "30290623"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "lire",
+   "raison": "VS-D59 : lire les lignes ROBINS-I des articles neufs (jamais mesurés) : 3 revues de la seconde partie du troisième lot (exercice et diabète de type 2, azvudine et COVID-19, arthrodèse lombaire assistée par robot) et 2 revues du troisième lot qui ne donnent que le jugement global (exercice et VIH, objets connectés après chirurgie du poumon). Aucune IA, aucun coût.",
+   "lectures": [
+    {
+     "source": "39905568",
+     "tableaux": [
+      "Table 1"
+     ],
+     "pmids": [
+      "35275239"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "38994643",
+     "tableaux": [
+      "TABLE 2"
+     ],
+     "pmids": [
+      "38177982",
+      "38191304",
+      "37900159",
+      "37513031"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "38970142",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "36078918"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42908849",
+     "tableaux": [
+      "Table 4"
+     ],
+     "pmids": [
+      "24052871"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42318462",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "39302678",
+      "40800130",
+      "40957011"
+     ],
+     "lignes_entete": 2
+    }
+   ]
   }
  ]
 }
