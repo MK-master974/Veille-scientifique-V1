@@ -17,13 +17,15 @@ from .extraction import _absents, _nombres, _repere, _texte
 from .ia import lire_json
 
 NON_DETERMINE = "non_determine"
-PLANS = ("essai_randomise", "essai_quasi_randomise", "interventionnel_non_randomise", "observationnel",
+PLANS = ("essai_randomise", "essai_quasi_randomise", "interventionnel_non_randomise", "observationnel_intervention",
+         "observationnel",
          "etude_diagnostique", "modele_de_prediction", "revue_interventions", "revue_descriptive",
          "recommandation", "autre")
 LIBELLES = {
     "essai_randomise": "essai randomisé",
     "essai_quasi_randomise": "essai quasi randomisé",
     "interventionnel_non_randomise": "étude interventionnelle non randomisée",
+    "observationnel_intervention": "étude observationnelle d'une intervention",
     "observationnel": "étude observationnelle",
     "etude_diagnostique": "étude diagnostique",
     "modele_de_prediction": "développement ou validation d'un modèle de prédiction",
@@ -34,8 +36,9 @@ LIBELLES = {
 DEFINITIONS = {
     "essai_randomise": "les participants sont affectés aux groupes par un procédé aléatoire décrit (séquence générée, tirage au sort, randomisation par blocs, enveloppes)",
     "essai_quasi_randomise": "l'affectation suit une règle non aléatoire : alternance, ordre d'arrivée, date, numéro de dossier, disponibilité, planning, choix d'un soignant ; l'article peut se dire « randomisé » à tort",
-    "interventionnel_non_randomise": "une intervention est assignée par les chercheurs ou les soignants sans aléa, avec ou sans groupe de comparaison, y compris un avant-après",
-    "observationnel": "cohorte, cas-témoins, étude transversale, série ou rapport de cas, enquête, étude qualitative : aucune intervention assignée par les chercheurs",
+    "interventionnel_non_randomise": "une intervention est affectée DANS LE CADRE DE L'ÉTUDE, sans aléa, par les chercheurs ou par un protocole de l'étude, avec ou sans groupe de comparaison, y compris un avant-après prévu par l'étude",
+    "observationnel_intervention": "l'étude n'affecte rien : elle compare ou suit des patients selon un traitement, une technique opératoire ou un programme qu'ils ont reçu EN SOINS COURANTS (choix du soignant ou du patient), pour en mesurer l'effet : cohorte prospective ou rétrospective, base de données de soins, cas-témoins, avant-après ou série de patients traités ; les groupes, ou le suivi, sont définis par l'intervention reçue",
+    "observationnel": "étude sans intervention étudiée : les groupes sont définis par une exposition, une maladie, une caractéristique des patients ou un facteur pronostique (même si tous les patients ont reçu le même traitement), ou l'étude décrit sans comparer (étude transversale, enquête, rapport de cas, étude qualitative) ; CAS DE DOUTE : si l'étude mesure l'effet d'un traitement reçu en soins courants, choisis « observationnel_intervention »",
     "etude_diagnostique": "mesure la capacité d'un test, d'un signe, d'un score, d'un algorithme ou d'un examen DÉJÀ DÉFINI à repérer une maladie ou un état, en le comparant à une référence, chez des participants qui ont ou n'ont pas cette maladie ; évaluer un outil existant, même commercial ou fondé sur l'intelligence artificielle, ou un score à critères fixés à l'avance, relève de ce plan",
     "modele_de_prediction": "construit, ajuste ou entraîne un modèle, un algorithme ou un score À PARTIR DES DONNÉES DE L'ÉTUDE (régression, apprentissage automatique, pondération ou seuils choisis sur les données) pour prédire ou diagnostiquer, avec ou sans validation ; un modèle ou un score déjà défini avant l'étude, que l'étude se borne à évaluer contre une référence, n'est pas dans ce plan ; CAS MIXTE : si l'étude évalue aussi, contre une référence, un outil, un score ou des seuils déjà définis, choisis « etude_diagnostique », la grille QUADAS-2 s'appliquant à cette évaluation",
     "revue_interventions": "revue systématique ou méta-analyse qui compare des interventions, des traitements ou des programmes entre eux ou à un témoin, à partir d'essais ou d'études comparatives",
@@ -44,12 +47,15 @@ DEFINITIONS = {
     "autre": "aucun des plans ci-dessus, ou le texte ne permet pas de trancher ; aussi une preuve de concept technique sans aucun participant atteint de la maladie ou de l'état recherché (volontaires sains, simulation, laboratoire)"}
 
 # Plan → (outil d'appréciation, grille qui conviendrait mais qui n'est pas encore écrite).
-# ROBINS-I est écrite depuis le 14 novembre 2026 (VS-D54) : elle juge les deux plans non randomisés
-# d'intervention. Une étude observationnelle reste sans grille (JBI à écrire).
+# ROBINS-I est écrite depuis le 14 novembre 2026 (VS-D54) : elle juge les plans non randomisés d'intervention,
+# y compris l'étude observationnelle d'une intervention reçue en soins courants (VS-D69 : l'outil couvre les
+# cohortes où les groupes se forment au fil des décisions de soins). Une étude observationnelle sans
+# intervention étudiée (exposition, facteur pronostique, description) reste sans grille (JBI à écrire).
 GRILLE_DU_PLAN = {
     "essai_randomise": ("rob2", None),
     "essai_quasi_randomise": ("robins_i", None),
     "interventionnel_non_randomise": ("robins_i", None),
+    "observationnel_intervention": ("robins_i", None),
     "observationnel": (None, "jbi"),
     "etude_diagnostique": ("quadas2", None),
     "modele_de_prediction": (None, "probast"),

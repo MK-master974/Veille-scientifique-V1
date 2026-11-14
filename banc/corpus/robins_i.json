@@ -1324,5 +1324,56 @@
     }
    ]
   }
- ]
+ ],
+ "temoins_plan": [
+  {
+   "pmid": "33549056",
+   "pmcid": "PMC7866628",
+   "licence": "CC BY",
+   "reference": "Lee et al. 2021, BMC Neurol",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "patients avec et sans cancer, tous traités par thrombectomie : groupes définis par la maladie"
+  },
+  {
+   "pmid": "34079015",
+   "pmcid": "PMC8172643",
+   "licence": "CC BY",
+   "reference": "Merlino et al. 2021, Sci Rep",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "patients avec et sans cancer, tous traités par recanalisation : groupes définis par la maladie"
+  },
+  {
+   "pmid": "26960572",
+   "pmcid": "PMC4785339",
+   "licence": "CC BY",
+   "reference": "Zhang et al. 2016, Sci Rep",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "facteurs pronostiques (signal à l'IRM, durée des symptômes) chez des patients tous opérés"
+  },
+  {
+   "pmid": "35413915",
+   "pmcid": "PMC9004029",
+   "licence": "CC BY",
+   "reference": "Du et al. 2022, J Orthop Surg Res",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "forme de l'ossification, patients tous opérés : groupes définis par une caractéristique des patients"
+  },
+  {
+   "pmid": "34966472",
+   "pmcid": "PMC8712141",
+   "licence": "CC BY",
+   "reference": "Wang et al. 2021, Pain Res Manag",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "facteurs d'insatisfaction chez des patients tous opérés de la même façon"
+  },
+  {
+   "pmid": "36311949",
+   "pmcid": "PMC9604592",
+   "licence": "CC BY",
+   "reference": "Liu et al. 2022, Front Surg",
+   "attendu": "aucune grille ROBINS-I",
+   "motif": "ossification de la dure-mère ou non, patients tous opérés de la même façon : groupes définis par une caractéristique des patients"
+  }
+ ],
+ "temoins_plan_principe": "VS-D70 : témoins de l'étape « plan d'étude », écartés du lot 3 parce que leurs groupes sont définis par une exposition, une maladie, une caractéristique des patients ou un facteur pronostique. Attendu : aucune grille ROBINS-I. Choisis avant la mesure, parmi les études écartées dont le plan ne laisse pas de doute ; deux études écartées n'en font pas partie, parce que leur cas est discutable (stimulation par acupuncture faite pour l'étude chez des malades et des témoins sains ; courbe d'apprentissage d'une technique opératoire)."
 }

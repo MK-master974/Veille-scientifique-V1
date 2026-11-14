@@ -402,6 +402,12 @@ def test_les_corpus_qualite_sont_lisibles_par_le_banc():
             assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES[c["outil"]], c["pmid"]
         for valeur in banc.domaines_du_corrige(c["outil"], c["corrige"]).values():
             assert valeur in ap.VALEURS[c["outil"]], (c["pmid"], valeur)
+    # Témoins d'exposition (VS-D70) : pris parmi les études écartées du corpus ROBINS-I, jamais parmi ses cas.
+    robins_corpus = json.loads((RACINE / "banc/corpus/robins_i.json").read_text(encoding="utf-8"))
+    ecartees = {e["pmid"] for e in robins_corpus["ecartees"]}
+    for t in robins_corpus["temoins_plan"]:
+        assert t["pmid"] in ecartees and t["pmid"] not in {c["pmid"] for c in cas} and t["licence"] in ("CC BY", "CC0")
+        assert t["pmcid"].startswith("PMC") and t["motif"] and t["reference"]
     for nom in ("qualite_lisible.json", "robins_i.json"):
         chemin = RACINE / "banc/corpus" / nom
         if not chemin.exists():
@@ -449,6 +455,11 @@ def test_lanceur_du_banc_appreciation():
     _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.25, "s45": 10, "plan_seul": True,
                                     "plan_externe": True}, "res")
     assert arguments == ["--sortie", "res", "--budget", "0.25", "--s45", "10", "--plan-seul", "--plan-externe"]
+    # VS-D70 : témoins d'exposition ajoutés à la mesure du plan d'étude seul.
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.5, "s45": 10, "plan_seul": True,
+                                    "plan_externe": True, "plan_temoins": True}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.5", "--s45", "10", "--plan-seul", "--plan-externe",
+                         "--plan-temoins"]
     # ROBINS-I (VS-D54) : une grille seulement, et des publications de 2026-S45 nommées.
     _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.45, "s45": 2, "outils": ["robins_i"],
                                     "s45_pmids": ["42980682", "42993769"]}, "res")
@@ -517,9 +528,10 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
          "resume": PHRASE * 3, "types_publication": []} for p in pmids])
     diagnostiques = ({c["pmid"] for c in banc.chiffres_banc.cas_du_corpus(banc.chiffres_banc.charger())
                       if c["type_etude"] == "etude_diagnostique"} - {c["pmid"] for c in banc.charger_cas()})
+    temoins = {t["pmid"] for t in json.loads((RACINE / "banc/corpus/robins_i.json").read_text(encoding="utf-8"))["temoins_plan"]}
     monkeypatch.setattr(banc.acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
         {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids
-         if p in lisibles or p in diagnostiques or p in semaine_s45}, 0))
+         if p in lisibles or p in diagnostiques or p in semaine_s45 or p in temoins}, 0))
     monkeypatch.setattr(banc.acces, "texte_integral_xml", lambda pmcid: (article, "ok"))
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)
@@ -587,7 +599,8 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert court["lecture"] == {"niveaux": "integral", "declarations_hors_du_corps": True}
     # Plan d'étude seul, avec les études diagnostiques hors du corpus : aucune appréciation, aucune catégorie.
     capsys.readouterr()
-    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--plan-seul", "--plan-externe", "--s45", "2"]) == 0
+    assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--plan-seul", "--plan-externe", "--s45", "2",
+                      "--plan-temoins"]) == 0
     plan = json.loads((tmp_path / "resultats-plan.json").read_text(encoding="utf-8"))
     pr = plan["resume"]
     assert pr["lecture"]["plan_seul"] and set(pr["cout_usd"]) == {"total", "par_article"}
@@ -595,8 +608,15 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     hors = pr["plan_etude"]["hors_corpus_diagnostiques"]
     assert hors["articles"] == 7 and hors["plan_attendu_retrouve"] == 7        # 7 études diagnostiques hors du corpus « qualité »
     assert len(plan["s45"]) == 2
+    # Grille retrouvée par outil (VS-D71) ; témoins d'exposition (VS-D70) : l'IA simulée, sans type du tri, voit une
+    # étude non randomisée et les envoie tous vers ROBINS-I, ce que le banc compte comme non conforme.
+    par_outil = pr["plan_etude"]["corpus"]["par_outil"]
+    assert par_outil["robins_i"] == {"articles": len(robins), "grille_du_corrige_retrouvee": len(robins)}
+    assert sum(v["articles"] for v in par_outil.values()) == len(lisibles)
+    assert pr["plan_etude"]["temoins_exposition"]["articles"] == len(temoins) == 6
+    assert pr["plan_etude"]["temoins_exposition"]["envoyes_vers_robins_i"] == 6 and len(plan["temoins"]) == 6
     sortie_plan = capsys.readouterr().out
-    assert "PLAN D'ÉTUDE : HORS CORPUS" in sortie_plan
+    assert "PLAN D'ÉTUDE : HORS CORPUS" in sortie_plan and "TÉMOINS D'EXPOSITION" in sortie_plan
     assert "CORPUS : JUGEMENT GLOBAL" not in sortie_plan and "CATÉGORIE D'IMPORTANCE" not in sortie_plan
     # Par défaut : texte intégral seul, aucune appréciation sur résumé, donc aucun coût à ce niveau.
     assert banc.main(["--sortie", str(tmp_path), "--budget", "9", "--limite", "1"]) == 0

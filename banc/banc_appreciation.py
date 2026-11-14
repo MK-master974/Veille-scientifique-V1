@@ -283,7 +283,7 @@ def afficher_plan(titre, plan, bilan):
 
 
 def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plans_ext, usages, cfg, modele, prix,
-                        consignes, absents):
+                        consignes, absents, temoins=(), plans_tem=None):
     """Résultats d'une mesure de l'étape « plan d'étude » seule, sans aucune appréciation."""
     corpus = []
     for c in cas:
@@ -299,6 +299,13 @@ def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plan
         hors.append({"pmid": x["pmid"], "reference": x["reference"], "plan": plan["plan"] if plan else None,
                      "attendu": "etude_diagnostique", "retrouve": bool(plan) and plan["plan"] == "etude_diagnostique",
                      "detail": plan, "bilan": bilan})
+    temoins_lus = []
+    for x in temoins:
+        plan, bilan = plans_tem[x["ref"]["id"]]
+        grille = plan_etude.choisir_grille(plan["plan"] if plan else plan_etude.NON_DETERMINE)[0]
+        temoins_lus.append({"pmid": x["pmid"], "reference": x["reference"], "motif": x["motif"],
+                            "plan": plan["plan"] if plan else None, "grille_du_plan": grille,
+                            "envoye_vers_robins_i": grille == "robins_i", "detail": plan, "bilan": bilan})
     fiches = [{"pmid": x["ref"]["pmid"], "titre": x["ref"]["titre"], "type": x["fiche"]["type"], "pmcid": x["pmcid"],
                "licence": x["licence"], "plan_etude": plans_s45[x["ref"]["id"]][0], "bilan_plan": plans_s45[x["ref"]["id"]][1]}
               for x in s45]
@@ -315,14 +322,22 @@ def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plan
                        "plan_non_determine": sum(1 for p in corpus if p["plan"] in (None, plan_etude.NON_DETERMINE)),
                        "ecarts_avec_le_tri": sum(1 for p in corpus if p["ecart_avec_le_tri"]),
                        "repartition": repartition(p["plan"] for p in corpus),
-                       "grilles_perdues": [p["pmid"] for p in corpus if not p["grille_du_corrige_retrouvee"]]},
+                       "grilles_perdues": [p["pmid"] for p in corpus if not p["grille_du_corrige_retrouvee"]],
+                       "par_outil": {o: {"articles": sum(1 for p in corpus if p["outil"] == o),
+                                         "grille_du_corrige_retrouvee": sum(1 for p in corpus if p["outil"] == o
+                                                                            and p["grille_du_corrige_retrouvee"])}
+                                     for o in sorted({p["outil"] for p in corpus})}},
+            "temoins_exposition": {"articles": len(temoins_lus),
+                                   "envoyes_vers_robins_i": sum(1 for t in temoins_lus if t["envoye_vers_robins_i"]),
+                                   "repartition": repartition(t["plan"] for t in temoins_lus)},
             "hors_corpus_diagnostiques": {"articles": len(hors), "plan_attendu_retrouve": sum(1 for h in hors if h["retrouve"]),
                                           "repartition": repartition(h["plan"] for h in hors)},
             "s45": {"articles": len(fiches), "plans": repartition((f["plan_etude"] or {}).get("plan") for f in fiches),
                     "ecarts_avec_le_tri": sum(1 for f in fiches if (f["plan_etude"] or {}).get("ecart_avec_le_tri"))}},
         "corpus": {"articles": len(cas), "avec_texte_integral": len(corpus), "absents_de_pubmed": absents}}
     (sortie / "resultats-plan.json").write_text(json.dumps(
-        {"resume": resume, "corpus": corpus, "hors_corpus": hors, "s45": fiches}, ensure_ascii=False, indent=1), encoding="utf-8")
+        {"resume": resume, "corpus": corpus, "hors_corpus": hors, "temoins": temoins_lus, "s45": fiches},
+        ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n===== RÉSUMÉ =====")
     print(json.dumps(resume, ensure_ascii=False, indent=1))
     print("\n===== PLAN D'ÉTUDE : CORPUS, GRILLE DU PLAN CONTRE GRILLE DU CORRIGÉ =====")
@@ -333,6 +348,11 @@ def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plan
     print("\n===== PLAN D'ÉTUDE : HORS CORPUS, ÉTUDES DIAGNOSTIQUES DES CHIFFRES RELEVÉS =====")
     for h in hors:
         print(f"  PMID {h['pmid']} | plan : {h['plan']} | attendu : {h['attendu']} | {'retrouvé' if h['retrouve'] else 'DIFFÉRENT'}")
+    if temoins_lus:
+        print("\n===== PLAN D'ÉTUDE : TÉMOINS D'EXPOSITION (attendu : aucune grille ROBINS-I) =====")
+        for t in temoins_lus:
+            print(f"  PMID {t['pmid']} | plan : {t['plan']} | grille du plan : {t['grille_du_plan'] or 'aucune'} | "
+                  f"{'ENVOYÉ VERS ROBINS-I' if t['envoye_vers_robins_i'] else 'conforme'} | {t['motif'][:90]}")
     print("\n===== PLAN D'ÉTUDE : DÉTAIL DES PLANS DIFFÉRENTS =====")
     for p in corpus:
         if not p["grille_du_corrige_retrouvee"]:
@@ -340,6 +360,8 @@ def resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plan
     for h in hors:
         if not h["retrouve"]:
             afficher_plan(f"PMID {h['pmid']} — {h['reference']} — plan attendu : {h['attendu']}", h["detail"], h["bilan"])
+    for t in temoins_lus:
+        afficher_plan(f"PMID {t['pmid']} — {t['reference']} — témoin d'exposition", t["detail"], t["bilan"])
     print("\n===== PUBLICATIONS RÉELLES DE 2026-S45 : PLAN D'ÉTUDE =====")
     for f in fiches:
         afficher_plan(f"PMID {f['pmid']}, {f['pmcid']}, licence {f['licence']}, {f['type']} — {f['titre'][:110]}",
@@ -364,6 +386,9 @@ def main(argv=None):
     p.add_argument("--plan-externe", action="store_true",
                    help="ajoute au plan d'étude les études diagnostiques du corpus de chiffres relevés (hors du "
                         "corpus « qualité »), dont le plan attendu est « étude diagnostique »")
+    p.add_argument("--plan-temoins", action="store_true",
+                   help="ajoute au plan d'étude les témoins d'exposition du corpus ROBINS-I (attendu : aucune grille "
+                        "ROBINS-I, VS-D70)")
     p.add_argument("--outils", default="",
                    help="grilles du corpus à mesurer, séparées par des virgules (par défaut : toutes), ex. robins_i")
     p.add_argument("--lot", type=int, default=0,
@@ -439,6 +464,22 @@ def main(argv=None):
                 externes.append({"pmid": c["pmid"], "reference": c["reference"], "ref": ref, "doc": lus_ext[ref["id"]]["doc"]})
         journal(f"Hors corpus « qualité » : {len(externes)} études diagnostiques lues en entier sur {len(candidats)}")
 
+    # 2 ter. Témoins d'exposition (VS-D70) : cohortes dont les groupes sont définis par une exposition ou un facteur
+    # pronostique, écartées du corpus ROBINS-I. Attendu : aucune grille ROBINS-I (pas d'intervention étudiée).
+    temoins = []
+    if args.plan_temoins:
+        candidats = json.loads((CORPUS / "robins_i.json").read_text(encoding="utf-8")).get("temoins_plan", [])
+        refs_tem = {r["pmid"]: r for r in chaine.recuperer_pubmed(sorted(t["pmid"] for t in candidats), cfg)}
+        infos_tem, _ = acces.decrire_europe_pmc([t["pmid"] for t in candidats], journal)
+        lus_tem = extraction_banc.lire_textes([refs_tem[t["pmid"]] for t in candidats if t["pmid"] in refs_tem],
+                                              infos_tem, declarations=declarations)
+        for t in candidats:
+            ref = refs_tem.get(t["pmid"])
+            if ref and lus_tem[ref["id"]]["doc"]:
+                temoins.append({"pmid": t["pmid"], "reference": t["reference"], "motif": t["motif"], "ref": ref,
+                                "doc": lus_tem[ref["id"]]["doc"]})
+        journal(f"Témoins d'exposition : {len(temoins)} lus en entier sur {len(candidats)}")
+
     # 3. Publications réelles de 2026-S45
     s45, a_classer = [], []
     if args.s45 or args.classement:
@@ -476,7 +517,8 @@ def main(argv=None):
     reqs = {
         "plan": [demande_plan(refs[c["pmid"]], c["doc"], c["type_etude"], "plan-corpus") for c in cas if c["doc"]]
                 + [demande_plan(x["ref"], x["doc"], x["fiche"]["type"], "plan-s45") for x in s45]
-                + [demande_plan(x["ref"], x["doc"], "etude_diagnostique", "plan-externe") for x in externes],
+                + [demande_plan(x["ref"], x["doc"], "etude_diagnostique", "plan-externe") for x in externes]
+                + [demande_plan(x["ref"], x["doc"], None, "plan-temoin") for x in temoins],
         "resume": [demande(refs[c["pmid"]], texte.document_resume(refs[c["pmid"]]), c["type_etude"],
                            "appreciation-resume", c["outil"]) for c in cas] if args.niveaux == "tout" else [],
         "integral": [demande(refs[c["pmid"]], c["doc"], c["type_etude"], "appreciation-integral", c["outil"],
@@ -547,9 +589,10 @@ def main(argv=None):
     plans_s45 = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-s45", x["ref"], x["doc"], x["fiche"]["type"]) for x in s45}
     plans_ext = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-externe", x["ref"], x["doc"], "etude_diagnostique")
                  for x in externes}
+    plans_tem = {x["ref"]["id"]: lire_le_plan(res["plan"], "plan-temoin", x["ref"], x["doc"], None) for x in temoins}
     if args.plan_seul:
         return resultats_plan_seul(args, sortie, cas, plans, s45, plans_s45, externes, plans_ext, usages, cfg,
-                                   modele, prix, consignes, absents)
+                                   modele, prix, consignes, absents, temoins, plans_tem)
     routes = {}
     for x in s45:
         plan = plans_s45[x["ref"]["id"]][0]

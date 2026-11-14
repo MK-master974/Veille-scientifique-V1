@@ -93,6 +93,9 @@ def test_la_grille_se_deduit_du_plan_par_une_table():
     # ROBINS-I, écrite le 14 novembre 2026 (VS-D54) : les deux plans non randomisés d'intervention.
     assert pe.choisir_grille("essai_quasi_randomise") == ("robins_i", None, None)
     assert pe.choisir_grille("interventionnel_non_randomise") == ("robins_i", None, None)
+    # VS-D69 : l'étude observationnelle d'une intervention reçue en soins courants relève aussi de ROBINS-I ; une
+    # étude observationnelle sans intervention étudiée (exposition, facteur pronostique) reste sans grille.
+    assert pe.choisir_grille("observationnel_intervention") == ("robins_i", None, None)
     # Pas de grille écrite : on dit laquelle conviendrait, sans forcer une autre.
     outil, manquante, motif = pe.choisir_grille("modele_de_prediction")
     assert outil is None and manquante == "probast" and "modèle de prédiction" in motif
@@ -114,6 +117,19 @@ def test_les_definitions_separent_developper_un_modele_et_evaluer_un_outil_defin
     assert "expositions" in pe.DEFINITIONS["revue_descriptive"]
     r = pe.requete_plan({"id": "pm1"}, document(), "consigne", "etude_diagnostique")
     assert "DÉJÀ DÉFINI" in r["contenu"] and "À PARTIR DES DONNÉES DE L'ÉTUDE" in r["contenu"]
+
+
+def test_les_definitions_separent_l_intervention_recue_en_soins_courants_et_l_exposition():
+    # VS-D69 : ROBINS-I couvre les cohortes où les groupes se forment au fil des décisions de soins.
+    soins, obs, interv = (pe.DEFINITIONS[p] for p in ("observationnel_intervention", "observationnel",
+                                                       "interventionnel_non_randomise"))
+    assert "EN SOINS COURANTS" in soins and "rétrospective" in soins and "définis par l'intervention reçue" in soins
+    assert "exposition" in obs and "facteur pronostique" in obs and "CAS DE DOUTE" in obs
+    assert "observationnel_intervention" in obs.split("CAS DE DOUTE")[1]
+    assert "DANS LE CADRE DE L'ÉTUDE" in interv
+    assert pe.LIBELLES["observationnel_intervention"] == "étude observationnelle d'une intervention"
+    r = pe.requete_plan({"id": "pm1"}, document(), "consigne")
+    assert "- observationnel_intervention :" in r["contenu"] and "- observationnel :" in r["contenu"]
 
 
 def test_la_consigne_existe_et_protege_contre_une_instruction_cachee():

@@ -19,10 +19,11 @@ avec l'accord du porteur du projet. Une demande précise :
   d'appréciation sur résumé seul ; « tout » : aussi sur résumé), "sans_declarations" (lecture du
   texte intégral sans les déclarations placées hors du corps de l'article), "plan_seul" (mesure
   l'étape « plan d'étude » seule, sans appréciation), "plan_externe" (ajoute les études
-  diagnostiques du corpus de chiffres relevés, hors du corpus « qualité »), "outils" (grilles du
+  diagnostiques du corpus de chiffres relevés, hors du corpus « qualité »), "plan_temoins" (ajoute
+  les témoins d'exposition du corpus ROBINS-I, attendu : aucune grille ROBINS-I, VS-D70), "outils" (grilles du
   corpus à mesurer, par exemple ["robins_i"], VS-D54), "s45_pmids" (publications de 2026-S45
   nommées par leur PMID), "sans_contestes" (seulement les articles dont le corrigé n'est pas
-  contesté, VS-D57), "lot" (un lot du corpus ROBINS-I : 2 pour les articles neufs, VS-D59) et
+  contesté, VS-D57), "lot" (un lot du corpus ROBINS-I : 2 ou 3 pour les articles neufs) et
   "sans_ia". Le banc établit d'abord le plan d'étude de chaque article
   lu en entier (séance 7, VS-D44).
 
@@ -83,6 +84,8 @@ def commande(demande, sortie):
             arguments.append("--plan-seul")
         if demande.get("plan_externe") is True:
             arguments.append("--plan-externe")
+        if demande.get("plan_temoins") is True:
+            arguments.append("--plan-temoins")
         if demande.get("outils"):
             outils = [str(o) for o in demande["outils"]]
             if not set(outils) <= OUTILS:

@@ -15,7 +15,8 @@ L'IA juge chaque domaine de l'outil et cite le passage qui fonde son jugement. L
   rempli ; un texte silencieux donne « non rapporté ». Le code calcule une fourchette du jugement
   global (le pire et le meilleur possibles) au lieu d'un « non évaluable » sec ; quand aucune grille
   ne convient, la réponse est « aucune grille applicable ».
-- ROBINS-I (VS-D54), pour un essai quasi randomisé ou une étude interventionnelle non randomisée :
+- ROBINS-I (VS-D54), pour un essai quasi randomisé, une étude interventionnelle non randomisée ou, depuis
+  VS-D69, une étude observationnelle d'une intervention reçue en soins courants :
   tout jugement exige son passage. « Sérieux » ou « critique » sans passage devient « non rapporté »
   (la case « pas d'information » de l'outil), comme « non » pour AMSTAR 2 ; « faible » ou « modéré »
   sans passage est refusé. La grille a sa propre consigne, appreciation_robins_i.txt. Exception
