@@ -19,7 +19,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
 | Cas « qualité, articles lisibles en entier » : 16 revues (AMSTAR 2), 7 études diagnostiques (QUADAS-2), 2 essais (RoB 2) | Assemblés le 13 novembre 2026 : `corpus/qualite_lisible.json` |
 | Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Deux mesures faites : `resultats/2026-11-13-appreciation.md`. Séance 7, plan d'étude : deux cycles, plus l'étude des suppléments, `resultats/2026-11-13-seance-7.md` |
-| Cas « ROBINS-I » : 21 études non randomisées sous licence CC BY, jugement ROBINS-I d'une revue sous licence CC BY | Assemblés et vérifiés le 14 novembre 2026 : `corpus/robins_i.json`. Mesure et stabilité : `resultats/2026-11-14-robins-i.md` |
+| Cas « ROBINS-I » : 38 études non randomisées sous licence CC BY, en trois lots (21, puis 7 et 10 articles neufs, VS-D59 et VS-D65), jugement ROBINS-I d'une revue sous licence CC BY | Assemblés et vérifiés le 14 novembre 2026 : `corpus/robins_i.json`. Mesures et stabilité : `resultats/2026-11-14-robins-i.md` |
 
 ## Les cas « sens de l'effet »
 
@@ -164,7 +164,8 @@ et la catégorie d'importance.
   cités, mentions de fichiers supplémentaires et de listes d'exclus, paquet de fichiers chez Europe
   PMC. Aucun texte d'article et aucun numéro de registre n'est gardé.
 - **ROBINS-I** (VS-D54) : `"outils": ["robins_i"]` ne mesure que cette grille, sur
-  `corpus/robins_i.json` ; `"s45_pmids"` limite 2026-S45 aux publications nommées (les deux essais
+  `corpus/robins_i.json` ; `"lot"` ne mesure qu'un lot de ce corpus (2 ou 3 : articles neufs) ;
+  `"s45_pmids"` limite 2026-S45 aux publications nommées (les deux essais
   quasi randomisés de la séance 7). Le critère jugé par la revue source est donné à l'IA. Seuils
   fixés avant la mesure (VS-D56), en lecture stricte : au moins 50 % des jugements globaux
   identiques au corrigé, plus qu'une réponse fixe au niveau le plus fréquent du corpus, et aucun
