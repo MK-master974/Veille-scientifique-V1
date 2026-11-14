@@ -49,7 +49,7 @@ pas du nombre de lecteurs.
 | `pipeline/texte.py` | Lecture d'une publication en blocs repérés (résumé, sections, tableaux, figures ; sur demande, déclarations placées hors du corps de l'article) et recherche d'un passage mot pour mot. Pas encore appelé par la veille |
 | `pipeline/extraction.py` | Extraction des données d'une publication et contrôle de chaque donnée par le code. Pas encore appelé par la veille |
 | `pipeline/plan_etude.py` | Plan réel d'une publication, établi avant le choix de la grille : liste fermée, passage vérifié par le code, grille déduite par une table. Pas encore appelé par la veille |
-| `pipeline/appreciation.py` | Appréciation méthodologique par l'outil adapté au plan d'étude ; jugement global et fourchette calculés par le code. Pas encore appelé par la veille |
+| `pipeline/appreciation.py` | Appréciation méthodologique par l'outil adapté au plan d'étude ; jugement global et fourchette calculés par le code, marqués validés ou non ; points relevés. Pas encore appelé par la veille |
 | `pipeline/classement.py` | Catégorie d'importance de 1 à 4, justifiée et bornée par des règles. Pas encore appelé par la veille |
 | `pipeline/catalogue.json` | Professions et sous-champs |
 | `pipeline/prompts/` | Consignes de l'IA : `tri.txt`, `redaction.txt`, `synthese.txt` ; `extraction.txt`, `plan_etude.txt`, `appreciation.txt` et `classement.txt` pour la future fiche v2 |
@@ -302,6 +302,11 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
   l'emporte pour RoB 2, ROBINS-I et QUADAS-2 ; pour AMSTAR 2, le niveau de confiance suit le nombre de
   faiblesses critiques. Il est ensuite ramené à la qualité de la fiche v2 (élevée, moyenne, faible,
   non évaluable).
+- **Jugement global validé ou non** (VS-D77) : une table du code (`JUGEMENT_VALIDE`) dit, grille par
+  grille, si le jugement global a passé son seuil au banc d'essai ; elle ne change que sur décision du
+  porteur du projet. Aujourd'hui, aucune grille ne l'a passé. Tant que ce n'est pas le cas, l'étiquette
+  vaut « non évaluable », et la fiche montre les **points relevés** (`points_releves`) : les domaines
+  défavorables appuyés sur un passage vérifié, avec la fourchette.
 - **Certitude GRADE** : reprise seulement si les auteurs la rapportent et que le passage cité la
   nomme. Jamais calculée.
 - **Déclarations hors du corps de l'article** : pour l'appréciation, `texte.document_jats` lit

@@ -128,6 +128,13 @@ QUALITE = {"rob2": {"faible": "elevee", "quelques_reserves": "moyenne", "eleve":
            "agree2": {"elevee": "elevee", "moyenne": "moyenne", "faible": "faible"},
            "robins_i": {"faible": "elevee", "modere": "moyenne", "serieux": "faible", "critique": "faible"}}
 GRADES = ("eleve", "modere", "faible", "tres_faible")
+# Jugement global validé au banc d'essai, grille par grille (VS-D77, déclaration CHG-2026-0013). Une grille ne
+# passe à True que par une décision du porteur du projet, après une mesure qui atteint le seuil fixé avant elle.
+# Au 14 novembre 2026 : RoB 2, QUADAS-2 et AMSTAR 2, seuil de VS-D75 non atteint (14 jugements identiques sur 42,
+# contre 20 pour une réponse fixe) ; ROBINS-I, seuil de VS-D56 non atteint ; AGREE II, jamais mesurée.
+JUGEMENT_VALIDE = {"rob2": False, "quadas2": False, "amstar2": False, "agree2": False, "robins_i": False}
+JUSTIFICATION_NON_VALIDE = ("Jugement global de cette grille non validé au banc d'essai : l'étiquette ne s'appuie "
+                            "pas sur lui (voir les points relevés).")
 _NOMME_GRADE = re.compile(r"grade|certainty|certitude|quality of (?:the )?evidence|qualité de(?:s)? preuves?", re.I)
 
 SORTIE_RESUME = 5000
@@ -238,7 +245,7 @@ def sans_grille(plan, motif, grille_manquante=None):
     return {"outil": AUCUN, "grille_manquante": grille_manquante, "motif": motif, "plan_etude": plan,
             "jugement": NON_EVALUABLE, "jugement_outil": NON_EVALUABLE, "fourchette": None,
             "nature_du_jugement": None, "domaines": [], "precision_statistique": None, "grade_rapporte": None,
-            "etiquette": NON_EVALUABLE, "justification_etiquette": None}
+            "jugement_valide": False, "etiquette": NON_EVALUABLE, "justification_etiquette": None}
 
 
 def lire_appreciation(reponse, doc, type_etude, publier_passages=False, outil=None):
@@ -328,10 +335,25 @@ def lire_appreciation(reponse, doc, type_etude, publier_passages=False, outil=No
         else:
             bilan["refus"].append({"domaine": "grade", "motif": "certitude GRADE sans passage qui la nomme"})
 
-    etiquette = etiquette_candidate(type_etude, qualite, grade["valeur"] if grade else None, outil)
+    # Un jugement global non validé ne sert pas à l'étiquette (VS-D77) : elle reste « non évaluable ».
+    valide = JUGEMENT_VALIDE.get(outil, False)
+    etiquette = etiquette_candidate(type_etude, qualite, grade["valeur"] if grade else None, outil) if valide \
+        else NON_EVALUABLE
     appreciation = {"outil": outil, "jugement": qualite, "jugement_outil": global_outil,
                     "fourchette": {"pire": pire, "meilleur": meilleur},
                     "nature_du_jugement": NATURE_DU_JUGEMENT[outil], "domaines": domaines,
-                    "precision_statistique": None, "grade_rapporte": grade,
-                    "etiquette": etiquette, "justification_etiquette": None}
+                    "precision_statistique": None, "grade_rapporte": grade, "jugement_valide": valide,
+                    "etiquette": etiquette, "justification_etiquette": None if valide else JUSTIFICATION_NON_VALIDE}
     return appreciation, bilan
+
+
+def points_releves(appreciation):
+    """Points relevés (VS-D77) : les domaines au jugement défavorable appuyés sur un passage vérifié, avec leur
+    justification, dans l'ordre de la grille. C'est ce que la fiche montre à la place d'une note globale non
+    validée. Un domaine non évalué, non rapporté ou sans objet n'en est pas un : un silence n'est pas un défaut.
+    """
+    outil = (appreciation or {}).get("outil")
+    if outil not in FAVORABLES:
+        return []
+    neutres = set(FAVORABLES[outil]) | set(INCONNUS) | {SANS_OBJET}
+    return [d for d in appreciation.get("domaines", []) if d.get("jugement") not in neutres and d.get("source")]

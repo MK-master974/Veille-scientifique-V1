@@ -113,6 +113,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   AMSTAR 2, faute d'information (suppléments non lus) ; pour RoB 2 et QUADAS-2, sur des faits de
   l'article, conformes à la lettre de l'outil. Outils sans IA : repérage des tableaux de jugements RoB 2,
   QUADAS-2 et AMSTAR 2, et vérification « verifier_qualite ». Non branché sur la veille.
+- Fiche v2, jugement global non validé (VS-D77, déclaré au dépôt de coordination : CHG-2026-0013) :
+  nouveau champ `jugement_valide`, faux pour toutes les grilles tant qu'aucune n'a passé son seuil au
+  banc d'essai ; l'étiquette ne s'appuie alors pas sur le jugement global et vaut « non évaluable ».
+  La fiche montre à la place les points relevés : les domaines défavorables appuyés sur un passage
+  vérifié, avec la fourchette (`points_releves`). Aucun coût. Non branché sur la veille.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,
