@@ -22,6 +22,10 @@ Quatre modes, choisis par la dernière demande de banc/candidats_chiffres.json :
   l'étude et de la revue source, la recopie (les niveaux lus dans la ligne du tableau source, dans
   l'ordre des colonnes, sont ceux du corpus) et la lecture du texte intégral de l'étude.
 
+- « verifier_qualite » (VS-D74) : la même vérification pour un lot du corpus « qualité »
+  (banc/corpus/qualite_lisible.json, lot 2 par défaut) jugé avec RoB 2, QUADAS-2 ou AMSTAR 2 : licences,
+  recopie des niveaux dans l'ordre des colonnes du groupe, lecture du texte intégral.
+
 - « recalculer » : après une vérification, recalcule le score des chiffres relevés à partir des
   extractions déjà produites par un lancement du banc (son artefact), avec les règles et le corpus
   du moment. Aucun nouvel appel à l'IA. Sert quand une règle de comparaison a été corrigée.
@@ -64,10 +68,20 @@ MOTS = {
     "robins_i": ("robins", "confounding", "selection of participants", "classification of intervention",
                  "deviation", "missing data", "measurement of outcome", "selection of the reported",
                  "reported result", "serious", "critical", "moderate", "no information"),
+    # Tableaux de jugements des quatre premières grilles (VS-D74), étude par étude : des mots, pas des chiffres.
+    "rob2": ("rob 2", "rob2", "risk of bias 2", "randomi", "deviations from intended", "missing outcome",
+             "measurement of the outcome", "selection of the reported", "some concerns", "low", "high", "overall"),
+    "quadas2": ("quadas", "patient selection", "index test", "reference standard", "flow and timing",
+                "applicability", "unclear", "low", "high"),
+    "amstar2": ("amstar", "critically low", "overall confidence", "confidence", "partial yes", "protocol",
+                "moderate", "high", "low"),
 }
 # Pour retenir un tableau : nombre minimal de mots-clés, puis de nombres. Un tableau de jugements
 # ROBINS-I contient des mots, pas des chiffres.
-SEUILS_REPERAGE = {"diagnostic": (2, 10), "revue": (2, 10), "robins_i": (4, 0)}
+SEUILS_REPERAGE = {"diagnostic": (2, 10), "revue": (2, 10), "robins_i": (4, 0), "rob2": (4, 0), "quadas2": (4, 0),
+                   "amstar2": (3, 0)}
+# Genres dont les tableaux portent des jugements (des mots) : le journal compte aussi les figures de risque de biais.
+GENRES_JUGEMENTS = ("robins_i", "rob2", "quadas2", "amstar2")
 
 
 def journal(message=""):
@@ -316,7 +330,7 @@ def utilisable(fiche):
 # --- Mode « reperer » -------------------------------------------------------------------------
 
 def reperer(demande):
-    for genre in ("diagnostic", "revue", "robins_i"):
+    for genre in ("diagnostic", "revue") + GENRES_JUGEMENTS:
         sources = [str(p) for p in demande.get(genre, [])]
         if demande.get("tranche"):                   # une partie de la liste, pour tenir dans le délai
             debut, fin = demande["tranche"]
@@ -344,14 +358,14 @@ def reperer(demande):
             journal(entete + f"\n    {len(tabs)} tableaux ; {len(refs)} références, dont "
                     f"{sum(1 for r in refs.values() if r['pmid'])} avec PMID et "
                     f"{sum(1 for r in refs.values() if r['doi'])} avec DOI")
-            if genre == "robins_i":
-                # Où sont les jugements ROBINS-I ? Dans une figure (image, que le code ne lit pas), ou dans un
+            if genre in GENRES_JUGEMENTS:
+                # Où sont les jugements ? Dans une figure (image, que le code ne lit pas), ou dans un
                 # tableau dont les lignes ne citent pas assez d'études identifiables.
                 figures = sum(1 for f in racine.iter() if _local(f.tag) == "fig"
-                              and re.search(r"robins|risk of bias", " ".join(f.itertext()), re.I))
+                              and re.search(r"robins|risk of bias|quadas|amstar|rob 2", " ".join(f.itertext()), re.I))
                 sans_etudes = [t["label"] for t in tabs if score_donnees(t, genre)[0] >= min_mots
                                and len({i for l in t["lignes"] for i in l["cites"] if i in refs}) < 2]
-                journal(f"    ROBINS-I : {figures} figure(s) de risque de biais (image) ; tableau(x) de jugements sans "
+                journal(f"    {genre} : {figures} figure(s) de risque de biais (image) ; tableau(x) de jugements sans "
                         f"études identifiées : {', '.join(sans_etudes) or 'aucun'}")
             for t in tabs:
                 t["lignes"] = [l for l in t["lignes"] if not l["douteux"]]
@@ -578,6 +592,89 @@ def verifier_robins(_demande=None):
     return 0 if not any("NON" in k or "À REVOIR" in k for k in bilan) else 1
 
 
+# --- Mode « verifier_qualite » (VS-D74) ------------------------------------------------------
+
+CORPUS_QUALITE = RACINE / "banc" / "corpus" / "qualite_lisible.json"
+OUTILS_QUALITE = {"RoB 2": "rob2", "QUADAS-2": "quadas2", "AMSTAR 2": "amstar2"}
+# Niveau écrit dans une cellule → niveau du corpus, par grille. L'ordre compte : « critically low » avant « low »,
+# « partial yes » avant « yes », « no meta-analysis » avant « no ».
+NIVEAUX_QUALITE = {
+    "rob2": (("quelques réserves", r"\bsome concerns?\b"), ("élevé", r"\bhigh\b"), ("faible", r"\blow\b")),
+    "quadas2": (("incertain", r"\bunclear\b|\bunknown\b"), ("élevé", r"\bhigh\b"), ("faible", r"\blow\b")),
+    "amstar2": (("très faible", r"\bcritically\s+low\b"),
+                ("sans objet", r"\bno meta|\bnot applicable\b|^\s*n/?a\s*$|^\s*nm\s*$|^\s*no\s+ma\s*$"),
+                ("oui partiel", r"\bpartial(?:ly)?\s+yes\b|^\s*py\s*$"),
+                ("élevée", r"\bhigh\b"), ("modérée", r"\bmoderate\b"), ("faible", r"\blow\b"),
+                ("oui", r"^\s*y(?:es)?\s*$"), ("non", r"^\s*no?\s*$")),
+}
+
+
+def niveau_qualite(outil, cellule, legende=None):
+    """Niveau d'une grille écrit dans une cellule de tableau (en français, comme dans le corpus), ou None."""
+    brut = _propre(cellule)
+    if legende and brut in legende:
+        return legende[brut]
+    for niveau, motif in NIVEAUX_QUALITE[outil]:
+        if re.search(motif, brut, re.I):
+            return niveau
+    return None
+
+
+def valeur_du_corrige(corrige, chemin):
+    """« biais.selection_des_patients » → corrige["biais"]["selection_des_patients"]."""
+    valeur = corrige
+    for cle_ in chemin.split("."):
+        valeur = (valeur or {}).get(cle_) if isinstance(valeur, dict) else None
+    return valeur
+
+
+def verifier_qualite(demande=None):
+    """Pour chaque étude d'un lot du corpus « qualité » (par défaut, le lot 2) : licences, recopie des niveaux depuis
+    la ligne du tableau source, dans l'ordre des colonnes du groupe, et lecture du texte intégral."""
+    lot = int((demande or {}).get("lot", 2))
+    corpus = json.loads(CORPUS_QUALITE.read_text(encoding="utf-8"))
+    groupes = [g for g in corpus["groupes"] if g.get("lot", 1) == lot]
+    fiches = decrire([c["pmid"] for g in groupes for c in g["cas"]] + [g["source"]["pmid"] for g in groupes])
+    bilan = collections.Counter()
+    for g in groupes:
+        s, outil = g["source"], OUTILS_QUALITE[g["outil"]]
+        fs = fiches.get(s["pmid"])
+        journal(f"\n##### {g['outil']}, revue source PMID {s['pmid']} ({fs['licence'] if fs else 'introuvable'}), {s['tableau']}")
+        racine = lire_xml(fs["pmcid"])[0] if utilisable(fs) else None
+        tabs, refs = tableaux(racine) if racine is not None else ([], {})
+        voulus = [t for t in tabs if any(meme_libelle(t["label"], x) for x in s["tableau"].split(","))]
+        for c in g["cas"]:
+            a = fiches.get(c["pmid"])
+            licence_ok = utilisable(a) and utilisable(fs)
+            bilan["licences conformes" if licence_ok else "licences NON CONFORMES"] += 1
+            journal(f"=== PMID {c['pmid']} — licences : étude {a['licence'] if a else 'introuvable'} "
+                    f"({a['pmcid'] if a else '-'}), revue {fs['licence'] if fs else '-'} → "
+                    f"{'conformes' if licence_ok else 'NON CONFORMES'}")
+            if not licence_ok:
+                continue
+            idents = {i for i, r in refs.items() if r["pmid"] == c["pmid"] or (a["doi"] and r["doi"] == a["doi"])
+                      or (len(_titre_plat(r["titre"])) >= 25 and difflib.SequenceMatcher(
+                          None, _titre_plat(r["titre"]), _titre_plat(a["titre"])).ratio() >= 0.92)}
+            lignes = [l for t in voulus for l in lignes_d_une_etude(t, idents)]
+            lus = [[n for n in (niveau_qualite(outil, x, g.get("legende")) for x in l["cellules"]) if n] for l in lignes]
+            attendu = [valeur_du_corrige(c["corrige"], k) for k in g["colonnes"]]
+            recopie = attendu in lus
+            bilan["recopie conforme" if recopie else "recopie À REVOIR"] += 1
+            journal(f"  recopie : {'conforme' if recopie else 'À REVOIR'} — corpus {attendu} ; tableau "
+                    f"{lus if lus else 'AUCUNE LIGNE ne cite cette étude'}")
+            xml, _ = acces.texte_integral_xml(a["pmcid"])
+            doc = texte.document_jats(xml, None) if xml else None
+            bilan["texte intégral lu" if doc else "texte intégral NON LU"] += 1
+            journal(f"  article : " + (f"{sum(len(b['texte']) for b in doc['blocs'])} caractères lus, "
+                                       f"{sum(1 for b in doc['blocs'] if b['type'] == 'section')} sections"
+                                       if doc else "TEXTE INTÉGRAL NON LU"))
+            time.sleep(0.3)
+    journal("\n===== BILAN =====")
+    for k, v in sorted(bilan.items()):
+        journal(f"  {k} : {v}")
+    return 0 if bilan and not any("NON" in k or "À REVOIR" in k for k in bilan) else 1
+
+
 # --- Mode « recalculer » ----------------------------------------------------------------------
 
 def recalculer(demande):
@@ -617,7 +714,7 @@ def main():
     demande = json.loads(DEMANDES.read_text(encoding="utf-8"))["demandes"][-1]
     journal(f"Demande du {demande.get('date')} : mode « {demande.get('mode')} » — {demande.get('raison', '')}")
     modes = {"reperer": reperer, "lire": lire, "verifier": verifier, "recalculer": recalculer,
-             "verifier_robins": verifier_robins}
+             "verifier_robins": verifier_robins, "verifier_qualite": verifier_qualite}
     if demande.get("mode") not in modes:
         raise SystemExit(f"Mode inconnu : {demande.get('mode')!r} (attendu : {', '.join(modes)})")
     resultat = modes[demande["mode"]](demande)

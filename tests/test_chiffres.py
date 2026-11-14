@@ -300,7 +300,8 @@ def test_un_renvoi_faux_est_corrige_par_le_nom_ecrit_ou_ecarte():
 
 def test_la_demande_du_depot_est_lisible():
     demandes = json.loads((RACINE / "banc" / "candidats_chiffres.json").read_text(encoding="utf-8"))["demandes"]
-    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier", "recalculer", "verifier_robins")
+    assert demandes and demandes[-1]["mode"] in ("reperer", "lire", "verifier", "recalculer", "verifier_robins",
+                                                 "verifier_qualite")
 
 
 def test_niveaux_robins_lus_dans_une_ligne_de_tableau():
@@ -312,3 +313,22 @@ def test_niveaux_robins_lus_dans_une_ligne_de_tableau():
     # Une revue qui note par symboles : la légende de son tableau les traduit.
     assert assembler.niveaux_d_une_ligne(["Auteur 2021", "+", "?"], {"+": "faible", "?": "pas d'information"}) == [
         "faible", "pas d'information"]
+
+
+def test_niveaux_des_quatre_premieres_grilles_lus_dans_un_tableau():
+    # VS-D74 : RoB 2, QUADAS-2 et AMSTAR 2. L'ordre des motifs compte (« critically low » avant « low »).
+    q = assembler.niveau_qualite
+    assert [q("rob2", x) for x in ("Low risk", "Some concerns", "High", "Unclear")] == ["faible", "quelques réserves",
+                                                                                       "élevé", None]
+    assert [q("quadas2", x) for x in ("Low", "Unclear", "High risk")] == ["faible", "incertain", "élevé"]
+    assert [q("amstar2", x) for x in ("Critically low", "Low", "Moderate", "High")] == ["très faible", "faible",
+                                                                                        "modérée", "élevée"]
+    assert [q("amstar2", x) for x in ("Y", "PY", "Partial Yes", "N", "No", "No MA", "NA")] == [
+        "oui", "oui partiel", "oui partiel", "non", "non", "sans objet", "sans objet"]
+    assert q("rob2", "Auteur 2020") is None and q("rob2", "+", {"+": "faible"}) == "faible"
+    # Le corrigé se lit par chemin, pour comparer la ligne du tableau au corpus dans l'ordre des colonnes.
+    corrige = {"biais": {"selection_des_patients": "faible"}, "global": "élevé"}
+    assert assembler.valeur_du_corrige(corrige, "biais.selection_des_patients") == "faible"
+    assert assembler.valeur_du_corrige(corrige, "global") == "élevé"
+    assert assembler.valeur_du_corrige(corrige, "biais.absent") is None
+    assert {"rob2", "quadas2", "amstar2"} <= set(assembler.MOTS) and set(assembler.GENRES_JUGEMENTS) >= {"robins_i", "amstar2"}
