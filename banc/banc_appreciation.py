@@ -366,6 +366,8 @@ def main(argv=None):
                         "corpus « qualité »), dont le plan attendu est « étude diagnostique »")
     p.add_argument("--outils", default="",
                    help="grilles du corpus à mesurer, séparées par des virgules (par défaut : toutes), ex. robins_i")
+    p.add_argument("--sans-contestes", action="store_true",
+                   help="ne mesure que les articles dont le corrigé n'est pas marqué contesté (stabilité, VS-D57)")
     p.add_argument("--s45-pmids", default="",
                    help="limite 2026-S45 aux publications nommées (PMID séparés par des virgules)")
     p.add_argument("--sans-declarations", action="store_true",
@@ -388,6 +390,8 @@ def main(argv=None):
     outils = {o.strip() for o in args.outils.split(",") if o.strip()}
     if outils:
         cas = [c for c in cas if c["outil"] in outils]
+    if args.sans_contestes:
+        cas = [c for c in cas if not c.get("conteste")]
     lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json") if (CORPUS / nom).exists()
                 for g in json.loads((CORPUS / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
     cas.sort(key=lambda c: (c["outil"], c["pmid"] not in lisibles, c["pmid"]))

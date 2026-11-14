@@ -190,6 +190,21 @@
    "raison": "VS-D54, étape 3 : lecture des textes et estimation du coût de la mesure de ROBINS-I, sans aucun appel à l'IA : 21 études du corpus robins_i.json (plan d'étude et appréciation sur texte intégral) et les deux essais quasi randomisés de 2026-S45 (fiches 1 et 9 de la séance 7).",
    "accord": "Marvin, questionnaire du 14/11/2026 : plan en trois étapes (VS-D54), enveloppe nouvelle de 1 $ pour deux lancements, plafond 0,45 $ par lancement (VS-D55). Ce lancement-ci ne dépense rien.",
    "budget_usd": 0.45
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "robins_i"
+   ],
+   "s45": 2,
+   "s45_pmids": [
+    "42980682",
+    "42993769"
+   ],
+   "raison": "VS-D54, étape 3, premier lancement : mesure de ROBINS-I sur les 21 études du corpus robins_i.json (plan d'étude, puis appréciation sur texte intégral avec la grille des auteurs de la revue) et sur les deux essais quasi randomisés de 2026-S45 (grille choisie d'après le plan). Seuils fixés avant la mesure (VS-D56) ; deux scores, avec et sans les 11 corrigés contestés. Estimation prudente du banc : 0,75 $ (lancement 43547277468, sans dépense) ; dépense réelle attendue : environ 0,47 $.",
+   "accord": "Marvin, questionnaires du 14/11/2026 : enveloppe de 1,10 $ (VS-D55), plafond de 0,70 $ pour ce premier lancement (VS-D57). Dépensé avant ce lancement sur cette enveloppe : 0 $.",
+   "budget_usd": 0.7
   }
  ]
 }

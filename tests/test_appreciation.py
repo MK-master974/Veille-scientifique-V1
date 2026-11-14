@@ -447,6 +447,9 @@ def test_lanceur_du_banc_appreciation():
                                     "s45_pmids": ["42980682", "42993769"]}, "res")
     assert arguments == ["--sortie", "res", "--budget", "0.45", "--s45", "2", "--outils", "robins_i",
                          "--s45-pmids", "42980682,42993769"]
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.6, "outils": ["robins_i"],
+                                    "sans_contestes": True}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.6", "--outils", "robins_i", "--sans-contestes"]
     with pytest.raises(SystemExit):
         lancer.commande({"banc": "appreciation", "outils": ["probast"]}, "res")
     with pytest.raises(SystemExit):
@@ -564,6 +567,9 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert {x["outil"] for x in seul["corpus"]} == {"robins_i"} and seul["resume"]["corpus"]["articles"] == len(robins)
     assert seul["resume"]["chaine"]["consigne_appreciation_robins_i"] != seul["resume"]["chaine"]["consigne_appreciation"]
     assert all(x["plan_etude"]["grille_du_corrige_retrouvee"] for x in seul["corpus"])
+    assert banc.main(["--sortie", str(tmp_path / "stab"), "--budget", "9", "--outils", "robins_i", "--sans-contestes"]) == 0
+    stab = json.loads((tmp_path / "stab" / "resultats-appreciation.json").read_text(encoding="utf-8"))
+    assert stab["corpus"] and not any(x["corrige_conteste"] for x in stab["corpus"])
     contestes = sum(1 for x in seul["corpus"] if x["corrige_conteste"])
     assert contestes >= 1 and list(seul["resume"]["seuils_robins_i_sans_corriges_contestes"].values())[0][
         "mesure"].endswith(f"sur {len(robins) - contestes}")
