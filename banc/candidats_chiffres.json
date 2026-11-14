@@ -1141,6 +1141,55 @@
     "30593183",
     "30290623"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "lire",
+   "raison": "VS-D54, étape 1 : lire les lignes ROBINS-I de 3 revues du troisième lot (corset et scoliose, système d'insuline automatisé, implant cochléaire : 5 études), et l'en-tête complet du tableau A2 de PMID 34886407, pour vérifier l'ordre de ses colonnes ROBINS-I. La seconde partie du troisième lot n'est pas repérée : le plafond de 0,45 $ par lancement (VS-D55) limite le corpus à une vingtaine d'articles. Aucune IA, aucun coût.",
+   "lectures": [
+    {
+     "source": "42897524",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "34683052",
+      "34828715"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42420766",
+     "tableaux": [
+      "TABLE 7"
+     ],
+     "pmids": [
+      "40445741"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "41821872",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "38353767",
+      "35366712"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "34886407",
+     "tableaux": [
+      "Table A2"
+     ],
+     "pmids": [
+      "30208583"
+     ],
+     "lignes_entete": 12
+    }
+   ]
   }
  ]
 }
