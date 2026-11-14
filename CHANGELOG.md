@@ -104,6 +104,15 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   coordination (CHG-2026-0012). Mesuré sur 86 articles : ROBINS-I choisie pour 36 études sur 38 du
   corpus ROBINS-I (avant : 14), aucun des 6 témoins d'exposition envoyé vers ROBINS-I, pas de recul
   ailleurs. Banc d'essai : témoins d'exposition (« plan_temoins »). Non branché sur la veille.
+- Quatre premières grilles (VS-D73 à VS-D76, 0,405 $) : diagnostic sans IA, puis une mesure qui tranche.
+  Le moteur donnait le jugement global exact pour 13 articles sur 25, autant qu'une réponse fixe au
+  niveau le plus sévère. 17 articles neufs que les revues jugent favorablement ont été ajoutés sans IA au
+  corpus « qualité » (lot 2 : 11 AMSTAR 2, 3 RoB 2, 3 QUADAS-2 ; 17 au lieu de 20). Le moteur actuel n'en
+  retrouve qu'un. Seuil de VS-D75, qui remplace VS-D39, non atteint : 14 jugements identiques sur 42,
+  contre 20 pour une réponse fixe ; aucun trop favorable. Le moteur est plus sévère que les revues : pour
+  AMSTAR 2, faute d'information (suppléments non lus) ; pour RoB 2 et QUADAS-2, sur des faits de
+  l'article, conformes à la lettre de l'outil. Outils sans IA : repérage des tableaux de jugements RoB 2,
+  QUADAS-2 et AMSTAR 2, et vérification « verifier_qualite ». Non branché sur la veille.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,

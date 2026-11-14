@@ -17,7 +17,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Banc d'essai : rejouer la chaîne sur le corpus et compter les écarts | Écrit le 11 novembre 2026 : `banc.py`, lancé par le workflow « Banc d'essai ». Deux passages faits : voir `resultats/` |
 | Banc d'essai de l'extraction (fiche v2) | Écrit le 12 novembre 2026 : `banc_extraction.py`. Quatre mesures faites : `resultats/2026-11-12-extraction.md` |
 | Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
-| Cas « qualité, articles lisibles en entier » : 16 revues (AMSTAR 2), 7 études diagnostiques (QUADAS-2), 2 essais (RoB 2) | Assemblés le 13 novembre 2026 : `corpus/qualite_lisible.json` |
+| Cas « qualité, articles lisibles en entier » : 27 revues (AMSTAR 2), 10 études diagnostiques (QUADAS-2), 5 essais (RoB 2), en deux lots (25, puis 17 articles neufs jugés favorablement, VS-D74) | Assemblés le 13 novembre 2026, lot 2 le 14 novembre 2026 : `corpus/qualite_lisible.json`. Mesure du lot 2 : `resultats/2026-11-14-quatre-grilles-lot-2.md` |
 | Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Deux mesures faites : `resultats/2026-11-13-appreciation.md`. Séance 7, plan d'étude : deux cycles, plus l'étude des suppléments, `resultats/2026-11-13-seance-7.md` |
 | Cas « ROBINS-I » : 38 études non randomisées sous licence CC BY, en trois lots (21, puis 7 et 10 articles neufs, VS-D59 et VS-D65), jugement ROBINS-I d'une revue sous licence CC BY | Assemblés et vérifiés le 14 novembre 2026 : `corpus/robins_i.json`. Mesures et stabilité : `resultats/2026-11-14-robins-i.md` |
 
@@ -147,6 +147,16 @@ Répartition des 16 revues : 8 « très faible », 4 « faible », 4 « modéré
 Les lignes ont été lues sans IA par le workflow « Corpus, chiffres relevés ». Le corrigé n'est pas
 relu par un humain.
 
+**Lot 2** (VS-D74, `"lot": 2`) : 17 articles neufs que les revues jugent favorablement, pour que la
+mesure distingue le moteur d'une réponse fixe au niveau le plus sévère. 11 revues AMSTAR 2 (4
+« élevée », 7 « modérée ») tirées de 4 revues de revues, 3 essais RoB 2 « faible » (3 revues), 3 études
+QUADAS-2 « faible » pour les quatre domaines de risque de biais (1 revue). Repérés sans IA (genres
+« amstar2 », « rob2 », « quadas2 » de `assembler_chiffres.py`), 3 au plus par revue source ; 17 au lieu
+de 20, les tableaux lisibles étude par étude étant rares pour RoB 2 et QUADAS-2. Chaque groupe donne
+l'ordre de ses colonnes (`colonnes`) et, si la ligne porte d'autres mots de niveau, les cellules à lire
+(`indices`). Vérification sans IA, mode « verifier_qualite » : licences, recopie, texte intégral (17 sur
+17 conformes). Cinq candidats écartés, avec leur motif (`ecartees_lot_2`).
+
 ## Le banc de l'appréciation
 
 `banc_appreciation.py` mesure l'appréciation méthodologique (bloc « appreciation » de la fiche v2)
@@ -190,7 +200,11 @@ et la catégorie d'importance.
 - **Écart en crans** : le jugement global, calculé par le code, est comparé à celui du corrigé sur
   l'échelle de l'outil (trois crans pour RoB 2 et QUADAS-2, quatre pour AMSTAR 2).
 - **Seuils** fixés par le porteur du projet (VS-D39), sur le texte intégral : au moins 70 % des
-  jugements à un cran au plus du corrigé, et aucun jugement plus favorable de deux crans.
+  jugements à un cran au plus du corrigé, et aucun jugement plus favorable de deux crans. **Remplacés
+  par VS-D75** (`seuils_grilles`), sur le modèle de ROBINS-I : au moins 50 % des jugements globaux
+  identiques au corrigé, plus qu'une réponse fixe donnant pour chaque grille le niveau le plus fréquent
+  de ses corrigés, aucun plus favorable de deux crans. `"lot": 2` ne mesure que le lot 2 du corpus
+  « qualité ». Le seuil de VS-D39 reste calculé, pour comparaison.
 - **Abstention** : sur résumé seul, la part des domaines notés « non évaluable ».
 - **Accord par domaine**, quand le corrigé le donne.
 - **Catégories d'importance** : répartition sur des publications réelles de 2026-S45. Aucun
