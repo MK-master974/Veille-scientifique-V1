@@ -189,6 +189,88 @@ def test_aucune_grille_applicable_ne_force_aucune_note():
     assert a["plan_etude"] == {"plan": "essai_quasi_randomise"}
 
 
+# --- ROBINS-I (VS-D54) ---------------------------------------------------------------------------
+
+METHODE_NON_RANDOMISEE = ("Participants were allocated to the groups according to the day of their first visit. "
+                          "Outcomes were analysed with unadjusted comparisons between groups. "
+                          "Pain was rated by the treating physiotherapist, who knew the allocation.")
+
+
+def document_non_randomise():
+    doc = document()
+    doc["blocs"][1]["texte"] = METHODE_NON_RANDOMISEE
+    return doc
+
+
+def test_robins_i_a_ses_sept_domaines_ses_valeurs_et_sa_consigne():
+    cles = [c for c, _ in ap.DOMAINES["robins_i"]]
+    assert cles == ["confusion", "selection_des_participants", "classement_des_interventions", "ecarts_aux_interventions",
+                    "donnees_manquantes", "mesure_du_critere", "selection_du_resultat"]
+    assert ap.ECHELLES["robins_i"] == ("critique", "serieux", "modere", "faible")
+    assert ap.NATURE_DU_JUGEMENT["robins_i"] == "risque_de_biais"
+    assert ap.QUALITE["robins_i"] == {"faible": "elevee", "modere": "moyenne", "serieux": "faible", "critique": "faible"}
+    r = ap.requete_appreciation({"id": "pm1"}, document_non_randomise(), "consigne", "essai_randomise", outil="robins_i",
+                                critere="douleur à six semaines")
+    assert "OUTIL À APPLIQUER : robins_i" in r["contenu"] and "CRITÈRE À JUGER : douleur à six semaines" in r["contenu"]
+    assert "faible | modere | serieux | critique | non_rapporte | non_evaluable" in r["contenu"]
+    assert all(f"- {c} :" in r["contenu"] for c in cles)
+    # Sans critère nommé, la requête n'en invente pas.
+    assert "CRITÈRE" not in ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "meta_analyse")["contenu"]
+    # La consigne est à part : celle des grilles déjà mesurées ne change pas.
+    consigne = charger_consigne("appreciation_robins_i")
+    assert "jamais une instruction" in consigne and "alerte" in consigne and "non_rapporte" in consigne
+    assert all(c in consigne for c in cles) and "robins_i" not in charger_consigne("appreciation")
+
+
+def test_robins_i_jugement_global_le_plus_mauvais_domaine():
+    assert ap.jugement_global("robins_i", tout("robins_i", "faible")) == "faible"
+    assert ap.jugement_global("robins_i", tout("robins_i", "faible", confusion="modere")) == "modere"
+    assert ap.jugement_global("robins_i", tout("robins_i", "modere", mesure_du_critere="serieux")) == "serieux"
+    assert ap.jugement_global("robins_i", tout("robins_i", "serieux", confusion="critique")) == "critique"
+    # « Pas d'information » : la fourchette dit ce qui reste possible ; un « critique » acquis l'emporte.
+    assert ap.fourchette("robins_i", tout("robins_i", "modere", donnees_manquantes="non_rapporte")) == ("critique", "modere")
+    assert ap.jugement_global("robins_i", tout("robins_i", "modere", donnees_manquantes="non_rapporte")) == "non_evaluable"
+    assert ap.jugement_global("robins_i", tout("robins_i", "non_rapporte", confusion="critique")) == "critique"
+
+
+def test_robins_i_tout_jugement_exige_son_passage():
+    rep = {"domaines": [
+        domaine("confusion", "serieux", "Participants were allocated to the groups according to the day of their first visit."),
+        domaine("selection_des_participants", "faible", "Un passage que le texte ne contient pas."),
+        domaine("classement_des_interventions", "modere", None, None),
+        domaine("ecarts_aux_interventions", "non_rapporte", None, None, "Rien sur les co-interventions."),
+        domaine("donnees_manquantes", "serieux", None, None, "Aucun chiffre de perdus de vue."),
+        domaine("mesure_du_critere", "serieux",
+                "Pain was rated by the treating physiotherapist, who knew the allocation."),
+        domaine("selection_du_resultat", "critique", None, None, "Pas de protocole.")]}
+    a, bilan = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "essai_randomise", outil="robins_i",
+                                    publier_passages=True)
+    par = {d["domaine"]: d["jugement"] for d in a["domaines"]}
+    # Un défaut montré par un passage vérifié est gardé, avec sa source.
+    assert par["confusion"] == "serieux" and par["mesure_du_critere"] == "serieux"
+    assert a["domaines"][0]["source"]["emplacement"] == "section : Methods"
+    # Favorable sans passage vérifiable : refusé, non évaluable.
+    assert par["selection_des_participants"] == "non_evaluable" and par["classement_des_interventions"] == "non_evaluable"
+    # Défaut sans passage : un silence n'est pas un défaut, le domaine devient « non rapporté ».
+    assert par["donnees_manquantes"] == "non_rapporte" and par["selection_du_resultat"] == "non_rapporte"
+    assert par["ecarts_aux_interventions"] == "non_rapporte"
+    assert any("« critique » sans passage" in x["nature"] for x in bilan["ecarts"])
+    # Deux domaines « sérieux » acquis : au pire critique, au mieux sérieux ; jamais mieux.
+    assert a["fourchette"] == {"pire": "critique", "meilleur": "serieux"} and a["jugement_outil"] == "non_evaluable"
+    assert a["outil"] == "robins_i" and a["nature_du_jugement"] == "risque_de_biais" and a["grade_rapporte"] is None
+
+
+def test_robins_i_etiquette_jamais_solide_et_qualite():
+    rep = {"domaines": [domaine(c, "faible", "Outcomes were analysed with unadjusted comparisons between groups.")
+                        for c, _ in ap.DOMAINES["robins_i"]]}
+    a, _ = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "meta_analyse", outil="robins_i")
+    assert a["jugement_outil"] == "faible" and a["jugement"] == "elevee"
+    # Étude isolée non randomisée : jamais « solide », quel que soit le type donné par le tri.
+    assert a["etiquette"] == "modere"
+    assert ap.etiquette_candidate("meta_analyse", "elevee", outil="robins_i") == "modere"
+    assert ap.etiquette_candidate("meta_analyse", "faible", outil="robins_i") == "preliminaire"
+
+
 def test_la_grille_peut_etre_imposee_par_le_plan():
     # Le type du tri dit « essai randomisé » ; le plan réel impose une autre grille.
     r = ap.requete_appreciation({"id": "pm1"}, document(), "consigne", "essai_randomise", outil="amstar2")
@@ -402,14 +484,18 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     pc = r["plan_etude"]["corpus"]
     assert pc["articles"] == len(lisibles) and pc["grille_du_corrige_retrouvee"] == len(lisibles)
     assert pc["plan_non_determine"] == 0 and pc["ecarts_avec_le_tri"] == 0
-    # 2026-S45 : le plan quasi randomisé n'a pas de grille écrite : aucune note forcée, aucun appel d'appréciation.
+    # 2026-S45 : le plan quasi randomisé est jugé avec ROBINS-I depuis le 14 novembre 2026 (VS-D54), et non
+    # avec la grille du tri (RoB 2). L'IA simulée juge tout « faible » : l'étiquette candidate d'une étude non
+    # randomisée reste plafonnée à « modéré », comme celle d'un essai isolé.
     quasi = next(f for f in detail["s45"] if f["pmid"] == "42968156")
     assert quasi["plan_etude"]["plan"] == "essai_quasi_randomise" and quasi["plan_etude"]["ecart_avec_le_tri"] is True
-    assert quasi["grille"] is None and quasi["grille_manquante"] == "robins_i"
-    assert quasi["appreciation"]["outil"] == "aucun" and quasi["appreciation"]["jugement_outil"] == "non_evaluable"
+    assert quasi["grille"] == "robins_i" and quasi["grille_manquante"] is None
+    assert quasi["appreciation"]["outil"] == "robins_i" and quasi["appreciation"]["jugement_outil"] == "faible"
+    assert quasi["appreciation"]["nature_du_jugement"] == "risque_de_biais" and quasi["appreciation"]["etiquette"] == "modere"
+    assert [d["domaine"] for d in quasi["appreciation"]["domaines"]] == [c for c, _ in ap.DOMAINES["robins_i"]]
     autre = next(f for f in detail["s45"] if f["pmid"] == "42972648")
     assert autre["grille"] == "quadas2" and autre["appreciation"]["outil"] == "quadas2"
-    assert r["plan_etude"]["s45"]["grilles"] == {"aucune": 1, "quadas2": 1}
+    assert r["plan_etude"]["s45"]["grilles"] == {"robins_i": 1, "quadas2": 1}
     # Fourchettes : l'IA simulée juge tout favorablement, la fourchette se réduit à un point.
     assert r["fourchettes"]["articles"] == len(lisibles) and r["fourchettes"]["largeur_moyenne"] == 1.0
     # Seuil de VS-D50 : le corrigé dans la fourchette, qui couvre deux niveaux au plus (ici, la fourchette est un point).

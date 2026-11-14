@@ -44,10 +44,12 @@ DEFINITIONS = {
     "autre": "aucun des plans ci-dessus, ou le texte ne permet pas de trancher ; aussi une preuve de concept technique sans aucun participant atteint de la maladie ou de l'état recherché (volontaires sains, simulation, laboratoire)"}
 
 # Plan → (outil d'appréciation, grille qui conviendrait mais qui n'est pas encore écrite).
+# ROBINS-I est écrite depuis le 14 novembre 2026 (VS-D54) : elle juge les deux plans non randomisés
+# d'intervention. Une étude observationnelle reste sans grille (JBI à écrire).
 GRILLE_DU_PLAN = {
     "essai_randomise": ("rob2", None),
-    "essai_quasi_randomise": (None, "robins_i"),
-    "interventionnel_non_randomise": (None, "robins_i"),
+    "essai_quasi_randomise": ("robins_i", None),
+    "interventionnel_non_randomise": ("robins_i", None),
     "observationnel": (None, "jbi"),
     "etude_diagnostique": ("quadas2", None),
     "modele_de_prediction": (None, "probast"),

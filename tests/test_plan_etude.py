@@ -90,10 +90,12 @@ def test_la_grille_se_deduit_du_plan_par_une_table():
     assert pe.choisir_grille("etude_diagnostique")[0] == "quadas2"
     assert pe.choisir_grille("revue_interventions")[0] == "amstar2"
     assert pe.choisir_grille("recommandation")[0] == "agree2"
+    # ROBINS-I, écrite le 14 novembre 2026 (VS-D54) : les deux plans non randomisés d'intervention.
+    assert pe.choisir_grille("essai_quasi_randomise") == ("robins_i", None, None)
+    assert pe.choisir_grille("interventionnel_non_randomise") == ("robins_i", None, None)
     # Pas de grille écrite : on dit laquelle conviendrait, sans forcer une autre.
-    outil, manquante, motif = pe.choisir_grille("essai_quasi_randomise")
-    assert outil is None and manquante == "robins_i" and "essai quasi randomisé" in motif
-    assert pe.choisir_grille("modele_de_prediction")[:2] == (None, "probast")
+    outil, manquante, motif = pe.choisir_grille("modele_de_prediction")
+    assert outil is None and manquante == "probast" and "modèle de prédiction" in motif
     assert pe.choisir_grille("revue_descriptive")[:2] == (None, "robis")
     assert pe.choisir_grille("observationnel")[:2] == (None, "jbi")
     # Plan non établi ou « autre » : aucune grille, sans nom de grille.
