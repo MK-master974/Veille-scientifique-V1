@@ -271,14 +271,17 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
   autre) et cite le passage qui le montre ; le code le vérifie mot pour mot. Le titre et le type
   donné par le tri ne décident pas : ils servent seulement à signaler un écart. Une table déduit
   la grille du plan.
-- **Aucune grille applicable** quand le plan n'a pas de grille écrite (quasi randomisé,
-  non randomisé, modèle de prédiction, revue descriptive, observationnel) ou n'est pas établi : la
-  réponse est `outil: aucun` avec le nom de la grille qui conviendrait (`robins_i`, `probast`,
-  `robis`, `jbi`), jamais une note forcée. Aucune appréciation n'est faite sur résumé seul.
-- **Un outil par plan** : RoB 2 pour un essai randomisé, QUADAS-2 pour une étude
-  diagnostique, AMSTAR 2 pour une revue d'interventions, AGREE II pour une
+- **Aucune grille applicable** quand le plan n'a pas de grille écrite (modèle de prédiction, revue
+  descriptive, observationnel) ou n'est pas établi : la réponse est `outil: aucun` avec le nom de
+  la grille qui conviendrait (`probast`, `robis`, `jbi`), jamais une note forcée. Aucune
+  appréciation n'est faite sur résumé seul.
+- **Un outil par plan** : RoB 2 pour un essai randomisé, ROBINS-I (version 1) pour un essai quasi
+  randomisé ou une étude interventionnelle non randomisée (depuis le 14 novembre 2026, VS-D54),
+  QUADAS-2 pour une étude diagnostique, AMSTAR 2 pour une revue d'interventions, AGREE II pour une
   recommandation. L'IA reçoit la liste des domaines de l'outil et juge chacun, avec une phrase de
-  justification et le passage qui fonde son jugement (consigne `appreciation.txt`).
+  justification et le passage qui fonde son jugement (consigne `appreciation.txt` ; pour ROBINS-I,
+  consigne à part `appreciation_robins_i.txt`, qui juge un critère donné et l'effet de
+  l'attribution à l'intervention).
 - **Contrôle par le code**, domaine par domaine :
   - un jugement favorable (« faible risque », « oui ») n'est gardé que si son passage se retrouve
     mot pour mot dans le texte lu ; sinon le domaine devient « non évaluable » ;
@@ -287,12 +290,14 @@ bloc `appreciation` et une partie du bloc `classement` de la fiche v2, et sont m
   - une valeur invalide devient « non évaluable » ; une justification qui contient un chiffre
     absent du texte lu est écartée.
 - **« Non rapporté » n'est pas « non »** : pour AMSTAR 2, « non » exige un passage qui montre que
-  le critère n'est pas rempli ; un texte silencieux donne « non rapporté ». Le code calcule une
+  le critère n'est pas rempli ; pour ROBINS-I, « sérieux » ou « critique » exige le passage qui
+  montre le défaut. Un texte silencieux donne « non rapporté » (pour ROBINS-I, la case « pas
+  d'information » de l'outil). Le code calcule une
   **fourchette** du jugement global : le résultat si chaque domaine non évalué valait le pire, puis
   le meilleur. Quand les deux diffèrent, le jugement est « non évaluable » et la fourchette dit ce
   qui reste possible.
 - **Le jugement global est calculé par le code**, jamais repris de l'IA : le plus mauvais domaine
-  l'emporte pour RoB 2 et QUADAS-2 ; pour AMSTAR 2, le niveau de confiance suit le nombre de
+  l'emporte pour RoB 2, ROBINS-I et QUADAS-2 ; pour AMSTAR 2, le niveau de confiance suit le nombre de
   faiblesses critiques. Il est ensuite ramené à la qualité de la fiche v2 (élevée, moyenne, faible,
   non évaluable).
 - **Certitude GRADE** : reprise seulement si les auteurs la rapportent et que le passage cité la
@@ -397,7 +402,10 @@ textes et estime le coût, sans aucun appel. Le banc de l'extraction peut ne mes
 du corpus : les cas mesurés depuis la séance 5, ou les articles aux chiffres relevés. Pour ces
 derniers, la comparaison est faite par le code, sans IA lectrice. Le banc de l'appréciation
 (`banc/banc_appreciation.py`, plafond 2,43 $) compare le jugement global à celui des auteurs d'une
-revue, en crans de l'échelle de l'outil, et classe des publications réelles de 2026-S45. Le
+revue, en crans de l'échelle de l'outil, et classe des publications réelles de 2026-S45. Il peut
+ne mesurer qu'une grille (« outils », par exemple ROBINS-I) et ne prendre que des publications
+nommées de 2026-S45. Le corpus ROBINS-I (`banc/corpus/robins_i.json`) est assemblé sans IA par le
+workflow « Corpus, chiffres relevés » (`banc/assembler_chiffres.py`, genre « robins_i »). Le
 journal et les résultats sont publics : aucun texte d'article n'y figure, hors courts passages
 exacts d'articles sous licence CC BY ou CC0.
 

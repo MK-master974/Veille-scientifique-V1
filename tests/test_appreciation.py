@@ -386,14 +386,46 @@ def test_les_corpus_qualite_sont_lisibles_par_le_banc():
     cas = banc.charger_cas()
     assert len(cas) >= 30 and len({c["pmid"] for c in cas}) == len(cas)
     for c in cas:
-        assert c["outil"] in ("rob2", "quadas2", "amstar2") and ap.OUTILS[c["type_etude"]] == c["outil"]
-        assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES[c["outil"]], c["pmid"]
+        if c["outil"] == "robins_i":
+            # ROBINS-I : la grille ne se déduit pas du type du tri mais du plan d'étude ; le critère jugé est nommé.
+            assert c["critere"] and c["type_etude"] in ("essai_quasi_randomise", "interventionnel_non_randomise"), c["pmid"]
+            assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES["robins_i"] + (ap.NON_RAPPORTE,), c["pmid"]
+        else:
+            assert c["outil"] in ("rob2", "quadas2", "amstar2") and ap.OUTILS[c["type_etude"]] == c["outil"]
+            assert banc.corrige_global(c["outil"], c["corrige"]) in ap.ECHELLES[c["outil"]], c["pmid"]
         for valeur in banc.domaines_du_corrige(c["outil"], c["corrige"]).values():
             assert valeur in ap.VALEURS[c["outil"]], (c["pmid"], valeur)
-    lisible = json.loads((RACINE / "banc/corpus/qualite_lisible.json").read_text(encoding="utf-8"))
-    for g in lisible["groupes"]:
-        assert g["source"]["licence"] in ("CC BY", "CC0")
-        assert all(c["licence"] in ("CC BY", "CC0") and c["pmcid"] for c in g["cas"])
+    for nom in ("qualite_lisible.json", "robins_i.json"):
+        chemin = RACINE / "banc/corpus" / nom
+        if not chemin.exists():
+            continue
+        for g in json.loads(chemin.read_text(encoding="utf-8"))["groupes"]:
+            assert g["source"]["licence"] in ("CC BY", "CC0")
+            assert all(c["licence"] in ("CC BY", "CC0") and c["pmcid"] for c in g["cas"])
+
+
+def test_robins_i_au_banc_lecture_du_corrige_et_seuils():
+    # « Pas d'information » de ROBINS-I se lit « non rapporté » ; les accents et les espaces ne comptent pas.
+    assert banc.cle("pas d'information") == banc.cle("Pas d’information") == "non_rapporte"
+    assert banc.cle("modéré") == "modere" and banc.cle("sérieux") == "serieux"
+    corrige = {"confusion": "sérieux", "selection_des_participants": "faible", "mesure_du_critere": "pas d'information",
+               "global": "sérieux"}
+    assert banc.corrige_global("robins_i", corrige) == "serieux"
+    assert banc.domaines_du_corrige("robins_i", corrige) == {"confusion": "serieux", "selection_des_participants": "faible",
+                                                              "mesure_du_critere": "non_rapporte"}
+    # Seuils de VS-D56 : 50 % d'identiques, plus qu'une réponse fixe, aucun jugement plus favorable de deux crans.
+    attendus = ["serieux", "serieux", "serieux", "modere"]
+    comparaisons = [banc.comparer("robins_i", o, a) for o, a in zip(["serieux", "serieux", "critique", "modere"], attendus)]
+    s = list(banc.seuils_robins(comparaisons, attendus).values())
+    assert s[0]["atteint"] is True and s[0]["mesure"] == "3 sur 4"
+    # Répondre partout « sérieux » donnerait 3 identiques : 3 ne fait pas mieux, le seuil n'est pas atteint.
+    assert s[1]["atteint"] is False and s[1]["mesure"] == "3 contre 3" and s[1]["reponse_fixe"] == "serieux"
+    assert s[2]["atteint"] is True
+    trop = [banc.comparer("robins_i", "faible", "serieux")]
+    assert trop[0]["etat"] == "trop_favorable"
+    assert list(banc.seuils_robins(trop, ["serieux"]).values())[2]["atteint"] is False
+    # Aucun article : aucun seuil n'est atteint.
+    assert not any(x["atteint"] for x in banc.seuils_robins([], []).values())
 
 
 def test_lanceur_du_banc_appreciation():
@@ -410,6 +442,15 @@ def test_lanceur_du_banc_appreciation():
     _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.25, "s45": 10, "plan_seul": True,
                                     "plan_externe": True}, "res")
     assert arguments == ["--sortie", "res", "--budget", "0.25", "--s45", "10", "--plan-seul", "--plan-externe"]
+    # ROBINS-I (VS-D54) : une grille seulement, et des publications de 2026-S45 nommées.
+    _, arguments = lancer.commande({"banc": "appreciation", "budget_usd": 0.45, "s45": 2, "outils": ["robins_i"],
+                                    "s45_pmids": ["42980682", "42993769"]}, "res")
+    assert arguments == ["--sortie", "res", "--budget", "0.45", "--s45", "2", "--outils", "robins_i",
+                         "--s45-pmids", "42980682,42993769"]
+    with pytest.raises(SystemExit):
+        lancer.commande({"banc": "appreciation", "outils": ["probast"]}, "res")
+    with pytest.raises(SystemExit):
+        lancer.commande({"banc": "appreciation", "s45_pmids": ["42980682; rm"]}, "res")
 
 
 # --- Le banc en entier, sources et IA simulées ------------------------------------------------
