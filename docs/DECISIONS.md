@@ -284,6 +284,12 @@ paquet de contexte `991c143`) :
 | VS-D66 | Un seul lancement du banc, sur 10 articles neufs au plus, sans les deux fiches de 2026-S45, avec un plafond de 0,34 $ ; dépense réelle attendue d'environ 0,20 $. Le contrôle du coût avant chaque groupe de requêtes limite un lancement à une dizaine d'articles avec ce plafond | Validée le 14 novembre 2026 (questionnaire), réalisée : estimation sans IA de 0,34 $ (lancement 43559641076), coût réel **0,19 $** (lancement 43559966228). Seuils de VS-D56 **non atteints** : 4 jugements globaux identiques sur 10, contre 6 pour une réponse fixe « sérieux » ; aucun plus favorable de deux crans. Seuil de la fourchette (VS-D50) atteint : 8 sur 10. Reste de l'enveloppe de VS-D55 : 0,155 $ |
 | VS-D67 | Ouvrir la demande de fusion sans attendre à la fin du travail (la grille n'est toujours appelée que par le banc d'essai ; aucun fichier de la veille, de l'application ni des workflows ne change). La session la surveille et ne la fusionne jamais elle-même (comme VS-D62) | Validée le 14 novembre 2026 (questionnaire), réalisée : demande de fusion n° 17, surveillée par la session |
 
+Décision du 14 novembre 2026, par questionnaire, après la mesure du lot 3 :
+
+| Référence | Décision | Statut |
+| --- | --- | --- |
+| VS-D68 | ROBINS-I en pause : la grille reste hors de la veille. Deux pistes sont inscrites sans être traitées : (1) la règle « sélection des participants » paraît trop sévère (« sérieux » 6 fois sur 10 au lot 3, surtout quand l'inclusion exige un suivi ou la survie après l'intervention) ; hypothèse non vérifiée sur le guide de l'outil ; (2) les domaines « non rapporté », surtout les données manquantes (4 fois sur 10), donnent encore « critique » en lecture stricte. La suite sera décidée avec les cohortes de patients traités (VS-D60). Reste de l'enveloppe de VS-D55 : 0,155 $, non dépensés. Options écartées : une séance sur la sélection des participants maintenant (environ 0,25 $) ; revoir tout de suite la lecture stricte de VS-D56 | Validée le 14 novembre 2026 (questionnaire) |
+
 **Numérotation.** Ce registre fait foi : les décisions y sont numérotées dans l'ordre où elles
 sont prises. Le plan de Veille Santé (section 15) avait numéroté à l'avance des décisions
 attendues, de D8 à D18 ; ces numéros ne correspondent pas à ceux du registre.
