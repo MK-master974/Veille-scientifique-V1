@@ -222,6 +222,11 @@ def test_robins_i_a_ses_sept_domaines_ses_valeurs_et_sa_consigne():
     assert all(c in consigne for c in cles) and "robins_i" not in charger_consigne("appreciation")
     # VS-D59 : une seule exception à « un silence n'est pas un défaut », pour les écarts aux interventions.
     assert consigne.count("Une seule exception") == 1 and "seule exception à la règle" in consigne.split("ecarts_aux_interventions\n")[1]
+    # VS-D64 : un classement relevé dans des dossiers après coup n'est pas « sérieux » par lui-même ; « sérieux »
+    # suppose des groupes mal définis ou une appartenance qui a pu dépendre de la connaissance du résultat.
+    classement = consigne.split("classement_des_interventions\n")[1].split("ecarts_aux_interventions\n")[0]
+    assert "ne suffit pas à dire \"serieux\"" in classement and "a été établi après coup, à partir de dossiers" not in consigne
+    assert all(f'"{v}"' in classement for v in ("faible", "modere", "serieux", "critique", "non_rapporte"))
 
 
 def test_robins_i_jugement_global_le_plus_mauvais_domaine():

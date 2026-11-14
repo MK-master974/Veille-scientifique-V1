@@ -45,8 +45,12 @@ selection_des_participants
   "faible" : tous les participants admissibles entrent dans l'étude au début de l'intervention, et le suivi commence avec elle.
   "serieux" ou "critique" : l'inclusion dans l'étude ou dans l'analyse dépend de ce qui se passe après le début de l'intervention (seuls ceux qui ont terminé le programme, par exemple), ou le début du suivi ne coïncide pas avec celui de l'intervention.
 classement_des_interventions
-  "faible" : groupes définis à l'avance, statut de chaque participant enregistré au début de l'intervention.
-  "serieux" : le classement a pu dépendre du résultat ou a été établi après coup, à partir de dossiers.
+  La question : l'appartenance de chaque participant à un groupe a-t-elle pu dépendre du résultat, ou de sa connaissance ? Une étude rétrospective, ou un classement relevé dans des dossiers, ne suffit pas à dire "serieux".
+  "faible" : groupes définis clairement, et appartenance fixée par une information enregistrée au moment de l'intervention, qui ne pouvait pas dépendre du résultat : inscription au programme, médicament prescrit ou administré, technique opératoire réalisée. C'est vrai aussi quand l'étude relit ces dossiers après coup.
+  "modere" : groupes définis clairement, mais une partie de l'appartenance a été reconstituée après coup (dose, durée ou date de l'intervention retrouvées plus tard).
+  "serieux" : groupes mal définis, ou appartenance établie d'une façon qui a pu dépendre de la connaissance du résultat (souvenir des participants, recherche de l'intervention plus poussée chez ceux qui ont eu l'événement).
+  "critique" : erreur de classement massive, exceptionnelle.
+  "non_rapporte" : l'article ne définit pas les groupes et ne dit pas d'où vient l'information sur l'intervention reçue.
 ecarts_aux_interventions
   L'effet jugé est celui de l'attribution : seuls comptent les écarts dus au contexte de l'étude (co-interventions données à un groupe seulement, changements de groupe, intervention réalisée autrement que prévu à cause de l'étude).
   "faible" : l'article décrit l'intervention réalisée (déroulement, séances, suivi du programme ou du traitement) et rien n'indique d'écart dû au contexte de l'étude ni de co-intervention déséquilibrée ; ou des écarts équilibrés entre les groupes et sans effet probable sur le résultat. Le passage est celui qui décrit l'intervention réalisée. C'est la seule exception à la règle « un silence n'est pas un défaut » : ici, l'absence de tout signe d'écart, dans un article qui décrit l'intervention réalisée, suffit.
