@@ -267,13 +267,56 @@ def test_robins_i_tout_jugement_exige_son_passage():
     assert a["outil"] == "robins_i" and a["nature_du_jugement"] == "risque_de_biais" and a["grade_rapporte"] is None
 
 
-def test_robins_i_etiquette_jamais_solide_et_qualite():
+def test_aucune_grille_n_a_de_jugement_global_valide():
+    # VS-D77 : aucune grille n'a passé son seuil au banc d'essai ; chacune figure dans la table.
+    assert set(ap.JUGEMENT_VALIDE) == set(ap.ECHELLES) and not any(ap.JUGEMENT_VALIDE.values())
+    assert ap.sans_grille({"plan": "autre"}, "aucune_grille")["jugement_valide"] is False
+
+
+def test_jugement_non_valide_l_etiquette_ne_s_appuie_pas_sur_lui(monkeypatch):
+    passage = "We searched PubMed and Embase."
+    rep = {"domaines": [domaine(c, "faible", passage) for c, _ in ap.DOMAINES["rob2"]]}
+    a, _ = ap.lire_appreciation(json.dumps(rep), document(), "essai_randomise", outil="rob2")
+    # Le jugement global reste calculé et visible, mais marqué non validé ; l'étiquette n'en dépend pas.
+    assert a["jugement_outil"] == "faible" and a["jugement"] == "elevee" and a["fourchette"]["pire"] == "faible"
+    assert a["jugement_valide"] is False and a["etiquette"] == "non_evaluable"
+    assert a["justification_etiquette"] == ap.JUSTIFICATION_NON_VALIDE
+    monkeypatch.setitem(ap.JUGEMENT_VALIDE, "rob2", True)
+    a, _ = ap.lire_appreciation(json.dumps(rep), document(), "essai_randomise", outil="rob2")
+    assert a["jugement_valide"] is True and a["etiquette"] == "modere"     # essai isolé : jamais « solide »
+
+
+def test_points_releves():
+    passage = "We searched PubMed and Embase."
+    rep = {"domaines": [domaine("randomisation", "eleve", passage),
+                        domaine("ecarts_aux_interventions", "quelques_reserves", passage),
+                        domaine("donnees_manquantes", "faible", passage),
+                        domaine("mesure_du_critere", "quelques_reserves", None, None)]}
+    a, _ = ap.lire_appreciation(json.dumps(rep), document(), "essai_randomise", outil="rob2")
+    # Seuls les jugements défavorables appuyés sur un passage vérifié sont des points relevés, dans l'ordre de la
+    # grille ; un domaine favorable, non évalué ou sans passage n'en est pas un.
+    assert [d["domaine"] for d in ap.points_releves(a)] == ["randomisation", "ecarts_aux_interventions"]
+    assert all(d["source"]["emplacement"] == "section : Methods" for d in ap.points_releves(a))
+    # AMSTAR 2 : « non rapporté » et « sans objet » ne sont pas des défauts.
+    rep = {"domaines": [domaine("q02_protocole", "non", "The protocol was registered in PROSPERO before the search."),
+                        domaine("q07_etudes_exclues", "non", None, None),
+                        domaine("q11_methodes_statistiques", "sans_objet", None, None)]}
+    a, _ = ap.lire_appreciation(json.dumps(rep), document(), "meta_analyse", publier_passages=True)
+    assert [d["domaine"] for d in ap.points_releves(a)] == ["q02_protocole"]
+    assert ap.points_releves(None) == [] and ap.points_releves(ap.sans_grille({}, "aucune_grille")) == []
+
+
+def test_robins_i_etiquette_jamais_solide_et_qualite(monkeypatch):
     rep = {"domaines": [domaine(c, "faible", "Outcomes were analysed with unadjusted comparisons between groups.")
                         for c, _ in ap.DOMAINES["robins_i"]]}
     a, _ = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "meta_analyse", outil="robins_i")
     assert a["jugement_outil"] == "faible" and a["jugement"] == "elevee"
-    # Étude isolée non randomisée : jamais « solide », quel que soit le type donné par le tri.
-    assert a["etiquette"] == "modere"
+    # Jugement global de ROBINS-I non validé (VS-D56 non atteint) : l'étiquette ne s'appuie pas sur lui (VS-D77).
+    assert a["jugement_valide"] is False and a["etiquette"] == "non_evaluable"
+    # Une fois la grille validée : étude isolée non randomisée, jamais « solide », quel que soit le type du tri.
+    monkeypatch.setitem(ap.JUGEMENT_VALIDE, "robins_i", True)
+    a, _ = ap.lire_appreciation(json.dumps(rep), document_non_randomise(), "meta_analyse", outil="robins_i")
+    assert a["jugement_valide"] is True and a["etiquette"] == "modere" and a["justification_etiquette"] is None
     assert ap.etiquette_candidate("meta_analyse", "elevee", outil="robins_i") == "modere"
     assert ap.etiquette_candidate("meta_analyse", "faible", outil="robins_i") == "preliminaire"
 
@@ -575,13 +618,13 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     assert pc["articles"] == len(lisibles) and pc["grille_du_corrige_retrouvee"] == len(lisibles)
     assert pc["plan_non_determine"] == 0 and pc["ecarts_avec_le_tri"] == 0
     # 2026-S45 : le plan quasi randomisé est jugé avec ROBINS-I depuis le 14 novembre 2026 (VS-D54), et non
-    # avec la grille du tri (RoB 2). L'IA simulée juge tout « faible » : l'étiquette candidate d'une étude non
-    # randomisée reste plafonnée à « modéré », comme celle d'un essai isolé.
+    # avec la grille du tri (RoB 2). L'IA simulée juge tout « faible », mais le jugement global de ROBINS-I n'est
+    # pas validé : l'étiquette reste « non évaluable » (VS-D77).
     quasi = next(f for f in detail["s45"] if f["pmid"] == "42968156")
     assert quasi["plan_etude"]["plan"] == "essai_quasi_randomise" and quasi["plan_etude"]["ecart_avec_le_tri"] is True
     assert quasi["grille"] == "robins_i" and quasi["grille_manquante"] is None
     assert quasi["appreciation"]["outil"] == "robins_i" and quasi["appreciation"]["jugement_outil"] == "faible"
-    assert quasi["appreciation"]["nature_du_jugement"] == "risque_de_biais" and quasi["appreciation"]["etiquette"] == "modere"
+    assert quasi["appreciation"]["nature_du_jugement"] == "risque_de_biais" and quasi["appreciation"]["etiquette"] == "non_evaluable"
     assert [d["domaine"] for d in quasi["appreciation"]["domaines"]] == [c for c, _ in ap.DOMAINES["robins_i"]]
     autre = next(f for f in detail["s45"] if f["pmid"] == "42972648")
     assert autre["grille"] == "quadas2" and autre["appreciation"]["outil"] == "quadas2"

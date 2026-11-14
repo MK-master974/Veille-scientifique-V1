@@ -272,7 +272,8 @@ def afficher_appreciation(titre, app, bilan):
         return
     f = app.get("fourchette")
     print(f"  outil {app['outil']} | jugement de l'outil : {app['jugement_outil']} | qualité : {app['jugement']} | "
-          f"étiquette candidate : {app['etiquette']}"
+          f"étiquette : {app['etiquette']} | jugement validé : {'oui' if app.get('jugement_valide') else 'non'} | "
+          f"points relevés : {len(appreciation.points_releves(app))}"
           + (f" | fourchette : {f['pire']} à {f['meilleur']}" if f else "")
           + (f" | GRADE rapporté : {app['grade_rapporte']['valeur']}" if app["grade_rapporte"] else ""))
     for d in app["domaines"]:
