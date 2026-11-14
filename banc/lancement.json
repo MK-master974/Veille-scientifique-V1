@@ -232,6 +232,18 @@
    "raison": "VS-D59 : mesure de la consigne ROBINS-I corrigée (domaine « écarts aux interventions ») sur les 7 articles neufs du lot 2 (vérifiés : lancement 43549959848), qui n'ont pas servi à trouver le défaut, et sur les deux essais quasi randomisés de 2026-S45 (descriptif). Seuils de VS-D56 inchangés. Dépense réelle attendue : environ 0,16 $.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D59) : corriger le domaine « écarts » et mesurer sur des articles neufs, dans les 0,52 $ restants de l'enveloppe de VS-D55. Dépensé avant ce lancement : 0,58 $ sur 1,10 $.",
    "budget_usd": 0.52
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "robins_i"
+   ],
+   "lot": 3,
+   "sans_ia": true,
+   "raison": "VS-D66, avant la mesure : lire les textes des 10 articles neufs du lot 3 (vérifiés : lancement 43558883716, 38 sur 38) et estimer le coût, sans aucun appel à l'IA, pour vérifier que le lancement tient dans le plafond de 0,34 $ (le contrôle avant chaque groupe de requêtes limite un lancement à une dizaine d'articles). Aucun coût.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D66) : un seul lancement, 10 articles neufs au plus, sans 2026-S45, plafond 0,34 $. Ce passage sans IA ne dépense rien.",
+   "budget_usd": 0.34
   }
  ]
 }
