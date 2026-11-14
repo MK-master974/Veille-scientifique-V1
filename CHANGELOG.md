@@ -64,6 +64,25 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   donne plus 50.
 
 ### Ajouté
+- Grille ROBINS-I (VS-D54) pour les essais quasi randomisés et les études interventionnelles non
+  randomisées, sur le modèle des autres grilles : sept domaines, tout jugement appuyé sur un passage
+  vérifié par le code, « pas d'information » lu « non rapporté », jugement global et fourchette
+  calculés par le code. Consigne à part (`appreciation_robins_i.txt`). Le plan d'étude envoie ces deux
+  plans vers ROBINS-I au lieu de « aucune grille applicable ». Format de la fiche v2 précisé après
+  déclaration au dépôt de coordination (CHG-2026-0011). Pas encore appelé par la veille.
+- Corpus de référence ROBINS-I (`banc/corpus/robins_i.json`) : 21 études sous licence CC BY, avec
+  le jugement ROBINS-I déjà publié dans un tableau par 10 revues sous licence CC BY, repérées sans IA
+  parmi 477 revues candidates ; licences, recopie et texte intégral vérifiés par le code (21 sur 21).
+  11 corrigés marqués contestés avant la mesure (études sans comparateur jugées « faible » ou
+  « modéré » pour la confusion). Nouveaux modes de `banc/assembler_chiffres.py` : repérage des
+  tableaux ROBINS-I et vérification du corpus.
+- Mesure de ROBINS-I (`banc/resultats/2026-11-14-robins-i.md`, 0,58 $) : seuil de VS-D56 non
+  atteint (1 jugement global identique sur 21, 0 sur 10 sans les corrigés contestés ; aucun jugement
+  trop favorable). Le moteur juge la confusion « sérieux » pour les 21 études et ne trouve rien sur
+  les écarts aux interventions pour 20 : en lecture stricte, « critique » partout. La grille est
+  stable (67 jugements par domaine sur 70 identiques d'un lancement à l'autre). Le plan d'étude classe
+  9 études du corpus « observationnel » : les revues appliquent ROBINS-I à des cohortes de patients
+  traités. Non branché sur la veille.
 - Phase 1, séance 7 (VS-D44) : le plan d'étude est établi avant le choix de la grille
   (`pipeline/plan_etude.py`, consigne `plan_etude.txt`) : liste fermée, passage vérifié par le
   code, grille déduite par une table. Quand aucune grille ne s'applique (essai quasi randomisé,

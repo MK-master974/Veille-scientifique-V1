@@ -19,6 +19,7 @@ Rien dans ce dossier n'intervient dans la veille hebdomadaire.
 | Cas « chiffres relevés » : 9 études diagnostiques, 10 méta-analyses, 1 revue systématique, 161 chiffres | Assemblés et vérifiés le 12 novembre 2026 : `corpus/chiffres_releves.json`. Mesure : `resultats/2026-11-12-chiffres-releves.md` |
 | Cas « qualité, articles lisibles en entier » : 16 revues (AMSTAR 2), 7 études diagnostiques (QUADAS-2), 2 essais (RoB 2) | Assemblés le 13 novembre 2026 : `corpus/qualite_lisible.json` |
 | Banc d'essai de l'appréciation et des catégories d'importance | Écrit le 13 novembre 2026 : `banc_appreciation.py`. Deux mesures faites : `resultats/2026-11-13-appreciation.md`. Séance 7, plan d'étude : deux cycles, plus l'étude des suppléments, `resultats/2026-11-13-seance-7.md` |
+| Cas « ROBINS-I » : 21 études non randomisées sous licence CC BY, jugement ROBINS-I d'une revue sous licence CC BY | Assemblés et vérifiés le 14 novembre 2026 : `corpus/robins_i.json`. Mesure et stabilité : `resultats/2026-11-14-robins-i.md` |
 
 ## Les cas « sens de l'effet »
 
