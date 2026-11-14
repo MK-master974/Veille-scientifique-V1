@@ -278,6 +278,20 @@
    "raison": "VS-D69 à VS-D71 : mesure du plan d'étude seul avec le plan « étude observationnelle d'une intervention » (commit dd20036), sur 86 articles : 38 du corpus ROBINS-I (seuil : ROBINS-I pour au moins 34), 6 témoins d'exposition (au plus 1 vers ROBINS-I), 25 du corpus « qualité », 7 études diagnostiques hors corpus et 10 fiches de 2026-S45 (pas plus d'un article de moins qu'à la mesure de VS-D51). Estimation prudente du banc : 0,66 $ (lancement 43561977924, sans dépense) ; dépense réelle attendue : environ 0,33 $.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D70) : enveloppe nouvelle de 0,35 $ qui s'ajoute aux 0,155 $ restants de VS-D55, un lancement, plafond 0,50 $. Dépensé avant ce lancement sur ces 0,505 $ : 0 $.",
    "budget_usd": 0.5
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "rob2",
+    "quadas2",
+    "amstar2"
+   ],
+   "lot": 2,
+   "sans_ia": true,
+   "raison": "VS-D74 et VS-D76, avant la mesure : lire les textes intégraux et estimer le coût de la mesure des grilles RoB 2, QUADAS-2 et AMSTAR 2 sur le lot 2 du corpus « qualité » (17 articles neufs jugés favorablement par des revues, vérifiés sans IA : lancement corpus-chiffres 43580024170). Aucun appel à l'IA, aucun coût.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D76) : enveloppe nouvelle de 0,60 $ qui s'ajoute aux 0,16 $ restants, plafond 0,75 $ pour un lancement. Ce passage sans IA ne dépense rien.",
+   "budget_usd": 0.75
   }
  ]
 }
