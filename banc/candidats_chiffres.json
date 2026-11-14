@@ -771,6 +771,114 @@
     "37131375",
     "30111372"
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "lire",
+   "raison": "VS-D54, étape 1 : lire, dans les 9 revues sources repérées (lancements 43544892135 et 43545601896), les lignes du tableau ROBINS-I qui portent sur les 20 études sous licence CC BY avec texte dans PubMed Central, pour écrire le corpus banc/corpus/robins_i.json. Aucune IA, aucun coût.",
+   "lectures": [
+    {
+     "source": "42502420",
+     "tableaux": [
+      "Table 4"
+     ],
+     "pmids": [
+      "41805956",
+      "30958831"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42255822",
+     "tableaux": [
+      "Table 3"
+     ],
+     "pmids": [
+      "41225388"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "42051847",
+     "tableaux": [
+      "Table 6"
+     ],
+     "pmids": [
+      "39262556",
+      "37461778"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "41356853",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "35892494",
+      "37495849"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "38081839",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "36189007"
+     ],
+     "lignes_entete": 2
+    },
+    {
+     "source": "38001455",
+     "tableaux": [
+      "Table 2"
+     ],
+     "pmids": [
+      "32635196",
+      "34356964",
+      "25416143"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "37620781",
+     "tableaux": [
+      "Table 5"
+     ],
+     "pmids": [
+      "33301484",
+      "33474622",
+      "34306530",
+      "36294929"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "36749760",
+     "tableaux": [
+      "Table 4"
+     ],
+     "pmids": [
+      "30345195",
+      "33495254"
+     ],
+     "lignes_entete": 3
+    },
+    {
+     "source": "34886407",
+     "tableaux": [
+      "Table A2"
+     ],
+     "pmids": [
+      "30208583",
+      "28678203",
+      "26927141"
+     ],
+     "lignes_entete": 3
+    }
+   ]
   }
  ]
 }
