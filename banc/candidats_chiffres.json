@@ -1519,6 +1519,11 @@
      "lignes_entete": 2
     }
    ]
+  },
+  {
+   "date": "2026-11-14",
+   "mode": "verifier_robins",
+   "raison": "VS-D59 : vérifier le corpus robins_i.json après l'ajout du lot 2 (7 articles neufs) : licences, recopie des niveaux ROBINS-I depuis le tableau source, lecture du texte intégral, pour les 28 études. Aucune IA, aucun coût."
   }
  ]
 }

@@ -505,6 +505,8 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
     lisibles = {c["pmid"] for nom in ("qualite_lisible.json", "robins_i.json")
                 for g in json.loads((RACINE / "banc/corpus" / nom).read_text(encoding="utf-8"))["groupes"] for c in g["cas"]}
     robins = {c["pmid"] for c in banc.charger_cas() if c["outil"] == "robins_i"}
+    semaine_s45 = {f.get("pmid") for f in json.loads((RACINE / "site/data/semaines/2026-S45.json").read_text(
+        encoding="utf-8"))["fiches"]}
     monkeypatch.setattr(banc.chaine, "recuperer_pubmed", lambda pmids, cfg: [
         {"id": f"pm{p}", "source": "pubmed", "pmid": p, "titre": f"Titre fabriqué {p}", "revue": "Revue fabriquée",
          "resume": PHRASE * 3, "types_publication": []} for p in pmids])
@@ -512,7 +514,7 @@ def test_le_banc_se_deroule_en_entier(monkeypatch, tmp_path, capsys):
                       if c["type_etude"] == "etude_diagnostique"} - {c["pmid"] for c in banc.charger_cas()})
     monkeypatch.setattr(banc.acces, "decrire_europe_pmc", lambda pmids, journal=print, paquet=20: (
         {p: {"pmcid": f"PMC{p}", "licence": "CC BY"} for p in pmids
-         if p in lisibles or p in diagnostiques or len(pmids) > 60}, 0))
+         if p in lisibles or p in diagnostiques or p in semaine_s45}, 0))
     monkeypatch.setattr(banc.acces, "texte_integral_xml", lambda pmcid: (article, "ok"))
     monkeypatch.setattr(banc.ia, "fournisseur", lambda cfg: IASimulee())
     monkeypatch.setattr(banc.time, "sleep", lambda s: None)

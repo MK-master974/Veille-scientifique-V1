@@ -3,7 +3,7 @@
  "assemble_le": "2026-11-14",
  "decision": "VS-D54",
  "principe": "Jugements ROBINS-I déjà portés par les auteurs d'une revue sous licence CC BY sur des études elles-mêmes sous licence CC BY, dont le texte intégral se lit dans PubMed Central (méthode VS-D32). Seuls des identifiants, des licences et des jugements sont repris : aucun texte d'article.",
- "etabli_par": "Session de développement du 14/11/2026. Revues repérées sans IA dans 352 des 477 candidates trouvées dans PubMed (workflow « Corpus, chiffres relevés », lancements 43544892135 et 43545601896) ; lignes de tableaux lues sans IA (lancements 43546071416 et 43546699778) ; plan de chaque étude lu par la session dans son résumé PubMed. Non relu par un humain.",
+ "etabli_par": "Session de développement du 14/11/2026. Revues repérées sans IA dans 352 des 477 candidates trouvées dans PubMed (workflow « Corpus, chiffres relevés », lancements 43544892135 et 43545601896) ; lignes de tableaux lues sans IA (lancements 43546071416 et 43546699778) ; plan de chaque étude lu par la session dans son résumé PubMed. Non relu par un humain. Lot 2 (VS-D59), articles neufs : seconde partie du troisième lot repérée (lancement 43549096623), lignes lues (lancement 43549746058).",
  "ecartees": [
   {
    "pmid": "41805956",
@@ -24,6 +24,21 @@
    "pmid": "37495849",
    "source": "41356853",
    "motif": "étude de précision diagnostique d'un logiciel, qui relève de QUADAS-2"
+  },
+  {
+   "pmid": "24052871",
+   "source": "42908849",
+   "motif": "essai randomisé jugé avec RoB 2"
+  },
+  {
+   "pmid": "40800130",
+   "source": "42318462",
+   "motif": "étude d'association (nombre de pas), sans intervention étudiée"
+  },
+  {
+   "pmid": "40957011",
+   "source": "42318462",
+   "motif": "étude d'utilisabilité, non jugée avec ROBINS-I par la revue"
   }
  ],
  "corriges_contestes": "Marqués avant toute mesure, sans être retirés (comme VS-D29), selon un seul critère : étude sans comparateur (aucun groupe sans l'intervention étudiée) que sa revue juge « faible » ou « modéré » pour la confusion. Le banc donne deux scores : sur tout le corpus, et sans ces corrigés.",
@@ -689,6 +704,227 @@
       "global": "modéré"
      },
      "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « modéré » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "39905568",
+    "pmcid": "PMC11792330",
+    "revue": "Systematic Reviews",
+    "annee": "2025",
+    "doi": "10.1186/s13643-025-02772-9",
+    "licence": "CC BY",
+    "tableau": "Table 1"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Exercice et fonction autonome cardiaque dans le diabète de type 2. Lot 2 : articles neufs, qui n'ont pas servi à trouver le défaut corrigé par VS-D59.",
+   "cas": [
+    {
+     "pmid": "35275239",
+     "pmcid": "PMC9076744",
+     "licence": "CC BY",
+     "reference": "Bönhof et al. 2022, Diabetologia",
+     "plan_selon_l_article": "deux groupes (diabète de type 2, tolérance normale au glucose) qui suivent tous deux l'entraînement",
+     "critere": "fonction autonome cardiovasculaire",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "faible"
+     },
+     "corrige_conteste": "étude sans comparateur (aucun groupe sans l'intervention étudiée), jugée « faible » pour la confusion : ROBINS-I porte sur les études qui comparent les effets de deux interventions ou plus (guide détaillé de ROBINS-I) ; sans comparateur, la confusion ne peut pas être écartée, et la consigne du moteur l'interdit (ni « faible » ni « modéré »)"
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "38994643",
+    "pmcid": "PMC11240111",
+    "revue": "The Clinical Respiratory Journal",
+    "annee": "2024",
+    "doi": "10.1111/crj.13798",
+    "licence": "CC BY",
+    "tableau": "TABLE 2"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Azvudine dans la COVID-19 : méta-analyse d'études observationnelles. Une colonne « année » précède les domaines. Lot 2 : articles neufs, qui n'ont pas servi à trouver le défaut corrigé par VS-D59.",
+   "cas": [
+    {
+     "pmid": "38177982",
+     "pmcid": "PMC10765789",
+     "licence": "CC BY",
+     "reference": "Zhou et al. 2024, BMC Infect Dis",
+     "plan_selon_l_article": "cohorte rétrospective, trois groupes de traitement",
+     "critere": "évolution clinique sous azvudine (aggravation, négativation virale)",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "38191304",
+     "pmcid": "PMC10773102",
+     "licence": "CC BY",
+     "reference": "Han et al. 2024, BMC Infect Dis",
+     "plan_selon_l_article": "cohorte rétrospective multicentrique, appariement sur le score de propension",
+     "critere": "décès et aggravation sous azvudine ou nirmatrelvir-ritonavir",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "37900159",
+     "pmcid": "PMC10603265",
+     "licence": "CC BY",
+     "reference": "Wei et al. 2023, Front Pharmacol",
+     "plan_selon_l_article": "cohorte rétrospective, appariement sur le score de propension",
+     "critere": "aggravation de la maladie sous azvudine ou nirmatrelvir-ritonavir",
+     "corrige": {
+      "confusion": "modéré",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "modéré"
+     }
+    },
+    {
+     "pmid": "37513031",
+     "pmcid": "PMC10383482",
+     "licence": "CC BY",
+     "reference": "Shao et al. 2023, Microorganisms",
+     "plan_selon_l_article": "cohorte de patients graves, plusieurs traitements comparés à leur absence",
+     "critere": "mortalité à 60 jours",
+     "corrige": {
+      "confusion": "sérieux",
+      "selection_des_participants": "faible",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "modéré",
+      "global": "sérieux"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "38970142",
+    "pmcid": "PMC11227242",
+    "revue": "Systematic Reviews",
+    "annee": "2024",
+    "doi": "10.1186/s13643-024-02600-6",
+    "licence": "CC BY",
+    "tableau": "Table 5"
+   },
+   "colonnes": [
+    "confusion",
+    "selection_des_participants",
+    "classement_des_interventions",
+    "ecarts_aux_interventions",
+    "donnees_manquantes",
+    "mesure_du_critere",
+    "selection_du_resultat",
+    "global"
+   ],
+   "note": "Arthrodèse lombaire (TLIF) assistée par robot ou guidée par fluoroscopie. Lot 2 : articles neufs, qui n'ont pas servi à trouver le défaut corrigé par VS-D59.",
+   "cas": [
+    {
+     "pmid": "36078918",
+     "pmcid": "PMC9456711",
+     "licence": "CC BY",
+     "reference": "Lai et al. 2022, J Clin Med",
+     "plan_selon_l_article": "cohorte rétrospective, deux techniques comparées",
+     "critere": "descellement des vis et résultats cliniques",
+     "corrige": {
+      "confusion": "faible",
+      "selection_des_participants": "modéré",
+      "classement_des_interventions": "faible",
+      "ecarts_aux_interventions": "faible",
+      "donnees_manquantes": "faible",
+      "mesure_du_critere": "faible",
+      "selection_du_resultat": "faible",
+      "global": "modéré"
+     }
+    }
+   ]
+  },
+  {
+   "outil": "ROBINS-I",
+   "type_etude": "interventionnel_non_randomise",
+   "lot": 2,
+   "source": {
+    "pmid": "42318462",
+    "pmcid": "PMC13271973",
+    "revue": "Frontiers in Oncology",
+    "annee": "2026",
+    "doi": "10.3389/fonc.2026.1832349",
+    "licence": "CC BY",
+    "tableau": "Table 2"
+   },
+   "colonnes": [
+    "global"
+   ],
+   "note": "Objets connectés et récupération après chirurgie du cancer du poumon. La revue ne donne que le jugement global ROBINS-I. Lot 2 : articles neufs, qui n'ont pas servi à trouver le défaut corrigé par VS-D59.",
+   "cas": [
+    {
+     "pmid": "39302678",
+     "pmcid": "PMC11415788",
+     "licence": "CC BY",
+     "reference": "Lee et al. 2024, JAMA Netw Open",
+     "plan_selon_l_article": "essai non randomisé avec témoins historiques (d'après la revue)",
+     "critere": "activité physique et récupération après chirurgie du cancer du poumon",
+     "corrige": {
+      "global": "sérieux"
+     }
     }
    ]
   }
