@@ -340,6 +340,15 @@ def reperer(demande):
             journal(entete + f"\n    {len(tabs)} tableaux ; {len(refs)} références, dont "
                     f"{sum(1 for r in refs.values() if r['pmid'])} avec PMID et "
                     f"{sum(1 for r in refs.values() if r['doi'])} avec DOI")
+            if genre == "robins_i":
+                # Où sont les jugements ROBINS-I ? Dans une figure (image, que le code ne lit pas), ou dans un
+                # tableau dont les lignes ne citent pas assez d'études identifiables.
+                figures = sum(1 for f in racine.iter() if _local(f.tag) == "fig"
+                              and re.search(r"robins|risk of bias", " ".join(f.itertext()), re.I))
+                sans_etudes = [t["label"] for t in tabs if score_donnees(t, genre)[0] >= min_mots
+                               and len({i for l in t["lignes"] for i in l["cites"] if i in refs}) < 2]
+                journal(f"    ROBINS-I : {figures} figure(s) de risque de biais (image) ; tableau(x) de jugements sans "
+                        f"études identifiées : {', '.join(sans_etudes) or 'aucun'}")
             for t in tabs:
                 t["lignes"] = [l for l in t["lignes"] if not l["douteux"]]
             retenus = [t for t in tabs if len({i for l in t["lignes"] for i in l["cites"] if i in refs}) >= 2
