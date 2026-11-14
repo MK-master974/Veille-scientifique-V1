@@ -244,6 +244,17 @@
    "raison": "VS-D66, avant la mesure : lire les textes des 10 articles neufs du lot 3 (vérifiés : lancement 43558883716, 38 sur 38) et estimer le coût, sans aucun appel à l'IA, pour vérifier que le lancement tient dans le plafond de 0,34 $ (le contrôle avant chaque groupe de requêtes limite un lancement à une dizaine d'articles). Aucun coût.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D66) : un seul lancement, 10 articles neufs au plus, sans 2026-S45, plafond 0,34 $. Ce passage sans IA ne dépense rien.",
    "budget_usd": 0.34
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "robins_i"
+   ],
+   "lot": 3,
+   "raison": "VS-D63 à VS-D66 : mesure de la consigne ROBINS-I corrigée pour le classement des interventions (VS-D64, empreinte 4ec71ef0) sur les 10 articles neufs du lot 3 (vérifiés : lancement 43558883716), qui n'ont servi ni à trouver le défaut ni à écrire la correction. Seuils de VS-D56 inchangés ; pour le domaine corrigé, sont comptés les jugements identiques, plus sévères, plus favorables, et ceux plus favorables de deux crans. Estimation prudente du banc : 0,34 $ (lancement 43559641076, sans dépense) ; dépense réelle attendue : environ 0,20 $.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D66) : un seul lancement, 10 articles neufs au plus, sans 2026-S45, plafond 0,34 $ (reste de l'enveloppe de VS-D55). Dépensé avant ce lancement : 0,76 $ sur 1,10 $.",
+   "budget_usd": 0.34
   }
  ]
 }
