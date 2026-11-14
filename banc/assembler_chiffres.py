@@ -656,7 +656,11 @@ def verifier_qualite(demande=None):
                       or (len(_titre_plat(r["titre"])) >= 25 and difflib.SequenceMatcher(
                           None, _titre_plat(r["titre"]), _titre_plat(a["titre"])).ratio() >= 0.92)}
             lignes = [l for t in voulus for l in lignes_d_une_etude(t, idents)]
-            lus = [[n for n in (niveau_qualite(outil, x, g.get("legende")) for x in l["cellules"]) if n] for l in lignes]
+            # « indices » : positions des cellules qui portent les niveaux, quand d'autres cellules de la ligne contiennent
+            # aussi des mots de niveau (« high-intensity », jugement ROBIS…).
+            cellules = (lambda l: [l["cellules"][i] for i in g["indices"] if i < len(l["cellules"])]) if g.get("indices") \
+                else (lambda l: l["cellules"])
+            lus = [[n for n in (niveau_qualite(outil, x, g.get("legende")) for x in cellules(l)) if n] for l in lignes]
             attendu = [valeur_du_corrige(c["corrige"], k) for k in g["colonnes"]]
             recopie = attendu in lus
             bilan["recopie conforme" if recopie else "recopie À REVOIR"] += 1
