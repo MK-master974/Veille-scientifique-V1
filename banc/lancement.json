@@ -216,6 +216,22 @@
    "raison": "VS-D57, second lancement : stabilité de ROBINS-I sur les 10 études du corpus dont le corrigé n'est pas contesté, mêmes consignes que le premier lancement (43547764658, 0,40 $). Sert à savoir quelle part des jugements change d'un lancement à l'autre. Dépense réelle attendue : environ 0,17 $.",
    "accord": "Marvin, questionnaire du 14/11/2026 (VS-D57) : second lancement de stabilité sur les 10 corrigés non contestés, plafond égal au reste de l'enveloppe. Dépensé avant ce lancement : 0,40 $ sur 1,10 $ ; reste 0,70 $.",
    "budget_usd": 0.7
+  },
+  {
+   "date": "2026-11-14",
+   "banc": "appreciation",
+   "outils": [
+    "robins_i"
+   ],
+   "lot": 2,
+   "s45": 2,
+   "s45_pmids": [
+    "42980682",
+    "42993769"
+   ],
+   "raison": "VS-D59 : mesure de la consigne ROBINS-I corrigée (domaine « écarts aux interventions ») sur les 7 articles neufs du lot 2 (vérifiés : lancement 43549959848), qui n'ont pas servi à trouver le défaut, et sur les deux essais quasi randomisés de 2026-S45 (descriptif). Seuils de VS-D56 inchangés. Dépense réelle attendue : environ 0,16 $.",
+   "accord": "Marvin, questionnaire du 14/11/2026 (VS-D59) : corriger le domaine « écarts » et mesurer sur des articles neufs, dans les 0,52 $ restants de l'enveloppe de VS-D55. Dépensé avant ce lancement : 0,58 $ sur 1,10 $.",
+   "budget_usd": 0.52
   }
  ]
 }
