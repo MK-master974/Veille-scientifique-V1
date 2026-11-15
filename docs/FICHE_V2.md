@@ -164,8 +164,9 @@ qui ne sont pas publiées.
 | `domaines` | Liste. Pour chaque domaine de l'outil : `domaine` (clé prise dans la liste fermée de l'outil), `jugement` (valeurs de l'outil, `non_evaluable`, ou `sans_objet` pour les trois questions d'AMSTAR 2 réservées aux méta-analyses ; pour AMSTAR 2 et ROBINS-I aussi `non_rapporte` : le texte intégral ne dit rien, ce qui n'est pas un défaut ; c'est la case « pas d'information » de ROBINS-I. `non` pour AMSTAR 2, `serieux` ou `critique` pour ROBINS-I exigent un passage qui montre le défaut), `justification`, `source` (`emplacement`, `passage`) |
 | `precision_statistique` | Intervalles de confiance et taille d'effet, seulement s'ils figurent dans l'article ; aucun calcul inventé |
 | `grade_rapporte` | Certitude GRADE telle que les auteurs la donnent ; `null` sinon. Jamais calculée pour une étude isolée |
-| `etiquette` | Étiquette de façade : `solide`, `modere`, `preliminaire` ou `non_evaluable` (VS-D14) |
-| `justification_etiquette` | Une phrase |
+| `jugement_valide` | `true` si le jugement global de cette grille a passé son seuil au banc d'essai, `false` sinon. Fixé grille par grille par le code ; ne passe à `true` que par une décision du porteur du projet, après une mesure qui atteint le seuil fixé avant elle (VS-D77). Au 14 novembre 2026 : `false` pour toutes les grilles. Avec `false`, `jugement`, `jugement_outil` et `fourchette` restent remplis, mais ne doivent pas être présentés comme sûrs |
+| `etiquette` | Étiquette de façade : `solide`, `modere`, `preliminaire` ou `non_evaluable` (VS-D14). `non_evaluable` quand `jugement_valide` vaut `false` : l'étiquette ne s'appuie pas sur un jugement global non validé |
+| `justification_etiquette` | Une phrase. Quand `jugement_valide` vaut `false`, elle le dit |
 
 `non_evaluable` signifie « ce qui a été lu ne permet pas de juger ». Ce n'est pas une preuve
 faible.
@@ -181,11 +182,18 @@ Domaines : 5 pour RoB 2, 7 pour ROBINS-I, 7 pour QUADAS-2 (4 de risque de biais,
 (`jugement_outil`, forme de `domaines`, listes fermées) ont été déclarées au dépôt de coordination
 avant d'être inscrites ici (CHG-2026-0009). Le plan d'étude, `outil: aucun`, `non_rapporte`, la
 fourchette et `nature_du_jugement` l'ont été de même (CHG-2026-0010), puis la grille ROBINS-I
-(CHG-2026-0011).
+(CHG-2026-0011), puis `jugement_valide` (CHG-2026-0013).
+
+**Points relevés** (VS-D77). Tant que `jugement_valide` vaut `false`, la fiche montre, à la place
+d'une note globale, les points relevés : les domaines au jugement défavorable qui ont un passage
+vérifié, avec leur justification, et la fourchette du jugement global. Ils se lisent dans
+`domaines` (fonction `points_releves` de `pipeline/appreciation.py`) : aucun champ de plus. Un
+domaine non évalué, non rapporté ou sans objet n'en est pas un : un silence n'est pas un défaut.
 
 La règle qui attribue l'étiquette a été mesurée au banc d'essai en séance 6 : elle reste
-candidate, et sa décision est reportée (VS-D41). Le jugement global n'est pas encore assez fiable
-pour être publié : voir [les résultats](../banc/resultats/2026-11-13-appreciation.md).
+candidate, et sa décision est reportée (VS-D41). Le jugement global n'est validé pour aucune grille.
+RoB 2, QUADAS-2 et AMSTAR 2 retrouvent le jugement des revues pour 14 articles sur 42, quand une
+réponse fixe en retrouve 20 : voir [les résultats](../banc/resultats/2026-11-14-quatre-grilles-lot-2.md).
 
 ### `synthese` (IA)
 
@@ -314,7 +322,7 @@ sont montrés.
                     "outil": "amstar2", "nature_du_jugement": "fiabilite_de_la_methode",
                     "jugement": "non_evaluable", "jugement_outil": "non_evaluable",
                     "fourchette": { "pire": "faible", "meilleur": "elevee" },
-                    "grade_rapporte": null, "etiquette": "non_evaluable" },
+                    "grade_rapporte": null, "jugement_valide": false, "etiquette": "non_evaluable" },
   "synthese": {
     "titre_fr": "Efficacité de l’entraînement neuromusculaire dans la rééducation de l’arthrose du genou : revue systématique et méta-analyse d’essais randomisés",
     "entete": {
@@ -333,5 +341,6 @@ sont montrés.
 - Cahier des charges de Veille Santé, chapitres 5.3, 5.4, 5.8, 7.5, 9, 26.1 à 26.3, 26.9 et 29.3.
 - Résultats du banc d'essai : [../banc/resultats/](../banc/resultats/).
 - Déclarations au dépôt de coordination : CHG-2026-0004 (format), CHG-2026-0007 (précisions du
-  bloc `extraction`), CHG-2026-0009, CHG-2026-0010 et CHG-2026-0011 (précisions du bloc `appreciation`).
+  bloc `extraction`), CHG-2026-0009, CHG-2026-0010, CHG-2026-0011 et CHG-2026-0013 (précisions du
+  bloc `appreciation`).
 - Contrat `vs-evalys-connaissance` du dépôt de coordination, version 0 (brouillon).
