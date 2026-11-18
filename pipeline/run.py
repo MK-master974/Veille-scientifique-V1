@@ -26,6 +26,45 @@ class Echec(RuntimeError):
     """Erreur qui doit faire échouer le lancement (GitHub envoie alors un e-mail d'alerte)."""
 
 
+def decouper_en_paquets(requetes, jetons_max):
+    """Découpe des requêtes en paquets dont la taille estimée ne dépasse pas jetons_max.
+
+    Le fournisseur refuse un lot quand sa file d'attente dépasse un plafond de jetons : la veille
+    2026-S46 n'a pas été publiée pour cette raison. L'ordre des requêtes est gardé ; une requête
+    plus grosse que le plafond part seule.
+    """
+    if not jetons_max:
+        return [list(requetes)]
+    tailles = [ia.estimer_jetons(r["consigne"] + r["contenu"]) for r in requetes]
+
+    def remplir(limite):
+        paquets, courant, taille = [], [], 0
+        for r, t in zip(requetes, tailles):
+            if courant and taille + t > limite:
+                paquets.append(courant)
+                courant, taille = [], 0
+            courant.append(r)
+            taille += t
+        if courant:
+            paquets.append(courant)
+        return paquets
+
+    # Autant de paquets que nécessaire, de tailles voisines : pas de petit lot en fin de liste,
+    # qui coûterait une attente de plus pour quelques requêtes.
+    au_plus_juste = remplir(jetons_max)
+    nombre = len(au_plus_juste)
+    if nombre > 1:
+        cible, cumul = sum(tailles) / nombre, 0
+        equilibres = [[] for _ in range(nombre)]
+        for r, t in zip(requetes, tailles):
+            equilibres[min(nombre - 1, int((cumul + t / 2) / cible))].append(r)
+            cumul += t
+        poids = [sum(ia.estimer_jetons(r["consigne"] + r["contenu"]) for r in p) for p in equilibres]
+        if all(equilibres) and max(poids) <= jetons_max:
+            return equilibres
+    return au_plus_juste
+
+
 class Veille:
     def __init__(self, semaine, cfg=None, catalogue=None, dossier_site=None, maintenant=None, echeance=True):
         self.semaine = semaine
@@ -96,48 +135,100 @@ class Veille:
         mode = self.mode()
         lots = self.etat["lots"]
         if mode == "direct":
-            res = self.fournisseur.direct(requetes, modele, self.cfg["ia"].get("requetes_simultanees", 8))
-            manquants = [r for r in requetes if res.get(r["id"], (None,))[0] is None]
-            if manquants:
-                self.journal(f"{nom} : {len(manquants)} réponse(s) manquante(s), nouvel essai")
-                res.update(self.fournisseur.direct(manquants, modele, 4))
-            self._compter(nom, res, modele, mode)
+            res = self._en_direct(nom, requetes, modele)
             if not tolerant:
                 self._verifier_taux(nom, requetes, res)
             return res
 
         info = lots.get(nom)
         if info is None:
+            paquets = decouper_en_paquets(requetes, self._jetons_max_par_lot(modele))
             estime = ia.estimer_cout(requetes, modele, prix, sortie_moyenne, mode)
-            lot_id = self.fournisseur.soumettre_lot(requetes, modele, f"veille {self.semaine.id} {nom}")
-            lots[nom] = {"id": lot_id, "soumis_le": self.maintenant().isoformat(timespec="seconds"),
-                         "tentatives": 1, "nb": len(requetes), "cout_estime": round(estime, 3)}
-            self.journal(f"{nom} : lot de {len(requetes)} requêtes soumis ({lot_id}), "
-                         f"coût estimé {estime:.2f} $")
+            info = lots[nom] = {
+                "paquets": [{"ids": [r["id"] for r in p], "etat": "attente", "tentatives": 0} for p in paquets],
+                "soumis_le": self.maintenant().isoformat(timespec="seconds"),
+                "nb": len(requetes), "cout_estime": round(estime, 3)}
+            if len(paquets) > 1:
+                self.journal(f"{nom} : {len(requetes)} requêtes en {len(paquets)} lots, pour rester sous le "
+                             f"plafond de file d'attente du fournisseur, coût estimé {estime:.2f} $")
+        elif "paquets" not in info:
+            # État enregistré avant le découpage en lots : un seul lot, décrit par sa clé « id ».
+            info["paquets"] = [{"ids": [r["id"] for r in requetes], "etat": "soumis",
+                                "id": info.pop("id"), "tentatives": info.pop("tentatives", 1)}]
+
+        par_id = {r["id"]: r for r in requetes}
+        directs = {k: tuple(v) for k, v in self._lire(f"direct-{nom}.json", {}).items()}
+        nb = len(info["paquets"])
+        for i, paquet in enumerate(info["paquets"]):
+            if paquet["etat"] in ("termine", "direct"):
+                continue
+            reqs = [par_id[x] for x in paquet["ids"] if x in par_id]
+            rang = f"lot {i + 1}/{nb}" if nb > 1 else "lot"
+            if paquet["etat"] == "attente":
+                # Un seul lot en file d'attente à la fois : le suivant part quand le précédent est fini.
+                paquet["id"] = self.fournisseur.soumettre_lot(reqs, modele, f"veille {self.semaine.id} {nom}")
+                paquet["etat"], paquet["tentatives"] = "soumis", 1
+                suffixe = f", coût estimé {info['cout_estime']:.2f} $" if nb == 1 else ""
+                self.journal(f"{nom} : {rang} de {len(reqs)} requêtes soumis ({paquet['id']}){suffixe}")
+                self.sauver()
+                return None
+            statut, details = self.fournisseur.etat_lot(paquet["id"])
+            if statut == "en_cours":
+                compte = details.get("request_counts") or {}
+                self.journal(f"{nom} : {rang} en cours ({compte.get('completed', '?')}/{compte.get('total', '?')})")
+                return None
+            if statut == "echec":
+                if paquet["tentatives"] >= 2:
+                    # Un lot refusé deux fois ne doit pas empêcher la publication : ses requêtes
+                    # partent en traitement immédiat, au prix plein.
+                    self.journal(f"{nom} : {rang} refusé deux fois ({details.get('status')}, "
+                                 f"{details.get('errors')}) ; {len(reqs)} requêtes traitées en direct, "
+                                 f"au prix plein")
+                    res = self._en_direct(nom, reqs, modele)
+                    directs.update(res)
+                    self._ecrire(f"direct-{nom}.json", {k: list(v) for k, v in directs.items()})
+                    paquet["etat"] = "direct"
+                    self.sauver()
+                    continue
+                self.journal(f"{nom} : {rang} en échec ({details.get('status')}), nouvelle soumission")
+                paquet["id"] = self.fournisseur.soumettre_lot(reqs, modele, f"veille {self.semaine.id} {nom}")
+                paquet["tentatives"] += 1
+                self.sauver()
+                return None
+            paquet["etat"] = "termine"
+            if nb > 1:
+                self.journal(f"{nom} : {rang} terminé")
             self.sauver()
-            return None
-        statut, details = self.fournisseur.etat_lot(info["id"])
-        if statut == "en_cours":
-            compte = details.get("request_counts") or {}
-            self.journal(f"{nom} : lot en cours ({compte.get('completed', '?')}/{compte.get('total', '?')})")
-            return None
-        if statut == "echec":
-            if info["tentatives"] >= 2:
-                raise Echec(f"{nom} : le lot a échoué deux fois ({details.get('status')}, "
-                            f"{details.get('errors')})")
-            self.journal(f"{nom} : lot en échec ({details.get('status')}), nouvelle soumission")
-            info["id"] = self.fournisseur.soumettre_lot(requetes, modele, f"veille {self.semaine.id} {nom}")
-            info["tentatives"] += 1
-            self.sauver()
-            return None
-        res = self.fournisseur.resultats_lot(details)
+
+        res = {}
+        for paquet in info["paquets"]:
+            if paquet["etat"] == "termine":
+                res.update(self.fournisseur.resultats_lot(self.fournisseur.etat_lot(paquet["id"])[1]))
+        self._compter(nom, res, modele, mode)
+        res.update(directs)
         manquants = [r for r in requetes if res.get(r["id"], (None,))[0] is None]
         if manquants:
             self.journal(f"{nom} : {len(manquants)} réponse(s) manquante(s) dans le lot, reprise en direct")
-            res.update(self.fournisseur.direct(manquants, modele, 4))
-        self._compter(nom, res, modele, mode)
+            repris = self.fournisseur.direct(manquants, modele, 4)
+            self._compter(nom, repris, modele, "direct")
+            res.update(repris)
         if not tolerant:
             self._verifier_taux(nom, requetes, res)
+        return res
+
+    def _jetons_max_par_lot(self, modele):
+        """Taille maximale d'un lot pour ce modèle, en jetons estimés ; None : pas de découpage."""
+        reglage = self.cfg["ia"].get("jetons_max_par_lot")
+        return reglage.get(modele) if isinstance(reglage, dict) else reglage
+
+    def _en_direct(self, nom, requetes, modele):
+        """Traitement immédiat, avec un second essai pour les réponses manquantes."""
+        res = self.fournisseur.direct(requetes, modele, self.cfg["ia"].get("requetes_simultanees", 8))
+        manquants = [r for r in requetes if res.get(r["id"], (None,))[0] is None]
+        if manquants:
+            self.journal(f"{nom} : {len(manquants)} réponse(s) manquante(s), nouvel essai")
+            res.update(self.fournisseur.direct(manquants, modele, 4))
+        self._compter(nom, res, modele, "direct")
         return res
 
     def _verifier_taux(self, nom, requetes, res):

@@ -104,6 +104,7 @@ Les fichiers de travail sont dans `travail/<semaine>/` :
 | `references.json` | Références collectées, avec leur résumé |
 | `tri.json` | Décision du tri pour chaque référence, caractéristiques relevées, étiquette de départ |
 | `redaction.json` | Réponses brutes de l'IA de rédaction |
+| `direct-<étape>.json` | Réponses obtenues en mode direct après le refus d'un lot, le temps que l'étape se termine |
 | `fiches.json` | Fiches conformes |
 | `rejets.json` | Fiches écartées au contrôle, avec leurs motifs |
 | `syntheses.json` | Synthèses par sous-champ |
@@ -163,9 +164,17 @@ le dossier est aussi gardé 90 jours en artefact (voir « Workflows »).
 
 - **Requêtes** : la consigne est le message système, la référence est le message utilisateur.
   Réponse demandée en JSON ; elle est lue même entourée de texte ou de balises de code.
-- **Traitement différé (par défaut, OpenAI)** : un fichier de requêtes par étape, résultats sous
-  24 heures, à moitié prix. Un lot en échec est resoumis une fois ; au second échec, le lancement
-  échoue. Les réponses manquantes d'un lot terminé sont reprises en mode direct.
+- **Traitement différé (par défaut, OpenAI)** : des fichiers de requêtes, appelés lots, résultats
+  sous 24 heures, à moitié prix. Les réponses manquantes d'un lot terminé sont reprises en mode
+  direct.
+  - **Découpage** : le fournisseur refuse un lot quand sa file d'attente dépasse un plafond de
+    jetons. Une étape est donc découpée en lots de tailles voisines, dont aucun ne dépasse
+    `jetons_max_par_lot` (réglé par modèle, en jetons estimés). Un seul lot est en file à la fois :
+    le suivant part quand le précédent est terminé.
+  - **Lot refusé** : un lot en échec est resoumis une fois. Au second échec, ses requêtes partent
+    en mode direct, au prix plein, et la veille continue. Le journal le signale.
+  - Avant le 18 novembre 2026, toute la rédaction partait en un seul lot et un second échec
+    arrêtait la veille : la semaine 2026-S46 n'a pas été publiée pour cette raison.
 - **Mode direct** : 8 requêtes en parallèle. Utilisé par les lancements manuels « Tout traiter en
   une fois » et par Mistral.
 - **Garde-fous** :
