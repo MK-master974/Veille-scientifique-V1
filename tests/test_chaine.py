@@ -145,3 +145,112 @@ def test_panne_ia_declenche_une_alerte(env, monkeypatch):
     with pytest.raises(run.Echec, match="modèle inconnu"):
         v.avancer()
     assert not (env / "data" / "semaines" / "2026-S44.json").exists()
+
+
+# --- Plafond de file d'attente du fournisseur (panne du 16 novembre 2026, semaine 2026-S46) -----
+
+class FileLimitee(FauxLot):
+    """Comme OpenAI le 16/11/2026 : un lot plus gros que le plafond de la file d'attente est refusé."""
+    plafond = 0
+    etape = None          # si renseignée, seuls les lots de cette étape sont soumis au plafond
+    en_file = []          # nombre de lots déjà en attente au moment de chaque soumission
+
+    @staticmethod
+    def taille(requetes):
+        return sum(ia.estimer_jetons(r["consigne"] + r["contenu"]) for r in requetes)
+
+    def soumettre_lot(self, requetes, modele, description=""):
+        FileLimitee.en_file.append(sum(1 for lot in FauxLot.soumis.values() if lot["vu"] <= 1 and not lot.get("refuse")))
+        return super().soumettre_lot(requetes, modele, description)
+
+    def etat_lot(self, lot_id):
+        lot = FauxLot.soumis[lot_id]
+        concerne = self.etape is None or lot["requetes"][0]["id"].startswith(self.etape)
+        if concerne and self.taille(lot["requetes"]) > self.plafond:
+            lot["refuse"] = True
+            return "echec", {"id": lot_id, "status": "failed",
+                             "errors": {"data": [{"code": "token_limit_exceeded"}]}}
+        return super().etat_lot(lot_id)
+
+
+def derouler(site, **reglages):
+    """Fait tourner la veille d'heure en heure, comme GitHub Actions, jusqu'à la fin ou 40 lancements."""
+    v = None
+    for n in range(40):
+        v = nouvelle_veille(site, maintenant=datetime(2026, 11, 2 + n // 14, 6 + n % 14, 17, tzinfo=TZ),
+                            mode="lot", **reglages)
+        v.avancer()
+        if v.etat["etape"] == "termine":
+            break
+    return v
+
+
+def test_decouper_en_paquets():
+    reqs = [{"id": str(n), "consigne": "c" * 30, "contenu": "x" * 270} for n in range(10)]   # 100 jetons chacune
+    assert [len(p) for p in run.decouper_en_paquets(reqs, 250)] == [2, 2, 2, 2, 2]
+    assert [len(p) for p in run.decouper_en_paquets(reqs, 1000)] == [10]
+    assert [len(p) for p in run.decouper_en_paquets(reqs, None)] == [10]
+    assert [len(p) for p in run.decouper_en_paquets(reqs, 50)] == [1] * 10      # une requête trop grosse part seule
+    assert [len(p) for p in run.decouper_en_paquets(reqs, 600)] == [5, 5]       # tailles voisines, pas [6, 4]
+    assert [len(p) for p in run.decouper_en_paquets(reqs, 900)] == [5, 5]       # pas [9, 1]
+    assert all(sum(100 for _ in p) <= 600 for p in run.decouper_en_paquets(reqs, 600))
+    assert [r["id"] for p in run.decouper_en_paquets(reqs, 250) for r in p] == [str(n) for n in range(10)]
+
+
+def test_gros_lot_decoupe_sous_le_plafond(env, monkeypatch):
+    """Le lot de rédaction dépasse le plafond : découpé en lots plus petits, il passe au tarif différé."""
+    FauxLot.soumis, FileLimitee.en_file = {}, []
+    monkeypatch.setattr(ia, "fournisseur", lambda cfg: FileLimitee(str(REPONSES)))
+    monkeypatch.setattr(run.collecte, "collecter", lambda s, c, journal=print: list(REFS))
+    modele = charger_config()["ia"]["modele_redaction"]
+    # Taille d'une requête de rédaction de la démonstration, pour régler plafond et découpage.
+    v0 = nouvelle_veille(env, mode="direct")
+    while v0.etat["etape"] != "redaction":
+        getattr(v0, f"etape_{v0.etat['etape']}")()
+    refs = {r["id"]: r for r in v0._lire("references.json", [])}
+    selection, _ = run.etapes.selectionner(v0._lire("tri.json", {}), 1200)
+    reqs = run.etapes.requetes_redaction(selection, refs, v0.libelles, run.charger_consigne("redaction"))
+    assert len(reqs) >= 2
+    plus_grosse, total = max(FileLimitee.taille([r]) for r in reqs), FileLimitee.taille(reqs)
+    for f in (env.parent / "travail").rglob("*"):
+        if f.is_file():
+            f.unlink()
+
+    FileLimitee.plafond = max(plus_grosse, total - 1)          # le lot entier ne passe pas
+    FileLimitee.etape = "redaction"
+    v = derouler(env, jetons_max_par_lot={modele: plus_grosse})
+    assert v.etat["etape"] == "termine"
+    assert json.loads((env / "data" / "semaines" / "2026-S44.json").read_text())["fiches"]
+    assert len(v.etat["lots"]["redaction"]["paquets"]) >= 2
+    assert all(p["etat"] == "termine" for p in v.etat["lots"]["redaction"]["paquets"])
+    assert not any("prix plein" in ligne for ligne in v.etat["journal"])
+    assert max(FileLimitee.en_file) == 0                        # jamais deux lots en file en même temps
+
+
+def test_lot_refuse_deux_fois_passe_en_direct(env, monkeypatch):
+    """Panne du 16/11/2026 : un lot refusé deux fois ne fait plus échouer la veille."""
+    FauxLot.soumis, FileLimitee.en_file = {}, []
+    FileLimitee.plafond, FileLimitee.etape = 0, None            # tout lot est refusé
+    monkeypatch.setattr(ia, "fournisseur", lambda cfg: FileLimitee(str(REPONSES)))
+    v = derouler(env)
+    assert v.etat["etape"] == "termine"
+    assert json.loads((env / "data" / "semaines" / "2026-S44.json").read_text())["fiches"]
+    assert v.etat["lots"]["redaction"]["paquets"][0]["etat"] == "direct"
+    assert any("redaction" in ligne and "prix plein" in ligne for ligne in v.etat["journal"])
+
+
+def test_etat_d_un_ancien_lancement_reste_lisible(env, monkeypatch):
+    """Un état enregistré avant le découpage (un seul lot, clé « id ») est repris sans erreur."""
+    FauxLot.soumis, FileLimitee.en_file = {}, []
+    FileLimitee.plafond, FileLimitee.etape = 0, None
+    monkeypatch.setattr(ia, "fournisseur", lambda cfg: FileLimitee(str(REPONSES)))
+    v = nouvelle_veille(env, maintenant=datetime(2026, 11, 2, 6, 17, tzinfo=TZ), mode="lot")
+    v.avancer()                                                 # collecte, lot de tri soumis
+    lot = v.etat["lots"]["tri"]
+    ancien = {"id": lot["paquets"][0]["id"], "tentatives": 2, "nb": lot["nb"],
+              "soumis_le": lot["soumis_le"], "cout_estime": lot["cout_estime"]}
+    v.etat["lots"]["tri"] = ancien
+    v.sauver()
+    v = derouler(env)
+    assert v.etat["etape"] == "termine"
+    assert v.etat["lots"]["tri"]["paquets"][0]["etat"] == "direct"

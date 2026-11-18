@@ -6,6 +6,12 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
 ## Non publié
 
 ### Corrigé
+- Moteur de la veille : la semaine 2026-S46 n'a pas été publiée. Le 16 novembre 2026, le
+  fournisseur d'IA a refusé deux fois le lot de rédaction (949 études), trop gros pour sa file
+  d'attente, et le moteur s'est arrêté. Désormais chaque étape est découpée en lots plus petits
+  (`ia.jetons_max_par_lot` dans `config.json`), envoyés l'un après l'autre, et un lot refusé deux
+  fois est traité en mode direct, au prix plein, au lieu d'arrêter la veille (VS-D81). La semaine
+  2026-S46 reste non publiée (VS-D80).
 - Registre : le retour sur les dix fiches venait d'une IA (ChatGPT), pas d'un comité d'experts. Correction tracée dans VS-D46 et en tête des deux comptes rendus, sans rien effacer (VS-D52).
 
 ### Modifié

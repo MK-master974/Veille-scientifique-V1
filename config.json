@@ -17,7 +17,8 @@
       "mistral-small-latest": [0.15, 0.60],
       "mistral-large-latest": [0.50, 1.50]
     },
-    "requetes_simultanees": 8
+    "requetes_simultanees": 8,
+    "jetons_max_par_lot": {"gpt-6.1-terra": 1200000}
   },
   "collecte": {
     "pubmed": true,
