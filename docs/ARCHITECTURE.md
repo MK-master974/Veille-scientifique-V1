@@ -171,8 +171,11 @@ le dossier est aussi gardé 90 jours en artefact (voir « Workflows »).
     jetons. Une étape est donc découpée en lots de tailles voisines, dont aucun ne dépasse
     `jetons_max_par_lot` (réglé par modèle, en jetons estimés). Un seul lot est en file à la fois :
     le suivant part quand le précédent est terminé.
-  - **Lot refusé** : un lot en échec est resoumis une fois. Au second échec, ses requêtes partent
-    en mode direct, au prix plein, et la veille continue. Le journal le signale.
+  - **Lot refusé pour dépassement du plafond** : il est coupé en deux lots, au même tarif.
+  - **Autre échec, ou soumission refusée** : un nouvel essai, puis les requêtes du lot partent en
+    mode direct, au prix plein, et la veille continue. Le journal le signale, GitHub affiche un
+    avertissement, et le nombre de requêtes concernées est noté dans les statistiques
+    (`requetes_en_direct_apres_refus`). Ce repli n'est pas borné par le budget hebdomadaire.
   - Avant le 18 novembre 2026, toute la rédaction partait en un seul lot et un second échec
     arrêtait la veille : la semaine 2026-S46 n'a pas été publiée pour cette raison.
 - **Mode direct** : 8 requêtes en parallèle. Utilisé par les lancements manuels « Tout traiter en

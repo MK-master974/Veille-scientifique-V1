@@ -254,3 +254,54 @@ def test_etat_d_un_ancien_lancement_reste_lisible(env, monkeypatch):
     v = derouler(env)
     assert v.etat["etape"] == "termine"
     assert v.etat["lots"]["tri"]["paquets"][0]["etat"] == "direct"
+
+
+def test_plafond_depasse_reconnu():
+    assert run._plafond_depasse({"errors": {"data": [{"code": "token_limit_exceeded"}]}})
+    assert not run._plafond_depasse({"errors": {"data": [{"code": "autre"}]}})
+    assert not run._plafond_depasse({"errors": None}) and not run._plafond_depasse({})
+    assert not run._plafond_depasse({"errors": "texte inattendu"})
+
+
+def test_lot_trop_gros_coupe_en_deux_sans_surcout(env, monkeypatch):
+    """Sans réglage de taille, un lot refusé pour dépassement du plafond est coupé en deux et passe."""
+    FauxLot.soumis, FileLimitee.en_file = {}, []
+    FileLimitee.etape = "redaction"
+    monkeypatch.setattr(ia, "fournisseur", lambda cfg: FileLimitee(str(REPONSES)))
+    # Plafond : la moitié du lot de rédaction passe, le lot entier non.
+    v0 = nouvelle_veille(env, mode="direct")
+    while v0.etat["etape"] != "redaction":
+        getattr(v0, f"etape_{v0.etat['etape']}")()
+    refs = {r["id"]: r for r in v0._lire("references.json", [])}
+    selection, _ = run.etapes.selectionner(v0._lire("tri.json", {}), 1200)
+    reqs = run.etapes.requetes_redaction(selection, refs, v0.libelles, run.charger_consigne("redaction"))
+    moitie = len(reqs) // 2
+    FileLimitee.plafond = max(FileLimitee.taille(reqs[:moitie]), FileLimitee.taille(reqs[moitie:]))
+    assert FileLimitee.taille(reqs) > FileLimitee.plafond
+    for f in (env.parent / "travail").rglob("*"):
+        if f.is_file():
+            f.unlink()
+
+    v = derouler(env, jetons_max_par_lot=None)
+    assert v.etat["etape"] == "termine"
+    paquets = v.etat["lots"]["redaction"]["paquets"]
+    assert [p["etat"] for p in paquets] == ["termine", "termine"] and all(p["divise"] for p in paquets)
+    assert any("coupé en deux lots" in ligne for ligne in v.etat["journal"])
+    assert not any("prix plein" in ligne for ligne in v.etat["journal"])
+    assert "requetes_en_direct_apres_refus" not in v.etat["stats"]
+
+
+def test_soumission_refusee_deux_fois_passe_en_direct(env, monkeypatch):
+    """Le fournisseur refuse la création même du lot : la veille ne reste pas bloquée."""
+    class SoumissionRefusee(FauxLot):
+        def soumettre_lot(self, requetes, modele, description=""):
+            raise RuntimeError("HTTP 400 sur la création du lot")
+
+    FauxLot.soumis = {}
+    monkeypatch.setattr(ia, "fournisseur", lambda cfg: SoumissionRefusee(str(REPONSES)))
+    v = derouler(env)
+    assert v.etat["etape"] == "termine"
+    assert json.loads((env / "data" / "semaines" / "2026-S44.json").read_text())["fiches"]
+    assert v.etat["lots"]["redaction"]["paquets"][0]["etat"] == "direct"
+    assert any("soumission refusée" in ligne for ligne in v.etat["journal"])
+    assert v.etat["stats"]["requetes_en_direct_apres_refus"] >= 1

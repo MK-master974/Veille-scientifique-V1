@@ -87,6 +87,9 @@ def resumer(dossier):
     for nom, lot in (etat.get("lots") or {}).items():
         court = {k: v for k, v in lot.items() if not isinstance(v, (list, dict))}
         print(f"  lot {nom} :", json.dumps(court, ensure_ascii=False))
+        for n, paquet in enumerate(lot.get("paquets") or [], 1):
+            print(f"    lot {n} : {len(paquet.get('ids', []))} requêtes, état {paquet.get('etat')}, "
+                  f"{paquet.get('tentatives')} soumission(s), identifiant {paquet.get('id', '—')}")
     print("  journal :")
     for ligne in etat.get("journal", []):
         print("   ", ligne)

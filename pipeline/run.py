@@ -65,6 +65,13 @@ def decouper_en_paquets(requetes, jetons_max):
     return au_plus_juste
 
 
+def _plafond_depasse(details):
+    """Vrai si le fournisseur a refusé un lot pour dépassement du plafond de sa file d'attente."""
+    erreurs = (details.get("errors") or {})
+    liste = erreurs.get("data") if isinstance(erreurs, dict) else None
+    return any(isinstance(e, dict) and e.get("code") == "token_limit_exceeded" for e in liste or [])
+
+
 class Veille:
     def __init__(self, semaine, cfg=None, catalogue=None, dossier_site=None, maintenant=None, echeance=True):
         self.semaine = semaine
@@ -158,43 +165,74 @@ class Veille:
 
         par_id = {r["id"]: r for r in requetes}
         directs = {k: tuple(v) for k, v in self._lire(f"direct-{nom}.json", {}).items()}
-        nb = len(info["paquets"])
-        for i, paquet in enumerate(info["paquets"]):
+
+        def en_direct(paquet, reqs, rang, motif):
+            # Un lot que le fournisseur n'accepte pas ne doit pas empêcher la publication : ses
+            # requêtes partent en traitement immédiat, au prix plein.
+            message = (f"{nom} : {rang} {motif} ; {len(reqs)} requêtes traitées en direct, au prix plein")
+            self.journal(message)
+            if os.environ.get("GITHUB_ACTIONS"):
+                print(f"::warning::{message}", flush=True)
+            stats = self.etat["stats"]
+            stats["requetes_en_direct_apres_refus"] = stats.get("requetes_en_direct_apres_refus", 0) + len(reqs)
+            directs.update(self._en_direct(nom, reqs, modele))
+            self._ecrire(f"direct-{nom}.json", {k: list(v) for k, v in directs.items()})
+            paquet["etat"] = "direct"
+            self.sauver()
+
+        i = 0
+        while i < len(info["paquets"]):
+            paquet, nb = info["paquets"][i], len(info["paquets"])
             if paquet["etat"] in ("termine", "direct"):
+                i += 1
                 continue
             reqs = [par_id[x] for x in paquet["ids"] if x in par_id]
             rang = f"lot {i + 1}/{nb}" if nb > 1 else "lot"
+
             if paquet["etat"] == "attente":
                 # Un seul lot en file d'attente à la fois : le suivant part quand le précédent est fini.
-                paquet["id"] = self.fournisseur.soumettre_lot(reqs, modele, f"veille {self.semaine.id} {nom}")
-                paquet["etat"], paquet["tentatives"] = "soumis", 1
+                if paquet["tentatives"] >= 2:
+                    en_direct(paquet, reqs, rang, "non accepté après deux essais")
+                    continue
+                paquet["tentatives"] += 1
+                try:
+                    paquet["id"] = self.fournisseur.soumettre_lot(reqs, modele, f"veille {self.semaine.id} {nom}")
+                except Exception as e:  # noqa: BLE001 — une soumission refusée ne doit pas arrêter la veille
+                    self.journal(f"{nom} : {rang}, soumission refusée ({type(e).__name__} : {str(e)[:200]})")
+                    self.sauver()
+                    if paquet["tentatives"] >= 2:
+                        continue                       # repli en direct au tour suivant de la boucle
+                    return None                        # nouvel essai au prochain lancement
+                paquet["etat"] = "soumis"
                 suffixe = f", coût estimé {info['cout_estime']:.2f} $" if nb == 1 else ""
                 self.journal(f"{nom} : {rang} de {len(reqs)} requêtes soumis ({paquet['id']}){suffixe}")
                 self.sauver()
                 return None
+
             statut, details = self.fournisseur.etat_lot(paquet["id"])
             if statut == "en_cours":
                 compte = details.get("request_counts") or {}
                 self.journal(f"{nom} : {rang} en cours ({compte.get('completed', '?')}/{compte.get('total', '?')})")
                 return None
             if statut == "echec":
-                if paquet["tentatives"] >= 2:
-                    # Un lot refusé deux fois ne doit pas empêcher la publication : ses requêtes
-                    # partent en traitement immédiat, au prix plein.
-                    self.journal(f"{nom} : {rang} refusé deux fois ({details.get('status')}, "
-                                 f"{details.get('errors')}) ; {len(reqs)} requêtes traitées en direct, "
-                                 f"au prix plein")
-                    res = self._en_direct(nom, reqs, modele)
-                    directs.update(res)
-                    self._ecrire(f"direct-{nom}.json", {k: list(v) for k, v in directs.items()})
-                    paquet["etat"] = "direct"
+                if _plafond_depasse(details) and len(reqs) > 1 and not paquet.get("divise"):
+                    # Le lot dépasse le plafond de file d'attente du fournisseur : deux lots moitié
+                    # moins gros, au même tarif, plutôt que le prix plein.
+                    milieu = len(reqs) // 2
+                    info["paquets"][i:i + 1] = [
+                        {"ids": [r["id"] for r in moitie], "etat": "attente", "tentatives": 0, "divise": True}
+                        for moitie in (reqs[:milieu], reqs[milieu:])]
+                    self.journal(f"{nom} : {rang} refusé, plafond de file d'attente du fournisseur dépassé ; "
+                                 f"coupé en deux lots")
                     self.sauver()
                     continue
+                if paquet["tentatives"] >= 2:
+                    en_direct(paquet, reqs, rang,
+                              f"en échec deux fois ({details.get('status')}, {details.get('errors')})")
+                    continue
                 self.journal(f"{nom} : {rang} en échec ({details.get('status')}), nouvelle soumission")
-                paquet["id"] = self.fournisseur.soumettre_lot(reqs, modele, f"veille {self.semaine.id} {nom}")
-                paquet["tentatives"] += 1
-                self.sauver()
-                return None
+                paquet["etat"] = "attente"
+                continue
             paquet["etat"] = "termine"
             if nb > 1:
                 self.journal(f"{nom} : {rang} terminé")
