@@ -12,6 +12,11 @@ Les versions sont numérotées MAJEUR.MINEUR.CORRECTIF et étiquetées dans Git.
   (`ia.jetons_max_par_lot` dans `config.json`), envoyés l'un après l'autre, et un lot refusé deux
   fois est traité en mode direct, au prix plein, au lieu d'arrêter la veille (VS-D81). La semaine
   2026-S46 reste non publiée (VS-D80).
+- Moteur de la veille, suite de la relecture indépendante de la correction : un lot refusé pour
+  dépassement du plafond est coupé en deux, au tarif différé, avant tout passage au prix plein ;
+  une soumission de lot refusée par le fournisseur n'arrête plus la veille ; un passage au prix
+  plein laisse un avertissement dans GitHub et un compteur dans les statistiques.
+  `scripts/resume_travail.py` affiche le détail de chaque lot.
 - Registre : le retour sur les dix fiches venait d'une IA (ChatGPT), pas d'un comité d'experts. Correction tracée dans VS-D46 et en tête des deux comptes rendus, sans rien effacer (VS-D52).
 
 ### Modifié
